@@ -1,20 +1,9 @@
 #!/usr/bin/env bash
-# Puts back the original Microsoft binary saved by zainstaluj.sh.
+# Removes the fork's binary from ~/.local/bin. The original from Microsoft can be installed again with npm.
 set -euo pipefail
 
-PLATFORM="$(node -p 'process.platform + "-" + process.arch')"
-GLOBAL_ROOT="$(npm root -g)"
-TARGET_DIR="$(node -e '
-  const path = require("path");
-  const base = path.join(process.argv[1], "@microsoft", "inshellisense");
-  console.log(path.dirname(require.resolve(`@microsoft/inshellisense-${process.argv[2]}/package.json`, { paths: [base] })));
-' "$GLOBAL_ROOT" "$PLATFORM")"
-DEST="$TARGET_DIR/inshellisense-$PLATFORM"
-
-if [ ! -f "$DEST.orig" ]; then
-  echo "Brak kopii $DEST.orig, nie ma czego przywracać."
-  exit 1
-fi
-mv "$DEST.orig" "$DEST"
-is reinit
-echo "Przywrócono oryginalną wersję. Otwórz nową kartę terminala."
+BIN_DIR="$HOME/.local/bin"
+rm -f "$BIN_DIR/is" "$BIN_DIR/inshellisense"
+echo "Usunięto $BIN_DIR/is."
+echo "Oryginalna wersja od Microsoftu: npm install -g @microsoft/inshellisense && is reinit"
+echo "Bez żadnej wersji linijka inshellisense w ~/.zshrc po prostu nic nie robi."

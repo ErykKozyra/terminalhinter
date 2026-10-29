@@ -31,21 +31,18 @@ Dwa inne style do wyboru w `~/.inshellisenserc`:
 - `iconStyle = "badge"`: znak na kolorowym kwadraciku. Uwaga, w kolejnych wierszach kwadraciki zlewają się w pionowy pasek.
 - `iconStyle = "nerd"`: płaskie ikonki i zaokrąglone pigułki z fontu Nerd Font. Wymaga ustawienia takiego fontu w terminalu.
 
-## Instalacja (macOS, npm)
+## Instalacja (macOS)
 
-Wymaga zainstalowanego wcześniej `npm install -g @microsoft/inshellisense` (już masz).
+Do zbudowania potrzebny jest Node (dowolna wersja z nvm), do działania już nie.
 
 ```bash
-tar xzf inshellisense-kiro.tar.gz
-cd inshellisense-kiro
+cd ~/Dev/inshellisense-kiro
 ./zainstaluj.sh
 ```
 
-Skrypt buduje binarkę na Twoim Macu, podmienia nią tę od Microsoftu (oryginał zostaje obok jako `.orig`) i robi `is reinit`. Potem otwórz nową kartę terminala.
+Skrypt buduje binarkę z zaszytym Node i instaluje ją jako `~/.local/bin/is`, poza nvm. Zmiana wersji Node w systemie nie ma na nią wpływu. Jeśli `~/.local/bin` nie było w PATH, skrypt dopisze to na początku `~/.zshrc`. Wersja z npm (`@microsoft/inshellisense`) nie jest już potrzebna i można ją usunąć: `npm uninstall -g @microsoft/inshellisense`.
 
-Powrót do oryginału: `./przywroc.sh`.
-
-Uwaga: `npm update -g` nadpisze fork wersją Microsoftu, wtedy wystarczy znowu odpalić `./zainstaluj.sh`.
+Usunięcie forka: `./przywroc.sh`.
 
 ## Ustawienia (`~/.inshellisenserc`)
 

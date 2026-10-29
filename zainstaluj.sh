@@ -1,30 +1,11 @@
 #!/usr/bin/env bash
-# Builds this fork into a single binary and swaps it in place of the one installed by
-# `npm install -g @microsoft/inshellisense`. The original binary is kept next to it as *.orig.
+# Builds this fork into a single binary and installs it as ~/.local/bin/is, outside nvm.
+# The binary carries its own Node, so changing the system Node version never removes it.
 set -euo pipefail
 cd "$(dirname "$0")"
 
-if ! command -v is >/dev/null 2>&1; then
-  echo "Nie widzę komendy 'is'. Najpierw: npm install -g @microsoft/inshellisense"
-  exit 1
-fi
-
 PLATFORM="$(node -p 'process.platform + "-" + process.arch')"
-GLOBAL_ROOT="$(npm root -g)"
-TARGET_DIR="$(node -e '
-  const path = require("path");
-  const base = path.join(process.argv[1], "@microsoft", "inshellisense");
-  try {
-    console.log(path.dirname(require.resolve(`@microsoft/inshellisense-${process.argv[2]}/package.json`, { paths: [base] })));
-  } catch {
-    process.exit(1);
-  }
-' "$GLOBAL_ROOT" "$PLATFORM")" || {
-  echo "Nie znalazłem zainstalowanej paczki @microsoft/inshellisense-$PLATFORM w $GLOBAL_ROOT."
-  echo "Ten skrypt obsługuje instalację przez npm (nie przez Homebrew)."
-  exit 1
-}
-DEST="$TARGET_DIR/inshellisense-$PLATFORM"
+BIN_DIR="$HOME/.local/bin"
 
 echo "==> Instaluję zależności"
 npm ci --no-audit --no-fund
@@ -41,17 +22,27 @@ if [ ! -f "$BUILT" ]; then
   exit 1
 fi
 
-if [ ! -f "$DEST.orig" ]; then
-  cp "$DEST" "$DEST.orig"
-  echo "==> Kopia oryginału: $DEST.orig"
-fi
+echo "==> Instaluję do $BIN_DIR"
+mkdir -p "$BIN_DIR"
 # remove first so macOS does not reuse the old binary's cached code signature and kill the new one
-rm -f "$DEST"
-cp "$BUILT" "$DEST"
-chmod +x "$DEST"
+rm -f "$BIN_DIR/is"
+cp "$BUILT" "$BIN_DIR/is"
+chmod +x "$BIN_DIR/is"
+ln -sf "$BIN_DIR/is" "$BIN_DIR/inshellisense"
+
+if ! grep -qs '\.local/bin' "$HOME/.zshrc"; then
+  perl -0pi -e '$_ = qq{export PATH="\$HOME/.local/bin:\$PATH"\n} . $_' "$HOME/.zshrc"
+  echo "==> Dodałem ~/.local/bin do PATH na początku ~/.zshrc"
+fi
 
 echo "==> Odświeżam zasoby"
-is reinit || echo "is reinit się nie udał, otwórz nową kartę terminala i wpisz: is reinit"
+"$BIN_DIR/is" reinit || echo "is reinit się nie udał, otwórz nową kartę terminala i wpisz: is reinit"
+
+if npm ls -g @microsoft/inshellisense >/dev/null 2>&1; then
+  echo
+  echo "Masz jeszcze wersję z npm, przypiętą do obecnego Node. Nie jest już potrzebna:"
+  echo "  npm uninstall -g @microsoft/inshellisense"
+fi
 
 echo
 echo "Gotowe. Otwórz nową kartę terminala."
