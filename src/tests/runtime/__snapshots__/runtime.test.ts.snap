@@ -641,19 +641,6 @@ exports[`parseCommand optionsSuggestedAfterVariadicArg 1`] = `
   "suggestions": [
     {
       "allNames": [
-        "package-lock.json",
-      ],
-      "args": undefined,
-      "description": undefined,
-      "hidden": undefined,
-      "icon": "📄",
-      "insertValue": "package-lock.json",
-      "name": "package-lock.json",
-      "priority": 55,
-      "type": "file",
-    },
-    {
-      "allNames": [
         "-L",
       ],
       "args": undefined,
@@ -677,6 +664,19 @@ exports[`parseCommand optionsSuggestedAfterVariadicArg 1`] = `
       "name": "-l",
       "priority": 50,
       "type": undefined,
+    },
+    {
+      "allNames": [
+        "package-lock.json",
+      ],
+      "args": undefined,
+      "description": undefined,
+      "hidden": undefined,
+      "icon": "📄",
+      "insertValue": "package-lock.json",
+      "name": "package-lock.json",
+      "priority": 55,
+      "type": "file",
     },
   ],
 }
