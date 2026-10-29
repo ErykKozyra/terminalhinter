@@ -86,7 +86,7 @@ const configSchema = {
     useNerdFont: {
       type: "boolean",
       nullable: true,
-      default: false,
+      default: true,
     },
     maxSuggestions: {
       type: "number",
@@ -136,7 +136,7 @@ let globalConfig: Config = {
     path: [],
   },
   useAliases: false,
-  useNerdFont: false,
+  useNerdFont: true,
   activeSuggestionBackgroundColor: "#2F5FD0",
   boxBorderStyle: "rounded",
   borderColor: "#4B5263",
@@ -169,7 +169,7 @@ export const loadConfig = async (program: Command) => {
           path: [...(config?.specs?.path ?? [])],
         },
         useAliases: config.useAliases ?? false,
-        useNerdFont: config?.useNerdFont ?? false,
+        useNerdFont: config?.useNerdFont ?? true,
         maxSuggestions: config?.maxSuggestions ?? 6,
         activeSuggestionBackgroundColor: config?.activeSuggestionBackgroundColor ?? "#2F5FD0",
         boxBorderStyle: config?.boxBorderStyle ?? "rounded",

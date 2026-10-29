@@ -29,6 +29,9 @@ DEST="$TARGET_DIR/inshellisense-$PLATFORM"
 echo "==> Instaluję zależności"
 npm ci --no-audit --no-fund
 
+echo "==> Kompiluję TypeScript"
+npm run build
+
 echo "==> Buduję binarkę dla $PLATFORM (pierwszy raz potrwa chwilę, pobiera Node do zaszycia w binarce)"
 npm run package
 

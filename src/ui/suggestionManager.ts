@@ -18,7 +18,26 @@ type SuggestionRuntime = Pick<Awaited<ReturnType<typeof initializeRuntime>>, "ge
 const getMaxSuggestions = () => getConfig().maxSuggestions ?? 6;
 const minBoxWidth = 36;
 const maxBoxWidth = 64;
-const iconWidth = 3; // badge " $ " or an emoji plus padding
+const iconWidth = 4; // pill or glyph, then a gap before the name
+// Nerd Font code points: powerline round caps around a pill, and flat Font Awesome glyphs
+const NF = {
+  capLeft: "\ue0b6",
+  capRight: "\ue0b4",
+  folder: "\uf07b",
+  file: "\uf15b",
+  flag: "\uf024",
+  star: "\uf005",
+  tag: "\uf02b",
+};
+const ICON_COLORS = {
+  execute: "#E5484D",
+  folder: "#5AA9F7",
+  file: "#C9CED8",
+  subcommand: "#8E5CF5",
+  option: "#F0A13C",
+  star: "#F5C451",
+  value: "#4FBF8A",
+};
 // border top + items + separator + footer + border bottom, plus one line for an unhandled newline at the end of the command
 export const getMaxLines = () => getMaxSuggestions() + 5;
 export const MIN_WIDTH = minBoxWidth;
@@ -171,24 +190,35 @@ export class SuggestionManager {
     return lastSep === -1 ? text : text.substring(lastSep + 1);
   }
 
+  // Every icon takes the same 4 cells so names line up: a rounded pill (cap, glyph, cap) or a centered glyph.
   private _icon(suggestion: Suggestion): string {
-    const badge = (bg: string, glyph: string) => chalk.bgHex(bg).hex("#FFFFFF").bold(` ${glyph} `);
-    if (suggestion.execute) return badge("#D9414A", ">");
-    if (suggestion.type === "folder" || suggestion.type === "file") return padIcon(suggestion.icon);
-    switch (suggestion.icon) {
+    const nerd = getConfig().useNerdFont;
+    const pill = (color: string, glyph: string) =>
+      nerd
+        ? chalk.hex(color)(NF.capLeft) + chalk.bgHex(color).hex("#FFFFFF").bold(glyph) + chalk.hex(color)(NF.capRight) + " "
+        : " " + chalk.hex(color).bold(glyph) + "  ";
+    const glyph = (color: string, nerdGlyph: string, plainGlyph: string) => (nerd ? " " + chalk.hex(color)(nerdGlyph) + "  " : padIcon(plainGlyph, color));
+
+    if (suggestion.execute) return pill(ICON_COLORS.execute, ">");
+    if (suggestion.type === "folder") return glyph(ICON_COLORS.folder, NF.folder, "📁");
+    if (suggestion.type === "file") return glyph(ICON_COLORS.file, NF.file, "📄");
+
+    const icon = suggestion.icon.replace(/️/g, "");
+    switch (icon) {
       case "📦":
-        return badge("#8B5CF6", "$");
+        return pill(ICON_COLORS.subcommand, "$");
       case "🔗":
-        return badge("#0E9F9D", "-");
+        return glyph(ICON_COLORS.option, NF.flag, "-");
       case "⭐":
       case "🔥":
-        return badge("#D97706", "*");
+        return glyph(ICON_COLORS.star, NF.star, "*");
       case "💲":
       case "📀":
-      case "🏝️":
-        return badge("#3F8F4F", "#");
+      case "🏝":
+        return glyph(ICON_COLORS.value, NF.tag, "#");
     }
-    return padIcon(suggestion.icon);
+    // an icon the spec chose itself (a nerd font glyph or an emoji)
+    return wcswidth(icon) <= 1 ? " " + chalk.hex(ICON_COLORS.file)(icon) + "  " : padIcon(icon);
   }
 
   private _displayName(suggestion: Suggestion): string {
@@ -360,9 +390,10 @@ export class SuggestionManager {
   }
 }
 
-const padIcon = (icon: string): string => {
+const padIcon = (icon: string, color?: string): string => {
   const width = wcswidth(icon);
-  return icon + " ".repeat(Math.max(iconWidth - width, 1));
+  const styled = color != null && width <= 1 ? chalk.hex(color).bold(icon) : icon;
+  return width <= 1 ? " " + styled + " ".repeat(Math.max(iconWidth - 1 - width, 1)) : styled + " ".repeat(Math.max(iconWidth - width, 1));
 };
 
 // Cuts text to a display width (wide characters count as two cells) and adds an ellipsis when something was cut.
