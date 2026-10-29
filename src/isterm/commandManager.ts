@@ -197,7 +197,9 @@ export class CommandManager {
         const chars = cell.getChars() == "" ? " " : cell.getChars();
 
         const beforeCursor = y < cursorLine || (y == cursorLine && x < this.#terminal.buffer.active.cursorX);
-        const isCommand = !this._isSuggestion(cell) && suggestion.length == 0;
+        // ghost text from autosuggestions only ever sits after the cursor; whatever is before it was typed, whatever
+        // color a syntax highlighter gave it
+        const isCommand = beforeCursor || (!this._isSuggestion(cell) && suggestion.length == 0);
         if (isCommand && beforeCursor) {
           preCursorCommand += chars;
         } else if (isCommand) {

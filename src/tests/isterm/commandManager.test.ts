@@ -59,3 +59,31 @@ test("does not track commands in the alternate buffer", async () => {
   expect(manager.getState().commandText).toBe("abc");
   expect(manager.getStateVersion()).toBeGreaterThan(alternateBufferVersion);
 });
+
+test("keeps typed text before the cursor even when a highlighter paints it in a dull color", async () => {
+  const terminal = new xterm.Terminal({ allowProposedApi: true, rows: 10, cols: 80 });
+  const manager = new CommandManager(terminal, Shell.Zsh);
+
+  manager.handlePromptStart();
+  await write(terminal, "> ");
+  manager.handlePromptEnd();
+  // zsh-syntax-highlighting style output: a yellow builtin, then the argument in palette white (7)
+  await write(terminal, "\u001B[33mcd\u001B[0m \u001B[37mwebsites/\u001B[0m");
+  manager.termSync();
+
+  expect(manager.getState().commandText).toBe("cd websites/");
+});
+
+test("still treats dull text after the cursor as an autosuggestion", async () => {
+  const terminal = new xterm.Terminal({ allowProposedApi: true, rows: 10, cols: 80 });
+  const manager = new CommandManager(terminal, Shell.Zsh);
+
+  manager.handlePromptStart();
+  await write(terminal, "> ");
+  manager.handlePromptEnd();
+  // zsh-autosuggestions style: typed "cd w", ghost "ebsites/" in palette 8, cursor moved back after "w"
+  await write(terminal, "cd w\u001B[90mebsites/\u001B[0m\u001B[8D");
+  manager.termSync();
+
+  expect(manager.getState().commandText).toBe("cd w");
+});

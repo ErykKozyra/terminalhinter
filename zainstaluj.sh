@@ -45,11 +45,13 @@ if [ ! -f "$DEST.orig" ]; then
   cp "$DEST" "$DEST.orig"
   echo "==> Kopia oryginału: $DEST.orig"
 fi
+# remove first so macOS does not reuse the old binary's cached code signature and kill the new one
+rm -f "$DEST"
 cp "$BUILT" "$DEST"
 chmod +x "$DEST"
 
 echo "==> Odświeżam zasoby"
-is reinit
+is reinit || echo "is reinit się nie udał, otwórz nową kartę terminala i wpisz: is reinit"
 
 echo
 echo "Gotowe. Otwórz nową kartę terminala."
