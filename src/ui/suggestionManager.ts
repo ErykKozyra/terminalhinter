@@ -163,7 +163,8 @@ export class SuggestionManager {
 
   private _baseline(): number {
     const token = this.#suggestBlob?.activeToken;
-    const typing = token != null && !token.complete && token.token.length > 0;
+    // a lone "-" means "previous" (git checkout -, git switch -, cd -), so nothing is preselected and Enter runs it
+    const typing = token != null && !token.complete && token.token.length > 0 && token.token !== "-";
     return typing || this.#suggestBlob?.isPathContext ? 0 : -1;
   }
 

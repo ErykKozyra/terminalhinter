@@ -132,3 +132,24 @@ test("enter on a path that is already typed in full runs the command", async () 
   expect(manager.update(press("return"))).toBe(false);
   expect(writes).toEqual([]);
 });
+
+test("a lone dash runs the command, so git checkout - and cd - go back", async () => {
+  const { manager, writes } = setup({
+    suggestions: [{ name: "DEVIC-15145", allNames: ["DEVIC-15145"], icon: "📀", priority: 60 }],
+    activeToken: { token: "-", tokenLength: 1, complete: false, isOption: true },
+  });
+  await manager.exec();
+  expect(manager.update(press("return"))).toBe(false);
+  expect(writes).toEqual([]);
+});
+
+test("after a lone dash, arrow down still picks from the list", async () => {
+  const { manager, writes } = setup({
+    suggestions: [{ name: "-b", allNames: ["-b"], icon: "🔗", priority: 45 }],
+    activeToken: { token: "-", tokenLength: 1, complete: false, isOption: true },
+  });
+  await manager.exec();
+  expect(manager.update(press("down"))).toBe(true);
+  expect(manager.update(press("return"))).toBe(true);
+  expect(writes).toEqual(["b "]);
+});
