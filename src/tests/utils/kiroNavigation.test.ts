@@ -1,0 +1,115 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
+// Kiro/Fig style navigation: Enter walks into folders, the ↪ entry runs the command,
+// and nothing is preselected right after a space so Enter just executes.
+
+import type { ISTerm } from "../../isterm/pty.js";
+import type { SuggestionBlob } from "../../runtime/model.js";
+import { Shell } from "../../utils/shell.js";
+import { SuggestionManager } from "../../ui/suggestionManager.js";
+
+const press = (name: string) => ({ name, sequence: name === "return" ? "\r" : name === "tab" ? "\t" : "", ctrl: false, shift: false });
+
+const setup = (blob: SuggestionBlob) => {
+  const writes: string[] = [];
+  let cleared = 0;
+  const terminal = {
+    cwd: process.cwd(),
+    cols: 100,
+    getCommandState: () => ({ commandText: "cmd", cursorTerminated: true, hasOutput: false }),
+    getCursorState: () => ({ cursorX: 0 }),
+    write: (data: string) => writes.push(data),
+    clearCommand: () => (cleared += 1),
+  } as unknown as ISTerm;
+  const manager = new SuggestionManager(terminal, Shell.Zsh, Promise.resolve({ getSuggestions: async () => blob }));
+  return { manager, writes, cleared: () => cleared };
+};
+
+const folders = (...names: string[]) =>
+  names.map((name) => ({ name, allNames: [name], icon: "📁", priority: 55, type: "folder" as const, insertValue: `websites/${name}/` }));
+
+test("enter on a folder inserts it with a trailing slash instead of running the command", async () => {
+  const { manager, writes, cleared } = setup({
+    suggestions: [{ name: "websites", allNames: ["websites"], icon: "📁", priority: 55, type: "folder", insertValue: "websites/" }],
+    activeToken: { token: "web", tokenLength: 3, complete: false, isOption: false },
+  });
+  await manager.exec();
+  expect(manager.update(press("return"))).toBe(true);
+  expect(writes).toEqual(["\u007F\u007F\u007Fwebsites/"]);
+  expect(cleared()).toBe(0);
+});
+
+test("inside a folder the first entry is ↪ and enter on it runs the command", async () => {
+  const { manager, writes, cleared } = setup({
+    suggestions: folders("intercars.com.pl", "qservicetruck.eu"),
+    activeToken: { token: "websites/", tokenLength: 9, complete: false, isOption: false, isPath: true, isPathComplete: true },
+    isPathContext: true,
+    rootCommand: "cd",
+  });
+  await manager.exec();
+  const rendered = manager
+    .render("below", 12)
+    .map((p) => p.data)
+    .join("\n");
+  expect(rendered).toContain("↪");
+  expect(rendered).toContain("Enter the current directory");
+  expect(manager.update(press("return"))).toBe(false); // the keypress goes to the shell
+  expect(writes).toEqual([]);
+  expect(cleared()).toBe(1);
+});
+
+test("arrow down then enter walks one level deeper", async () => {
+  const { manager, writes } = setup({
+    suggestions: folders("intercars.com.pl", "qservicetruck.eu"),
+    activeToken: { token: "websites/", tokenLength: 9, complete: false, isOption: false, isPath: true, isPathComplete: true },
+    isPathContext: true,
+    rootCommand: "cd",
+  });
+  await manager.exec();
+  expect(manager.update(press("down"))).toBe(true);
+  expect(manager.update(press("return"))).toBe(true);
+  expect(writes.at(-1)).toBe("\u007F".repeat(9) + "websites/intercars.com.pl/");
+});
+
+test("after a space nothing is selected, so enter executes and up reaches shell history", async () => {
+  const { manager, writes } = setup({
+    suggestions: [{ name: "main", allNames: ["main"], icon: "📀", priority: 60 }],
+  });
+  await manager.exec();
+  expect(manager.update(press("up"))).toBe(false);
+  expect(manager.update(press("return"))).toBe(false);
+  expect(writes).toEqual([]);
+});
+
+test("after a space, arrow down selects the first entry and enter accepts it", async () => {
+  const { manager, writes } = setup({
+    suggestions: [{ name: "main", allNames: ["main"], icon: "📀", priority: 60 }],
+  });
+  await manager.exec();
+  expect(manager.update(press("down"))).toBe(true);
+  expect(manager.update(press("return"))).toBe(true);
+  expect(writes).toEqual(["main "]);
+});
+
+test("tab still completes the top entry, skipping ↪", async () => {
+  const { manager, writes } = setup({
+    suggestions: folders("intercars.com.pl"),
+    activeToken: { token: "websites/", tokenLength: 9, complete: false, isOption: false, isPath: true, isPathComplete: true },
+    isPathContext: true,
+    rootCommand: "cd",
+  });
+  await manager.exec();
+  expect(manager.update(press("tab"))).toBe(true);
+  expect(writes.at(-1)).toBe("\u007F".repeat(9) + "websites/intercars.com.pl/");
+});
+
+test("enter on a fully typed word runs the command instead of re-inserting it", async () => {
+  const { manager, writes } = setup({
+    suggestions: [{ name: "status", allNames: ["status"], icon: "📦", priority: 50 }],
+    activeToken: { token: "status", tokenLength: 6, complete: false, isOption: false },
+  });
+  await manager.exec();
+  expect(manager.update(press("return"))).toBe(false);
+  expect(writes).toEqual([]);
+});

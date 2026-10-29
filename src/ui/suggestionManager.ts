@@ -3,7 +3,7 @@
 
 import { Suggestion, SuggestionBlob } from "../runtime/model.js";
 import type { ISTerm, ISTermPatch } from "../isterm/pty.js";
-import { renderBox, truncateText, truncateMultilineText } from "./utils.js";
+import { wcswidth } from "../utils/unicode.js";
 import chalk from "chalk";
 import { Shell } from "../utils/shell.js";
 import log from "../utils/log.js";
@@ -15,14 +15,13 @@ import { initializeRuntime } from "../runtime/initialize.js";
 type SuggestionRuntime = Pick<Awaited<ReturnType<typeof initializeRuntime>>, "getSuggestions"> &
   Partial<Pick<Awaited<ReturnType<typeof initializeRuntime>>, "clearTransientSuggestionState">>;
 
-const getMaxSuggestions = () => getConfig().maxSuggestions ?? 5;
-const suggestionWidth = 40;
-const descriptionWidth = 30;
-const descriptionHeight = 5;
-const borderWidth = 2;
-export const getMaxLines = () => borderWidth + Math.max(getMaxSuggestions(), descriptionHeight) + 1; // accounts when there is a unhandled newline at the end of the command
-export const MIN_WIDTH = borderWidth + descriptionWidth;
-
+const getMaxSuggestions = () => getConfig().maxSuggestions ?? 6;
+const minBoxWidth = 36;
+const maxBoxWidth = 64;
+const iconWidth = 3; // badge " $ " or an emoji plus padding
+// border top + items + separator + footer + border bottom, plus one line for an unhandled newline at the end of the command
+export const getMaxLines = () => getMaxSuggestions() + 5;
+export const MIN_WIDTH = minBoxWidth;
 export type KeyPressEvent = [string | null | undefined, KeyPress];
 
 type KeyPress = {
@@ -42,6 +41,7 @@ export class SuggestionManager {
   #abortController?: AbortController;
   #runtime?: Promise<SuggestionRuntime>;
   #requestVersion = 0;
+  #scrollTop = 0;
 
   constructor(terminal: ISTerm, shell: Shell, runtime?: Promise<SuggestionRuntime>) {
     this.#term = terminal;
@@ -118,7 +118,7 @@ export class SuggestionManager {
       }
       this.#commandKey = commandKey;
       this.#suggestBlob = suggestionBlob;
-      this.#activeSuggestionIdx = 0;
+      this._resetSelection();
       return true;
     } catch (e) {
       if (e instanceof Error && e.name === "AbortError") {
@@ -133,43 +133,104 @@ export class SuggestionManager {
     }
   }
 
-  private _renderArgumentDescription(description: string | undefined) {
-    if (!description) return [];
-    return renderBox([truncateText(description, descriptionWidth - borderWidth)], descriptionWidth);
+  // Nothing is preselected right after a space, so Enter runs the command. Once a word is being typed (or a folder was
+  // just entered) the first entry is preselected and Enter accepts it, which is how Kiro/Fig behave.
+  private _resetSelection() {
+    this.#scrollTop = 0;
+    this.#activeSuggestionIdx = this._baseline();
   }
 
-  private _renderDescription(description: string | undefined) {
-    if (!description) return "";
-    return renderBox(truncateMultilineText(description, descriptionWidth - borderWidth, descriptionHeight), descriptionWidth);
+  private _baseline(): number {
+    const token = this.#suggestBlob?.activeToken;
+    const typing = token != null && !token.complete && token.token.length > 0;
+    return typing || this.#suggestBlob?.isPathContext ? 0 : -1;
   }
 
-  private _renderSuggestions(suggestions: Suggestion[], activeSuggestionIdx: number) {
-    return renderBox(
-      suggestions.map((suggestion, idx) => {
-        const suggestionText = `${suggestion.icon} ${suggestion.name}`;
-        const truncatedSuggestion = truncateText(suggestionText, suggestionWidth - 2);
-        return idx == activeSuggestionIdx ? chalk.bgHex(getConfig().activeSuggestionBackgroundColor)(truncatedSuggestion) : truncatedSuggestion;
-      }),
-      suggestionWidth,
-    );
+  private _items(): Suggestion[] {
+    if (!this.#suggestBlob) return [];
+    const { suggestions, isPathContext, rootCommand } = this.#suggestBlob;
+    if (!isPathContext || suggestions.length === 0) return suggestions;
+    const entersDirectory = rootCommand != null && ["cd", "pushd", "z", "zi", "j"].includes(rootCommand);
+    const executeItem: Suggestion = {
+      name: "↪",
+      allNames: ["↪"],
+      icon: ">",
+      priority: 100,
+      execute: true,
+      description: entersDirectory ? "Enter the current directory" : "Run the command with this path",
+    };
+    return [executeItem, ...suggestions];
   }
 
-  private _calculatePadding(description: string, cursorX: number): { padding: number; swapDescription: boolean } {
-    const wrappedPadding = cursorX % this.#term.cols;
-    const maxPadding = description.length !== 0 ? this.#term.cols - suggestionWidth - descriptionWidth : this.#term.cols - suggestionWidth;
-    const swapDescription = wrappedPadding > maxPadding && description.length !== 0;
-    const swappedPadding = swapDescription ? Math.max(wrappedPadding - descriptionWidth, 0) : wrappedPadding;
-    const padding = Math.min(Math.min(wrappedPadding, swappedPadding), maxPadding);
-    return { padding, swapDescription };
+  private _partialText(): string {
+    const token = this.#suggestBlob?.activeToken;
+    if (token == null || token.complete) return "";
+    const text = token.token;
+    if (!token.isPath) return text;
+    const lastSep = Math.max(text.lastIndexOf("/"), text.lastIndexOf("\\"));
+    return lastSep === -1 ? text : text.substring(lastSep + 1);
   }
 
-  private _calculateRowPadding(padding: number, swapDescription: boolean, suggestionContent?: string, descriptionContent?: string): number {
-    if (swapDescription) {
-      return descriptionContent == null ? padding + descriptionWidth : padding;
+  private _icon(suggestion: Suggestion): string {
+    const badge = (bg: string, glyph: string) => chalk.bgHex(bg).hex("#FFFFFF").bold(` ${glyph} `);
+    if (suggestion.execute) return badge("#D9414A", ">");
+    if (suggestion.type === "folder" || suggestion.type === "file") return padIcon(suggestion.icon);
+    switch (suggestion.icon) {
+      case "📦":
+        return badge("#8B5CF6", "$");
+      case "🔗":
+        return badge("#0E9F9D", "-");
+      case "⭐":
+      case "🔥":
+        return badge("#D97706", "*");
+      case "💲":
+      case "📀":
+      case "🏝️":
+        return badge("#3F8F4F", "#");
     }
-    return suggestionContent == null ? padding + suggestionWidth : padding;
+    return padIcon(suggestion.icon);
   }
 
+  private _displayName(suggestion: Suggestion): string {
+    return suggestion.type === "folder" ? `${suggestion.name}/` : suggestion.name;
+  }
+
+  private _contentWidth(suggestion: Suggestion): number {
+    const name = wcswidth(this._displayName(suggestion));
+    const args = suggestion.args ? 1 + wcswidth(suggestion.args) : 0;
+    return iconWidth + name + args;
+  }
+
+  private _renderRow(suggestion: Suggestion, innerWidth: number, selected: boolean, partial: string): string {
+    const textWidth = innerWidth - 2 - iconWidth; // one space padding on each side, then the icon cell
+    const name = this._displayName(suggestion);
+    const [shownName, nameTruncated] = fitText(name, textWidth);
+    const remaining = textWidth - wcswidth(shownName);
+    let args = "";
+    if (!nameTruncated && suggestion.args && remaining > 4) {
+      args = fitText(suggestion.args, remaining - 1)[0];
+    }
+    const used = wcswidth(shownName) + (args ? 1 + wcswidth(args) : 0);
+
+    const matchLength = partial.length > 0 && shownName.toLowerCase().startsWith(partial.toLowerCase()) ? partial.length : 0;
+    const styledName =
+      matchLength > 0
+        ? chalk.bold.hex("#F5C451")(shownName.slice(0, matchLength)) + chalk.bold(shownName.slice(matchLength))
+        : selected
+        ? chalk.bold(shownName)
+        : shownName;
+    const styledArgs = args ? " " + chalk.hex(selected ? "#C7D2FE" : "#7F8796")(args) : "";
+
+    const row = " " + this._icon(suggestion) + styledName + styledArgs + " ".repeat(Math.max(textWidth - used, 0)) + " ";
+    return selected ? chalk.bgHex(getConfig().activeSuggestionBackgroundColor)(row) : row;
+  }
+
+  private _renderFooter(text: string, counter: string, innerWidth: number): string {
+    const counterWidth = counter ? wcswidth(counter) + 1 : 0;
+    const [shown] = fitText(text, innerWidth - 2 - counterWidth);
+    const gap = innerWidth - 2 - wcswidth(shown) - counterWidth;
+    return " " + chalk.italic.hex("#9AA3B2")(shown) + " ".repeat(Math.max(gap, 0)) + (counter ? " " + chalk.hex("#6B7280")(counter) : "") + " ";
+  }
   async exec(): Promise<boolean> {
     return await this._loadSuggestions();
   }
@@ -178,52 +239,63 @@ export class SuggestionManager {
     if (!this.#suggestBlob) {
       return [];
     }
-    const { suggestions, argumentDescription } = this.#suggestBlob;
-
+    const { argumentDescription, activeToken } = this.#suggestBlob;
+    const items = this._items();
     const maxSuggestions = getMaxSuggestions();
-    const page = Math.min(Math.floor(this.#activeSuggestionIdx / maxSuggestions) + 1, Math.floor(suggestions.length / maxSuggestions) + 1);
-    const pagedSuggestions = suggestions.filter((_, idx) => idx < page * maxSuggestions && idx >= (page - 1) * maxSuggestions);
-    const activePagedSuggestionIndex = this.#activeSuggestionIdx % maxSuggestions;
-    const activeDescription = pagedSuggestions.at(activePagedSuggestionIndex)?.description || argumentDescription || "";
-    const { swapDescription, padding } = this._calculatePadding(activeDescription, cursorX);
+    if (this.#activeSuggestionIdx >= items.length) this.#activeSuggestionIdx = items.length - 1;
 
-    if (suggestions.length <= this.#activeSuggestionIdx) {
-      this.#activeSuggestionIdx = Math.max(suggestions.length - 1, 0);
+    const cols = this.#term.cols;
+    const border = (text: string) => chalk.hex(getConfig().borderColor)(text);
+    const rounded = getConfig().boxBorderStyle === "rounded";
+    const [tl, tr, bl, br] = rounded ? ["╭", "╮", "╰", "╯"] : ["┌", "┐", "└", "┘"];
+
+    // keep the selected entry inside the visible window instead of jumping by pages
+    if (this.#activeSuggestionIdx >= 0) {
+      if (this.#activeSuggestionIdx < this.#scrollTop) this.#scrollTop = this.#activeSuggestionIdx;
+      if (this.#activeSuggestionIdx >= this.#scrollTop + maxSuggestions) this.#scrollTop = this.#activeSuggestionIdx - maxSuggestions + 1;
     }
+    this.#scrollTop = Math.max(0, Math.min(this.#scrollTop, Math.max(items.length - maxSuggestions, 0)));
+    const visible = items.slice(this.#scrollTop, this.#scrollTop + maxSuggestions);
 
-    if (pagedSuggestions.length == 0) {
-      if (argumentDescription != null) {
-        return this._renderArgumentDescription(argumentDescription).map((row) => ({ startX: padding, length: descriptionWidth, data: row }));
-      }
-      return [];
-    }
-    const descriptionUI = this._renderDescription(activeDescription);
-    const suggestionUI = this._renderSuggestions(pagedSuggestions, activePagedSuggestionIndex);
-    const ui = [];
-    const maxRows = Math.max(descriptionUI.length, suggestionUI.length);
-    for (let i = 0; i < maxRows; i++) {
-      const [suggestionUIRow, descriptionUIRow] =
-        direction == "above"
-          ? [suggestionUI[i - maxRows + suggestionUI.length], descriptionUI[i - maxRows + descriptionUI.length]]
-          : [suggestionUI[i], descriptionUI[i]];
+    const active = this.#activeSuggestionIdx >= 0 ? items.at(this.#activeSuggestionIdx) : undefined;
+    const footerText = active?.description || argumentDescription || "";
+    const counter =
+      items.length <= maxSuggestions ? "" : this.#activeSuggestionIdx >= 0 ? `${this.#activeSuggestionIdx + 1}/${items.length}` : `${items.length}`;
 
-      const data = swapDescription ? (descriptionUIRow ?? "") + (suggestionUIRow ?? "") : (suggestionUIRow ?? "") + (descriptionUIRow ?? "");
-      const rowPadding = this._calculateRowPadding(padding, swapDescription, suggestionUIRow, descriptionUIRow);
+    const widest = Math.max(0, ...items.map((item) => this._contentWidth(item)));
+    const maxWidth = Math.min(maxBoxWidth, cols);
+    if (maxWidth < 12) return [];
+    const width = Math.max(Math.min(Math.max(widest + 4, minBoxWidth), maxWidth), Math.min(minBoxWidth, maxWidth));
+    const innerWidth = width - 2;
 
-      ui.push({
-        startX: rowPadding,
-        length: (suggestionUIRow == null ? 0 : suggestionWidth) + (descriptionUIRow == null ? 0 : descriptionWidth),
-        data: data,
+    const rows: string[] = [];
+    rows.push(border(tl + "─".repeat(innerWidth) + tr));
+    if (visible.length === 0) {
+      if (!argumentDescription) return [];
+      rows.push(border("│") + this._renderFooter(argumentDescription, "", innerWidth) + border("│"));
+    } else {
+      const partial = this._partialText();
+      visible.forEach((item, idx) => {
+        const selected = idx + this.#scrollTop === this.#activeSuggestionIdx;
+        rows.push(border("│") + this._renderRow(item, innerWidth, selected, partial) + border("│"));
       });
+      if (footerText || counter) {
+        rows.push(border("├" + "─".repeat(innerWidth) + "┤"));
+        rows.push(border("│") + this._renderFooter(footerText, counter, innerWidth) + border("│"));
+      }
     }
-    return ui;
-  }
+    rows.push(border(bl + "─".repeat(innerWidth) + br));
 
+    // line the icons up under the word being completed, the way Kiro anchors its popup
+    const wrappedCursor = cursorX % cols;
+    const partialWidth = activeToken != null && !activeToken.complete ? wcswidth(this._partialText()) : 0;
+    const anchor = Math.max(wrappedCursor - partialWidth - 2, 0);
+    const startX = Math.max(Math.min(anchor, cols - width), 0);
+
+    return rows.map((data) => ({ startX, length: width, data }));
+  }
   update(keyPress: KeyPress, allowBindings = true): boolean {
     const { name, shift, ctrl } = keyPress;
-    if (name == "return") {
-      this.#term.clearCommand(); // clear the current command on enter
-    }
 
     // if suggestions are hidden, keep them hidden until during command navigation
     if (this.#hideSuggestions) {
@@ -231,6 +303,7 @@ export class SuggestionManager {
     }
 
     if (!allowBindings || !this.#suggestBlob) {
+      if (name == "return") this.#term.clearCommand(); // the command is being executed
       return false;
     }
     const {
@@ -239,25 +312,23 @@ export class SuggestionManager {
       nextSuggestion: { key: nextKey, shift: nextShift, control: nextCtrl },
       previousSuggestion: { key: prevKey, shift: prevShift, control: prevCtrl },
     } = getConfig().bindings;
+    const items = this._items();
 
     if (name == dismissKey && shift == !!dismissShift && ctrl == !!dismissCtrl) {
       this.#suggestBlob = undefined;
       this.#hideSuggestions = true;
     } else if (name == prevKey && shift == !!prevShift && ctrl == !!prevCtrl) {
-      this.#activeSuggestionIdx = Math.max(0, this.#activeSuggestionIdx - 1);
+      if (this.#activeSuggestionIdx < 0) return false; // nothing selected, let the shell walk its history
+      this.#activeSuggestionIdx = Math.max(this.#activeSuggestionIdx - 1, this._baseline());
     } else if (name == nextKey && shift == !!nextShift && ctrl == !!nextCtrl) {
-      this.#activeSuggestionIdx = Math.min(this.#activeSuggestionIdx + 1, (this.#suggestBlob?.suggestions.length ?? 1) - 1);
-    } else if (name == acceptKey && shift == !!acceptShift && ctrl == !!acceptCtrl) {
-      const suggestion = this.#suggestBlob?.suggestions.at(this.#activeSuggestionIdx);
-      if (suggestion == null || this.#suggestBlob?.suggestions.length == 0) {
-        return false;
-      }
-      const action = calculateReplacement(this.#suggestBlob?.activeToken, suggestion);
-      if (action == null) {
-        return false;
-      }
-      this.#term.write(applyReplacement(action));
-    } else if (name == "return" || (name == "c" && ctrl)) {
+      this.#activeSuggestionIdx = Math.min(this.#activeSuggestionIdx + 1, items.length - 1);
+    } else if (name == "return" && !shift && !ctrl) {
+      return this._handleEnter(items);
+    } else if ((name == acceptKey && shift == !!acceptShift && ctrl == !!acceptCtrl) || (name == "tab" && !shift && !ctrl)) {
+      const idx = Math.max(this.#activeSuggestionIdx, 0);
+      const suggestion = items.at(idx)?.execute ? items.at(idx + 1) : items.at(idx);
+      if (!this._accept(suggestion)) return false;
+    } else if (name == "c" && ctrl) {
       this.#term.clearCommand();
       return false;
     } else {
@@ -266,4 +337,45 @@ export class SuggestionManager {
     log.debug({ msg: "handled keypress", ...keyPress });
     return true;
   }
+
+  private _handleEnter(items: Suggestion[]): boolean {
+    const suggestion = this.#activeSuggestionIdx >= 0 ? items.at(this.#activeSuggestionIdx) : undefined;
+    if (getConfig().enterAcceptsSuggestion && suggestion != null && !suggestion.execute && this._accept(suggestion)) {
+      log.debug({ msg: "accepted suggestion with enter", name: suggestion.name });
+      return true;
+    }
+    // nothing to accept (or the ↪ entry): run the command
+    this.#suggestBlob = undefined;
+    this.#activeSuggestionIdx = 0;
+    this.#term.clearCommand();
+    return false;
+  }
+
+  private _accept(suggestion: Suggestion | undefined): boolean {
+    if (suggestion == null || suggestion.execute) return false;
+    const action = calculateReplacement(this.#suggestBlob?.activeToken, suggestion);
+    if (action == null) return false;
+    this.#term.write(applyReplacement(action));
+    return true;
+  }
 }
+
+const padIcon = (icon: string): string => {
+  const width = wcswidth(icon);
+  return icon + " ".repeat(Math.max(iconWidth - width, 1));
+};
+
+// Cuts text to a display width (wide characters count as two cells) and adds an ellipsis when something was cut.
+const fitText = (text: string, width: number): [string, boolean] => {
+  if (width <= 0) return ["", text.length > 0];
+  if (wcswidth(text) <= width) return [text, false];
+  let out = "";
+  let used = 0;
+  for (const point of text) {
+    const w = wcswidth(point);
+    if (used + w > width - 1) break;
+    out += point;
+    used += w;
+  }
+  return [out + "…", true];
+};

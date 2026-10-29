@@ -17,8 +17,8 @@ describe("renderBox", () => {
     getConfig().boxBorderStyle = previousBoxBorderStyle;
   });
 
-  test("uses square corners by default", () => {
-    expect(renderBox(["ab"], 4).map(stripAnsi)).toEqual(["┌──┐", "│ab│", "└──┘"]);
+  test("uses rounded corners by default", () => {
+    expect(renderBox(["ab"], 4).map(stripAnsi)).toEqual(["╭──╮", "│ab│", "╰──╯"]);
   });
 
   test("uses rounded corners when configured", () => {

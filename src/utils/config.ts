@@ -36,6 +36,8 @@ type Config = {
   maxSuggestions?: number;
   activeSuggestionBackgroundColor: string;
   boxBorderStyle: BoxBorderStyle;
+  borderColor: string;
+  enterAcceptsSuggestion: boolean;
 };
 
 const bindingSchema: JSONSchemaType<Binding> = {
@@ -89,19 +91,30 @@ const configSchema = {
     maxSuggestions: {
       type: "number",
       nullable: true,
-      default: 5,
+      default: 6,
     },
     activeSuggestionBackgroundColor: {
       type: "string",
       nullable: true,
       pattern: "^#[0-9A-Fa-f]{6}$",
-      default: "#7D56F4",
+      default: "#2F5FD0",
     },
     boxBorderStyle: {
       type: "string",
       nullable: true,
       enum: ["square", "rounded"],
-      default: "square",
+      default: "rounded",
+    },
+    borderColor: {
+      type: "string",
+      nullable: true,
+      pattern: "^#[0-9A-Fa-f]{6}$",
+      default: "#4B5263",
+    },
+    enterAcceptsSuggestion: {
+      type: "boolean",
+      nullable: true,
+      default: true,
     },
   },
   additionalProperties: false,
@@ -124,8 +137,10 @@ let globalConfig: Config = {
   },
   useAliases: false,
   useNerdFont: false,
-  activeSuggestionBackgroundColor: "#7D56F4",
-  boxBorderStyle: "square",
+  activeSuggestionBackgroundColor: "#2F5FD0",
+  boxBorderStyle: "rounded",
+  borderColor: "#4B5263",
+  enterAcceptsSuggestion: true,
 };
 
 export const getConfig = (): Config => globalConfig;
@@ -155,9 +170,11 @@ export const loadConfig = async (program: Command) => {
         },
         useAliases: config.useAliases ?? false,
         useNerdFont: config?.useNerdFont ?? false,
-        maxSuggestions: config?.maxSuggestions ?? 5,
-        activeSuggestionBackgroundColor: config?.activeSuggestionBackgroundColor ?? "#7D56F4",
-        boxBorderStyle: config?.boxBorderStyle ?? "square",
+        maxSuggestions: config?.maxSuggestions ?? 6,
+        activeSuggestionBackgroundColor: config?.activeSuggestionBackgroundColor ?? "#2F5FD0",
+        boxBorderStyle: config?.boxBorderStyle ?? "rounded",
+        borderColor: config?.borderColor ?? "#4B5263",
+        enterAcceptsSuggestion: config?.enterAcceptsSuggestion ?? true,
       };
     }
   }

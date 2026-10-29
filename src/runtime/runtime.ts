@@ -135,7 +135,9 @@ export const getSuggestions = async (cmd: string, cwd: string, shell: Shell, sig
     if (result.suggestions.length == 0 && !result.argumentDescription) return;
 
     const activeToken = lastCommand?.complete ? undefined : lastCommand;
-    return { ...result, activeToken };
+    // a fully typed directory like `websites/` lets the UI offer "run it here" as the first entry, like Kiro/Fig did
+    const isPathContext = activeToken?.isPath === true && activeToken.isPathComplete === true && activeToken.token.length > 0;
+    return { ...result, activeToken, isPathContext, rootCommand: activeCmd.at(0)?.token };
   } finally {
     endTiming("runtime.getSuggestions", suggestionTiming);
   }

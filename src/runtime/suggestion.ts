@@ -94,6 +94,20 @@ const getIcon = (icon: string | undefined, suggestionType: Fig.SuggestionType | 
   return SuggestionIcons.Default;
 };
 
+// Renders the args of a subcommand or option the way Fig/Kiro show them: <required> [optional] <variadic...>
+export const formatArgs = (suggestion: unknown): string | undefined => {
+  const raw = (suggestion as { args?: Fig.SingleOrArray<Fig.Arg> } | undefined)?.args;
+  if (raw == null) return undefined;
+  const args = raw instanceof Array ? raw : [raw];
+  const parts = args
+    .filter((a) => a != null)
+    .map((a) => {
+      const name = (a.name ?? "arg") + (a.isVariadic ? "..." : "");
+      return a.isOptional ? `[${name}]` : `<${name}>`;
+    });
+  return parts.length === 0 ? undefined : parts.join(" ");
+};
+
 const getLong = (suggestion: Fig.SingleOrArray<string>): string => {
   return suggestion instanceof Array ? suggestion.reduce((p, c) => (p.length > c.length ? p : c)) : suggestion;
 };
@@ -113,6 +127,7 @@ const toSuggestion = (suggestion: Fig.Suggestion, name?: string, type?: Fig.Sugg
     insertValue: suggestion.insertValue,
     type: suggestion.type,
     hidden: suggestion.hidden,
+    args: formatArgs(suggestion),
   };
 };
 
@@ -183,6 +198,7 @@ function filter<T extends Fig.BaseSuggestion & { name?: Fig.SingleOrArray<string
                   insertValue: s.insertValue,
                   type: s.type,
                   hidden: s.hidden,
+                  args: formatArgs(s),
                 }
               : undefined;
           }
@@ -196,6 +212,7 @@ function filter<T extends Fig.BaseSuggestion & { name?: Fig.SingleOrArray<string
                 insertValue: s.insertValue,
                 type: s.type,
                 hidden: s.hidden,
+                args: formatArgs(s),
               }
             : undefined;
         })
@@ -216,6 +233,7 @@ function filter<T extends Fig.BaseSuggestion & { name?: Fig.SingleOrArray<string
                   priority: s.priority ?? 50,
                   type: s.type,
                   hidden: s.hidden,
+                  args: formatArgs(s),
                 }
               : undefined;
           }
@@ -229,6 +247,7 @@ function filter<T extends Fig.BaseSuggestion & { name?: Fig.SingleOrArray<string
                 priority: s.priority ?? 50,
                 type: s.type,
                 hidden: s.hidden,
+                args: formatArgs(s),
               }
             : undefined;
         })

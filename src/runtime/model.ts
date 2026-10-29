@@ -12,10 +12,14 @@ export type Suggestion = {
   insertValue?: string;
   type?: Fig.SuggestionType;
   hidden?: boolean;
+  args?: string;
+  execute?: boolean;
 };
 
 export type SuggestionBlob = {
   suggestions: Suggestion[];
   argumentDescription?: string;
   activeToken?: CommandToken;
+  isPathContext?: boolean;
+  rootCommand?: string;
 };

@@ -8,11 +8,14 @@ exports[`parseCommand alreadyUsedOption 1`] = `
     "token": "--b",
     "tokenLength": 3,
   },
+  "isPathContext": false,
+  "rootCommand": "act",
   "suggestions": [
     {
       "allNames": [
         "--bug-report",
       ],
+      "args": undefined,
       "description": "Display system information for bug report",
       "hidden": undefined,
       "icon": "🔗",
@@ -35,11 +38,14 @@ exports[`parseCommand command 1`] = `
     "token": "sta",
     "tokenLength": 3,
   },
+  "isPathContext": false,
+  "rootCommand": "sudo",
   "suggestions": [
     {
       "allNames": [
         "stage",
       ],
+      "args": "[pathspec...]",
       "description": "Add file contents to the staging area",
       "hidden": undefined,
       "icon": "📦",
@@ -52,6 +58,7 @@ exports[`parseCommand command 1`] = `
       "allNames": [
         "status",
       ],
+      "args": "[pathspec...]",
       "description": "Show the working tree status",
       "hidden": undefined,
       "icon": "📦",
@@ -64,6 +71,7 @@ exports[`parseCommand command 1`] = `
       "allNames": [
         "stash",
       ],
+      "args": undefined,
       "description": "Temporarily stores all the modified tracked files",
       "hidden": undefined,
       "icon": "📦",
@@ -84,11 +92,14 @@ exports[`parseCommand completePrefixFilter 1`] = `
     "token": "stat",
     "tokenLength": 4,
   },
+  "isPathContext": false,
+  "rootCommand": "git",
   "suggestions": [
     {
       "allNames": [
         "status",
       ],
+      "args": "[pathspec...]",
       "description": "Show the working tree status",
       "hidden": undefined,
       "icon": "📦",
@@ -104,11 +115,14 @@ exports[`parseCommand completePrefixFilter 1`] = `
 exports[`parseCommand completedOptionWithArg 1`] = `
 {
   "activeToken": undefined,
+  "isPathContext": false,
+  "rootCommand": "act",
   "suggestions": [
     {
       "allNames": [
         "--artifact-server-path",
       ],
+      "args": "<artifact-server-path>",
       "description": "Defines the path where the artifact server stores uploads and retrieves downloads from. If not specified the artifact server will not start",
       "hidden": undefined,
       "icon": "🔗",
@@ -121,6 +135,7 @@ exports[`parseCommand completedOptionWithArg 1`] = `
       "allNames": [
         "--artifact-server-port",
       ],
+      "args": "<artifact-server-port>",
       "description": "Defines the port where the artifact server listens (will only bind to localhost)",
       "hidden": undefined,
       "icon": "🔗",
@@ -133,6 +148,7 @@ exports[`parseCommand completedOptionWithArg 1`] = `
       "allNames": [
         "--container-architecture",
       ],
+      "args": "<container-architecture>",
       "description": "Architecture which should be used to run containers, e.g.: linux/amd64. If not specified, will use host default architecture. Requires Docker server API Version 1.41+. Ignored on earlier Docker server platforms",
       "hidden": undefined,
       "icon": "🔗",
@@ -145,6 +161,7 @@ exports[`parseCommand completedOptionWithArg 1`] = `
       "allNames": [
         "--container-daemon-socket",
       ],
+      "args": "<container-daemon-socket>",
       "description": "Path to Docker daemon socket which will be mounted to containers",
       "hidden": undefined,
       "icon": "🔗",
@@ -158,6 +175,7 @@ exports[`parseCommand completedOptionWithArg 1`] = `
         "--directory",
         "-C",
       ],
+      "args": "<directory>",
       "description": "Working directory",
       "hidden": undefined,
       "icon": "🔗",
@@ -171,6 +189,7 @@ exports[`parseCommand completedOptionWithArg 1`] = `
         "--dryrun",
         "-n",
       ],
+      "args": undefined,
       "description": "Dryrun mode",
       "hidden": undefined,
       "icon": "🔗",
@@ -183,6 +202,7 @@ exports[`parseCommand completedOptionWithArg 1`] = `
       "allNames": [
         "--env-file",
       ],
+      "args": "<env-file>",
       "description": "Environment file to read and use as env in the containers",
       "hidden": undefined,
       "icon": "🔗",
@@ -195,6 +215,7 @@ exports[`parseCommand completedOptionWithArg 1`] = `
       "allNames": [
         "--github-instance",
       ],
+      "args": "<github-instance>",
       "description": "GitHub instance to use. Don't use this if you are not using GitHub Enterprise Server",
       "hidden": undefined,
       "icon": "🔗",
@@ -207,6 +228,7 @@ exports[`parseCommand completedOptionWithArg 1`] = `
       "allNames": [
         "--insecure-secrets",
       ],
+      "args": undefined,
       "description": "NOT RECOMMENDED! Doesn't hide secrets while printing logs",
       "hidden": undefined,
       "icon": "🔗",
@@ -219,6 +241,7 @@ exports[`parseCommand completedOptionWithArg 1`] = `
       "allNames": [
         "--json",
       ],
+      "args": undefined,
       "description": "Output logs in json format",
       "hidden": undefined,
       "icon": "🔗",
@@ -231,6 +254,7 @@ exports[`parseCommand completedOptionWithArg 1`] = `
       "allNames": [
         "--no-recurse",
       ],
+      "args": undefined,
       "description": "Flag to disable running workflows from subdirectories of specified path in '--workflows'/'-W' flag",
       "hidden": undefined,
       "icon": "🔗",
@@ -243,6 +267,7 @@ exports[`parseCommand completedOptionWithArg 1`] = `
       "allNames": [
         "--no-skip-checkout",
       ],
+      "args": undefined,
       "description": "Do not skip actions/checkout",
       "hidden": undefined,
       "icon": "🔗",
@@ -256,6 +281,7 @@ exports[`parseCommand completedOptionWithArg 1`] = `
         "--quiet",
         "-q",
       ],
+      "args": undefined,
       "description": "Disable logging of output from steps",
       "hidden": undefined,
       "icon": "🔗",
@@ -268,6 +294,7 @@ exports[`parseCommand completedOptionWithArg 1`] = `
       "allNames": [
         "--secret-file",
       ],
+      "args": "<secret-file>",
       "description": "File with list of secrets to read from (e.g. --secret-file .secrets)",
       "hidden": undefined,
       "icon": "🔗",
@@ -281,6 +308,7 @@ exports[`parseCommand completedOptionWithArg 1`] = `
         "--verbose",
         "-v",
       ],
+      "args": undefined,
       "description": "Verbose output",
       "hidden": undefined,
       "icon": "🔗",
@@ -294,6 +322,7 @@ exports[`parseCommand completedOptionWithArg 1`] = `
         "--workflows",
         "-W",
       ],
+      "args": "<workflows>",
       "description": "Path to workflow file(s)",
       "hidden": undefined,
       "icon": "🔗",
@@ -307,6 +336,7 @@ exports[`parseCommand completedOptionWithArg 1`] = `
         "--help",
         "-h",
       ],
+      "args": undefined,
       "description": "Display help",
       "hidden": undefined,
       "icon": "🔗",
@@ -319,6 +349,7 @@ exports[`parseCommand completedOptionWithArg 1`] = `
       "allNames": [
         "--no-descriptions",
       ],
+      "args": undefined,
       "description": "Disable completion descriptions",
       "hidden": undefined,
       "icon": "🔗",
@@ -341,11 +372,14 @@ exports[`parseCommand exclusiveOnOption 1`] = `
     "token": "--no",
     "tokenLength": 4,
   },
+  "isPathContext": false,
+  "rootCommand": "ag",
   "suggestions": [
     {
       "allNames": [
         "--nobreak",
       ],
+      "args": undefined,
       "description": "Print a newline between matches in different files. Enabled by default",
       "hidden": undefined,
       "icon": "🔗",
@@ -358,6 +392,7 @@ exports[`parseCommand exclusiveOnOption 1`] = `
       "allNames": [
         "--nocolor",
       ],
+      "args": undefined,
       "description": "Don't print color codes in results",
       "hidden": undefined,
       "icon": "🔗",
@@ -370,6 +405,7 @@ exports[`parseCommand exclusiveOnOption 1`] = `
       "allNames": [
         "--nofilename",
       ],
+      "args": undefined,
       "description": "Don't print file names",
       "hidden": undefined,
       "icon": "🔗",
@@ -382,6 +418,7 @@ exports[`parseCommand exclusiveOnOption 1`] = `
       "allNames": [
         "--nofollow",
       ],
+      "args": undefined,
       "description": "Don't follow symlinks",
       "hidden": undefined,
       "icon": "🔗",
@@ -394,6 +431,7 @@ exports[`parseCommand exclusiveOnOption 1`] = `
       "allNames": [
         "--nogroup",
       ],
+      "args": undefined,
       "description": "Refrains from lumping matches in the same file together, and instead places the filename at the start of each match line",
       "hidden": undefined,
       "icon": "🔗",
@@ -406,6 +444,7 @@ exports[`parseCommand exclusiveOnOption 1`] = `
       "allNames": [
         "--noheading",
       ],
+      "args": undefined,
       "description": "Don't print filenames above matching contents",
       "hidden": undefined,
       "icon": "🔗",
@@ -418,6 +457,7 @@ exports[`parseCommand exclusiveOnOption 1`] = `
       "allNames": [
         "--nommap",
       ],
+      "args": undefined,
       "description": "Don't use of memory-mapped I/O. Defaults to true on platforms where mmap() is faster than read(). (All but macOS.)",
       "hidden": undefined,
       "icon": "🔗",
@@ -430,6 +470,7 @@ exports[`parseCommand exclusiveOnOption 1`] = `
       "allNames": [
         "--nomultiline",
       ],
+      "args": undefined,
       "description": "Don't match regexes across newlines",
       "hidden": undefined,
       "icon": "🔗",
@@ -443,6 +484,7 @@ exports[`parseCommand exclusiveOnOption 1`] = `
         "-n",
         "--norecurse",
       ],
+      "args": undefined,
       "description": "Don't recurse into directories",
       "hidden": undefined,
       "icon": "🔗",
@@ -455,6 +497,7 @@ exports[`parseCommand exclusiveOnOption 1`] = `
       "allNames": [
         "--nonumbers",
       ],
+      "args": undefined,
       "description": "Don't print line numbers",
       "hidden": undefined,
       "icon": "🔗",
@@ -475,11 +518,14 @@ exports[`parseCommand fullyTypedSuggestion 1`] = `
     "token": "-W",
     "tokenLength": 2,
   },
+  "isPathContext": false,
+  "rootCommand": "ls",
   "suggestions": [
     {
       "allNames": [
         "-W",
       ],
+      "args": undefined,
       "description": "Display whiteouts when scanning directories.  (-S) flag)",
       "hidden": undefined,
       "icon": "🔗",
@@ -492,6 +538,7 @@ exports[`parseCommand fullyTypedSuggestion 1`] = `
       "allNames": [
         "-w",
       ],
+      "args": undefined,
       "description": "Force raw printing of non-printable characters.  This is the default when output is not to a terminal",
       "hidden": undefined,
       "icon": "🔗",
@@ -532,11 +579,14 @@ exports[`parseCommand generatorUsingPartialInput 1`] = `
 exports[`parseCommand noArgsArgumentGiven 1`] = `
 {
   "activeToken": undefined,
+  "isPathContext": false,
+  "rootCommand": "gcc",
   "suggestions": [
     {
       "allNames": [
         "--analyzer-output",
       ],
+      "args": "<value>",
       "description": "Static analyzer report output format",
       "hidden": undefined,
       "icon": "🔗",
@@ -549,6 +599,7 @@ exports[`parseCommand noArgsArgumentGiven 1`] = `
       "allNames": [
         "--analyze",
       ],
+      "args": undefined,
       "description": "Run the static analyzer",
       "hidden": undefined,
       "icon": "🔗",
@@ -561,6 +612,7 @@ exports[`parseCommand noArgsArgumentGiven 1`] = `
       "allNames": [
         "-arcmt-migrate-emit-errors",
       ],
+      "args": undefined,
       "description": "Emit ARC errors even if the migrator can fix them",
       "hidden": undefined,
       "icon": "🔗",
@@ -584,11 +636,14 @@ exports[`parseCommand optionsSuggestedAfterVariadicArg 1`] = `
     "tokenLength": 2,
   },
   "argumentDescription": undefined,
+  "isPathContext": false,
+  "rootCommand": "ls",
   "suggestions": [
     {
       "allNames": [
         "package-lock.json",
       ],
+      "args": undefined,
       "description": undefined,
       "hidden": undefined,
       "icon": "📄",
@@ -601,6 +656,7 @@ exports[`parseCommand optionsSuggestedAfterVariadicArg 1`] = `
       "allNames": [
         "-L",
       ],
+      "args": undefined,
       "description": "Follow all symbolic links to final target and list the file or directory the link references rather than the link itself.  This option cancels the -P option",
       "hidden": undefined,
       "icon": "🔗",
@@ -613,6 +669,7 @@ exports[`parseCommand optionsSuggestedAfterVariadicArg 1`] = `
       "allNames": [
         "-l",
       ],
+      "args": undefined,
       "description": "(The lowercase letter \`\`ell''.)  List in long format.  (See below.)  A total sum for all the file sizes is output on a line before the long listing",
       "hidden": undefined,
       "icon": "🔗",
@@ -633,11 +690,14 @@ exports[`parseCommand partialPrefixFilter 1`] = `
     "token": "sta",
     "tokenLength": 3,
   },
+  "isPathContext": false,
+  "rootCommand": "git",
   "suggestions": [
     {
       "allNames": [
         "stage",
       ],
+      "args": "[pathspec...]",
       "description": "Add file contents to the staging area",
       "hidden": undefined,
       "icon": "📦",
@@ -650,6 +710,7 @@ exports[`parseCommand partialPrefixFilter 1`] = `
       "allNames": [
         "status",
       ],
+      "args": "[pathspec...]",
       "description": "Show the working tree status",
       "hidden": undefined,
       "icon": "📦",
@@ -662,6 +723,7 @@ exports[`parseCommand partialPrefixFilter 1`] = `
       "allNames": [
         "stash",
       ],
+      "args": undefined,
       "description": "Temporarily stores all the modified tracked files",
       "hidden": undefined,
       "icon": "📦",
@@ -684,11 +746,14 @@ exports[`parseCommand pathNestedSuggestion 1`] = `
     "token": ".github/work",
     "tokenLength": 12,
   },
+  "isPathContext": false,
+  "rootCommand": "source",
   "suggestions": [
     {
       "allNames": [
         "workflows",
       ],
+      "args": undefined,
       "description": undefined,
       "hidden": undefined,
       "icon": "📁",
@@ -709,11 +774,14 @@ exports[`parseCommand pathPrefixMatchesRankedFirst 1`] = `
     "token": "s",
     "tokenLength": 1,
   },
+  "isPathContext": false,
+  "rootCommand": "cd",
   "suggestions": [
     {
       "allNames": [
         "src/",
       ],
+      "args": undefined,
       "description": undefined,
       "hidden": undefined,
       "icon": "📁",
@@ -726,6 +794,7 @@ exports[`parseCommand pathPrefixMatchesRankedFirst 1`] = `
       "allNames": [
         "shell/",
       ],
+      "args": undefined,
       "description": undefined,
       "hidden": undefined,
       "icon": "📁",
@@ -738,6 +807,7 @@ exports[`parseCommand pathPrefixMatchesRankedFirst 1`] = `
       "allNames": [
         "scripts/",
       ],
+      "args": undefined,
       "description": undefined,
       "hidden": undefined,
       "icon": "📁",
@@ -750,6 +820,7 @@ exports[`parseCommand pathPrefixMatchesRankedFirst 1`] = `
       "allNames": [
         "docs/",
       ],
+      "args": undefined,
       "description": undefined,
       "hidden": undefined,
       "icon": "📁",
@@ -762,6 +833,7 @@ exports[`parseCommand pathPrefixMatchesRankedFirst 1`] = `
       "allNames": [
         ".husky/",
       ],
+      "args": undefined,
       "description": undefined,
       "hidden": undefined,
       "icon": "📁",
@@ -774,6 +846,7 @@ exports[`parseCommand pathPrefixMatchesRankedFirst 1`] = `
       "allNames": [
         "node_modules/",
       ],
+      "args": undefined,
       "description": undefined,
       "hidden": undefined,
       "icon": "📁",
@@ -794,11 +867,14 @@ exports[`parseCommand pathSuggestion 1`] = `
     "token": "she",
     "tokenLength": 3,
   },
+  "isPathContext": false,
+  "rootCommand": "source",
   "suggestions": [
     {
       "allNames": [
         "shell",
       ],
+      "args": undefined,
       "description": undefined,
       "hidden": undefined,
       "icon": "📁",
@@ -821,11 +897,14 @@ exports[`parseCommand pathWithFileFilteredSuggestion 1`] = `
     "token": "shell/shellIntegration.",
     "tokenLength": 23,
   },
+  "isPathContext": false,
+  "rootCommand": "source",
   "suggestions": [
     {
       "allNames": [
         "shellIntegration.nu",
       ],
+      "args": undefined,
       "description": undefined,
       "hidden": undefined,
       "icon": "📄",
@@ -848,11 +927,14 @@ exports[`parseCommand pathWithFileSuggestion 1`] = `
     "token": "shell/",
     "tokenLength": 6,
   },
+  "isPathContext": true,
+  "rootCommand": "source",
   "suggestions": [
     {
       "allNames": [
         "bash-preexec.sh",
       ],
+      "args": undefined,
       "description": undefined,
       "hidden": undefined,
       "icon": "📄",
@@ -873,11 +955,14 @@ exports[`parseCommand provideFileSuggestion 1`] = `
     "token": "READ",
     "tokenLength": 4,
   },
+  "isPathContext": false,
+  "rootCommand": "ls",
   "suggestions": [
     {
       "allNames": [
         "README.md",
       ],
+      "args": undefined,
       "description": undefined,
       "hidden": undefined,
       "icon": "📄",
@@ -898,11 +983,14 @@ exports[`parseCommand provideFolderSuggestion 1`] = `
     "token": "sr",
     "tokenLength": 2,
   },
+  "isPathContext": false,
+  "rootCommand": "ls",
   "suggestions": [
     {
       "allNames": [
         "src",
       ],
+      "args": undefined,
       "description": undefined,
       "hidden": undefined,
       "icon": "📁",
@@ -919,6 +1007,8 @@ exports[`parseCommand providedArgDescription 1`] = `
 {
   "activeToken": undefined,
   "argumentDescription": "actor",
+  "isPathContext": false,
+  "rootCommand": "act",
   "suggestions": [],
 }
 `;
@@ -927,11 +1017,14 @@ exports[`parseCommand providedSuggestion 1`] = `
 {
   "activeToken": undefined,
   "argumentDescription": "Shell to generate completions for",
+  "isPathContext": false,
+  "rootCommand": "bw",
   "suggestions": [
     {
       "allNames": [
         "zsh",
       ],
+      "args": undefined,
       "description": undefined,
       "hidden": undefined,
       "icon": "📀",

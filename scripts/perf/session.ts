@@ -49,7 +49,7 @@ const result = await new Promise<Record<string, unknown>>((resolve, reject) => {
       stageStartedAt = performance.now();
       buffer = "";
       terminal.write("git ");
-    } else if (stage === "suggestion" && buffer.includes("┌") && buffer.includes("┐")) {
+    } else if (stage === "suggestion" && (buffer.includes("┌") || buffer.includes("╭"))) {
       suggestionMilliseconds = performance.now() - stageStartedAt;
         stage = "clear";
       buffer = "";
