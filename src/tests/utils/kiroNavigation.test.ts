@@ -113,3 +113,22 @@ test("enter on a fully typed word runs the command instead of re-inserting it", 
   expect(manager.update(press("return"))).toBe(false);
   expect(writes).toEqual([]);
 });
+
+test("enter on a path that is already typed in full runs the command", async () => {
+  const { manager, writes } = setup({
+    suggestions: [
+      {
+        name: "shellIntegration-rc.zsh",
+        allNames: ["shellIntegration-rc.zsh"],
+        icon: "📄",
+        priority: 55,
+        type: "file",
+        insertValue: "shell/shellIntegration-rc.zsh",
+      },
+    ],
+    activeToken: { token: "shell/shellIntegration-rc.zsh", tokenLength: 29, complete: false, isOption: false, isPath: true },
+  });
+  await manager.exec();
+  expect(manager.update(press("return"))).toBe(false);
+  expect(writes).toEqual([]);
+});

@@ -388,6 +388,8 @@ export class SuggestionManager {
     if (suggestion == null || suggestion.execute) return false;
     const action = calculateReplacement(this.#suggestBlob?.activeToken, suggestion);
     if (action == null) return false;
+    const token = this.#suggestBlob?.activeToken;
+    if (token != null && action.backspaceCount === token.tokenLength && action.insertText.trimEnd() === token.token) return false; // already typed in full, so Enter runs it
     this.#term.write(applyReplacement(action));
     return true;
   }
