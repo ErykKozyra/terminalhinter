@@ -65,7 +65,7 @@ const getIcon = (icon: string | undefined, suggestionType: Fig.SuggestionType | 
   if (icon && /[^\u0000-\u00ff]/.test(icon)) {
     return icon;
   }
-  if (icon && icon.startsWith("fig://icon?type=") && getConfig().useNerdFont) {
+  if (icon && icon.startsWith("fig://icon?type=") && (getConfig().useNerdFont || getConfig().iconStyle === "nerd")) {
     const iconType = icon.split("fig://icon?type=")[1].toLowerCase();
     const iconUtf = NerdFontIcons[iconType as keyof typeof NerdFontIcons];
     if (iconUtf != null && iconUtf !== "") {

@@ -20,6 +20,7 @@ type Binding = {
 };
 
 type BoxBorderStyle = "square" | "rounded";
+type IconStyle = "plain" | "badge" | "nerd";
 
 type Config = {
   bindings: {
@@ -38,6 +39,7 @@ type Config = {
   boxBorderStyle: BoxBorderStyle;
   borderColor: string;
   enterAcceptsSuggestion: boolean;
+  iconStyle: IconStyle;
 };
 
 const bindingSchema: JSONSchemaType<Binding> = {
@@ -86,7 +88,7 @@ const configSchema = {
     useNerdFont: {
       type: "boolean",
       nullable: true,
-      default: true,
+      default: false,
     },
     maxSuggestions: {
       type: "number",
@@ -116,6 +118,12 @@ const configSchema = {
       nullable: true,
       default: true,
     },
+    iconStyle: {
+      type: "string",
+      nullable: true,
+      enum: ["plain", "badge", "nerd"],
+      default: "plain",
+    },
   },
   additionalProperties: false,
 };
@@ -136,11 +144,12 @@ let globalConfig: Config = {
     path: [],
   },
   useAliases: false,
-  useNerdFont: true,
+  useNerdFont: false,
   activeSuggestionBackgroundColor: "#2F5FD0",
   boxBorderStyle: "rounded",
   borderColor: "#4B5263",
   enterAcceptsSuggestion: true,
+  iconStyle: "plain",
 };
 
 export const getConfig = (): Config => globalConfig;
@@ -169,12 +178,13 @@ export const loadConfig = async (program: Command) => {
           path: [...(config?.specs?.path ?? [])],
         },
         useAliases: config.useAliases ?? false,
-        useNerdFont: config?.useNerdFont ?? true,
+        useNerdFont: config?.useNerdFont ?? false,
         maxSuggestions: config?.maxSuggestions ?? 6,
         activeSuggestionBackgroundColor: config?.activeSuggestionBackgroundColor ?? "#2F5FD0",
         boxBorderStyle: config?.boxBorderStyle ?? "rounded",
         borderColor: config?.borderColor ?? "#4B5263",
         enterAcceptsSuggestion: config?.enterAcceptsSuggestion ?? true,
+        iconStyle: config?.iconStyle ?? (config?.useNerdFont ? "nerd" : "plain"),
       };
     }
   }

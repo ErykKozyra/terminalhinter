@@ -18,25 +18,18 @@ Fork [microsoft/inshellisense](https://github.com/microsoft/inshellisense) z dro
 
 **Wygląd**
 - Jedna ramka z zaokrąglonymi rogami, opis zaznaczonej pozycji w stopce pod listą, licznik pozycji przy dłuższych listach.
-- Pełny niebieski pasek zaznaczenia, płaskie ikonki: niebieski folder, plik, gwiazdka przy aktualnym branchu, ikonka gita przy branchach, flaga przy opcjach, zaokrąglona fioletowa pigułka `$` przy subkomendach i czerwona `>` przy `↪`.
+- Pełny niebieski pasek zaznaczenia i kolorowe ikonki, które działają w każdym terminalu bez dodatkowych fontów (szczegóły niżej).
 - Podpowiedzi argumentów obok nazwy, np. `checkout [branch, file, tag or commit]`, `cherry-pick <commit...>`.
 - Wpisany fragment podświetlony na żółto, lista przewija się płynnie zamiast skakać stronami.
 - Ramka ustawia się pod słowem, które uzupełniasz.
 
-## Font z ikonkami
+## Ikonki
 
-Ikonki (foldery, pliki, pigułki `$` i `>`, branche) to glify z fontu Nerd Font, dzięki temu wyglądają płasko i ostro jak w Kiro. Terminal musi mieć do nich dostęp:
+Domyślnie ikonki to zwykłe kolorowe znaki, które ma każdy font terminala, więc nie trzeba nic instalować ani ustawiać: niebieski kwadrat przy folderach, `≡` przy plikach, fioletowy `$` przy subkomendach, pomarańczowy `-` przy opcjach, zielony `#` przy wartościach (branche, skrypty), żółta `*` przy aktualnym branchu i czerwony `>` przy `↪`. Na zaznaczonym wierszu ikonka robi się biała.
 
-```bash
-brew install --cask font-symbols-only-nerd-font
-```
-
-- **iTerm2**: Settings → Profiles → Text → zaznacz "Use a different font for non-ASCII text" i wybierz "Symbols Nerd Font Mono". Twój główny font zostaje bez zmian.
-- **Ghostty, WezTerm, Kitty**: ikonki są wbudowane, nic nie trzeba.
-- **Terminal.app (systemowy)**: nie ma fontu zastępczego, trzeba ustawić cały font na wersję Nerd Font, np. `brew install --cask font-jetbrains-mono-nerd-font` i wybrać "JetBrainsMono Nerd Font Mono".
-- **Terminal w VS Code / WebStorm**: dopisz `Symbols Nerd Font Mono` jako drugi font, np. `"terminal.integrated.fontFamily": "Menlo, 'Symbols Nerd Font Mono'"`.
-
-Jeśli zamiast ikonek widzisz puste prostokąty, terminal nie widzi fontu. Bez Nerd Fonta ustaw `useNerdFont = false`, wtedy będą proste kolorowe znaki.
+Dwa inne style do wyboru w `~/.inshellisenserc`:
+- `iconStyle = "badge"`: znak na kolorowym kwadraciku. Uwaga, w kolejnych wierszach kwadraciki zlewają się w pionowy pasek.
+- `iconStyle = "nerd"`: płaskie ikonki i zaokrąglone pigułki z fontu Nerd Font. Wymaga ustawienia takiego fontu w terminalu.
 
 ## Instalacja (macOS, npm)
 
@@ -64,7 +57,7 @@ activeSuggestionBackgroundColor = "#2F5FD0"
 borderColor = "#4B5263"
 boxBorderStyle = "rounded"                # albo "square"
 enterAcceptsSuggestion = true             # false: Enter zawsze wykonuje komendę, wstawianie tylko Tabem
-useNerdFont = true                        # ikonki z Nerd Fonta (domyślnie), false = proste kolorowe znaki
+iconStyle = "plain"                       # "plain" (domyślnie), "badge" albo "nerd"
 ```
 
 ## Szybszy start nowej karty (opcjonalnie)

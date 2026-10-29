@@ -31,12 +31,12 @@ const NF = {
 };
 const ICON_COLORS = {
   execute: "#E5484D",
-  folder: "#5AA9F7",
-  file: "#C9CED8",
+  folder: "#4C9AFF",
+  file: "#8B95A7",
   subcommand: "#8E5CF5",
-  option: "#F0A13C",
-  star: "#F5C451",
-  value: "#4FBF8A",
+  option: "#E8862E",
+  star: "#D9A21B",
+  value: "#2F9E6E",
 };
 // border top + items + separator + footer + border bottom, plus one line for an unhandled newline at the end of the command
 export const getMaxLines = () => getMaxSuggestions() + 5;
@@ -190,35 +190,38 @@ export class SuggestionManager {
     return lastSep === -1 ? text : text.substring(lastSep + 1);
   }
 
-  // Every icon takes the same 4 cells so names line up: a rounded pill (cap, glyph, cap) or a centered glyph.
-  private _icon(suggestion: Suggestion): string {
-    const nerd = getConfig().useNerdFont;
-    const pill = (color: string, glyph: string) =>
-      nerd
-        ? chalk.hex(color)(NF.capLeft) + chalk.bgHex(color).hex("#FFFFFF").bold(glyph) + chalk.hex(color)(NF.capRight) + " "
-        : " " + chalk.hex(color).bold(glyph) + "  ";
-    const glyph = (color: string, nerdGlyph: string, plainGlyph: string) => (nerd ? " " + chalk.hex(color)(nerdGlyph) + "  " : padIcon(plainGlyph, color));
+  // Every icon takes the same 4 cells so names line up. The default "plain" style is a colored mark with no
+  // background (every terminal font has these and rows keep their gaps); "badge" puts the mark on a square built
+  // from half blocks; "nerd" uses Nerd Font glyphs and rounded pills for terminals that have that font.
+  private _icon(suggestion: Suggestion, selected: boolean): string {
+    const style = getConfig().iconStyle;
+    // on the selection bar a colored mark would fight the bar color, so plain marks turn white there
+    const tint = (color: string) => (selected && style === "plain" ? "#FFFFFF" : color);
+    const badge = (color: string, mark: string) => {
+      const inner = chalk.bgHex(color).hex("#FFFFFF").bold(mark);
+      if (style === "nerd") return chalk.hex(color)(NF.capLeft) + inner + chalk.hex(color)(NF.capRight) + " ";
+      if (style === "badge") return chalk.hex(color)("▐") + inner + chalk.hex(color)("▌") + " ";
+      return " " + chalk.hex(tint(color)).bold(mark) + "  ";
+    };
+    const icon = (color: string, nerdGlyph: string, mark: string) => (style === "nerd" ? " " + chalk.hex(color)(nerdGlyph) + "  " : badge(color, mark));
 
-    if (suggestion.execute) return pill(ICON_COLORS.execute, ">");
-    if (suggestion.type === "folder") return glyph(ICON_COLORS.folder, NF.folder, "📁");
-    if (suggestion.type === "file") return glyph(ICON_COLORS.file, NF.file, "📄");
+    if (suggestion.execute) return badge(ICON_COLORS.execute, ">");
+    if (suggestion.type === "folder")
+      return style === "plain" ? " " + chalk.hex(tint(ICON_COLORS.folder))("■") + "  " : icon(ICON_COLORS.folder, NF.folder, "/");
+    if (suggestion.type === "file") return icon(ICON_COLORS.file, NF.file, "≡");
 
-    const icon = suggestion.icon.replace(/️/g, "");
-    switch (icon) {
+    switch (suggestion.icon.replace(/️/g, "")) {
       case "📦":
-        return pill(ICON_COLORS.subcommand, "$");
+        return badge(ICON_COLORS.subcommand, "$");
       case "🔗":
-        return glyph(ICON_COLORS.option, NF.flag, "-");
+        return icon(ICON_COLORS.option, NF.flag, "-");
       case "⭐":
       case "🔥":
-        return glyph(ICON_COLORS.star, NF.star, "*");
-      case "💲":
-      case "📀":
-      case "🏝":
-        return glyph(ICON_COLORS.value, NF.tag, "#");
+        return icon(ICON_COLORS.star, NF.star, "*");
     }
-    // an icon the spec chose itself (a nerd font glyph or an emoji)
-    return wcswidth(icon) <= 1 ? " " + chalk.hex(ICON_COLORS.file)(icon) + "  " : padIcon(icon);
+    // a nerd font glyph the spec chose itself (only produced in the nerd style)
+    if (style === "nerd" && wcswidth(suggestion.icon) <= 1) return " " + chalk.hex(ICON_COLORS.file)(suggestion.icon) + "  ";
+    return icon(ICON_COLORS.value, NF.tag, "#");
   }
 
   private _displayName(suggestion: Suggestion): string {
@@ -251,7 +254,7 @@ export class SuggestionManager {
         : shownName;
     const styledArgs = args ? " " + chalk.hex(selected ? "#C7D2FE" : "#7F8796")(args) : "";
 
-    const row = " " + this._icon(suggestion) + styledName + styledArgs + " ".repeat(Math.max(textWidth - used, 0)) + " ";
+    const row = " " + this._icon(suggestion, selected) + styledName + styledArgs + " ".repeat(Math.max(textWidth - used, 0)) + " ";
     return selected ? chalk.bgHex(getConfig().activeSuggestionBackgroundColor)(row) : row;
   }
 
@@ -389,12 +392,6 @@ export class SuggestionManager {
     return true;
   }
 }
-
-const padIcon = (icon: string, color?: string): string => {
-  const width = wcswidth(icon);
-  const styled = color != null && width <= 1 ? chalk.hex(color).bold(icon) : icon;
-  return width <= 1 ? " " + styled + " ".repeat(Math.max(iconWidth - 1 - width, 1)) : styled + " ".repeat(Math.max(iconWidth - width, 1));
-};
 
 // Cuts text to a display width (wide characters count as two cells) and adds an ellipsis when something was cut.
 const fitText = (text: string, width: number): [string, boolean] => {
