@@ -8,6 +8,7 @@ import which from "which";
 import fs from "node:fs";
 import os from "node:os";
 import fsAsync from "node:fs/promises";
+import sea from "node:sea";
 import util from "node:util";
 import { shellResourcesPath, initResourcesPath, usesLegacyResources, xdgConfigPath } from "./constants.js";
 import childProcess from "node:child_process";
@@ -131,12 +132,38 @@ const getProfilePath = async (shell: Shell): Promise<string | undefined> => {
   }
 };
 
+// Terminals name their tab after the process in front (VS Code shows `${process}`), and on macOS that name is the
+// executable's file name. A hard link named after the shell gives the same binary the name "zsh" or "bash", so the
+// tab reads like a plain shell instead of "is". Same inode: no extra disk space.
+const launcherShells = [Shell.Zsh, Shell.Bash];
+const createShellLaunchers = (binDirectory: string): Map<Shell, string> => {
+  const launchers = new Map<Shell, string>();
+  if (!sea.isSea()) return launchers; // running from source, the executable is node itself
+  try {
+    fs.mkdirSync(binDirectory, { recursive: true });
+  } catch {
+    return launchers;
+  }
+  for (const shell of launcherShells) {
+    const launcher = path.join(binDirectory, shell);
+    try {
+      fs.rmSync(launcher, { force: true });
+      fs.linkSync(process.execPath, launcher);
+      launchers.set(shell, launcher);
+    } catch (e) {
+      log.debug({ msg: "could not create shell-named launcher, using is", shell, e: (e as Error).message });
+    }
+  }
+  return launchers;
+};
+
 export const createShellConfigs = async (initResourcesDirectory = initResourcesPath) => {
+  const launchers = createShellLaunchers(path.join(path.dirname(initResourcesDirectory), "bin"));
   for (const shell of supportedShells) {
     const shellConfigName = getShellConfigName(shell);
     if (shellConfigName == null) continue;
     await fsAsync.mkdir(path.join(initResourcesDirectory, shell), { recursive: true });
-    await fsAsync.writeFile(path.join(initResourcesDirectory, shell, shellConfigName), getShellConfig(shell));
+    await fsAsync.writeFile(path.join(initResourcesDirectory, shell, shellConfigName), getShellConfig(shell, launchers.get(shell)));
   }
 };
 
@@ -324,26 +351,31 @@ export const getShellSourceCommand = (shell: Shell, initFilePath?: string): stri
   return "";
 };
 
-export const getShellConfig = (shell: Shell): string => {
+export const getShellConfig = (shell: Shell, launcher?: string): string => {
+  const launcherPath = launcher != null ? quotePosixPath(launcher) : "is";
   switch (shell) {
     case Shell.Zsh:
       // command -v guard: if the binary is gone (e.g. nvm switched the default Node), skip instead of exiting the shell
       return `if [[ -z "\${ISTERM}" && $- = *i* && \${+ZSH_EXECUTION_STRING} -eq 0 && -z "\${VSCODE_RESOLVING_ENVIRONMENT}" ]] && command -v is >/dev/null 2>&1; then
+  __is_launcher=${launcherPath}
+  [[ -x "$__is_launcher" ]] || __is_launcher=is
   if [[ -o login ]]; then
-    is -s zsh --login ; exit
+    "$__is_launcher" -s zsh --login ; exit
   else
-    is -s zsh ; exit
+    "$__is_launcher" -s zsh ; exit
   fi
 fi`;
     case Shell.Bash:
       return `if [[ -z "\${ISTERM}" && $- = *i* && $- != *c* && -z "\${VSCODE_RESOLVING_ENVIRONMENT}" ]] && command -v is >/dev/null 2>&1; then
+  __is_launcher=${launcherPath}
+  [[ -x "$__is_launcher" ]] || __is_launcher=is
   shopt -q login_shell
   login_shell=$?
   if [ $login_shell -eq 0 ]; then
-    is -s bash --login ; exit
+    "$__is_launcher" -s bash --login ; exit
   else
-    is -s bash ; exit
-  fi 
+    "$__is_launcher" -s bash ; exit
+  fi
 fi`;
     case Shell.Powershell:
     case Shell.Pwsh:

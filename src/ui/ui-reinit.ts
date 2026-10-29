@@ -6,6 +6,7 @@ import { unpackResources } from "../utils/node.js";
 import { createShellConfigs } from "../utils/shell.js";
 import { allResourcesPath, getResourcePaths, preferredResourcesPath } from "../utils/constants.js";
 import fs from "node:fs";
+import path from "node:path";
 
 const removeResources = (resourcesPath: string) => {
   const resources = getResourcePaths(resourcesPath);
@@ -15,6 +16,7 @@ const removeResources = (resourcesPath: string) => {
   fs.rmSync(resources.init, { recursive: true, force: true });
   fs.rmSync(resources.spec, { recursive: true, force: true });
   fs.rmSync(resources.version, { force: true });
+  fs.rmSync(path.join(resourcesPath, "bin"), { recursive: true, force: true });
 };
 
 export const render = async () => {
