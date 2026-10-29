@@ -28,6 +28,7 @@ const NF = {
   flag: "\uf024",
   star: "\uf005",
   tag: "\uf02b",
+  alias: "\uf0c1",
 };
 const ICON_COLORS = {
   execute: "#E5484D",
@@ -37,6 +38,7 @@ const ICON_COLORS = {
   option: "#E8862E",
   star: "#D9A21B",
   value: "#2F9E6E",
+  alias: "#22B8CF",
 };
 // border top + items + separator + footer + border bottom, plus one line for an unhandled newline at the end of the command
 export const getMaxLines = () => getMaxSuggestions() + 5;
@@ -216,8 +218,10 @@ export class SuggestionManager {
       case "🔗":
         return icon(ICON_COLORS.option, NF.flag, "-");
       case "⭐":
-      case "🔥":
         return icon(ICON_COLORS.star, NF.star, "*");
+      case "🔥":
+        // aliases from your shell config
+        return icon(ICON_COLORS.alias, NF.alias, "=");
     }
     // a nerd font glyph the spec chose itself (only produced in the nerd style)
     if (style === "nerd" && wcswidth(suggestion.icon) <= 1) return " " + chalk.hex(ICON_COLORS.file)(suggestion.icon) + "  ";

@@ -13,7 +13,7 @@ import { getArgDrivenRecommendation, getSubcommandDrivenRecommendation, Suggesti
 import { Suggestion, SuggestionBlob } from "./model.js";
 import { buildExecuteShellCommand, resolveCwd } from "./utils.js";
 import { Shell } from "../utils/shell.js";
-import { aliasExpand, getAliasNames } from "./alias.js";
+import { aliasExpand, getAliasNames, getAliasCommand } from "./alias.js";
 import { getConfig } from "../utils/config.js";
 import log from "../utils/log.js";
 import { specResourcesPath } from "../utils/constants.js";
@@ -445,6 +445,7 @@ const runCommand = async (token: CommandToken): Promise<SuggestionBlob | undefin
         (alias) =>
           ({
             name: alias,
+            description: getAliasCommand(alias),
             type: "shortcut",
             allNames: [alias],
             icon: SuggestionIcons.Shortcut,

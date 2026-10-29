@@ -83,7 +83,7 @@ const configSchema = {
     useAliases: {
       type: "boolean",
       nullable: true,
-      default: false,
+      default: true,
     },
     useNerdFont: {
       type: "boolean",
@@ -143,7 +143,7 @@ let globalConfig: Config = {
   specs: {
     path: [],
   },
-  useAliases: false,
+  useAliases: true,
   useNerdFont: false,
   activeSuggestionBackgroundColor: "#2F5FD0",
   boxBorderStyle: "rounded",
@@ -177,7 +177,7 @@ export const loadConfig = async (program: Command) => {
         specs: {
           path: [...(config?.specs?.path ?? [])],
         },
-        useAliases: config.useAliases ?? false,
+        useAliases: config.useAliases ?? true,
         useNerdFont: config?.useNerdFont ?? false,
         maxSuggestions: config?.maxSuggestions ?? 6,
         activeSuggestionBackgroundColor: config?.activeSuggestionBackgroundColor ?? "#2F5FD0",
