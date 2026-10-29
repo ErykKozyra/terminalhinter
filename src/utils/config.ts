@@ -153,7 +153,8 @@ let globalConfig: Config = {
 };
 
 export const getConfig = (): Config => globalConfig;
-export const loadConfig = async (program: Command) => {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export const loadConfig = async (_program?: Command) => {
   for (const configPath of configPaths) {
     if (fs.existsSync(configPath)) {
       let config: Config;
@@ -161,11 +162,14 @@ export const loadConfig = async (program: Command) => {
         config = toml.parse((await fsAsync.readFile(configPath)).toString());
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (e: any) {
-        program.error(`${configPath} is invalid toml. Parsing error on line ${e.line}, column ${e.column}: ${e.message}`);
+        // a broken config must never take the terminal down with it: warn and keep the defaults
+        process.stderr.write(`inshellisense: ${configPath} is invalid toml (line ${e.line}, column ${e.column}: ${e.message}), using defaults\n`);
+        continue;
       }
       const isValid = ajv.validate(configSchema, config);
       if (!isValid) {
-        program.error(`${configPath} is invalid: ${ajv.errorsText()}`);
+        process.stderr.write(`inshellisense: ${configPath} is invalid (${ajv.errorsText()}), using defaults\n`);
+        continue;
       }
       globalConfig = {
         bindings: {
