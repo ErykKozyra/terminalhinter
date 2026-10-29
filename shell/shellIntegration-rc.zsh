@@ -47,11 +47,23 @@ __is_update_cwd() {
 	builtin printf '\e]6973;CWD;%s\a' "$(__is_escape_value "${PWD}")"
 }
 
+# Markers inside PS1 are printed every time zsh draws the prompt, including redraws from `zle reset-prompt`
+# (oh-my-zsh async git info, themes that refresh the prompt). Without them the prompt end is only recorded
+# once at zle-line-init, before the async part appears, and the late text is mistaken for the typed command.
+__is_ps1_start=$'%{\e]6973;PS\a%}'
+__is_ps1_end=$'%{\e]6973;PE\a%}'
+
+__is_wrap_prompt() {
+	[[ $PS1 == *$'\e]6973;PE'* ]] && return
+	PS1="${__is_ps1_start}${PS1}${__is_ps1_end}"
+}
+
 __is_precmd() {
 	__is_update_cwd
 	if [[ $ISTERM_TESTING == "1" ]]; then
 		PS1="%{$(__is_prompt_start)%}> %{$(__is_prompt_end)%}"
 	fi
+	__is_wrap_prompt
 }
 
 if (( ${+widgets[zle-line-init]} )); then
