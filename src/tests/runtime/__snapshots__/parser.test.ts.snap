@@ -1,0 +1,1151 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`multi-shell whitespace escaping [bash] escaped space: cmd dir\\ name 1`] = `
+[
+  {
+    "complete": true,
+    "isOption": false,
+    "token": "cmd",
+    "tokenLength": 3,
+  },
+  {
+    "complete": false,
+    "isOption": false,
+    "token": "dir name",
+    "tokenLength": 9,
+  },
+]
+`;
+
+exports[`multi-shell whitespace escaping [cmd] escaped space: cmd dir^ name 1`] = `
+[
+  {
+    "complete": true,
+    "isOption": false,
+    "token": "cmd",
+    "tokenLength": 3,
+  },
+  {
+    "complete": false,
+    "isOption": false,
+    "token": "dir name",
+    "tokenLength": 9,
+  },
+]
+`;
+
+exports[`multi-shell whitespace escaping [fish] escaped space: cmd dir\\ name 1`] = `
+[
+  {
+    "complete": true,
+    "isOption": false,
+    "token": "cmd",
+    "tokenLength": 3,
+  },
+  {
+    "complete": false,
+    "isOption": false,
+    "token": "dir name",
+    "tokenLength": 9,
+  },
+]
+`;
+
+exports[`multi-shell whitespace escaping [nu] escaped space: cmd dir\\ name 1`] = `
+[
+  {
+    "complete": true,
+    "isOption": false,
+    "token": "cmd",
+    "tokenLength": 3,
+  },
+  {
+    "complete": false,
+    "isOption": false,
+    "token": "dir name",
+    "tokenLength": 9,
+  },
+]
+`;
+
+exports[`multi-shell whitespace escaping [powershell] escaped space: cmd dir\` name 1`] = `
+[
+  {
+    "complete": true,
+    "isOption": false,
+    "token": "cmd",
+    "tokenLength": 3,
+  },
+  {
+    "complete": false,
+    "isOption": false,
+    "token": "dir name",
+    "tokenLength": 9,
+  },
+]
+`;
+
+exports[`multi-shell whitespace escaping [pwsh] escaped space: cmd dir\` name 1`] = `
+[
+  {
+    "complete": true,
+    "isOption": false,
+    "token": "cmd",
+    "tokenLength": 3,
+  },
+  {
+    "complete": false,
+    "isOption": false,
+    "token": "dir name",
+    "tokenLength": 9,
+  },
+]
+`;
+
+exports[`multi-shell whitespace escaping [xonsh] escaped space: cmd dir\\ name 1`] = `
+[
+  {
+    "complete": true,
+    "isOption": false,
+    "token": "cmd",
+    "tokenLength": 3,
+  },
+  {
+    "complete": false,
+    "isOption": false,
+    "token": "dir name",
+    "tokenLength": 9,
+  },
+]
+`;
+
+exports[`multi-shell whitespace escaping [zsh] escaped space: cmd dir\\ name 1`] = `
+[
+  {
+    "complete": true,
+    "isOption": false,
+    "token": "cmd",
+    "tokenLength": 3,
+  },
+  {
+    "complete": false,
+    "isOption": false,
+    "token": "dir name",
+    "tokenLength": 9,
+  },
+]
+`;
+
+exports[`parseCommand [bash]     1`] = `[]`;
+
+exports[`parseCommand [bash]  1`] = `[]`;
+
+exports[`parseCommand [bash] \`cmd1\` 1`] = `
+[
+  {
+    "complete": false,
+    "isOption": false,
+    "isQuoted": true,
+    "token": "cmd1",
+    "tokenLength": 6,
+  },
+]
+`;
+
+exports[`parseCommand [bash] cmd	arg 1`] = `
+[
+  {
+    "complete": true,
+    "isOption": false,
+    "token": "cmd",
+    "tokenLength": 3,
+  },
+  {
+    "complete": false,
+    "isOption": false,
+    "token": "arg",
+    "tokenLength": 3,
+  },
+]
+`;
+
+exports[`parseCommand [bash] cmd    1`] = `
+[
+  {
+    "complete": true,
+    "isOption": false,
+    "token": "cmd",
+    "tokenLength": 3,
+  },
+]
+`;
+
+exports[`parseCommand [bash] cmd  1`] = `
+[
+  {
+    "complete": true,
+    "isOption": false,
+    "token": "cmd",
+    "tokenLength": 3,
+  },
+]
+`;
+
+exports[`parseCommand [bash] cmd ""  1`] = `
+[
+  {
+    "complete": true,
+    "isOption": false,
+    "token": "cmd",
+    "tokenLength": 3,
+  },
+  {
+    "complete": true,
+    "isOption": false,
+    "isQuoted": true,
+    "token": "",
+    "tokenLength": 2,
+  },
+]
+`;
+
+exports[`parseCommand [bash] cmd "a"b "c"d 1`] = `
+[
+  {
+    "complete": true,
+    "isOption": false,
+    "token": "cmd",
+    "tokenLength": 3,
+  },
+  {
+    "complete": true,
+    "isOption": false,
+    "isQuoteContinued": true,
+    "isQuoted": true,
+    "token": "ab",
+    "tokenLength": 4,
+  },
+  {
+    "complete": false,
+    "isOption": false,
+    "isQuoteContinued": true,
+    "isQuoted": true,
+    "token": "cd",
+    "tokenLength": 4,
+  },
+]
+`;
+
+exports[`parseCommand [bash] cmd "incomplete 1`] = `
+[
+  {
+    "complete": true,
+    "isOption": false,
+    "token": "cmd",
+    "tokenLength": 3,
+  },
+  {
+    "complete": false,
+    "isOption": false,
+    "isQuoted": true,
+    "token": "incomplete",
+    "tokenLength": 11,
+  },
+]
+`;
+
+exports[`parseCommand [bash] cmd "it's"  1`] = `
+[
+  {
+    "complete": true,
+    "isOption": false,
+    "token": "cmd",
+    "tokenLength": 3,
+  },
+  {
+    "complete": true,
+    "isOption": false,
+    "isQuoted": true,
+    "token": "it's",
+    "tokenLength": 6,
+  },
+]
+`;
+
+exports[`parseCommand [bash] cmd "value"  1`] = `
+[
+  {
+    "complete": true,
+    "isOption": false,
+    "token": "cmd",
+    "tokenLength": 3,
+  },
+  {
+    "complete": true,
+    "isOption": false,
+    "isQuoted": true,
+    "token": "value",
+    "tokenLength": 7,
+  },
+]
+`;
+
+exports[`parseCommand [bash] cmd "value'  1`] = `
+[
+  {
+    "complete": true,
+    "isOption": false,
+    "token": "cmd",
+    "tokenLength": 3,
+  },
+  {
+    "complete": false,
+    "isOption": false,
+    "isQuoted": true,
+    "token": "value' ",
+    "tokenLength": 8,
+  },
+]
+`;
+
+exports[`parseCommand [bash] cmd "value'\\"\\""  1`] = `
+[
+  {
+    "complete": true,
+    "isOption": false,
+    "token": "cmd",
+    "tokenLength": 3,
+  },
+  {
+    "complete": true,
+    "isOption": false,
+    "isQuoted": true,
+    "token": "value'\\"\\"",
+    "tokenLength": 12,
+  },
+]
+`;
+
+exports[`parseCommand [bash] cmd ''  1`] = `
+[
+  {
+    "complete": true,
+    "isOption": false,
+    "token": "cmd",
+    "tokenLength": 3,
+  },
+  {
+    "complete": true,
+    "isOption": false,
+    "isQuoted": true,
+    "token": "",
+    "tokenLength": 2,
+  },
+]
+`;
+
+exports[`parseCommand [bash] cmd 'hello' "world"  1`] = `
+[
+  {
+    "complete": true,
+    "isOption": false,
+    "token": "cmd",
+    "tokenLength": 3,
+  },
+  {
+    "complete": true,
+    "isOption": false,
+    "isQuoted": true,
+    "token": "hello",
+    "tokenLength": 7,
+  },
+  {
+    "complete": true,
+    "isOption": false,
+    "isQuoted": true,
+    "token": "world",
+    "tokenLength": 7,
+  },
+]
+`;
+
+exports[`parseCommand [bash] cmd 'incomplete 1`] = `
+[
+  {
+    "complete": true,
+    "isOption": false,
+    "token": "cmd",
+    "tokenLength": 3,
+  },
+  {
+    "complete": false,
+    "isOption": false,
+    "isQuoted": true,
+    "token": "incomplete",
+    "tokenLength": 11,
+  },
+]
+`;
+
+exports[`parseCommand [bash] cmd 'value'  1`] = `
+[
+  {
+    "complete": true,
+    "isOption": false,
+    "token": "cmd",
+    "tokenLength": 3,
+  },
+  {
+    "complete": true,
+    "isOption": false,
+    "isQuoted": true,
+    "token": "value",
+    "tokenLength": 7,
+  },
+]
+`;
+
+exports[`parseCommand [bash] cmd --flag value 1`] = `
+[
+  {
+    "complete": true,
+    "isOption": false,
+    "token": "cmd",
+    "tokenLength": 3,
+  },
+  {
+    "complete": true,
+    "isOption": true,
+    "token": "--flag",
+    "tokenLength": 6,
+  },
+  {
+    "complete": false,
+    "isOption": false,
+    "token": "value",
+    "tokenLength": 5,
+  },
+]
+`;
+
+exports[`parseCommand [bash] cmd --flag= 1`] = `
+[
+  {
+    "complete": true,
+    "isOption": false,
+    "token": "cmd",
+    "tokenLength": 3,
+  },
+  {
+    "complete": true,
+    "isOption": true,
+    "token": "--flag",
+    "tokenLength": 6,
+  },
+]
+`;
+
+exports[`parseCommand [bash] cmd --flag="" 1`] = `
+[
+  {
+    "complete": true,
+    "isOption": false,
+    "token": "cmd",
+    "tokenLength": 3,
+  },
+  {
+    "complete": true,
+    "isOption": true,
+    "token": "--flag",
+    "tokenLength": 6,
+  },
+  {
+    "complete": false,
+    "isOption": false,
+    "isQuoted": true,
+    "token": "",
+    "tokenLength": 2,
+  },
+]
+`;
+
+exports[`parseCommand [bash] cmd --flag="value"  1`] = `
+[
+  {
+    "complete": true,
+    "isOption": false,
+    "token": "cmd",
+    "tokenLength": 3,
+  },
+  {
+    "complete": true,
+    "isOption": true,
+    "token": "--flag",
+    "tokenLength": 6,
+  },
+  {
+    "complete": true,
+    "isOption": false,
+    "isQuoted": true,
+    "token": "value",
+    "tokenLength": 7,
+  },
+]
+`;
+
+exports[`parseCommand [bash] cmd --flag='' 1`] = `
+[
+  {
+    "complete": true,
+    "isOption": false,
+    "token": "cmd",
+    "tokenLength": 3,
+  },
+  {
+    "complete": true,
+    "isOption": true,
+    "token": "--flag",
+    "tokenLength": 6,
+  },
+  {
+    "complete": false,
+    "isOption": false,
+    "isQuoted": true,
+    "token": "",
+    "tokenLength": 2,
+  },
+]
+`;
+
+exports[`parseCommand [bash] cmd --flag='value'  1`] = `
+[
+  {
+    "complete": true,
+    "isOption": false,
+    "token": "cmd",
+    "tokenLength": 3,
+  },
+  {
+    "complete": true,
+    "isOption": true,
+    "token": "--flag",
+    "tokenLength": 6,
+  },
+  {
+    "complete": true,
+    "isOption": false,
+    "isQuoted": true,
+    "token": "value",
+    "tokenLength": 7,
+  },
+]
+`;
+
+exports[`parseCommand [bash] cmd --flag=value 1`] = `
+[
+  {
+    "complete": true,
+    "isOption": false,
+    "token": "cmd",
+    "tokenLength": 3,
+  },
+  {
+    "complete": true,
+    "isOption": true,
+    "token": "--flag",
+    "tokenLength": 6,
+  },
+  {
+    "complete": false,
+    "isOption": false,
+    "token": "value",
+    "tokenLength": 5,
+  },
+]
+`;
+
+exports[`parseCommand [bash] cmd -f  1`] = `
+[
+  {
+    "complete": true,
+    "isOption": false,
+    "token": "cmd",
+    "tokenLength": 3,
+  },
+  {
+    "complete": true,
+    "isOption": true,
+    "token": "-f",
+    "tokenLength": 2,
+  },
+]
+`;
+
+exports[`parseCommand [bash] cmd -f 'value'  1`] = `
+[
+  {
+    "complete": true,
+    "isOption": false,
+    "token": "cmd",
+    "tokenLength": 3,
+  },
+  {
+    "complete": true,
+    "isOption": true,
+    "token": "-f",
+    "tokenLength": 2,
+  },
+  {
+    "complete": true,
+    "isOption": false,
+    "isQuoted": true,
+    "token": "value",
+    "tokenLength": 7,
+  },
+]
+`;
+
+exports[`parseCommand [bash] cmd -f 1`] = `
+[
+  {
+    "complete": true,
+    "isOption": false,
+    "token": "cmd",
+    "tokenLength": 3,
+  },
+  {
+    "complete": false,
+    "isOption": true,
+    "token": "-f",
+    "tokenLength": 2,
+  },
+]
+`;
+
+exports[`parseCommand [bash] cmd -f 2`] = `
+[
+  {
+    "complete": true,
+    "isOption": false,
+    "token": "cmd",
+    "tokenLength": 3,
+  },
+  {
+    "complete": false,
+    "isOption": true,
+    "token": "-f",
+    "tokenLength": 2,
+  },
+]
+`;
+
+exports[`parseCommand [bash] cmd -f value  1`] = `
+[
+  {
+    "complete": true,
+    "isOption": false,
+    "token": "cmd",
+    "tokenLength": 3,
+  },
+  {
+    "complete": true,
+    "isOption": true,
+    "token": "-f",
+    "tokenLength": 2,
+  },
+  {
+    "complete": true,
+    "isOption": false,
+    "token": "value",
+    "tokenLength": 5,
+  },
+]
+`;
+
+exports[`parseCommand [bash] cmd -f= 1`] = `
+[
+  {
+    "complete": true,
+    "isOption": false,
+    "token": "cmd",
+    "tokenLength": 3,
+  },
+  {
+    "complete": true,
+    "isOption": true,
+    "token": "-f",
+    "tokenLength": 2,
+  },
+]
+`;
+
+exports[`parseCommand [bash] cmd -f="value"  1`] = `
+[
+  {
+    "complete": true,
+    "isOption": false,
+    "token": "cmd",
+    "tokenLength": 3,
+  },
+  {
+    "complete": true,
+    "isOption": true,
+    "token": "-f",
+    "tokenLength": 2,
+  },
+  {
+    "complete": true,
+    "isOption": false,
+    "isQuoted": true,
+    "token": "value",
+    "tokenLength": 7,
+  },
+]
+`;
+
+exports[`parseCommand [bash] cmd -f='' 1`] = `
+[
+  {
+    "complete": true,
+    "isOption": false,
+    "token": "cmd",
+    "tokenLength": 3,
+  },
+  {
+    "complete": true,
+    "isOption": true,
+    "token": "-f",
+    "tokenLength": 2,
+  },
+  {
+    "complete": false,
+    "isOption": false,
+    "isQuoted": true,
+    "token": "",
+    "tokenLength": 2,
+  },
+]
+`;
+
+exports[`parseCommand [bash] cmd -f='val 1`] = `
+[
+  {
+    "complete": true,
+    "isOption": false,
+    "token": "cmd",
+    "tokenLength": 3,
+  },
+  {
+    "complete": true,
+    "isOption": true,
+    "token": "-f",
+    "tokenLength": 2,
+  },
+  {
+    "complete": false,
+    "isOption": false,
+    "isQuoted": true,
+    "token": "val",
+    "tokenLength": 4,
+  },
+]
+`;
+
+exports[`parseCommand [bash] cmd -f=value  1`] = `
+[
+  {
+    "complete": true,
+    "isOption": false,
+    "token": "cmd",
+    "tokenLength": 3,
+  },
+  {
+    "complete": true,
+    "isOption": true,
+    "token": "-f",
+    "tokenLength": 2,
+  },
+  {
+    "complete": true,
+    "isOption": false,
+    "token": "value",
+    "tokenLength": 5,
+  },
+]
+`;
+
+exports[`parseCommand [bash] cmd 1`] = `
+[
+  {
+    "complete": false,
+    "isOption": false,
+    "token": "cmd",
+    "tokenLength": 3,
+  },
+]
+`;
+
+exports[`parseCommand [bash] cmd dir\\ 1/dir\\ 2/item1 1`] = `
+[
+  {
+    "complete": true,
+    "isOption": false,
+    "token": "cmd",
+    "tokenLength": 3,
+  },
+  {
+    "complete": false,
+    "isOption": false,
+    "token": "dir 1/dir 2/item1",
+    "tokenLength": 19,
+  },
+]
+`;
+
+exports[`parseCommand [bash] cmd dir\\ name/file 1`] = `
+[
+  {
+    "complete": true,
+    "isOption": false,
+    "token": "cmd",
+    "tokenLength": 3,
+  },
+  {
+    "complete": false,
+    "isOption": false,
+    "token": "dir name/file",
+    "tokenLength": 14,
+  },
+]
+`;
+
+exports[`parseCommand [bash] cmd value  1`] = `
+[
+  {
+    "complete": true,
+    "isOption": false,
+    "token": "cmd",
+    "tokenLength": 3,
+  },
+  {
+    "complete": true,
+    "isOption": false,
+    "token": "value",
+    "tokenLength": 5,
+  },
+]
+`;
+
+exports[`parseCommand [bash] cmd1 "item1"item2 "item3" 1`] = `
+[
+  {
+    "complete": true,
+    "isOption": false,
+    "token": "cmd1",
+    "tokenLength": 4,
+  },
+  {
+    "complete": true,
+    "isOption": false,
+    "isQuoteContinued": true,
+    "isQuoted": true,
+    "token": "item1item2",
+    "tokenLength": 12,
+  },
+  {
+    "complete": false,
+    "isOption": false,
+    "isQuoted": true,
+    "token": "item3",
+    "tokenLength": 7,
+  },
+]
+`;
+
+exports[`parseCommand [bash] cmd1 "item1"item2 1`] = `
+[
+  {
+    "complete": true,
+    "isOption": false,
+    "token": "cmd1",
+    "tokenLength": 4,
+  },
+  {
+    "complete": false,
+    "isOption": false,
+    "isQuoteContinued": true,
+    "isQuoted": true,
+    "token": "item1item2",
+    "tokenLength": 12,
+  },
+]
+`;
+
+exports[`parseCommand [bash] cmd1 "item1"item2 item3 1`] = `
+[
+  {
+    "complete": true,
+    "isOption": false,
+    "token": "cmd1",
+    "tokenLength": 4,
+  },
+  {
+    "complete": true,
+    "isOption": false,
+    "isQuoteContinued": true,
+    "isQuoted": true,
+    "token": "item1item2",
+    "tokenLength": 12,
+  },
+  {
+    "complete": false,
+    "isOption": false,
+    "token": "item3",
+    "tokenLength": 5,
+  },
+]
+`;
+
+exports[`parseCommand [bash] cmd1 | cmd2  1`] = `
+[
+  {
+    "complete": true,
+    "isOption": false,
+    "token": "cmd2",
+    "tokenLength": 4,
+  },
+]
+`;
+
+exports[`parseCommand [bash] cmd1 | cmd2 && cmd3 ; cmd4 1`] = `
+[
+  {
+    "complete": false,
+    "isOption": false,
+    "token": "cmd4",
+    "tokenLength": 4,
+  },
+]
+`;
+
+exports[`parseCommand [bash] cmd1 || cmd2 | cmd3 1`] = `
+[
+  {
+    "complete": false,
+    "isOption": false,
+    "token": "cmd3",
+    "tokenLength": 4,
+  },
+]
+`;
+
+exports[`parseCommand [bash] cmd1 - 1`] = `
+[
+  {
+    "complete": true,
+    "isOption": false,
+    "token": "cmd1",
+    "tokenLength": 4,
+  },
+  {
+    "complete": false,
+    "isOption": true,
+    "token": "-",
+    "tokenLength": 1,
+  },
+]
+`;
+
+exports[`parseCommand [bash] 😁 1`] = `
+[
+  {
+    "complete": false,
+    "isOption": false,
+    "token": "😁",
+    "tokenLength": 2,
+  },
+]
+`;
+
+exports[`parseCommand [cmd] cmd dir^ name/file 1`] = `
+[
+  {
+    "complete": true,
+    "isOption": false,
+    "token": "cmd",
+    "tokenLength": 3,
+  },
+  {
+    "complete": false,
+    "isOption": false,
+    "token": "dir name/file",
+    "tokenLength": 14,
+  },
+]
+`;
+
+exports[`parseCommand [fish] cmd --flag value 1`] = `
+[
+  {
+    "complete": true,
+    "isOption": false,
+    "token": "cmd",
+    "tokenLength": 3,
+  },
+  {
+    "complete": true,
+    "isOption": true,
+    "token": "--flag",
+    "tokenLength": 6,
+  },
+  {
+    "complete": false,
+    "isOption": false,
+    "token": "value",
+    "tokenLength": 5,
+  },
+]
+`;
+
+exports[`parseCommand [nu] cmd --flag value 1`] = `
+[
+  {
+    "complete": true,
+    "isOption": false,
+    "token": "cmd",
+    "tokenLength": 3,
+  },
+  {
+    "complete": true,
+    "isOption": true,
+    "token": "--flag",
+    "tokenLength": 6,
+  },
+  {
+    "complete": false,
+    "isOption": false,
+    "token": "value",
+    "tokenLength": 5,
+  },
+]
+`;
+
+exports[`parseCommand [powershell] cmd 'item1\\item2\\'item3  1`] = `
+[
+  {
+    "complete": true,
+    "isOption": false,
+    "token": "cmd",
+    "tokenLength": 3,
+  },
+  {
+    "complete": true,
+    "isOption": false,
+    "isQuoteContinued": true,
+    "isQuoted": true,
+    "token": "item1\\item2\\item3",
+    "tokenLength": 19,
+  },
+]
+`;
+
+exports[`parseCommand [powershell] cmd 'item1\\item2\\'item3 1`] = `
+[
+  {
+    "complete": true,
+    "isOption": false,
+    "token": "cmd",
+    "tokenLength": 3,
+  },
+  {
+    "complete": false,
+    "isOption": false,
+    "isQuoteContinued": true,
+    "isQuoted": true,
+    "token": "item1\\item2\\item3",
+    "tokenLength": 19,
+  },
+]
+`;
+
+exports[`parseCommand [powershell] cmd \`n\`t arg 1`] = `
+[
+  {
+    "complete": true,
+    "isOption": false,
+    "token": "cmd",
+    "tokenLength": 3,
+  },
+  {
+    "complete": true,
+    "isOption": false,
+    "isQuoteContinued": true,
+    "isQuoted": true,
+    "token": "nt",
+    "tokenLength": 4,
+  },
+  {
+    "complete": false,
+    "isOption": false,
+    "token": "arg",
+    "tokenLength": 3,
+  },
+]
+`;
+
+exports[`parseCommand [powershell] cmd C:\\Users\\dir\\file 1`] = `
+[
+  {
+    "complete": true,
+    "isOption": false,
+    "token": "cmd",
+    "tokenLength": 3,
+  },
+  {
+    "complete": false,
+    "isOption": false,
+    "token": "C:\\Users\\dir\\file",
+    "tokenLength": 17,
+  },
+]
+`;
+
+exports[`parseCommand [pwsh] cmd dir\` name/file 1`] = `
+[
+  {
+    "complete": true,
+    "isOption": false,
+    "token": "cmd",
+    "tokenLength": 3,
+  },
+  {
+    "complete": false,
+    "isOption": false,
+    "token": "dir name/file",
+    "tokenLength": 14,
+  },
+]
+`;
+
+exports[`parseCommand [xonsh] cmd --flag value 1`] = `
+[
+  {
+    "complete": true,
+    "isOption": false,
+    "token": "cmd",
+    "tokenLength": 3,
+  },
+  {
+    "complete": true,
+    "isOption": true,
+    "token": "--flag",
+    "tokenLength": 6,
+  },
+  {
+    "complete": false,
+    "isOption": false,
+    "token": "value",
+    "tokenLength": 5,
+  },
+]
+`;

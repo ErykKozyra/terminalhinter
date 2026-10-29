@@ -1,0 +1,945 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`parseCommand alreadyUsedOption 1`] = `
+{
+  "activeToken": {
+    "complete": false,
+    "isOption": true,
+    "token": "--b",
+    "tokenLength": 3,
+  },
+  "suggestions": [
+    {
+      "allNames": [
+        "--bug-report",
+      ],
+      "description": "Display system information for bug report",
+      "hidden": undefined,
+      "icon": "🔗",
+      "insertValue": undefined,
+      "name": "--bug-report",
+      "priority": 50,
+      "type": undefined,
+    },
+  ],
+}
+`;
+
+exports[`parseCommand alreadyUsedSuggestion 1`] = `undefined`;
+
+exports[`parseCommand command 1`] = `
+{
+  "activeToken": {
+    "complete": false,
+    "isOption": false,
+    "token": "sta",
+    "tokenLength": 3,
+  },
+  "suggestions": [
+    {
+      "allNames": [
+        "stage",
+      ],
+      "description": "Add file contents to the staging area",
+      "hidden": undefined,
+      "icon": "📦",
+      "insertValue": undefined,
+      "name": "stage",
+      "priority": 50,
+      "type": undefined,
+    },
+    {
+      "allNames": [
+        "status",
+      ],
+      "description": "Show the working tree status",
+      "hidden": undefined,
+      "icon": "📦",
+      "insertValue": undefined,
+      "name": "status",
+      "priority": 50,
+      "type": undefined,
+    },
+    {
+      "allNames": [
+        "stash",
+      ],
+      "description": "Temporarily stores all the modified tracked files",
+      "hidden": undefined,
+      "icon": "📦",
+      "insertValue": undefined,
+      "name": "stash",
+      "priority": 50,
+      "type": undefined,
+    },
+  ],
+}
+`;
+
+exports[`parseCommand completePrefixFilter 1`] = `
+{
+  "activeToken": {
+    "complete": false,
+    "isOption": false,
+    "token": "stat",
+    "tokenLength": 4,
+  },
+  "suggestions": [
+    {
+      "allNames": [
+        "status",
+      ],
+      "description": "Show the working tree status",
+      "hidden": undefined,
+      "icon": "📦",
+      "insertValue": undefined,
+      "name": "status",
+      "priority": 50,
+      "type": undefined,
+    },
+  ],
+}
+`;
+
+exports[`parseCommand completedOptionWithArg 1`] = `
+{
+  "activeToken": undefined,
+  "suggestions": [
+    {
+      "allNames": [
+        "--artifact-server-path",
+      ],
+      "description": "Defines the path where the artifact server stores uploads and retrieves downloads from. If not specified the artifact server will not start",
+      "hidden": undefined,
+      "icon": "🔗",
+      "insertValue": undefined,
+      "name": "--artifact-server-path",
+      "priority": 45,
+      "type": undefined,
+    },
+    {
+      "allNames": [
+        "--artifact-server-port",
+      ],
+      "description": "Defines the port where the artifact server listens (will only bind to localhost)",
+      "hidden": undefined,
+      "icon": "🔗",
+      "insertValue": undefined,
+      "name": "--artifact-server-port",
+      "priority": 45,
+      "type": undefined,
+    },
+    {
+      "allNames": [
+        "--container-architecture",
+      ],
+      "description": "Architecture which should be used to run containers, e.g.: linux/amd64. If not specified, will use host default architecture. Requires Docker server API Version 1.41+. Ignored on earlier Docker server platforms",
+      "hidden": undefined,
+      "icon": "🔗",
+      "insertValue": undefined,
+      "name": "--container-architecture",
+      "priority": 45,
+      "type": undefined,
+    },
+    {
+      "allNames": [
+        "--container-daemon-socket",
+      ],
+      "description": "Path to Docker daemon socket which will be mounted to containers",
+      "hidden": undefined,
+      "icon": "🔗",
+      "insertValue": undefined,
+      "name": "--container-daemon-socket",
+      "priority": 45,
+      "type": undefined,
+    },
+    {
+      "allNames": [
+        "--directory",
+        "-C",
+      ],
+      "description": "Working directory",
+      "hidden": undefined,
+      "icon": "🔗",
+      "insertValue": undefined,
+      "name": "--directory",
+      "priority": 45,
+      "type": undefined,
+    },
+    {
+      "allNames": [
+        "--dryrun",
+        "-n",
+      ],
+      "description": "Dryrun mode",
+      "hidden": undefined,
+      "icon": "🔗",
+      "insertValue": undefined,
+      "name": "--dryrun",
+      "priority": 45,
+      "type": undefined,
+    },
+    {
+      "allNames": [
+        "--env-file",
+      ],
+      "description": "Environment file to read and use as env in the containers",
+      "hidden": undefined,
+      "icon": "🔗",
+      "insertValue": undefined,
+      "name": "--env-file",
+      "priority": 45,
+      "type": undefined,
+    },
+    {
+      "allNames": [
+        "--github-instance",
+      ],
+      "description": "GitHub instance to use. Don't use this if you are not using GitHub Enterprise Server",
+      "hidden": undefined,
+      "icon": "🔗",
+      "insertValue": undefined,
+      "name": "--github-instance",
+      "priority": 45,
+      "type": undefined,
+    },
+    {
+      "allNames": [
+        "--insecure-secrets",
+      ],
+      "description": "NOT RECOMMENDED! Doesn't hide secrets while printing logs",
+      "hidden": undefined,
+      "icon": "🔗",
+      "insertValue": undefined,
+      "name": "--insecure-secrets",
+      "priority": 45,
+      "type": undefined,
+    },
+    {
+      "allNames": [
+        "--json",
+      ],
+      "description": "Output logs in json format",
+      "hidden": undefined,
+      "icon": "🔗",
+      "insertValue": undefined,
+      "name": "--json",
+      "priority": 45,
+      "type": undefined,
+    },
+    {
+      "allNames": [
+        "--no-recurse",
+      ],
+      "description": "Flag to disable running workflows from subdirectories of specified path in '--workflows'/'-W' flag",
+      "hidden": undefined,
+      "icon": "🔗",
+      "insertValue": undefined,
+      "name": "--no-recurse",
+      "priority": 45,
+      "type": undefined,
+    },
+    {
+      "allNames": [
+        "--no-skip-checkout",
+      ],
+      "description": "Do not skip actions/checkout",
+      "hidden": undefined,
+      "icon": "🔗",
+      "insertValue": undefined,
+      "name": "--no-skip-checkout",
+      "priority": 45,
+      "type": undefined,
+    },
+    {
+      "allNames": [
+        "--quiet",
+        "-q",
+      ],
+      "description": "Disable logging of output from steps",
+      "hidden": undefined,
+      "icon": "🔗",
+      "insertValue": undefined,
+      "name": "--quiet",
+      "priority": 45,
+      "type": undefined,
+    },
+    {
+      "allNames": [
+        "--secret-file",
+      ],
+      "description": "File with list of secrets to read from (e.g. --secret-file .secrets)",
+      "hidden": undefined,
+      "icon": "🔗",
+      "insertValue": undefined,
+      "name": "--secret-file",
+      "priority": 45,
+      "type": undefined,
+    },
+    {
+      "allNames": [
+        "--verbose",
+        "-v",
+      ],
+      "description": "Verbose output",
+      "hidden": undefined,
+      "icon": "🔗",
+      "insertValue": undefined,
+      "name": "--verbose",
+      "priority": 45,
+      "type": undefined,
+    },
+    {
+      "allNames": [
+        "--workflows",
+        "-W",
+      ],
+      "description": "Path to workflow file(s)",
+      "hidden": undefined,
+      "icon": "🔗",
+      "insertValue": undefined,
+      "name": "--workflows",
+      "priority": 45,
+      "type": undefined,
+    },
+    {
+      "allNames": [
+        "--help",
+        "-h",
+      ],
+      "description": "Display help",
+      "hidden": undefined,
+      "icon": "🔗",
+      "insertValue": undefined,
+      "name": "--help",
+      "priority": 45,
+      "type": undefined,
+    },
+    {
+      "allNames": [
+        "--no-descriptions",
+      ],
+      "description": "Disable completion descriptions",
+      "hidden": undefined,
+      "icon": "🔗",
+      "insertValue": undefined,
+      "name": "--no-descriptions",
+      "priority": 45,
+      "type": undefined,
+    },
+  ],
+}
+`;
+
+exports[`parseCommand emptySuggestions 1`] = `undefined`;
+
+exports[`parseCommand exclusiveOnOption 1`] = `
+{
+  "activeToken": {
+    "complete": false,
+    "isOption": true,
+    "token": "--no",
+    "tokenLength": 4,
+  },
+  "suggestions": [
+    {
+      "allNames": [
+        "--nobreak",
+      ],
+      "description": "Print a newline between matches in different files. Enabled by default",
+      "hidden": undefined,
+      "icon": "🔗",
+      "insertValue": undefined,
+      "name": "--nobreak",
+      "priority": 50,
+      "type": undefined,
+    },
+    {
+      "allNames": [
+        "--nocolor",
+      ],
+      "description": "Don't print color codes in results",
+      "hidden": undefined,
+      "icon": "🔗",
+      "insertValue": undefined,
+      "name": "--nocolor",
+      "priority": 50,
+      "type": undefined,
+    },
+    {
+      "allNames": [
+        "--nofilename",
+      ],
+      "description": "Don't print file names",
+      "hidden": undefined,
+      "icon": "🔗",
+      "insertValue": undefined,
+      "name": "--nofilename",
+      "priority": 50,
+      "type": undefined,
+    },
+    {
+      "allNames": [
+        "--nofollow",
+      ],
+      "description": "Don't follow symlinks",
+      "hidden": undefined,
+      "icon": "🔗",
+      "insertValue": undefined,
+      "name": "--nofollow",
+      "priority": 50,
+      "type": undefined,
+    },
+    {
+      "allNames": [
+        "--nogroup",
+      ],
+      "description": "Refrains from lumping matches in the same file together, and instead places the filename at the start of each match line",
+      "hidden": undefined,
+      "icon": "🔗",
+      "insertValue": undefined,
+      "name": "--nogroup",
+      "priority": 50,
+      "type": undefined,
+    },
+    {
+      "allNames": [
+        "--noheading",
+      ],
+      "description": "Don't print filenames above matching contents",
+      "hidden": undefined,
+      "icon": "🔗",
+      "insertValue": undefined,
+      "name": "--noheading",
+      "priority": 50,
+      "type": undefined,
+    },
+    {
+      "allNames": [
+        "--nommap",
+      ],
+      "description": "Don't use of memory-mapped I/O. Defaults to true on platforms where mmap() is faster than read(). (All but macOS.)",
+      "hidden": undefined,
+      "icon": "🔗",
+      "insertValue": undefined,
+      "name": "--nommap",
+      "priority": 50,
+      "type": undefined,
+    },
+    {
+      "allNames": [
+        "--nomultiline",
+      ],
+      "description": "Don't match regexes across newlines",
+      "hidden": undefined,
+      "icon": "🔗",
+      "insertValue": undefined,
+      "name": "--nomultiline",
+      "priority": 50,
+      "type": undefined,
+    },
+    {
+      "allNames": [
+        "-n",
+        "--norecurse",
+      ],
+      "description": "Don't recurse into directories",
+      "hidden": undefined,
+      "icon": "🔗",
+      "insertValue": undefined,
+      "name": "--norecurse",
+      "priority": 50,
+      "type": undefined,
+    },
+    {
+      "allNames": [
+        "--nonumbers",
+      ],
+      "description": "Don't print line numbers",
+      "hidden": undefined,
+      "icon": "🔗",
+      "insertValue": undefined,
+      "name": "--nonumbers",
+      "priority": 50,
+      "type": undefined,
+    },
+  ],
+}
+`;
+
+exports[`parseCommand fullyTypedSuggestion 1`] = `
+{
+  "activeToken": {
+    "complete": false,
+    "isOption": true,
+    "token": "-W",
+    "tokenLength": 2,
+  },
+  "suggestions": [
+    {
+      "allNames": [
+        "-W",
+      ],
+      "description": "Display whiteouts when scanning directories.  (-S) flag)",
+      "hidden": undefined,
+      "icon": "🔗",
+      "insertValue": undefined,
+      "name": "-W",
+      "priority": 50,
+      "type": undefined,
+    },
+    {
+      "allNames": [
+        "-w",
+      ],
+      "description": "Force raw printing of non-printable characters.  This is the default when output is not to a terminal",
+      "hidden": undefined,
+      "icon": "🔗",
+      "insertValue": undefined,
+      "name": "-w",
+      "priority": 50,
+      "type": undefined,
+    },
+  ],
+}
+`;
+
+exports[`parseCommand generatorUsingPartialInput 1`] = `
+{
+  "activeToken": {
+    "complete": false,
+    "isOption": false,
+    "token": "Microsoft.Azure.WebJobs.Cor",
+    "tokenLength": 27,
+  },
+  "suggestions": [
+    {
+      "allNames": [
+        "Microsoft.Azure.WebJobs.Core",
+      ],
+      "description": "This package provides the core Types and Attribute definitions for the WebJobs SDK. For more information, please visit https://go.microsoft.com/fwlink/?linkid=2279708.",
+      "hidden": undefined,
+      "icon": "📀",
+      "insertValue": "Microsoft.Azure.WebJobs.Core",
+      "name": "Microsoft.Azure.WebJobs.Core",
+      "priority": 60,
+      "type": undefined,
+    },
+  ],
+}
+`;
+
+exports[`parseCommand noArgsArgumentGiven 1`] = `
+{
+  "activeToken": undefined,
+  "suggestions": [
+    {
+      "allNames": [
+        "--analyzer-output",
+      ],
+      "description": "Static analyzer report output format",
+      "hidden": undefined,
+      "icon": "🔗",
+      "insertValue": undefined,
+      "name": "--analyzer-output",
+      "priority": 45,
+      "type": undefined,
+    },
+    {
+      "allNames": [
+        "--analyze",
+      ],
+      "description": "Run the static analyzer",
+      "hidden": undefined,
+      "icon": "🔗",
+      "insertValue": undefined,
+      "name": "--analyze",
+      "priority": 45,
+      "type": undefined,
+    },
+    {
+      "allNames": [
+        "-arcmt-migrate-emit-errors",
+      ],
+      "description": "Emit ARC errors even if the migrator can fix them",
+      "hidden": undefined,
+      "icon": "🔗",
+      "insertValue": undefined,
+      "name": "-arcmt-migrate-emit-errors",
+      "priority": 45,
+      "type": undefined,
+    },
+  ],
+}
+`;
+
+exports[`parseCommand noOptionsSuggestedDuringVariadicArg 1`] = `undefined`;
+
+exports[`parseCommand optionsSuggestedAfterVariadicArg 1`] = `
+{
+  "activeToken": {
+    "complete": false,
+    "isOption": true,
+    "token": "-l",
+    "tokenLength": 2,
+  },
+  "argumentDescription": undefined,
+  "suggestions": [
+    {
+      "allNames": [
+        "package-lock.json",
+      ],
+      "description": undefined,
+      "hidden": undefined,
+      "icon": "📄",
+      "insertValue": "package-lock.json",
+      "name": "package-lock.json",
+      "priority": 55,
+      "type": "file",
+    },
+    {
+      "allNames": [
+        "-L",
+      ],
+      "description": "Follow all symbolic links to final target and list the file or directory the link references rather than the link itself.  This option cancels the -P option",
+      "hidden": undefined,
+      "icon": "🔗",
+      "insertValue": undefined,
+      "name": "-L",
+      "priority": 50,
+      "type": undefined,
+    },
+    {
+      "allNames": [
+        "-l",
+      ],
+      "description": "(The lowercase letter \`\`ell''.)  List in long format.  (See below.)  A total sum for all the file sizes is output on a line before the long listing",
+      "hidden": undefined,
+      "icon": "🔗",
+      "insertValue": undefined,
+      "name": "-l",
+      "priority": 50,
+      "type": undefined,
+    },
+  ],
+}
+`;
+
+exports[`parseCommand partialPrefixFilter 1`] = `
+{
+  "activeToken": {
+    "complete": false,
+    "isOption": false,
+    "token": "sta",
+    "tokenLength": 3,
+  },
+  "suggestions": [
+    {
+      "allNames": [
+        "stage",
+      ],
+      "description": "Add file contents to the staging area",
+      "hidden": undefined,
+      "icon": "📦",
+      "insertValue": undefined,
+      "name": "stage",
+      "priority": 50,
+      "type": undefined,
+    },
+    {
+      "allNames": [
+        "status",
+      ],
+      "description": "Show the working tree status",
+      "hidden": undefined,
+      "icon": "📦",
+      "insertValue": undefined,
+      "name": "status",
+      "priority": 50,
+      "type": undefined,
+    },
+    {
+      "allNames": [
+        "stash",
+      ],
+      "description": "Temporarily stores all the modified tracked files",
+      "hidden": undefined,
+      "icon": "📦",
+      "insertValue": undefined,
+      "name": "stash",
+      "priority": 50,
+      "type": undefined,
+    },
+  ],
+}
+`;
+
+exports[`parseCommand pathNestedSuggestion 1`] = `
+{
+  "activeToken": {
+    "complete": false,
+    "isOption": false,
+    "isPath": true,
+    "isPathComplete": false,
+    "token": ".github/work",
+    "tokenLength": 12,
+  },
+  "suggestions": [
+    {
+      "allNames": [
+        "workflows",
+      ],
+      "description": undefined,
+      "hidden": undefined,
+      "icon": "📁",
+      "insertValue": ".github/workflows/",
+      "name": "workflows",
+      "priority": 55,
+      "type": "folder",
+    },
+  ],
+}
+`;
+
+exports[`parseCommand pathPrefixMatchesRankedFirst 1`] = `
+{
+  "activeToken": {
+    "complete": false,
+    "isOption": false,
+    "token": "s",
+    "tokenLength": 1,
+  },
+  "suggestions": [
+    {
+      "allNames": [
+        "src/",
+      ],
+      "description": undefined,
+      "hidden": undefined,
+      "icon": "📁",
+      "insertValue": "src/",
+      "name": "src",
+      "priority": 60,
+      "type": "folder",
+    },
+    {
+      "allNames": [
+        "shell/",
+      ],
+      "description": undefined,
+      "hidden": undefined,
+      "icon": "📁",
+      "insertValue": "shell/",
+      "name": "shell",
+      "priority": 60,
+      "type": "folder",
+    },
+    {
+      "allNames": [
+        "scripts/",
+      ],
+      "description": undefined,
+      "hidden": undefined,
+      "icon": "📁",
+      "insertValue": "scripts/",
+      "name": "scripts",
+      "priority": 60,
+      "type": "folder",
+    },
+    {
+      "allNames": [
+        "docs/",
+      ],
+      "description": undefined,
+      "hidden": undefined,
+      "icon": "📁",
+      "insertValue": "docs/",
+      "name": "docs",
+      "priority": 60,
+      "type": "folder",
+    },
+    {
+      "allNames": [
+        ".husky/",
+      ],
+      "description": undefined,
+      "hidden": undefined,
+      "icon": "📁",
+      "insertValue": ".husky/",
+      "name": ".husky",
+      "priority": 60,
+      "type": "folder",
+    },
+    {
+      "allNames": [
+        "node_modules/",
+      ],
+      "description": undefined,
+      "hidden": undefined,
+      "icon": "📁",
+      "insertValue": "node_modules/",
+      "name": "node_modules",
+      "priority": 60,
+      "type": "folder",
+    },
+  ],
+}
+`;
+
+exports[`parseCommand pathSuggestion 1`] = `
+{
+  "activeToken": {
+    "complete": false,
+    "isOption": false,
+    "token": "she",
+    "tokenLength": 3,
+  },
+  "suggestions": [
+    {
+      "allNames": [
+        "shell",
+      ],
+      "description": undefined,
+      "hidden": undefined,
+      "icon": "📁",
+      "insertValue": "shell/",
+      "name": "shell",
+      "priority": 55,
+      "type": "folder",
+    },
+  ],
+}
+`;
+
+exports[`parseCommand pathWithFileFilteredSuggestion 1`] = `
+{
+  "activeToken": {
+    "complete": false,
+    "isOption": false,
+    "isPath": true,
+    "isPathComplete": false,
+    "token": "shell/shellIntegration.",
+    "tokenLength": 23,
+  },
+  "suggestions": [
+    {
+      "allNames": [
+        "shellIntegration.nu",
+      ],
+      "description": undefined,
+      "hidden": undefined,
+      "icon": "📄",
+      "insertValue": "shell/shellIntegration.nu",
+      "name": "shellIntegration.nu",
+      "priority": 55,
+      "type": "file",
+    },
+  ],
+}
+`;
+
+exports[`parseCommand pathWithFileSuggestion 1`] = `
+{
+  "activeToken": {
+    "complete": false,
+    "isOption": false,
+    "isPath": true,
+    "isPathComplete": true,
+    "token": "shell/",
+    "tokenLength": 6,
+  },
+  "suggestions": [
+    {
+      "allNames": [
+        "bash-preexec.sh",
+      ],
+      "description": undefined,
+      "hidden": undefined,
+      "icon": "📄",
+      "insertValue": "shell/bash-preexec.sh",
+      "name": "bash-preexec.sh",
+      "priority": 55,
+      "type": "file",
+    },
+  ],
+}
+`;
+
+exports[`parseCommand provideFileSuggestion 1`] = `
+{
+  "activeToken": {
+    "complete": false,
+    "isOption": false,
+    "token": "READ",
+    "tokenLength": 4,
+  },
+  "suggestions": [
+    {
+      "allNames": [
+        "README.md",
+      ],
+      "description": undefined,
+      "hidden": undefined,
+      "icon": "📄",
+      "insertValue": "README.md",
+      "name": "README.md",
+      "priority": 55,
+      "type": "file",
+    },
+  ],
+}
+`;
+
+exports[`parseCommand provideFolderSuggestion 1`] = `
+{
+  "activeToken": {
+    "complete": false,
+    "isOption": false,
+    "token": "sr",
+    "tokenLength": 2,
+  },
+  "suggestions": [
+    {
+      "allNames": [
+        "src",
+      ],
+      "description": undefined,
+      "hidden": undefined,
+      "icon": "📁",
+      "insertValue": "src/",
+      "name": "src",
+      "priority": 55,
+      "type": "folder",
+    },
+  ],
+}
+`;
+
+exports[`parseCommand providedArgDescription 1`] = `
+{
+  "activeToken": undefined,
+  "argumentDescription": "actor",
+  "suggestions": [],
+}
+`;
+
+exports[`parseCommand providedSuggestion 1`] = `
+{
+  "activeToken": undefined,
+  "argumentDescription": "Shell to generate completions for",
+  "suggestions": [
+    {
+      "allNames": [
+        "zsh",
+      ],
+      "description": undefined,
+      "hidden": undefined,
+      "icon": "📀",
+      "insertValue": undefined,
+      "name": "zsh",
+      "priority": 50,
+      "type": undefined,
+    },
+  ],
+}
+`;
