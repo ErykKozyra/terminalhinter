@@ -327,7 +327,8 @@ export const getShellSourceCommand = (shell: Shell, initFilePath?: string): stri
 export const getShellConfig = (shell: Shell): string => {
   switch (shell) {
     case Shell.Zsh:
-      return `if [[ -z "\${ISTERM}" && $- = *i* && \${+ZSH_EXECUTION_STRING} -eq 0 && -z "\${VSCODE_RESOLVING_ENVIRONMENT}" ]]; then
+      // command -v guard: if the binary is gone (e.g. nvm switched the default Node), skip instead of exiting the shell
+      return `if [[ -z "\${ISTERM}" && $- = *i* && \${+ZSH_EXECUTION_STRING} -eq 0 && -z "\${VSCODE_RESOLVING_ENVIRONMENT}" ]] && command -v is >/dev/null 2>&1; then
   if [[ -o login ]]; then
     is -s zsh --login ; exit
   else
@@ -335,7 +336,7 @@ export const getShellConfig = (shell: Shell): string => {
   fi
 fi`;
     case Shell.Bash:
-      return `if [[ -z "\${ISTERM}" && $- = *i* && $- != *c* && -z "\${VSCODE_RESOLVING_ENVIRONMENT}" ]]; then
+      return `if [[ -z "\${ISTERM}" && $- = *i* && $- != *c* && -z "\${VSCODE_RESOLVING_ENVIRONMENT}" ]] && command -v is >/dev/null 2>&1; then
   shopt -q login_shell
   login_shell=$?
   if [ $login_shell -eq 0 ]; then
