@@ -86,6 +86,10 @@ export const render = async (program: Command, shell: Shell, underTest: boolean,
     }
 
     const inputHandled = suggestions.update(press, renderer.hasVisibleSuggestions);
+    if (suggestions.consumeRefreshRequest()) {
+      suggestions.invalidate();
+      suggestionScheduler.request();
+    }
     if (renderer.hasVisibleSuggestions && inputHandled) {
       term.noop();
     } else if (!inputHandled) {

@@ -76,6 +76,7 @@ If you use nvm, loading it lazily saves another half a second per tab.
 | Tab | Accept the selected (or first) suggestion |
 | Up / Down | Move the selection; Up with nothing selected goes to shell history |
 | Escape | Close the list |
+| Ctrl+Space | Open the list again (or close it) |
 
 Commands:
 

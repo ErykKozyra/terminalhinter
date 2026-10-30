@@ -67,6 +67,7 @@ export class SuggestionManager {
   #scrollTop = 0;
   #navigated = false; // the selection was moved with the arrows since this list appeared
   #inputVersion = 0; // keys passed to the shell so far
+  #refreshRequested = false; // Ctrl+Space asked for the list
   #blobInputVersion = 0; // #inputVersion when the current list was requested
 
   constructor(terminal: ISTerm, shell: Shell, runtime?: Promise<SuggestionRuntime>) {
@@ -286,6 +287,13 @@ export class SuggestionManager {
     const theme = activeTheme();
     return " " + chalk.italic.hex(theme.footer)(shown) + " ".repeat(Math.max(gap, 0)) + (counter ? " " + chalk.hex(theme.counter)(counter) : "") + " ";
   }
+  // true once after Ctrl+Space asked to open the list, so the UI loads it without waiting for new output
+  consumeRefreshRequest(): boolean {
+    const requested = this.#refreshRequested;
+    this.#refreshRequested = false;
+    return requested;
+  }
+
   async exec(): Promise<boolean> {
     return await this._loadSuggestions();
   }
@@ -360,6 +368,19 @@ export class SuggestionManager {
 
   private _update(keyPress: KeyPress, allowBindings: boolean): boolean {
     const { name, shift, ctrl } = keyPress;
+
+    // Ctrl+Space (sent as ^@, which readline names "`") opens the list on demand, or closes it when it is open
+    if (ctrl && (name == "`" || name == "space")) {
+      if (this.#suggestBlob != null && allowBindings) {
+        this.#suggestBlob = undefined;
+        this.#hideSuggestions = true;
+      } else {
+        this.#hideSuggestions = false;
+        this.#commandKey = "";
+        this.#refreshRequested = true;
+      }
+      return true;
+    }
 
     // if suggestions are hidden, keep them hidden until during command navigation
     if (this.#hideSuggestions) {

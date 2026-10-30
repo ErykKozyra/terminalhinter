@@ -212,3 +212,20 @@ test("enter never inserts from a list made for older text", async () => {
   expect(manager.update(press("return"))).toBe(false);
   expect(writes).toEqual([]);
 });
+
+test("ctrl+space opens the list after escape and closes it again", async () => {
+  const { manager } = setup({
+    suggestions: [{ name: "status", allNames: ["status"], icon: "📦", priority: 50 }],
+    activeToken: { token: "st", tokenLength: 2, complete: false, isOption: false },
+  });
+  const ctrlSpace = { name: "`", sequence: "\u0000", ctrl: true, shift: false };
+  await manager.exec();
+  expect(manager.update(press("escape"))).toBe(true);
+  expect(manager.render("below", 3)).toEqual([]);
+  expect(manager.update(ctrlSpace)).toBe(true);
+  expect(manager.consumeRefreshRequest()).toBe(true);
+  await manager.exec();
+  expect(manager.render("below", 3).length).toBeGreaterThan(0);
+  expect(manager.update(ctrlSpace)).toBe(true);
+  expect(manager.render("below", 3)).toEqual([]);
+});
