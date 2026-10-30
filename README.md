@@ -26,7 +26,7 @@ The command is `thint` (long form: `terminalhinter`).
 - **Walk into folders with Enter.** Enter on a folder inserts it and keeps the list open with its
   contents. The `↪` entry at the top runs the command, so `cd` + Enter, Enter, Enter lands you deep in a tree.
 - **Descriptions and argument hints** for subcommands and options, e.g. `checkout [branch, file, tag or commit]`.
-- **Your aliases**, with what each one expands to.
+- **Your aliases and functions**, with what each alias expands to and which file a function comes from.
 - **Learns what you use.** Folders, branches and scripts you pick often move up, recent ones more than old ones.
   An exact match still comes first (`pnpm dev` offers the `dev` script before `dev:vite`). The history stays on
   your machine in `~/.local/share/terminalhinter/history.jsonl`.
@@ -39,7 +39,8 @@ The command is `thint` (long form: `terminalhinter`).
 - **Themes.** `thint theme` with a live preview: thint, light, nord, dracula.
 - **Stays out of the way.** Right after a space nothing is selected, so Enter just runs the command.
   `git checkout -` and `cd -` run immediately.
-- **No special fonts.** Icons are plain characters every terminal font has.
+- **No special fonts.** Icons are plain characters every terminal font has. Folders come first, hidden entries
+  last, and files are tinted by kind (code, config, styles, images).
 - **Independent of your Node version.** The binary carries its own runtime, so switching Node with nvm never breaks it.
 - **Your terminal tab still says `zsh`.**
 
@@ -59,7 +60,8 @@ and puts the startup line at the top of `~/.zshrc`. Open a new terminal tab afte
 For other shells, or to pick a theme and icons first, run `thint init`: a short guided setup with a live
 preview that ends by putting the startup lines at the top of your shell config (a backup is kept).
 
-To remove it: `./scripts/uninstall-local.sh`. It also takes the startup block out of `~/.zshrc`.
+To remove it: `./scripts/uninstall-local.sh`. It also takes the startup block out of `~/.zshrc`
+(`thint init --remove` does only that part).
 
 ### Fast startup
 
@@ -87,7 +89,7 @@ thint config list           # every setting and its value
 thint config set maxSuggestions 8
 thint bookmark add . -n api # `cd api` from anywhere
 thint specs new deploy      # start your own suggestions for a command
-thint doctor                # check the installation
+thint doctor                # check the installation, with a fix for every problem
 thint reinit                # regenerate resources after an update
 thint -c                    # is this shell running inside terminalhinter?
 ```
