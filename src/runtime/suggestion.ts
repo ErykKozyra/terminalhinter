@@ -12,6 +12,7 @@ import log from "../utils/log.js";
 import { escapePath } from "./utils.js";
 import { addPathSeparator, endsWithPathSeparator, getPathDirname, removePathSeparator, Shell } from "../utils/shell.js";
 import { getConfig } from "../utils/config.js";
+import { contextOf, frecency } from "./history.js";
 
 export enum SuggestionIcons {
   File = "📄",
@@ -156,8 +157,11 @@ const getMatchRelevance = (name: string, partialCmd: string): number => {
 // Then by priority, and inside a priority band names that start with the typed text come before names that
 // only contain it. Paths are also ranked by shorter names and alphabetically; everything else keeps its
 // source order among equally good matches (the sort is stable), except values, where shorter names go first.
-const sortSuggestions = (suggestions: Suggestion[], partialCmd: string | undefined): Suggestion[] => {
-  const sorted = suggestions.sort((a, b) => b.priority - a.priority);
+const sortSuggestions = (suggestions: Suggestion[], partialCmd: string | undefined, score: (s: Suggestion) => number = () => 0): Suggestion[] => {
+  // how often and how recently you used each value here (see history.ts); computed once per suggestion
+  const scores = new Map(suggestions.map((s) => [s, score(s)]));
+  const used = (s: Suggestion) => scores.get(s) ?? 0;
+  const sorted = suggestions.sort((a, b) => b.priority - a.priority || used(b) - used(a));
   if (!partialCmd) return sorted;
   const relevance = (s: Suggestion) => getMatchRelevance(s.name, partialCmd);
   const isExact = (s: Suggestion) => relevance(s) === 3;
@@ -171,6 +175,7 @@ const sortSuggestions = (suggestions: Suggestion[], partialCmd: string | undefin
       Number(isExact(b)) - Number(isExact(a)) ||
       b.priority - a.priority ||
       Math.min(relevance(b), 2) - Math.min(relevance(a), 2) ||
+      used(b) - used(a) ||
       (isValue(a) && isValue(b) ? a.name.length - b.name.length : 0),
   );
   const pathIndexes = sorted.flatMap((s, i) => (getPathy(s.type) ? [i] : []));
@@ -181,6 +186,7 @@ const sortSuggestions = (suggestions: Suggestion[], partialCmd: string | undefin
         Number(isExact(b)) - Number(isExact(a)) ||
         b.priority - a.priority ||
         relevance(b) - relevance(a) ||
+        used(b) - used(a) ||
         a.name.length - b.name.length ||
         a.name.localeCompare(b.name),
     );
@@ -211,6 +217,17 @@ const matchesName = (name: string, query: string, filterStrategy: FilterStrategy
   const typed = query.replace(/^-+/, "");
   return typed.length >= 2 && word.startsWith(typed[0]) && isSubsequence(word, typed);
 };
+
+// Scores each suggestion by your history in this spot: the context is the words before the one being typed, paths
+// are compared as absolute paths (see history.ts).
+const historyScore =
+  (allTokens: CommandToken[], cwd: string) =>
+  (s: Suggestion): number => {
+    const before = allTokens.at(-1)?.complete === false ? allTokens.slice(0, -1) : allTokens;
+    const context = contextOf(before);
+    const value = getPathy(s.type) ? path.join(cwd, removePathSeparator(s.insertValue ?? s.name)) : (s.insertValue ?? s.name).trim();
+    return frecency(context, value);
+  };
 
 function filter<T extends Fig.BaseSuggestion & { name?: Fig.SingleOrArray<string>; type?: Fig.SuggestionType | undefined }>(
   suggestions: T[],
@@ -407,7 +424,10 @@ export const getSubcommandDrivenRecommendation = async (
       removeEmptySuggestion(
         removeHiddenSuggestions(
           removeHomeDirectorySuggestion(
-            removeAcceptedSuggestions(adjustPathSuggestions(sortSuggestions(suggestions, partialCmd), partialToken, lastToken, shell), acceptedTokens),
+            removeAcceptedSuggestions(
+              adjustPathSuggestions(sortSuggestions(suggestions, partialCmd, historyScore(allTokens, cwd)), partialToken, lastToken, shell),
+              acceptedTokens,
+            ),
             allTokens,
           ),
           partialToken,
@@ -454,7 +474,10 @@ export const getArgDrivenRecommendation = async (
       removeEmptySuggestion(
         removeHiddenSuggestions(
           removeHomeDirectorySuggestion(
-            removeAcceptedSuggestions(adjustPathSuggestions(sortSuggestions(suggestions, partialCmd), partialToken, lastToken, shell), acceptedTokens),
+            removeAcceptedSuggestions(
+              adjustPathSuggestions(sortSuggestions(suggestions, partialCmd, historyScore(allTokens, cwd)), partialToken, lastToken, shell),
+              acceptedTokens,
+            ),
             allTokens,
           ),
           partialToken,

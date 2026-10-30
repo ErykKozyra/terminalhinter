@@ -19,6 +19,7 @@ import log from "../utils/log.js";
 import { specResourcesPath } from "../utils/constants.js";
 import { endTiming, startTiming } from "../utils/performance.js";
 import { clearImplicitGeneratorState } from "./generatorCache.js";
+import { loadHistory, recordCommand } from "./history.js";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any -- recursive type, setting as any
 const specSet: any = {};
@@ -102,6 +103,18 @@ export const loadLocalSpecsSet = async () => {
     }),
   );
 };
+
+// Remembers the arguments of a command that was just run, for frecency ranking (history.ts).
+export const recordExecutedCommand = (cmd: string, cwd: string, shell: Shell): void => {
+  try {
+    const tokens = aliasExpand(parseCommand(cmd.trim() + " ", shell));
+    if (tokens.length > 1) recordCommand(tokens, cwd);
+  } catch (e) {
+    log.debug({ msg: "could not record command", e: (e as Error).message });
+  }
+};
+
+export { loadHistory };
 
 export const getSuggestions = async (cmd: string, cwd: string, shell: Shell, signal?: AbortSignal): Promise<SuggestionBlob | undefined> => {
   const suggestionTiming = startTiming();

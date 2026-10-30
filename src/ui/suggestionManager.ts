@@ -13,7 +13,7 @@ import { getCommandCacheKey } from "../runtime/parser.js";
 import { initializeRuntime } from "../runtime/initialize.js";
 
 type SuggestionRuntime = Pick<Awaited<ReturnType<typeof initializeRuntime>>, "getSuggestions"> &
-  Partial<Pick<Awaited<ReturnType<typeof initializeRuntime>>, "clearTransientSuggestionState">>;
+  Partial<Pick<Awaited<ReturnType<typeof initializeRuntime>>, "clearTransientSuggestionState" | "recordExecutedCommand">>;
 
 const getMaxSuggestions = () => getConfig().maxSuggestions ?? 6;
 const minBoxWidth = 36;
@@ -341,7 +341,11 @@ export class SuggestionManager {
     }
 
     if (!allowBindings || !this.#suggestBlob) {
-      if (name == "return") this.#term.clearCommand(); // the command is being executed
+      if (name == "return") {
+        // the command is being executed
+        this._recordExecution();
+        this.#term.clearCommand();
+      }
       return false;
     }
     const {
@@ -385,8 +389,19 @@ export class SuggestionManager {
     // nothing to accept (or the ↪ entry): run the command
     this.#suggestBlob = undefined;
     this.#activeSuggestionIdx = 0;
+    this._recordExecution();
     this.#term.clearCommand();
     return false;
+  }
+
+  // feeds the frecency ranking; only what was typed at the prompt, never program output
+  private _recordExecution() {
+    const { commandText, hasOutput } = this.#term.getCommandState();
+    if (!commandText || hasOutput) return;
+    const cwd = this.#term.cwd;
+    void this._getRuntime()
+      .then((runtime) => runtime.recordExecutedCommand?.(commandText, cwd, this.#shell))
+      .catch((e) => log.debug({ msg: "could not record command", e: (e as Error).message }));
   }
 
   private _accept(suggestion: Suggestion | undefined): boolean {
