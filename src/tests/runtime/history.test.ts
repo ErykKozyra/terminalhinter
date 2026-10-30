@@ -5,7 +5,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 
-import { ageWeight, contextOf, frecency, normalizeValue, recordCommand, resetHistory, topValues } from "../../runtime/history.js";
+import { ageWeight, contextOf, frecency, normalizeValue, recordCommand, resetHistory, topCommands, topValues } from "../../runtime/history.js";
 import { getSuggestions } from "../../runtime/runtime.js";
 import { parseCommand } from "../../runtime/parser.js";
 import { unpackResources } from "../../utils/node.js";
@@ -57,4 +57,13 @@ test("cd offers the folder you use most first, even right after the space", asyn
 test("without history the order is unchanged", async () => {
   const suggestions = await getSuggestions("cd ", dir, Shell.Bash);
   expect(suggestions?.suggestions.slice(0, 3).map((s) => s.name)).toEqual(["alpha", "beta", "gamma"]);
+});
+
+test("the most used commands come from the recorded arguments", () => {
+  resetHistory([
+    { context: "git checkout", value: "main", time: Date.now() },
+    { context: "git", value: "status", time: Date.now() },
+    { context: "pnpm", value: "dev", time: Date.now() },
+  ]);
+  expect(topCommands(5)).toEqual(["git", "pnpm"]);
 });

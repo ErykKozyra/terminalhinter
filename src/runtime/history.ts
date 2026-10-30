@@ -115,6 +115,19 @@ export const topValues = (context: string, limit: number): { value: string; scor
     .sort((a, b) => b.score - a.score)
     .slice(0, limit);
 
+// The commands you use most, judged by the arguments recorded for them.
+export const topCommands = (limit: number): string[] => {
+  const totals = new Map<string, number>();
+  for (const [k, score] of scores) {
+    const command = k.slice(0, k.indexOf("\u0000")).split(" ")[0];
+    if (command) totals.set(command, (totals.get(command) ?? 0) + score);
+  }
+  return [...totals.entries()]
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, limit)
+    .map(([command]) => command);
+};
+
 // for tests
 export const resetHistory = (entries: Use[] = [], now = Date.now()) => {
   uses = entries;

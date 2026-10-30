@@ -19,7 +19,7 @@ import log from "../utils/log.js";
 import { specResourcesPath } from "../utils/constants.js";
 import { endTiming, startTiming } from "../utils/performance.js";
 import { clearImplicitGeneratorState } from "./generatorCache.js";
-import { loadHistory, recordCommand } from "./history.js";
+import { loadHistory, recordCommand, topCommands } from "./history.js";
 import { jumpCommands, jumpSuggestions } from "./jumps.js";
 import { augmentSpec, enrichSuggestions } from "./project.js";
 import { loadCustomSpecs } from "./customSpecs.js";
@@ -74,6 +74,21 @@ const loadSpec = async (cmd: CommandToken[], signal?: AbortSignal): Promise<Fig.
     const spec = augmentSpec(rootToken.token, (await import(importPath)).default);
     loadedSpecs[rootToken.token] = spec;
     return spec;
+  }
+};
+
+// Loads the specs of the commands typed most, right after startup, so the first `git ` of a new tab does not wait
+// for the spec file to be read and compiled. The commands you ran most often come first.
+export const warmSpecs = async (): Promise<void> => {
+  const common = ["git", "cd", "ls", "npm", "pnpm", "yarn", "npx", "docker", "brew"];
+  const used = topCommands(10);
+  for (const name of [...new Set([...used, ...common])]) {
+    if (!specSet[name] || loadedSpecs[name]) continue;
+    try {
+      await loadSpec([{ token: name, tokenLength: name.length, complete: true, isOption: false }]);
+    } catch (e) {
+      log.debug({ msg: "could not warm spec", name, e: (e as Error).message });
+    }
   }
 };
 
