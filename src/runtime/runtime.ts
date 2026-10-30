@@ -21,6 +21,7 @@ import { endTiming, startTiming } from "../utils/performance.js";
 import { clearImplicitGeneratorState } from "./generatorCache.js";
 import { loadHistory, recordCommand } from "./history.js";
 import { jumpCommands, jumpSuggestions } from "./jumps.js";
+import { augmentSpec, enrichSuggestions } from "./project.js";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any -- recursive type, setting as any
 const specSet: any = {};
@@ -68,7 +69,7 @@ const loadSpec = async (cmd: CommandToken[], signal?: AbortSignal): Promise<Fig.
     signal?.throwIfAborted();
     const specPath = specSet[rootToken.token];
     const importPath = path.isAbsolute(specPath) ? pathToFileURL(specPath).href : specPath;
-    const spec = (await import(importPath)).default;
+    const spec = augmentSpec(rootToken.token, (await import(importPath)).default);
     loadedSpecs[rootToken.token] = spec;
     return spec;
   }
@@ -155,6 +156,7 @@ export const getSuggestions = async (cmd: string, cwd: string, shell: Shell, sig
     }
     if (result == null) return;
     if (result.suggestions.length == 0 && !result.argumentDescription) return;
+    await enrichSuggestions(root, result.suggestions, cwd);
 
     const activeToken = lastCommand?.complete ? undefined : lastCommand;
     // a fully typed directory like `websites/` lets the UI offer "run it here" as the first entry, like Kiro/Fig did
@@ -345,6 +347,13 @@ const runArg = async (
   }
 
   const activeToken = tokens[0];
+  // a known option in the middle of a variadic argument (`turbo run build --filter web`) is still an option
+  if (activeToken.isOption && args.at(0)?.isVariadic && !args.every((a) => a.isOptional)) {
+    const option = getOption(activeToken, persistentOptions.concat(subcommand.options ?? []));
+    if (option != null) {
+      return runOption(tokens, allTokens, option, subcommand, cwd, shell, persistentOptions, acceptedTokens, signal);
+    }
+  }
   if (args.every((a) => a.isOptional)) {
     if (activeToken.isOption) {
       const option = getOption(activeToken, persistentOptions.concat(subcommand.options ?? []));

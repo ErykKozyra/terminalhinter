@@ -1,0 +1,270 @@
+// Copyright (c) 2026 Eryk Kozyra.
+// Licensed under the MIT License.
+
+// Project awareness: knows the packages of a pnpm / npm / yarn workspace, the tasks of a Turborepo, and adds the age
+// and subject of the last commit to git branch suggestions. Works by patching the upstream command specs after they
+// load, so the rest of the runtime does not change.
+
+import fs from "node:fs";
+import fsAsync from "node:fs/promises";
+import path from "node:path";
+import { execFile } from "node:child_process";
+
+import { Suggestion } from "./model.js";
+import { SuggestionIcons } from "./suggestion.js";
+import log from "../utils/log.js";
+
+const findUp = (start: string, names: string[]): string | undefined => {
+  let dir = path.resolve(start);
+  for (;;) {
+    for (const name of names) {
+      const candidate = path.join(dir, name);
+      if (fs.existsSync(candidate)) return candidate;
+    }
+    const parent = path.dirname(dir);
+    if (parent === dir) return;
+    dir = parent;
+  }
+};
+
+const readJson = async (file: string): Promise<Record<string, unknown> | undefined> => {
+  try {
+    // turbo.json allows comments; strip line and block comments that are not inside strings
+    const text = (await fsAsync.readFile(file, "utf8")).replace(/("(?:\\.|[^"\\])*")|\/\/[^\n]*|\/\*[\s\S]*?\*\//g, (m, str) => str ?? "");
+    return JSON.parse(text) as Record<string, unknown>;
+  } catch {
+    return;
+  }
+};
+
+// pnpm-workspace.yaml is read line by line: only the `packages:` list matters here
+const pnpmWorkspaceGlobs = async (file: string): Promise<string[]> => {
+  const text = await fsAsync.readFile(file, "utf8").catch(() => "");
+  const globs: string[] = [];
+  let inPackages = false;
+  for (const line of text.split("\n")) {
+    if (/^packages\s*:/.test(line)) {
+      inPackages = true;
+      continue;
+    }
+    if (inPackages && /^\S/.test(line)) break;
+    const item = line.match(/^\s*-\s*['"]?([^'"#]+?)['"]?\s*(?:#.*)?$/);
+    if (inPackages && item) globs.push(item[1].trim());
+  }
+  return globs;
+};
+
+const expandGlob = async (root: string, glob: string): Promise<string[]> => {
+  if (glob.startsWith("!")) return [];
+  const parts = glob.replace(/\/+$/, "").split("/");
+  const walk = async (dir: string, index: number): Promise<string[]> => {
+    if (index === parts.length) return [dir];
+    const part = parts.at(index) ?? "";
+    if (part === "**") {
+      const here = await walk(dir, index + 1);
+      if (index > 4) return here;
+      const children = await fsAsync.readdir(dir, { withFileTypes: true }).catch(() => []);
+      const deeper = await Promise.all(
+        children.filter((c) => c.isDirectory() && c.name !== "node_modules" && !c.name.startsWith(".")).map((c) => walk(path.join(dir, c.name), index)),
+      );
+      return here.concat(deeper.flat());
+    }
+    if (part.includes("*")) {
+      const pattern = new RegExp("^" + part.replace(/[.+?^${}()|[\]\\]/g, "\\$&").replace(/\*/g, ".*") + "$");
+      const children = await fsAsync.readdir(dir, { withFileTypes: true }).catch(() => []);
+      const matched = await Promise.all(
+        children.filter((c) => c.isDirectory() && c.name !== "node_modules" && pattern.test(c.name)).map((c) => walk(path.join(dir, c.name), index + 1)),
+      );
+      return matched.flat();
+    }
+    return walk(path.join(dir, part), index + 1);
+  };
+  return walk(root, 0);
+};
+
+export type WorkspacePackage = { name: string; dir: string };
+
+export const workspacePackages = async (cwd: string): Promise<WorkspacePackage[]> => {
+  const marker = findUp(cwd, ["pnpm-workspace.yaml"]) ?? findUp(cwd, ["package.json"]);
+  if (marker == null) return [];
+  let root = path.dirname(marker);
+  let globs: string[] = [];
+  if (marker.endsWith("pnpm-workspace.yaml")) {
+    globs = await pnpmWorkspaceGlobs(marker);
+  } else {
+    // the nearest package.json may be a workspace member: climb to the one that declares workspaces
+    let pkgFile: string | undefined = marker;
+    while (pkgFile != null) {
+      const pkg = await readJson(pkgFile);
+      const workspaces = pkg?.workspaces;
+      const list = Array.isArray(workspaces) ? workspaces : (workspaces as { packages?: unknown } | undefined)?.packages;
+      if (Array.isArray(list)) {
+        globs = list.filter((g): g is string => typeof g === "string");
+        root = path.dirname(pkgFile);
+        break;
+      }
+      const parent = path.dirname(path.dirname(pkgFile));
+      pkgFile = parent === path.dirname(pkgFile) ? undefined : findUp(parent, ["package.json"]);
+    }
+  }
+  const dirs = (await Promise.all(globs.map((g) => expandGlob(root, g)))).flat();
+  const packages = await Promise.all(
+    [...new Set(dirs)].map(async (dir) => {
+      const pkg = await readJson(path.join(dir, "package.json"));
+      return typeof pkg?.name === "string" ? { name: pkg.name, dir } : undefined;
+    }),
+  );
+  return packages.filter((p): p is WorkspacePackage => p != null).sort((a, b) => a.name.localeCompare(b.name));
+};
+
+export const turboTasks = async (cwd: string): Promise<Fig.Suggestion[]> => {
+  const file = findUp(cwd, ["turbo.json", "turbo.jsonc"]);
+  if (file == null) return [];
+  const config = await readJson(file);
+  // turbo 2 calls them `tasks`, turbo 1 `pipeline`
+  const tasks = (config?.tasks ?? config?.pipeline) as
+    | Record<string, { dependsOn?: string[]; outputs?: string[]; cache?: boolean; persistent?: boolean }>
+    | undefined;
+  if (tasks == null || typeof tasks !== "object") return [];
+  const seen = new Map<string, string>();
+  for (const [key, task] of Object.entries(tasks)) {
+    const name = key.includes("#") ? key.slice(key.indexOf("#") + 1) : key;
+    if (seen.has(name)) continue;
+    const notes = [
+      task?.persistent ? "long-running" : undefined,
+      task?.cache === false ? "not cached" : undefined,
+      task?.dependsOn?.length ? `after ${task.dependsOn.join(", ")}` : undefined,
+    ].filter(Boolean);
+    seen.set(name, notes.length > 0 ? `turbo task: ${notes.join(", ")}` : "turbo task");
+  }
+  return [...seen.entries()].map(([name, description]) => ({ name, description, priority: 75 }));
+};
+
+const workspaceGenerator: Fig.Generator = {
+  // scoped names like @scope/web contain a slash; match on the whole word, not on the part after the slash
+  getQueryTerm: (token: string) => token,
+  custom: async (_tokens, _execute, context) => {
+    const cwd = context.currentWorkingDirectory;
+    const packages = await workspacePackages(cwd);
+    return packages.map((p) => ({ name: p.name, description: `workspace package · ${path.relative(cwd, p.dir) || "."}`, priority: 75 }));
+  },
+};
+
+const turboTaskGenerator: Fig.Generator = {
+  custom: async (_tokens, _execute, context) => turboTasks(context.currentWorkingDirectory),
+};
+
+type SpecNode = { name?: Fig.SingleOrArray<string>; options?: SpecNode[]; subcommands?: SpecNode[]; args?: Fig.SingleOrArray<Fig.Arg> };
+
+const namesOf = (node: SpecNode): string[] => (node.name == null ? [] : Array.isArray(node.name) ? node.name : [node.name]);
+
+const walk = (node: SpecNode, visit: (n: SpecNode, kind: "option" | "subcommand") => void) => {
+  for (const option of node.options ?? []) visit(option, "option");
+  for (const sub of node.subcommands ?? []) {
+    visit(sub, "subcommand");
+    walk(sub, visit);
+  }
+};
+
+const addGenerator = (node: SpecNode, generator: Fig.Generator) => {
+  const first = Array.isArray(node.args) ? node.args.at(0) : node.args;
+  const arg: Fig.Arg = first ?? { name: "package" };
+  const existing = arg.generators == null ? [] : Array.isArray(arg.generators) ? arg.generators : [arg.generators];
+  if (existing.includes(generator)) return;
+  (arg as { generators?: Fig.Generator[] }).generators = [generator, ...existing];
+  if (first == null) node.args = arg;
+};
+
+const patched = new WeakSet<object>();
+
+export const augmentSpec = <T extends Fig.Spec | undefined>(command: string, spec: T): T => {
+  if (spec == null || typeof spec !== "object" || patched.has(spec)) return spec;
+  patched.add(spec);
+  const root = spec as unknown as SpecNode;
+  const optionNames: Record<string, string[]> = { pnpm: ["--filter", "-F"], turbo: ["--filter", "-F", "--scope"], npm: ["--workspace", "-w"] };
+  const wanted = optionNames[command];
+  try {
+    if (wanted != null) {
+      const visit = (node: SpecNode, kind: "option" | "subcommand") => {
+        if (kind === "option" && namesOf(node).some((n) => wanted.includes(n))) addGenerator(node, workspaceGenerator);
+      };
+      for (const option of root.options ?? []) visit(option, "option");
+      walk(root, visit);
+    }
+    // the upstream specs only know --filter on a few pnpm subcommands and not at all for turbo 2;
+    // `pnpm --filter web dev` and `turbo run build --filter web` need it
+    const filterOption = (): SpecNode =>
+      ({
+        name: ["--filter", "-F"],
+        description: "Run only in the matching workspace packages",
+        isPersistent: true,
+        args: { name: "package", generators: [workspaceGenerator] },
+      }) as SpecNode;
+    const ensureFilter = (node: SpecNode | undefined) => {
+      if (node != null && !(node.options ?? []).some((o) => namesOf(o).includes("--filter"))) node.options = [...(node.options ?? []), filterOption()];
+    };
+    if (command === "pnpm") ensureFilter(root);
+    if (command === "turbo") {
+      ensureFilter(root);
+      ensureFilter(root.subcommands?.find((s) => namesOf(s).includes("run")));
+    }
+    if (command === "yarn") {
+      const workspace = root.subcommands?.find((s) => namesOf(s).includes("workspace"));
+      if (workspace != null) addGenerator(workspace, workspaceGenerator);
+    }
+    if (command === "turbo") {
+      const run = root.subcommands?.find((s) => namesOf(s).includes("run"));
+      if (run != null) {
+        const arg = (Array.isArray(run.args) ? run.args.at(0) : run.args) ?? { name: "tasks", isVariadic: true };
+        (arg as { generators?: Fig.Generator }).generators = turboTaskGenerator; // the upstream one only knows turbo 1
+        run.args = arg;
+      }
+    }
+  } catch (e) {
+    log.debug({ msg: "could not add project suggestions to spec", command, e: (e as Error).message });
+  }
+  return spec;
+};
+
+// git: "Remote branch" becomes "Remote branch · 2 days ago · fix login redirect"
+const branchCache = new Map<string, { at: number; info: Map<string, string> }>();
+
+const branchInfo = (cwd: string): Promise<Map<string, string>> => {
+  const cached = branchCache.get(cwd);
+  if (cached != null && Date.now() - cached.at < 10_000) return Promise.resolve(cached.info);
+  return new Promise((resolve) => {
+    execFile(
+      "git",
+      ["for-each-ref", "--format=%(refname:short)%09%(committerdate:relative)%09%(contents:subject)", "refs/heads", "refs/remotes"],
+      { cwd, timeout: 2000, maxBuffer: 4 * 1024 * 1024 },
+      (error, stdout) => {
+        const info = new Map<string, string>();
+        if (error == null) {
+          for (const line of stdout.split("\n")) {
+            const [ref, age, subject] = line.split("\t");
+            if (!ref || !age) continue;
+            const note = subject ? `${age} · ${subject}` : age;
+            info.set(ref, note);
+            const local = ref.replace(/^[^/]+\//, "");
+            if (ref !== local && !info.has(local)) info.set(local, note);
+          }
+        }
+        branchCache.set(cwd, { at: Date.now(), info });
+        resolve(info);
+      },
+    );
+  });
+};
+
+export const enrichSuggestions = async (command: string, suggestions: Suggestion[], cwd: string): Promise<void> => {
+  if (command !== "git" || suggestions.length === 0) return;
+  const info = await branchInfo(cwd);
+  if (info.size === 0) return;
+  for (const s of suggestions) {
+    if (s.type === "subcommand" || s.type === "option" || s.icon === SuggestionIcons.Subcommand || s.icon === SuggestionIcons.Option || s.name.startsWith("-"))
+      continue;
+    const note = info.get(s.name);
+    if (note == null) continue;
+    s.description = s.description ? `${s.description} · ${note}` : note;
+  }
+};
