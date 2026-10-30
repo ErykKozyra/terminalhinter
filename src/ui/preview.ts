@@ -5,6 +5,7 @@
 
 import type { ISTerm } from "../isterm/pty.js";
 import { Suggestion, SuggestionBlob } from "../runtime/model.js";
+import chalk from "chalk";
 import { Shell } from "../utils/shell.js";
 import { SuggestionManager } from "./suggestionManager.js";
 
@@ -37,6 +38,8 @@ export const renderPreview = async (cols = 80): Promise<string[]> => {
   } as unknown as ISTerm;
   const manager = new SuggestionManager(terminal, Shell.Zsh, Promise.resolve({ getSuggestions: async () => sampleBlob }));
   await manager.exec();
-  const indent = 2;
-  return manager.render("below", indent + previewCommand.length).map((row) => " ".repeat(row.startX) + row.data);
+  // a made-up prompt above the box, so it reads as an example and not as suggestions for what you are doing now
+  const prompt = "  ➜ ";
+  const rows = manager.render("below", prompt.length + previewCommand.length).map((row) => " ".repeat(row.startX) + row.data);
+  return [chalk.dim("  Preview, as if you typed:"), prompt + previewCommand, ...rows];
 };

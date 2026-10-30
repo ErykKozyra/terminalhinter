@@ -23,10 +23,13 @@ import { loadHistory, recordCommand } from "./history.js";
 import { jumpCommands, jumpSuggestions } from "./jumps.js";
 import { augmentSpec, enrichSuggestions } from "./project.js";
 import { loadCustomSpecs } from "./customSpecs.js";
+import { thintSpec } from "./thintSpec.js";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any -- recursive type, setting as any
 const specSet: any = {};
 let specNames: string[] = [];
+// thint's own spec and the user's YAML specs; kept when a spec set from ~/.fig replaces the list
+let ownSpecNames: string[] = [];
 const ignoredSpecs = ["gcloud", "az", "aws"];
 const speclist = figSpecList.filter((spec: string) => !ignoredSpecs.some((name) => spec === name || spec.startsWith(name + "/")));
 const versionedSpeclist = figVersionedSpeclist.filter((spec: string) => !ignoredSpecs.some((name) => spec.startsWith(name)));
@@ -48,9 +51,7 @@ function loadSpecsSet(speclist: string[], versionedSpeclist: string[], specsPath
       }
     });
   });
-  specNames = Object.keys(specSet)
-    .filter((spec) => !spec.startsWith("@") && spec != "-")
-    .sort();
+  specNames = [...new Set([...Object.keys(specSet).filter((spec) => !spec.startsWith("@") && spec != "-"), ...ownSpecNames])].sort();
 }
 
 loadSpecsSet(speclist as string[], versionedSpeclist, specResourcesPath);
@@ -91,9 +92,12 @@ const lazyLoadSpecLocation = async (location: Fig.SpecLocation, signal?: AbortSi
 
 // specs from ~/.config/terminalhinter/specs (YAML or JSON) win over the built-in ones with the same name
 const loadUserSpecs = () => {
-  const { specs } = loadCustomSpecs();
+  const { specs: custom } = loadCustomSpecs();
+  // terminalhinter's own commands first, so a user file with the same name still wins
+  const specs = new Map<string, Fig.Spec>([["thint", thintSpec], ["terminalhinter", { ...thintSpec, name: "terminalhinter" }], ...custom]);
   for (const [name, spec] of specs) loadedSpecs[name] = spec;
-  if (specs.size > 0) specNames = [...new Set([...specNames, ...specs.keys()])].sort();
+  ownSpecNames = [...specs.keys()];
+  specNames = [...new Set([...specNames, ...ownSpecNames])].sort();
 };
 
 export const loadLocalSpecsSet = async () => {
