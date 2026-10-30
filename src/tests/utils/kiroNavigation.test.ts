@@ -153,3 +153,30 @@ test("after a lone dash, arrow down still picks from the list", async () => {
   expect(manager.update(press("return"))).toBe(true);
   expect(writes).toEqual(["b "]);
 });
+
+test("up on an untouched list goes to shell history, after moving in it up stays in the list", async () => {
+  const blob: SuggestionBlob = {
+    suggestions: [
+      { name: "status", allNames: ["status"], icon: "📦", priority: 50 },
+      { name: "stash", allNames: ["stash"], icon: "📦", priority: 50 },
+    ],
+    activeToken: { token: "st", tokenLength: 2, complete: false, isOption: false },
+  };
+  const { manager } = setup(blob);
+  await manager.exec();
+  expect(manager.update(press("up"))).toBe(false);
+  expect(manager.update(press("down"))).toBe(true);
+  expect(manager.update(press("up"))).toBe(true);
+  expect(manager.update(press("up"))).toBe(true);
+});
+
+test("a word typed in full whose only suggestion is itself shows no list", async () => {
+  const { manager } = setup({
+    suggestions: [{ name: "pwd", allNames: ["pwd"], icon: "📦", priority: 50 }],
+    activeToken: { token: "pwd", tokenLength: 3, complete: false, isOption: false },
+  });
+  await manager.exec();
+  expect(manager.render("below", 3)).toEqual([]);
+  expect(manager.update(press("up"))).toBe(false);
+  expect(manager.update(press("return"))).toBe(false);
+});

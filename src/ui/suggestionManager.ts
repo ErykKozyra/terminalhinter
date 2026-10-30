@@ -54,6 +54,7 @@ export class SuggestionManager {
   #runtime?: Promise<SuggestionRuntime>;
   #requestVersion = 0;
   #scrollTop = 0;
+  #navigated = false; // the selection was moved with the arrows since this list appeared
 
   constructor(terminal: ISTerm, shell: Shell, runtime?: Promise<SuggestionRuntime>) {
     this.#term = terminal;
@@ -149,6 +150,7 @@ export class SuggestionManager {
   // just entered) the first entry is preselected and Enter accepts it, which is how Kiro/Fig behave.
   private _resetSelection() {
     this.#scrollTop = 0;
+    this.#navigated = false;
     this.#activeSuggestionIdx = this._baseline();
   }
 
@@ -161,7 +163,10 @@ export class SuggestionManager {
 
   private _items(): Suggestion[] {
     if (!this.#suggestBlob) return [];
-    const { suggestions, isPathContext, rootCommand } = this.#suggestBlob;
+    const { suggestions, isPathContext, rootCommand, activeToken } = this.#suggestBlob;
+    // a word typed in full whose only suggestion is itself, with nothing to add (e.g. `pwd` recalled from history)
+    const only = suggestions.length === 1 ? suggestions[0] : undefined;
+    if (!isPathContext && only != null && activeToken?.complete === false && only.name === activeToken.token && !only.description && !only.args) return [];
     if (!isPathContext || suggestions.length === 0) return suggestions;
     const entersDirectory = rootCommand != null && ["cd", "pushd", "z", "zi", "j"].includes(rootCommand);
     const executeItem: Suggestion = {
@@ -356,9 +361,15 @@ export class SuggestionManager {
       this.#suggestBlob = undefined;
       this.#hideSuggestions = true;
     } else if (name == prevKey && shift == !!prevShift && ctrl == !!prevCtrl) {
-      if (this.#activeSuggestionIdx < 0) return false; // nothing selected, let the shell walk its history
+      // nothing selected, or the list was never moved: let the shell walk its history, so Up keeps going back
+      // through older commands even when a recalled command opened the list. Once you moved in the list, Up at the
+      // top stays there instead of replacing the line.
+      if (this.#activeSuggestionIdx < 0 || items.length === 0) return false;
+      if (!this.#navigated && this.#activeSuggestionIdx <= this._baseline()) return false;
       this.#activeSuggestionIdx = Math.max(this.#activeSuggestionIdx - 1, this._baseline());
     } else if (name == nextKey && shift == !!nextShift && ctrl == !!nextCtrl) {
+      if (items.length === 0) return false;
+      this.#navigated = true;
       this.#activeSuggestionIdx = Math.min(this.#activeSuggestionIdx + 1, items.length - 1);
     } else if (name == "return" && !shift && !ctrl) {
       return this._handleEnter(items);
