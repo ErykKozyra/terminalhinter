@@ -59,7 +59,8 @@
     "toml": "^3.0.0",
     "uuid": "^11.1.0",
     "which": "^4.0.0",
-    "wrap-ansi": "^8.1.0"
+    "wrap-ansi": "^8.1.0",
+    "yaml": "2.9.0"
   },
   "devDependencies": {
     "@microsoft/tui-test": "^0.1.0",

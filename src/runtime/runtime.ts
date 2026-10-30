@@ -22,6 +22,7 @@ import { clearImplicitGeneratorState } from "./generatorCache.js";
 import { loadHistory, recordCommand } from "./history.js";
 import { jumpCommands, jumpSuggestions } from "./jumps.js";
 import { augmentSpec, enrichSuggestions } from "./project.js";
+import { loadCustomSpecs } from "./customSpecs.js";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any -- recursive type, setting as any
 const specSet: any = {};
@@ -88,7 +89,15 @@ const lazyLoadSpecLocation = async (location: Fig.SpecLocation, signal?: AbortSi
   return; //TODO: implement spec location loading
 };
 
+// specs from ~/.config/terminalhinter/specs (YAML or JSON) win over the built-in ones with the same name
+const loadUserSpecs = () => {
+  const { specs } = loadCustomSpecs();
+  for (const [name, spec] of specs) loadedSpecs[name] = spec;
+  if (specs.size > 0) specNames = [...new Set([...specNames, ...specs.keys()])].sort();
+};
+
 export const loadLocalSpecsSet = async () => {
+  loadUserSpecs();
   const specsPath = getConfig().specs.path;
   await Promise.allSettled(
     specsPath.map((specPath) => {
