@@ -33,7 +33,8 @@ const binaryFolder = (): string | undefined => {
   return name === "thint" || name === "terminalhinter" ? path.dirname(process.execPath) : undefined;
 };
 
-const shellPath = (folder: string, home: string) => (folder.startsWith(home + path.sep) ? "$HOME" + folder.slice(home.length) : folder);
+const shellPath = (folder: string, home: string) =>
+  folder.startsWith(home + "/") || folder.startsWith(home + path.sep) ? "$HOME" + folder.slice(home.length) : folder;
 
 export const startupBlock = (shell: Shell, folder = binaryFolder(), home = os.homedir()): string => {
   const lines = [beginMark];

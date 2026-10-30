@@ -19,4 +19,6 @@ module.exports = {
     ],
   },
   testPathIgnorePatterns: ["/node_modules/", "src/tests/ui/", ".tui-test/"],
+  // on GitHub, failures also show up as annotations on the run page
+  reporters: process.env.GITHUB_ACTIONS ? ["default", ["github-actions", { silent: false }]] : ["default"],
 };
