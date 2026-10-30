@@ -8,6 +8,7 @@ import chalk from "chalk";
 import { Shell } from "../utils/shell.js";
 import log from "../utils/log.js";
 import { getConfig } from "../utils/config.js";
+import { activeTheme } from "./theme.js";
 import { calculateReplacement, applyReplacement } from "../runtime/replacement.js";
 import { getCommandCacheKey } from "../runtime/parser.js";
 import { initializeRuntime } from "../runtime/initialize.js";
@@ -29,16 +30,6 @@ const NF = {
   star: "\uf005",
   tag: "\uf02b",
   alias: "\uf0c1",
-};
-const ICON_COLORS = {
-  execute: "#E5484D",
-  folder: "#4C9AFF",
-  file: "#8B95A7",
-  subcommand: "#8E5CF5",
-  option: "#E8862E",
-  star: "#D9A21B",
-  value: "#2F9E6E",
-  alias: "#22B8CF",
 };
 // border top + items + separator + footer + border bottom, plus one line for an unhandled newline at the end of the command
 export const getMaxLines = () => getMaxSuggestions() + 5;
@@ -198,8 +189,10 @@ export class SuggestionManager {
   // from half blocks; "nerd" uses Nerd Font glyphs and rounded pills for terminals that have that font.
   private _icon(suggestion: Suggestion, selected: boolean): string {
     const style = getConfig().iconStyle;
-    // on the selection bar a colored mark would fight the bar color, so plain marks turn white there
-    const tint = (color: string) => (selected && style === "plain" ? "#FFFFFF" : color);
+    const theme = activeTheme();
+    const ICON_COLORS = theme.icons;
+    // on the selection bar a colored mark would fight the bar color, so plain marks take the selection text color
+    const tint = (color: string) => (selected && style === "plain" ? theme.selectionText : color);
     const badge = (color: string, mark: string) => {
       const inner = chalk.bgHex(color).hex("#FFFFFF").bold(mark);
       if (style === "nerd") return chalk.hex(color)(NF.capLeft) + inner + chalk.hex(color)(NF.capRight) + " ";
@@ -251,23 +244,25 @@ export class SuggestionManager {
     const used = wcswidth(shownName) + (args ? 1 + wcswidth(args) : 0);
 
     const matchLength = partial.length > 0 && shownName.toLowerCase().startsWith(partial.toLowerCase()) ? partial.length : 0;
+    const theme = activeTheme();
     const styledName =
       matchLength > 0
-        ? chalk.bold.hex("#F5C451")(shownName.slice(0, matchLength)) + chalk.bold(shownName.slice(matchLength))
+        ? chalk.bold.hex(theme.match)(shownName.slice(0, matchLength)) + chalk.bold(shownName.slice(matchLength))
         : selected
         ? chalk.bold(shownName)
         : shownName;
-    const styledArgs = args ? " " + chalk.hex(selected ? "#C7D2FE" : "#7F8796")(args) : "";
+    const styledArgs = args ? " " + chalk.hex(selected ? theme.argsSelected : theme.args)(args) : "";
 
     const row = " " + this._icon(suggestion, selected) + styledName + styledArgs + " ".repeat(Math.max(textWidth - used, 0)) + " ";
-    return selected ? chalk.bgHex(getConfig().activeSuggestionBackgroundColor)(row) : row;
+    return selected ? chalk.bgHex(theme.selection).hex(theme.selectionText)(row) : row;
   }
 
   private _renderFooter(text: string, counter: string, innerWidth: number): string {
     const counterWidth = counter ? wcswidth(counter) + 1 : 0;
     const [shown] = fitText(text, innerWidth - 2 - counterWidth);
     const gap = innerWidth - 2 - wcswidth(shown) - counterWidth;
-    return " " + chalk.italic.hex("#9AA3B2")(shown) + " ".repeat(Math.max(gap, 0)) + (counter ? " " + chalk.hex("#6B7280")(counter) : "") + " ";
+    const theme = activeTheme();
+    return " " + chalk.italic.hex(theme.footer)(shown) + " ".repeat(Math.max(gap, 0)) + (counter ? " " + chalk.hex(theme.counter)(counter) : "") + " ";
   }
   async exec(): Promise<boolean> {
     return await this._loadSuggestions();
@@ -283,7 +278,8 @@ export class SuggestionManager {
     if (this.#activeSuggestionIdx >= items.length) this.#activeSuggestionIdx = items.length - 1;
 
     const cols = this.#term.cols;
-    const border = (text: string) => chalk.hex(getConfig().borderColor)(text);
+    const borderColor = activeTheme().border;
+    const border = (text: string) => chalk.hex(borderColor)(text);
     const rounded = getConfig().boxBorderStyle === "rounded";
     const [tl, tr, bl, br] = rounded ? ["╭", "╮", "╰", "╯"] : ["┌", "┐", "└", "┘"];
 

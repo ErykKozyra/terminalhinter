@@ -14,6 +14,8 @@ import init from "./commands/init.js";
 import specs from "./commands/specs/root.js";
 import doctor from "./commands/doctor.js";
 import bookmark from "./commands/bookmark.js";
+import theme from "./commands/theme.js";
+import config from "./commands/config.js";
 import { action, supportedShells } from "./commands/root.js";
 import { getVersion } from "./utils/version.js";
 
@@ -40,6 +42,8 @@ program
 program.addCommand(init);
 program.addCommand(reinit);
 program.addCommand(bookmark);
+program.addCommand(theme);
+program.addCommand(config);
 program.addCommand(doctor);
 program.addCommand(specs);
 program.addCommand(complete);

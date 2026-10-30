@@ -21,6 +21,8 @@ type Binding = {
 
 type BoxBorderStyle = "square" | "rounded";
 type IconStyle = "plain" | "badge" | "nerd";
+export const themeNameList = ["thint", "light", "nord", "dracula"] as const;
+type ThemeName = (typeof themeNameList)[number];
 
 type Config = {
   bindings: {
@@ -35,9 +37,10 @@ type Config = {
   useAliases: boolean;
   useNerdFont: boolean;
   maxSuggestions?: number;
-  activeSuggestionBackgroundColor: string;
+  activeSuggestionBackgroundColor?: string;
   boxBorderStyle: BoxBorderStyle;
-  borderColor: string;
+  borderColor?: string;
+  theme: ThemeName;
   enterAcceptsSuggestion: boolean;
   iconStyle: IconStyle;
   fuzzyMatching: boolean;
@@ -60,7 +63,7 @@ const specPathsSchema: JSONSchemaType<string[]> = {
   nullable: true,
 };
 
-const configSchema = {
+export const configSchema = {
   type: "object",
   nullable: true,
   properties: {
@@ -100,7 +103,6 @@ const configSchema = {
       type: "string",
       nullable: true,
       pattern: "^#[0-9A-Fa-f]{6}$",
-      default: "#2F5FD0",
     },
     boxBorderStyle: {
       type: "string",
@@ -112,7 +114,12 @@ const configSchema = {
       type: "string",
       nullable: true,
       pattern: "^#[0-9A-Fa-f]{6}$",
-      default: "#4B5263",
+    },
+    theme: {
+      type: "string",
+      nullable: true,
+      enum: [...themeNameList],
+      default: "thint",
     },
     enterAcceptsSuggestion: {
       type: "boolean",
@@ -135,9 +142,14 @@ const configSchema = {
 };
 
 const rcFile = ".terminalhinterrc";
-const rcPath = path.join(os.homedir(), rcFile);
+export const rcPath = path.join(os.homedir(), rcFile);
 
-const configPaths = [rcPath, xdgConfigPath];
+export const configPaths = [rcPath, xdgConfigPath];
+
+// `thint theme` and `thint init` preview a setting without writing it
+export const overrideConfig = (patch: Partial<Config>) => {
+  globalConfig = { ...globalConfig, ...patch };
+};
 
 let globalConfig: Config = {
   bindings: {
@@ -151,9 +163,8 @@ let globalConfig: Config = {
   },
   useAliases: true,
   useNerdFont: false,
-  activeSuggestionBackgroundColor: "#2F5FD0",
   boxBorderStyle: "rounded",
-  borderColor: "#4B5263",
+  theme: "thint",
   enterAcceptsSuggestion: true,
   iconStyle: "plain",
   fuzzyMatching: true,
@@ -191,9 +202,10 @@ export const loadConfig = async (_program?: Command) => {
         useAliases: config.useAliases ?? true,
         useNerdFont: config?.useNerdFont ?? false,
         maxSuggestions: config?.maxSuggestions ?? 6,
-        activeSuggestionBackgroundColor: config?.activeSuggestionBackgroundColor ?? "#2F5FD0",
+        activeSuggestionBackgroundColor: config?.activeSuggestionBackgroundColor,
         boxBorderStyle: config?.boxBorderStyle ?? "rounded",
-        borderColor: config?.borderColor ?? "#4B5263",
+        borderColor: config?.borderColor,
+        theme: config?.theme ?? "thint",
         enterAcceptsSuggestion: config?.enterAcceptsSuggestion ?? true,
         iconStyle: config?.iconStyle ?? (config?.useNerdFont ? "nerd" : "plain"),
         fuzzyMatching: config?.fuzzyMatching ?? true,
