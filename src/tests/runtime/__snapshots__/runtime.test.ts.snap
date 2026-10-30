@@ -974,6 +974,19 @@ exports[`parseCommand provideFolderSuggestion 1`] = `
       "priority": 55,
       "type": "folder",
     },
+    {
+      "allNames": [
+        "scripts",
+      ],
+      "args": undefined,
+      "description": undefined,
+      "hidden": undefined,
+      "icon": "📁",
+      "insertValue": "scripts/",
+      "name": "scripts",
+      "priority": 55,
+      "type": "folder",
+    },
   ],
 }
 `;

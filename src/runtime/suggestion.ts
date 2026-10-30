@@ -188,6 +188,30 @@ const sortSuggestions = (suggestions: Suggestion[], partialCmd: string | undefin
   return sorted;
 };
 
+// True when every character of `needle` appears in `haystack` in order: "icpl" matches "intercars.com.pl".
+export const isSubsequence = (haystack: string, needle: string): boolean => {
+  let at = 0;
+  for (const char of haystack) {
+    if (char === needle[at]) at++;
+    if (at === needle.length) return true;
+  }
+  return needle.length === 0;
+};
+
+// Prefix matches by default ("fuzzy" specs also allow substrings). With fuzzyMatching on, names that start with the
+// same letter and contain the rest of the typed characters in order are kept too; ranking puts them last.
+const matchesName = (name: string, query: string, filterStrategy: FilterStrategy | undefined): boolean => {
+  const lower = name.toLowerCase();
+  if (lower.startsWith(query)) return true;
+  if (filterStrategy === "fuzzy" && lower.includes(query)) return true;
+  if (!getConfig().fuzzyMatching) return false;
+  // leading dashes are ignored, otherwise "--b" would match every option containing a "b"; the first letter must
+  // match, which keeps the list short and is how people abbreviate ("icpl" for intercars.com.pl)
+  const word = lower.replace(/^-+/, "");
+  const typed = query.replace(/^-+/, "");
+  return typed.length >= 2 && word.startsWith(typed[0]) && isSubsequence(word, typed);
+};
+
 function filter<T extends Fig.BaseSuggestion & { name?: Fig.SingleOrArray<string>; type?: Fig.SuggestionType | undefined }>(
   suggestions: T[],
   filterStrategy: FilterStrategy | undefined,
@@ -195,80 +219,30 @@ function filter<T extends Fig.BaseSuggestion & { name?: Fig.SingleOrArray<string
   suggestionType: Fig.SuggestionType | undefined,
 ): Suggestion[] {
   if (!partialCmd) return suggestions.map((s) => toSuggestion(s, undefined, suggestionType)).filter((s) => s != null) as Suggestion[];
-  const normalizedPartialCmd = partialCmd.toLowerCase();
-
-  switch (filterStrategy) {
-    case "fuzzy":
-      return suggestions
-        .map((s) => {
-          if (s.name == null) return;
-          if (s.name instanceof Array) {
-            const matchedName = s.name.find((n) => n.toLowerCase().includes(normalizedPartialCmd));
-            return matchedName != null
-              ? {
-                  name: matchedName,
-                  description: s.description,
-                  icon: getIcon(s.icon, s.type ?? suggestionType),
-                  allNames: s.name,
-                  priority: s.priority ?? 50,
-                  insertValue: s.insertValue,
-                  type: s.type,
-                  hidden: s.hidden,
-                  args: formatArgs(s),
-                }
-              : undefined;
-          }
-          return s.name.toLowerCase().includes(normalizedPartialCmd)
-            ? {
-                name: s.name,
-                description: s.description,
-                icon: getIcon(s.icon, s.type ?? suggestionType),
-                allNames: [s.name],
-                priority: s.priority ?? 50,
-                insertValue: s.insertValue,
-                type: s.type,
-                hidden: s.hidden,
-                args: formatArgs(s),
-              }
-            : undefined;
-        })
-        .filter((s) => s != null) as Suggestion[];
-    default:
-      return suggestions
-        .map((s) => {
-          if (s.name == null) return;
-          if (s.name instanceof Array) {
-            const matchedName = s.name.find((n) => n.toLowerCase().startsWith(normalizedPartialCmd));
-            return matchedName != null
-              ? {
-                  name: matchedName,
-                  description: s.description,
-                  icon: getIcon(s.icon, s.type ?? suggestionType),
-                  allNames: s.name,
-                  insertValue: s.insertValue,
-                  priority: s.priority ?? 50,
-                  type: s.type,
-                  hidden: s.hidden,
-                  args: formatArgs(s),
-                }
-              : undefined;
-          }
-          return s.name.toLowerCase().startsWith(normalizedPartialCmd)
-            ? {
-                name: s.name,
-                description: s.description,
-                icon: getIcon(s.icon, s.type ?? suggestionType),
-                allNames: [s.name],
-                insertValue: s.insertValue,
-                priority: s.priority ?? 50,
-                type: s.type,
-                hidden: s.hidden,
-                args: formatArgs(s),
-              }
-            : undefined;
-        })
-        .filter((s) => s != null) as Suggestion[];
-  }
+  const query = partialCmd.toLowerCase();
+  return suggestions
+    .map((s) => {
+      if (s.name == null) return;
+      const names = s.name instanceof Array ? s.name : [s.name];
+      // prefer the alias that matches best: prefix, then substring, then in-order characters
+      const matchedName =
+        names.find((n) => n.toLowerCase().startsWith(query)) ??
+        names.find((n) => matchesName(n, query, filterStrategy) && n.toLowerCase().includes(query)) ??
+        names.find((n) => matchesName(n, query, filterStrategy));
+      if (matchedName == null) return;
+      return {
+        name: matchedName,
+        description: s.description,
+        icon: getIcon(s.icon, s.type ?? suggestionType),
+        allNames: names,
+        insertValue: s.insertValue,
+        priority: s.priority ?? 50,
+        type: s.type,
+        hidden: s.hidden,
+        args: formatArgs(s),
+      };
+    })
+    .filter((s) => s != null) as Suggestion[];
 }
 
 type FilterStrategy = "fuzzy" | "prefix" | "default";

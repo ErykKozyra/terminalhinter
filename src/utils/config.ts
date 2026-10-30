@@ -40,6 +40,7 @@ type Config = {
   borderColor: string;
   enterAcceptsSuggestion: boolean;
   iconStyle: IconStyle;
+  fuzzyMatching: boolean;
 };
 
 const bindingSchema: JSONSchemaType<Binding> = {
@@ -124,6 +125,11 @@ const configSchema = {
       enum: ["plain", "badge", "nerd"],
       default: "plain",
     },
+    fuzzyMatching: {
+      type: "boolean",
+      nullable: true,
+      default: true,
+    },
   },
   additionalProperties: false,
 };
@@ -150,6 +156,7 @@ let globalConfig: Config = {
   borderColor: "#4B5263",
   enterAcceptsSuggestion: true,
   iconStyle: "plain",
+  fuzzyMatching: true,
 };
 
 export const getConfig = (): Config => globalConfig;
@@ -189,6 +196,7 @@ export const loadConfig = async (_program?: Command) => {
         borderColor: config?.borderColor ?? "#4B5263",
         enterAcceptsSuggestion: config?.enterAcceptsSuggestion ?? true,
         iconStyle: config?.iconStyle ?? (config?.useNerdFont ? "nerd" : "plain"),
+        fuzzyMatching: config?.fuzzyMatching ?? true,
       };
     }
   }

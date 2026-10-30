@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation.
+// Copyright (c) 2026 Eryk Kozyra.
 // Licensed under the MIT License.
 
 // Kiro/Fig style navigation: Enter walks into folders, the ↪ entry runs the command,
