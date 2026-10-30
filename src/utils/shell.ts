@@ -85,9 +85,9 @@ export const shouldFlagLegacyResourcePlugin = (usesLegacyResources: boolean, has
 export const hasLegacyShellConfig = (profile: string, shell: Shell, flagLegacyResourcePlugin: boolean): boolean => {
   const configName = getShellConfigName(shell);
   return (
-    profile.includes("inshellisense shell plugin") ||
-    profile.includes(`~/.inshellisense/${shell}/init.`) ||
-    (flagLegacyResourcePlugin && configName != null && profile.includes(`~/.inshellisense/init/${shell}/${configName}`))
+    profile.includes("terminalhinter shell plugin") ||
+    profile.includes(`~/.terminalhinter/${shell}/init.`) ||
+    (flagLegacyResourcePlugin && configName != null && profile.includes(`~/.terminalhinter/init/${shell}/${configName}`))
   );
 };
 
@@ -134,7 +134,7 @@ const getProfilePath = async (shell: Shell): Promise<string | undefined> => {
 
 // Terminals name their tab after the process in front (VS Code shows `${process}`), and on macOS that name is the
 // executable's file name. A hard link named after the shell gives the same binary the name "zsh" or "bash", so the
-// tab reads like a plain shell instead of "is". Same inode: no extra disk space.
+// tab reads like a plain shell instead of "thint". Same inode: no extra disk space.
 const launcherShells = [Shell.Zsh, Shell.Bash];
 const createShellLaunchers = (binDirectory: string): Map<Shell, string> => {
   const launchers = new Map<Shell, string>();
@@ -321,7 +321,7 @@ const quotePowerShellPath = (filePath: string) => `'${filePath.replaceAll("'", "
 const getShellInitPath = (shell: Shell): string | undefined => {
   const configName = getShellConfigName(shell);
   if (configName == null) return;
-  return usesLegacyResources ? `~/.inshellisense/init/${shell}/${configName}` : path.join(initResourcesPath, shell, configName);
+  return usesLegacyResources ? `~/.terminalhinter/init/${shell}/${configName}` : path.join(initResourcesPath, shell, configName);
 };
 
 export const getShellSourceCommand = (shell: Shell, initFilePath?: string): string => {
@@ -352,13 +352,13 @@ export const getShellSourceCommand = (shell: Shell, initFilePath?: string): stri
 };
 
 export const getShellConfig = (shell: Shell, launcher?: string): string => {
-  const launcherPath = launcher != null ? quotePosixPath(launcher) : "is";
+  const launcherPath = launcher != null ? quotePosixPath(launcher) : "thint";
   switch (shell) {
     case Shell.Zsh:
       // command -v guard: if the binary is gone (e.g. nvm switched the default Node), skip instead of exiting the shell
-      return `if [[ -z "\${ISTERM}" && $- = *i* && \${+ZSH_EXECUTION_STRING} -eq 0 && -z "\${VSCODE_RESOLVING_ENVIRONMENT}" ]] && command -v is >/dev/null 2>&1; then
+      return `if [[ -z "\${ISTERM}" && $- = *i* && \${+ZSH_EXECUTION_STRING} -eq 0 && -z "\${VSCODE_RESOLVING_ENVIRONMENT}" ]] && command -v thint >/dev/null 2>&1; then
   __is_launcher=${launcherPath}
-  [[ -x "$__is_launcher" ]] || __is_launcher=is
+  [[ -x "$__is_launcher" ]] || __is_launcher=thint
   if [[ -o login ]]; then
     "$__is_launcher" -s zsh --login ; exit
   else
@@ -366,9 +366,9 @@ export const getShellConfig = (shell: Shell, launcher?: string): string => {
   fi
 fi`;
     case Shell.Bash:
-      return `if [[ -z "\${ISTERM}" && $- = *i* && $- != *c* && -z "\${VSCODE_RESOLVING_ENVIRONMENT}" ]] && command -v is >/dev/null 2>&1; then
+      return `if [[ -z "\${ISTERM}" && $- = *i* && $- != *c* && -z "\${VSCODE_RESOLVING_ENVIRONMENT}" ]] && command -v thint >/dev/null 2>&1; then
   __is_launcher=${launcherPath}
-  [[ -x "$__is_launcher" ]] || __is_launcher=is
+  [[ -x "$__is_launcher" ]] || __is_launcher=thint
   shopt -q login_shell
   login_shell=$?
   if [ $login_shell -eq 0 ]; then
@@ -383,26 +383,26 @@ fi`;
 $__IsNoExitFlag = ([Environment]::GetCommandLineArgs() | Where-Object { $_ -imatch '^-noe(xit)?$' }).Count -gt 0
 $__IsInteractive = -not $__IsCommandFlag -or ($__IsCommandFlag -and $__IsNoExitFlag)
 if ([string]::IsNullOrEmpty($env:ISTERM) -and [Environment]::UserInteractive -and $__IsInteractive -and [string]::IsNullOrEmpty($env:VSCODE_RESOLVING_ENVIRONMENT)) {
-  is -s ${shell}
+  thint -s ${shell}
   Stop-Process -Id $pid
 }`;
     case Shell.Fish:
       return `if test -z "$ISTERM" && status --is-interactive && test -z "$VSCODE_RESOLVING_ENVIRONMENT"
   if status --is-login
-    is -s fish --login ; kill %self
+    thint -s fish --login ; kill %self
   else
-    is -s fish ; kill %self
+    thint -s fish ; kill %self
   end 
 end`;
     case Shell.Xonsh:
       return `if 'ISTERM' not in \${...} and $XONSH_INTERACTIVE and 'VSCODE_RESOLVING_ENVIRONMENT' not in \${...}:
     if $XONSH_LOGIN:
-        is -s xonsh --login ; exit
+        thint -s xonsh --login ; exit
     else:
-        is -s xonsh ; exit`;
+        thint -s xonsh ; exit`;
     case Shell.Nushell:
       return `if "ISTERM" not-in $env and $nu.is-interactive and "VSCODE_RESOLVING_ENVIRONMENT" not-in $env {
-    if $nu.is-login { is -s nu --login ; exit } else { is -s nu ; exit }
+    if $nu.is-login { thint -s nu --login ; exit } else { thint -s nu ; exit }
 }`;
   }
   return "";

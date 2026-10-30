@@ -22,7 +22,7 @@ const renderLegacyConfigIssues = async (): Promise<number> => {
       process.stderr.write(chalk.red("  - ") + shell + "\n");
     });
     process.stderr.write(
-      chalk.yellow("  remove any inshellisense configurations from your shell profile and re-add them following the instructions in the README\n"),
+      chalk.yellow("  remove any terminalhinter configurations from your shell profile and re-add them following the instructions in the README\n"),
     );
     return 1;
   } else {
@@ -38,7 +38,7 @@ const renderShellConfigIssues = (): number => {
     shellsWithoutConfigs.forEach((shell) => {
       process.stderr.write(chalk.red("  - ") + shell + "\n");
     });
-    process.stderr.write(chalk.yellow("  run " + chalk.underline(chalk.cyan("is init --generate-full-configs")) + " to generate new configurations\n"));
+    process.stderr.write(chalk.yellow("  run " + chalk.underline(chalk.cyan("thint init --generate-full-configs")) + " to generate new configurations\n"));
     return 1;
   } else {
     process.stdout.write(chalk.green("✓") + " all shells have configurations\n");

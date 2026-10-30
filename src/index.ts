@@ -25,13 +25,13 @@ const hiddenOption = (flags: string, description: string) => {
 };
 
 program
-  .name("inshellisense")
-  .description("IDE style command line auto complete")
+  .name("thint")
+  .description("Kiro-style terminal autocomplete (terminalhinter)")
   .version(getVersion(), "-v, --version", "output the current version")
   .action(action(program))
   .option("-l, --login", `start shell as a login shell`)
   .option("-s, --shell <shell>", `shell to use for command execution, supported shells: ${supportedShells}`)
-  .option("-c, --check", `check if shell is in an inshellisense session`)
+  .option("-c, --check", `check if the shell is in a terminalhinter session`)
   .addOption(hiddenOption("-T, --test", "used to make e2e tests reproducible across machines"))
   .option("-V, --verbose", `enable verbose logging`)
   .passThroughOptions();

@@ -128,7 +128,7 @@ const configSchema = {
   additionalProperties: false,
 };
 
-const rcFile = ".inshellisenserc";
+const rcFile = ".terminalhinterrc";
 const rcPath = path.join(os.homedir(), rcFile);
 
 const configPaths = [rcPath, xdgConfigPath];
@@ -163,12 +163,12 @@ export const loadConfig = async (_program?: Command) => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (e: any) {
         // a broken config must never take the terminal down with it: warn and keep the defaults
-        process.stderr.write(`inshellisense: ${configPath} is invalid toml (line ${e.line}, column ${e.column}: ${e.message}), using defaults\n`);
+        process.stderr.write(`terminalhinter: ${configPath} is invalid toml (line ${e.line}, column ${e.column}: ${e.message}), using defaults\n`);
         continue;
       }
       const isValid = ajv.validate(configSchema, config);
       if (!isValid) {
-        process.stderr.write(`inshellisense: ${configPath} is invalid (${ajv.errorsText()}), using defaults\n`);
+        process.stderr.write(`terminalhinter: ${configPath} is invalid (${ajv.errorsText()}), using defaults\n`);
         continue;
       }
       globalConfig = {

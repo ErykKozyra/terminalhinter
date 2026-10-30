@@ -9,7 +9,7 @@ const action = async () => {
 };
 
 const cmd = new Command("uninstall");
-cmd.description(`removes all cache resources and configuration for inshellisense`);
+cmd.description(`removes all cache resources and configuration for terminalhinter`);
 cmd.action(action);
 
 export default cmd;

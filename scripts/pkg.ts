@@ -21,7 +21,7 @@ const BUNDLE_PATH = path.join(PKG_DIR, "index.cjs");
 const SEA_CONFIG_PATH = path.join(PKG_DIR, "sea-config.json");
 const SEA_BLOB_PATH = path.join(PKG_DIR, "sea-prep.blob");
 const PLATFORM_ARCH = `${process.platform}-${process.arch}`;
-const BINARY_NAME = process.platform === "win32" ? `inshellisense-${PLATFORM_ARCH}.exe` : `inshellisense-${PLATFORM_ARCH}`;
+const BINARY_NAME = process.platform === "win32" ? `terminalhinter-${PLATFORM_ARCH}.exe` : `terminalhinter-${PLATFORM_ARCH}`;
 const BINARY_PATH = path.join(PKG_DIR, BINARY_NAME);
 const NODE_VERSION = "22.21.1";
 const ASSET_PATH_SEP = "____";
@@ -158,19 +158,15 @@ const applyBundlePatches = async (): Promise<void> => {
     `var os_1 = require("os");
     var path_1 = require("path");
     var fs_1 = require("fs");
-    var legacy_resources_dir = path_1.join(os_1.homedir(), ".inshellisense");
+    var legacy_resources_dir = path_1.join(os_1.homedir(), ".terminalhinter");
     var xdg_data_home = process.platform !== "win32" ? (path_1.isAbsolute(process.env.XDG_DATA_HOME || "") ? process.env.XDG_DATA_HOME : path_1.join(os_1.homedir(), ".local", "share")) : void 0;
-    var resources_dir = xdg_data_home && !fs_1.existsSync(legacy_resources_dir) ? path_1.join(xdg_data_home, "inshellisense") : legacy_resources_dir;
+    var resources_dir = xdg_data_home && !fs_1.existsSync(legacy_resources_dir) ? path_1.join(xdg_data_home, "terminalhinter") : legacy_resources_dir;
     var dirs = [path_1.join(resources_dir, "native"), "build/Release", "build/Debug", "prebuilds/" + process.platform + "-" + process.arch];`,
     "native locations",
   );
 
   // Patch to handle absolute paths correctly (skip relative prefixes for absolute paths)
-  patchBundle(
-    'var dir = r + "/" + d;',
-    'var dir = path_1.isAbsolute(d) ? d : r + "/" + d;',
-    "absolute path handling",
-  );
+  patchBundle('var dir = r + "/" + d;', 'var dir = path_1.isAbsolute(d) ? d : r + "/" + d;', "absolute path handling");
 
   // Patch worker inline
   const workerCode = await bundleNodePtyWorker();
@@ -222,7 +218,7 @@ const generateSeaConfig = (): void => {
     .filter((file) => file.endsWith(".js"))
     .filter((file) => fs.statSync(path.join(specsDir, file)).isFile())
     .filter((file) => !["gcloud", "az", "aws"].some((name) => file.startsWith(name + path.sep)));
-  
+
   const assets: Record<string, string> = {};
   shellAssets.forEach((file) => (assets[file] = `shell/${file}`));
   nativeAssets.forEach((file) => {
@@ -269,20 +265,20 @@ const injectSeaBlob = async (): Promise<void> => {
 
 const generatePackageJson = (): void => {
   const packageJson = {
-    name: `@microsoft/inshellisense-${PLATFORM_ARCH}`,
+    name: `@erykkozyra/terminalhinter-${PLATFORM_ARCH}`,
     version: getVersion(),
     description: "IDE style command line auto complete",
     license: "MIT",
     repository: {
       type: "git",
-      url: "git+https://github.com/microsoft/inshellisense.git",
+      url: "git+https://github.com/ErykKozyra/terminalhinter.git",
     },
     os: [process.platform],
     cpu: [process.arch],
     files: [BINARY_NAME],
     bin: {
-      is: BINARY_NAME,
-      inshellisense: BINARY_NAME,
+      thint: BINARY_NAME,
+      terminalhinter: BINARY_NAME,
     },
   };
   fs.writeFileSync(path.join(PKG_DIR, "package.json"), JSON.stringify(packageJson, null, 2), "utf-8");

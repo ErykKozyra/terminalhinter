@@ -4,5 +4,5 @@
 import chalk from "chalk";
 
 export const render = async () => {
-  process.stdout.write(chalk.green("✓") + " successfully installed inshellisense \n");
+  process.stdout.write(chalk.green("✓") + " successfully installed terminalhinter \n");
 };

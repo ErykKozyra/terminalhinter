@@ -12,21 +12,29 @@ test("uses a process-specific ZDOTDIR", () => {
 
 describe("getShellSourceCommand", () => {
   test.each([
-    [Shell.Bash, "~/.inshellisense/init/bash/init.sh", "[ -f ~/.inshellisense/init/bash/init.sh ] && source ~/.inshellisense/init/bash/init.sh"],
+    [Shell.Bash, "~/.terminalhinter/init/bash/init.sh", "[ -f ~/.terminalhinter/init/bash/init.sh ] && source ~/.terminalhinter/init/bash/init.sh"],
     [
       Shell.Powershell,
-      "~/.inshellisense/init/powershell/init.ps1",
-      "if ( Test-Path '~/.inshellisense/init/powershell/init.ps1' -PathType Leaf ) { . ~/.inshellisense/init/powershell/init.ps1 }",
+      "~/.terminalhinter/init/powershell/init.ps1",
+      "if ( Test-Path '~/.terminalhinter/init/powershell/init.ps1' -PathType Leaf ) { . ~/.terminalhinter/init/powershell/init.ps1 }",
     ],
     [
       Shell.Pwsh,
-      "~/.inshellisense/init/pwsh/init.ps1",
-      "if ( Test-Path '~/.inshellisense/init/pwsh/init.ps1' -PathType Leaf ) { . ~/.inshellisense/init/pwsh/init.ps1 }",
+      "~/.terminalhinter/init/pwsh/init.ps1",
+      "if ( Test-Path '~/.terminalhinter/init/pwsh/init.ps1' -PathType Leaf ) { . ~/.terminalhinter/init/pwsh/init.ps1 }",
     ],
-    [Shell.Zsh, "~/.inshellisense/init/zsh/init.zsh", "[[ -f ~/.inshellisense/init/zsh/init.zsh ]] && source ~/.inshellisense/init/zsh/init.zsh"],
-    [Shell.Fish, "~/.inshellisense/init/fish/init.fish", "test -f ~/.inshellisense/init/fish/init.fish && source ~/.inshellisense/init/fish/init.fish"],
-    [Shell.Xonsh, "~/.inshellisense/init/xonsh/init.xsh", 'p"~/.inshellisense/init/xonsh/init.xsh".exists() && source "~/.inshellisense/init/xonsh/init.xsh"'],
-    [Shell.Nushell, "~/.inshellisense/init/nu/init.nu", "if ( '~/.inshellisense/init/nu/init.nu' | path exists ) { source ~/.inshellisense/init/nu/init.nu }"],
+    [Shell.Zsh, "~/.terminalhinter/init/zsh/init.zsh", "[[ -f ~/.terminalhinter/init/zsh/init.zsh ]] && source ~/.terminalhinter/init/zsh/init.zsh"],
+    [Shell.Fish, "~/.terminalhinter/init/fish/init.fish", "test -f ~/.terminalhinter/init/fish/init.fish && source ~/.terminalhinter/init/fish/init.fish"],
+    [
+      Shell.Xonsh,
+      "~/.terminalhinter/init/xonsh/init.xsh",
+      'p"~/.terminalhinter/init/xonsh/init.xsh".exists() && source "~/.terminalhinter/init/xonsh/init.xsh"',
+    ],
+    [
+      Shell.Nushell,
+      "~/.terminalhinter/init/nu/init.nu",
+      "if ( '~/.terminalhinter/init/nu/init.nu' | path exists ) { source ~/.terminalhinter/init/nu/init.nu }",
+    ],
   ])("preserves the legacy %s command", (shell, initFilePath, expected) => {
     expect(getShellSourceCommand(shell, initFilePath)).toBe(expected);
   });
@@ -34,33 +42,33 @@ describe("getShellSourceCommand", () => {
   test.each([
     [
       Shell.Bash,
-      "/tmp/xdg home/inshellisense/init/bash/init.sh",
-      "[ -f '/tmp/xdg home/inshellisense/init/bash/init.sh' ] && source '/tmp/xdg home/inshellisense/init/bash/init.sh'",
+      "/tmp/xdg home/terminalhinter/init/bash/init.sh",
+      "[ -f '/tmp/xdg home/terminalhinter/init/bash/init.sh' ] && source '/tmp/xdg home/terminalhinter/init/bash/init.sh'",
     ],
     [
       Shell.Pwsh,
-      "/tmp/xdg home/inshellisense/init/pwsh/init.ps1",
-      "if ( Test-Path '/tmp/xdg home/inshellisense/init/pwsh/init.ps1' -PathType Leaf ) { . '/tmp/xdg home/inshellisense/init/pwsh/init.ps1' }",
+      "/tmp/xdg home/terminalhinter/init/pwsh/init.ps1",
+      "if ( Test-Path '/tmp/xdg home/terminalhinter/init/pwsh/init.ps1' -PathType Leaf ) { . '/tmp/xdg home/terminalhinter/init/pwsh/init.ps1' }",
     ],
     [
       Shell.Zsh,
-      "/tmp/xdg home/inshellisense/init/zsh/init.zsh",
-      "[[ -f '/tmp/xdg home/inshellisense/init/zsh/init.zsh' ]] && source '/tmp/xdg home/inshellisense/init/zsh/init.zsh'",
+      "/tmp/xdg home/terminalhinter/init/zsh/init.zsh",
+      "[[ -f '/tmp/xdg home/terminalhinter/init/zsh/init.zsh' ]] && source '/tmp/xdg home/terminalhinter/init/zsh/init.zsh'",
     ],
     [
       Shell.Fish,
-      "/tmp/xdg home/inshellisense/init/fish/init.fish",
-      "test -f '/tmp/xdg home/inshellisense/init/fish/init.fish' && source '/tmp/xdg home/inshellisense/init/fish/init.fish'",
+      "/tmp/xdg home/terminalhinter/init/fish/init.fish",
+      "test -f '/tmp/xdg home/terminalhinter/init/fish/init.fish' && source '/tmp/xdg home/terminalhinter/init/fish/init.fish'",
     ],
     [
       Shell.Xonsh,
-      "/tmp/xdg home/inshellisense/init/xonsh/init.xsh",
-      'p"/tmp/xdg home/inshellisense/init/xonsh/init.xsh".exists() && source "/tmp/xdg home/inshellisense/init/xonsh/init.xsh"',
+      "/tmp/xdg home/terminalhinter/init/xonsh/init.xsh",
+      'p"/tmp/xdg home/terminalhinter/init/xonsh/init.xsh".exists() && source "/tmp/xdg home/terminalhinter/init/xonsh/init.xsh"',
     ],
     [
       Shell.Nushell,
-      "/tmp/xdg home/inshellisense/init/nu/init.nu",
-      'if ( "/tmp/xdg home/inshellisense/init/nu/init.nu" | path exists ) { source "/tmp/xdg home/inshellisense/init/nu/init.nu" }',
+      "/tmp/xdg home/terminalhinter/init/nu/init.nu",
+      'if ( "/tmp/xdg home/terminalhinter/init/nu/init.nu" | path exists ) { source "/tmp/xdg home/terminalhinter/init/nu/init.nu" }',
     ],
   ])("quotes an XDG path for %s", (shell, initFilePath, expected) => {
     expect(getShellSourceCommand(shell, initFilePath)).toBe(expected);
@@ -74,19 +82,19 @@ describe("getShellSourceCommand", () => {
 
 describe("hasLegacyShellConfig", () => {
   test("detects the original shell plugin marker", () => {
-    expect(hasLegacyShellConfig("# inshellisense shell plugin", Shell.Zsh, false)).toBe(true);
+    expect(hasLegacyShellConfig("# terminalhinter shell plugin", Shell.Zsh, false)).toBe(true);
   });
 
   test("detects the original generated plugin path", () => {
-    expect(hasLegacyShellConfig("source ~/.inshellisense/zsh/init.zsh", Shell.Zsh, false)).toBe(true);
+    expect(hasLegacyShellConfig("source ~/.terminalhinter/zsh/init.zsh", Shell.Zsh, false)).toBe(true);
   });
 
   test("detects the current path when it should be treated as legacy", () => {
-    expect(hasLegacyShellConfig("source ~/.inshellisense/init/zsh/init.zsh", Shell.Zsh, true)).toBe(true);
+    expect(hasLegacyShellConfig("source ~/.terminalhinter/init/zsh/init.zsh", Shell.Zsh, true)).toBe(true);
   });
 
   test("allows the current path while legacy resources remain current", () => {
-    expect(hasLegacyShellConfig("source ~/.inshellisense/init/zsh/init.zsh", Shell.Zsh, false)).toBe(false);
+    expect(hasLegacyShellConfig("source ~/.terminalhinter/init/zsh/init.zsh", Shell.Zsh, false)).toBe(false);
   });
 });
 

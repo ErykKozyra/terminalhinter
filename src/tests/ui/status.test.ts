@@ -12,7 +12,7 @@ const shell: Shell = os.platform() == "darwin" ? "zsh" : os.platform() == "linux
 jest.retryTimes(2, { logErrorsBeforeRetry: true });
 
 describe("status checks", () => {
-  describe("inside inshellisense session", () => {
+  describe("inside terminalhinter session", () => {
     let terminal: TuiTest;
     beforeEach(async () => {
       terminal = await startSession({ label: "status", shell }, ["-T", "-s", shell]);
@@ -22,12 +22,12 @@ describe("status checks", () => {
     });
 
     test("current status", async () => {
-      await terminal.write("is -c\r");
+      await terminal.write("thint -c\r");
       await expectText(terminal, "live", { fg: "2" });
     });
   });
 
-  describe("outside inshellisense session", () => {
+  describe("outside terminalhinter session", () => {
     let terminal: TuiTest;
     beforeEach(async () => {
       terminal = await startShell(shell);
@@ -37,7 +37,7 @@ describe("status checks", () => {
     });
 
     test("current status", async () => {
-      await terminal.write("is -c\r");
+      await terminal.write("thint -c\r");
       await expectText(terminal, "not found", { fg: "1" });
     });
   });

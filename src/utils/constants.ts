@@ -5,7 +5,7 @@ import path from "node:path";
 import os from "node:os";
 import fs from "node:fs";
 
-const inshellisenseFolderName = "inshellisense";
+const appFolderName = "terminalhinter";
 
 export const resolveXdgConfigHome = (value: string | undefined, platform: NodeJS.Platform): string | undefined => {
   return platform !== "win32" && value != null && path.isAbsolute(value) ? value : undefined;
@@ -17,14 +17,12 @@ export const resolveXdgDataHome = (value: string | undefined, homeDirectory: str
 };
 
 export const resolveResourcesPath = (homeDirectory: string, xdgDataDirectory: string | undefined, hasLegacyResources: boolean): string => {
-  return xdgDataDirectory == null || hasLegacyResources
-    ? path.join(homeDirectory, `.${inshellisenseFolderName}`)
-    : path.join(xdgDataDirectory, inshellisenseFolderName);
+  return xdgDataDirectory == null || hasLegacyResources ? path.join(homeDirectory, `.${appFolderName}`) : path.join(xdgDataDirectory, appFolderName);
 };
 
 export const resolveConfigFilePath = (homeDirectory: string, xdgConfigDirectory: string | undefined): string => {
   const configDirectory = xdgConfigDirectory ?? path.join(homeDirectory, ".config");
-  return path.join(configDirectory, inshellisenseFolderName, "rc.toml");
+  return path.join(configDirectory, appFolderName, "rc.toml");
 };
 
 export const getResourcePaths = (resourcesPath: string) => ({
@@ -37,7 +35,7 @@ export const getResourcePaths = (resourcesPath: string) => ({
 });
 
 const homeDirectory = os.homedir();
-const legacyResourcesPath = path.join(homeDirectory, `.${inshellisenseFolderName}`);
+const legacyResourcesPath = path.join(homeDirectory, `.${appFolderName}`);
 export const xdgConfigHome = resolveXdgConfigHome(process.env.XDG_CONFIG_HOME, process.platform);
 export const xdgDataHome = resolveXdgDataHome(process.env.XDG_DATA_HOME, homeDirectory, process.platform);
 export const preferredResourcesPath = resolveResourcesPath(homeDirectory, xdgDataHome, false);

@@ -12,7 +12,7 @@ import { Shell } from "../../src/utils/shell.js";
 
 const shell =
   (process.env.ISTERM_PERF_SHELL as Shell | undefined) ?? (process.platform === "win32" ? Shell.Cmd : process.platform === "darwin" ? Shell.Zsh : Shell.Bash);
-const metricsPath = path.join(os.tmpdir(), `inshellisense-perf-${process.pid}.json`);
+const metricsPath = path.join(os.tmpdir(), `terminalhinter-perf-${process.pid}.json`);
 const enter = "\r";
 
 await unpackResources();
@@ -51,14 +51,14 @@ const result = await new Promise<Record<string, unknown>>((resolve, reject) => {
       terminal.write("git ");
     } else if (stage === "suggestion" && (buffer.includes("┌") || buffer.includes("╭"))) {
       suggestionMilliseconds = performance.now() - stageStartedAt;
-        stage = "clear";
+      stage = "clear";
       buffer = "";
       terminal.write("\u007F".repeat(4));
     } else if (stage === "clear" && buffer.length > 0) {
-        stage = "command";
-        buffer = "";
-        stageStartedAt = performance.now();
-        terminal.write(`echo ISTERM_PERF_MARKER${enter}`);
+      stage = "command";
+      buffer = "";
+      stageStartedAt = performance.now();
+      terminal.write(`echo ISTERM_PERF_MARKER${enter}`);
     } else if (stage === "command" && buffer.includes("ISTERM_PERF_MARKER")) {
       inputEchoMilliseconds = performance.now() - stageStartedAt;
       stage = "exit";

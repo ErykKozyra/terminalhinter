@@ -8,7 +8,7 @@ import fs from "node:fs";
 import fsAsync from "node:fs/promises";
 import { loggingResourcesPath } from "./constants.js";
 
-const logTarget = path.join(loggingResourcesPath, "inshellisense.log");
+const logTarget = path.join(loggingResourcesPath, "terminalhinter.log");
 let logEnabled = false;
 
 const reset = async () => {

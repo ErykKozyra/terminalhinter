@@ -22,11 +22,11 @@ const removeResources = (resourcesPath: string) => {
 export const render = async () => {
   if (allResourcesPath !== preferredResourcesPath) fs.rmSync(allResourcesPath, { recursive: true, force: true });
   removeResources(preferredResourcesPath);
-  process.stdout.write(chalk.green("✓") + " removed old inshellisense resources \n");
+  process.stdout.write(chalk.green("✓") + " removed old terminalhinter resources \n");
 
   const preferredResources = getResourcePaths(preferredResourcesPath);
   await createShellConfigs(preferredResources.init);
   await unpackResources(preferredResourcesPath);
 
-  process.stdout.write(chalk.green("✓") + " successfully installed inshellisense \n");
+  process.stdout.write(chalk.green("✓") + " successfully installed terminalhinter \n");
 };

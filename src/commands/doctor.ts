@@ -9,7 +9,7 @@ const action = async () => {
 };
 
 const cmd = new Command("doctor");
-cmd.description(`checks the health of this inshellisense installation`);
+cmd.description(`checks the health of this terminalhinter installation`);
 cmd.action(action);
 
 export default cmd;

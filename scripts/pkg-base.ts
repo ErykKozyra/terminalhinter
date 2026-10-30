@@ -25,32 +25,32 @@ const copyFiles = (): void => {
 
 const generatePackageJson = (): void => {
   const packageJson = {
-    name: `@microsoft/inshellisense`,
+    name: `@erykkozyra/terminalhinter`,
     version: getVersion(),
     description: "IDE style command line auto complete",
     license: "MIT",
     repository: {
       type: "git",
-      url: "git+https://github.com/microsoft/inshellisense.git",
+      url: "git+https://github.com/ErykKozyra/terminalhinter.git",
     },
     author: {
       name: "Microsoft Corporation",
     },
     bugs: {
-      url: "https://github.com/microsoft/inshellisense/issues",
+      url: "https://github.com/ErykKozyra/terminalhinter/issues",
     },
     bin: {
-      is: "bin.js",
-      inshellisense: "bin.js",
+      thint: "bin.js",
+      terminalhinter: "bin.js",
     },
     files: ["*.md", "LICENSE", "bin.js"],
     optionalDependencies: {
-      "@microsoft/inshellisense-darwin-x64": getVersion(),
-      "@microsoft/inshellisense-darwin-arm64": getVersion(),
-      "@microsoft/inshellisense-linux-x64": getVersion(),
-      "@microsoft/inshellisense-linux-arm64": getVersion(),
-      "@microsoft/inshellisense-win32-x64": getVersion(),
-      "@microsoft/inshellisense-win32-arm64": getVersion(),
+      "@erykkozyra/terminalhinter-darwin-x64": getVersion(),
+      "@erykkozyra/terminalhinter-darwin-arm64": getVersion(),
+      "@erykkozyra/terminalhinter-linux-x64": getVersion(),
+      "@erykkozyra/terminalhinter-linux-arm64": getVersion(),
+      "@erykkozyra/terminalhinter-win32-x64": getVersion(),
+      "@erykkozyra/terminalhinter-win32-arm64": getVersion(),
     },
   };
   fs.writeFileSync(path.join(PKG_DIR, "package.json"), JSON.stringify(packageJson, null, 2), "utf-8");

@@ -24,15 +24,15 @@ describe("resolveXdgConfigHome", () => {
 
 describe("resolveResourcesPath", () => {
   test("uses the legacy hidden directory without XDG_CONFIG_HOME", () => {
-    expect(resolveResourcesPath(homeDirectory, undefined, false)).toBe(path.join(homeDirectory, ".inshellisense"));
+    expect(resolveResourcesPath(homeDirectory, undefined, false)).toBe(path.join(homeDirectory, ".terminalhinter"));
   });
 
   test("uses an unhidden directory below XDG_DATA_HOME for a new installation", () => {
-    expect(resolveResourcesPath(homeDirectory, xdgDataDirectory, false)).toBe(path.join(xdgDataDirectory, "inshellisense"));
+    expect(resolveResourcesPath(homeDirectory, xdgDataDirectory, false)).toBe(path.join(xdgDataDirectory, "terminalhinter"));
   });
 
   test("preserves an existing legacy resource directory", () => {
-    expect(resolveResourcesPath(homeDirectory, xdgDataDirectory, true)).toBe(path.join(homeDirectory, ".inshellisense"));
+    expect(resolveResourcesPath(homeDirectory, xdgDataDirectory, true)).toBe(path.join(homeDirectory, ".terminalhinter"));
   });
 });
 
@@ -52,10 +52,10 @@ describe("resolveXdgDataHome", () => {
 
 describe("resolveConfigFilePath", () => {
   test("uses the XDG default below the home directory", () => {
-    expect(resolveConfigFilePath(homeDirectory, undefined)).toBe(path.join(homeDirectory, ".config", "inshellisense", "rc.toml"));
+    expect(resolveConfigFilePath(homeDirectory, undefined)).toBe(path.join(homeDirectory, ".config", "terminalhinter", "rc.toml"));
   });
 
   test("uses XDG_CONFIG_HOME when configured", () => {
-    expect(resolveConfigFilePath(homeDirectory, xdgConfigDirectory)).toBe(path.join(xdgConfigDirectory, "inshellisense", "rc.toml"));
+    expect(resolveConfigFilePath(homeDirectory, xdgConfigDirectory)).toBe(path.join(xdgConfigDirectory, "terminalhinter", "rc.toml"));
   });
 });
