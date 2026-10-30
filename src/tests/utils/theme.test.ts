@@ -74,3 +74,28 @@ test("the startup block replaces an older one and loose startup lines, and goes 
   expect(result.endsWith("export A=1\nexport B=2\n")).toBe(true);
   expect(withStartupBlock(result, block, Shell.Zsh)).toBe(result);
 });
+
+test("files are tinted by kind", async () => {
+  const chalk = (await import("chalk")).default;
+  const level = chalk.level;
+  chalk.level = 3;
+  const { SuggestionManager } = await import("../../ui/suggestionManager.js");
+  const { Shell } = await import("../../utils/shell.js");
+  const files = ["a.ts", "pnpm-lock.yaml", "b.json"].map((name) => ({ name, allNames: [name], icon: "📄", priority: 55, type: "file" as const }));
+  const terminal = {
+    cwd: process.cwd(),
+    cols: 80,
+    getCommandState: () => ({ commandText: "ls ", cursorTerminated: true, hasOutput: false }),
+    getCursorState: () => ({ cursorX: 0 }),
+    write: () => {},
+    clearCommand: () => {},
+  } as unknown as import("../../isterm/pty.js").ISTerm;
+  const manager = new SuggestionManager(terminal, Shell.Zsh, Promise.resolve({ getSuggestions: async () => ({ suggestions: files }) }));
+  await manager.exec();
+  const rows = manager.render("below", 3).map((r) => r.data);
+  chalk.level = level;
+  const rgb = (hex: string) => `38;2;${parseInt(hex.slice(1, 3), 16)};${parseInt(hex.slice(3, 5), 16)};${parseInt(hex.slice(5, 7), 16)}m`;
+  expect(rows[1]).toContain(rgb(themes.thint.icons.alias)); // code
+  expect(rows[2]).toContain(rgb(themes.thint.icons.file)); // lock file stays plain
+  expect(rows[3]).toContain(rgb(themes.thint.icons.star)); // config
+});

@@ -7,6 +7,7 @@ import type { ISTerm } from "../src/isterm/pty.js";
 const cwd = process.argv[2];
 const commands = process.argv.slice(3);
 await loadLocalSpecsSet();
+if (process.env.PREVIEW_ROWS) (await import("../src/utils/config.js")).overrideConfig({ maxSuggestions: Number(process.env.PREVIEW_ROWS) });
 const prompt = "➜ turbo-cloned git:(DEVIC-15129) ✗ ";
 for (const commandText of commands) {
   const terminal = {

@@ -8,7 +8,7 @@ import chalk from "chalk";
 import { Shell } from "../utils/shell.js";
 import log from "../utils/log.js";
 import { getConfig } from "../utils/config.js";
-import { activeTheme } from "./theme.js";
+import { activeTheme, Theme } from "./theme.js";
 import { calculateReplacement, applyReplacement } from "../runtime/replacement.js";
 import { getCommandCacheKey } from "../runtime/parser.js";
 import { initializeRuntime } from "../runtime/initialize.js";
@@ -31,6 +31,17 @@ const NF = {
   tag: "\uf02b",
   alias: "\uf0c1",
 };
+// Files are tinted by kind with colors the theme already has, so a long `ls` list is easier to scan.
+const fileKinds: [RegExp, keyof Theme["icons"]][] = [
+  [/(^|[.-])lock$|\.lock$|-lock\.(json|ya?ml)$/i, "file"],
+  [/\.(tsx?|jsx?|mjs|cjs|py|go|rs|java|kt|swift|rb|php|c|cc|cpp|h|hpp|cs|sh|bash|zsh|fish|vue|svelte|astro|lua|dart|sql)$/i, "alias"],
+  [/\.(json|jsonc|ya?ml|toml|ini|env|xml|conf|cfg)$|^\.env|rc$|^Dockerfile|^Makefile/i, "star"],
+  [/\.(css|scss|sass|less|styl|html?)$/i, "subcommand"],
+  [/\.(png|jpe?g|gif|svg|webp|avif|ico|bmp|mp4|mov|webm|mp3|wav|ttf|otf|woff2?)$/i, "value"],
+  [/\.(zip|tar|gz|tgz|bz2|xz|7z|rar|dmg|pkg|deb|rpm)$/i, "option"],
+];
+const fileColor = (name: string, theme: Theme): string => theme.icons[fileKinds.find(([pattern]) => pattern.test(name))?.[1] ?? "file"];
+
 // border top + items + separator + footer + border bottom, plus one line for an unhandled newline at the end of the command
 export const getMaxLines = () => getMaxSuggestions() + 5;
 export const MIN_WIDTH = minBoxWidth;
@@ -215,7 +226,7 @@ export class SuggestionManager {
     if (suggestion.execute) return badge(ICON_COLORS.execute, ">");
     if (suggestion.type === "folder")
       return style === "plain" ? " " + chalk.hex(tint(ICON_COLORS.folder))("■") + "  " : icon(ICON_COLORS.folder, NF.folder, "/");
-    if (suggestion.type === "file") return icon(ICON_COLORS.file, NF.file, "≡");
+    if (suggestion.type === "file") return icon(fileColor(suggestion.name, theme), NF.file, "≡");
 
     switch (suggestion.icon.replace(/️/g, "")) {
       case "📦":
