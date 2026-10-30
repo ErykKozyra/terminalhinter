@@ -71,7 +71,8 @@ export const closeSession = async (terminal: TuiTest | undefined): Promise<void>
   }
 };
 
-const baseEnv = { ISTERM: "0", ISTERM_TESTING: "0" };
+// truecolor everywhere, so colors in assertions match exactly (chalk would round them to 256 colors otherwise)
+const baseEnv = { ISTERM: "0", ISTERM_TESTING: "0", COLORTERM: "truecolor" };
 
 export const startSession = async (config: ShellConfig, args: string[], cols = 80, rows = 30): Promise<TuiTest> => {
   const terminal = await createTerminal({

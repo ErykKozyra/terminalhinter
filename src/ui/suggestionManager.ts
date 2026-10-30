@@ -273,13 +273,14 @@ export class SuggestionManager {
     return await this._loadSuggestions();
   }
 
-  render(direction: "above" | "below", cursorX: number): ISTermPatch[] {
+  // maxLines: the rows free above or below the prompt; in a short terminal the list shows fewer rows and scrolls
+  render(direction: "above" | "below", cursorX: number, maxLines = getMaxLines()): ISTermPatch[] {
     if (!this.#suggestBlob) {
       return [];
     }
     const { argumentDescription, activeToken } = this.#suggestBlob;
     const items = this._items();
-    const maxSuggestions = getMaxSuggestions();
+    const maxSuggestions = Math.max(Math.min(getMaxSuggestions(), maxLines - (getMaxLines() - getMaxSuggestions())), 1);
     if (this.#activeSuggestionIdx >= items.length) this.#activeSuggestionIdx = items.length - 1;
 
     const cols = this.#term.cols;

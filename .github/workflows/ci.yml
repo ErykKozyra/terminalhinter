@@ -1,17 +1,22 @@
 name: CI
+# Started by hand only (Actions tab > CI > Run workflow): the repo is private, so every minute counts against
+# the monthly allowance, and macOS minutes count ten times, Windows twice.
 on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+  workflow_dispatch:
+    inputs:
+      all_systems:
+        description: "Also run on macOS and Windows (uses many more minutes)"
+        type: boolean
+        default: false
 
 jobs:
   build:
     strategy:
       fail-fast: false
       matrix:
-        os: ["macos-latest", "windows-latest", "ubuntu-24.04"]
+        os: ${{ fromJSON(inputs.all_systems && '["ubuntu-24.04", "macos-latest", "windows-latest"]' || '["ubuntu-24.04"]') }}
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 

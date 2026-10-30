@@ -180,3 +180,15 @@ test("a word typed in full whose only suggestion is itself shows no list", async
   expect(manager.update(press("up"))).toBe(false);
   expect(manager.update(press("return"))).toBe(false);
 });
+
+test("in a short terminal the list shrinks to the free rows instead of disappearing", async () => {
+  const names = ["a1", "a2", "a3", "a4", "a5", "a6", "a7", "a8"];
+  const { manager } = setup({
+    suggestions: names.map((name) => ({ name, allNames: [name], icon: "📦", priority: 50 })),
+    activeToken: { token: "a", tokenLength: 1, complete: false, isOption: false },
+  });
+  await manager.exec();
+  const rows = manager.render("below", 3, 8);
+  expect(rows.length).toBeLessThanOrEqual(8);
+  expect(rows.map((r) => r.data).join("\n")).toContain("1/8");
+});

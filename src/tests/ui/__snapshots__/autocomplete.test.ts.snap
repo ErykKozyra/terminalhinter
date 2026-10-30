@@ -1,23 +1,45 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`resize recovery restores input and suggestions after becoming too narrow: 21 column view 1`] = `"> git st"`;
+exports[`resize recovery restores input and suggestions after becoming too narrow: 21 column view 1`] = `
+"> git st
+╭───────────────────╮
+│  $  stage [paths… │
+│  $  status [path… │
+│  $  stash         │
+├───────────────────┤
+│ Add file content… │
+╰───────────────────╯"
+`;
 
-exports[`resize recovery restores input and suggestions after becoming too narrow: 40 column view 1`] = `"> git st"`;
+exports[`resize recovery restores input and suggestions after becoming too narrow: 40 column view 1`] = `
+"> git st
+    ╭──────────────────────────────────╮
+    │  $  stage [pathspec...]          │
+    │  $  status [pathspec...]         │
+    │  $  stash                        │
+    ├──────────────────────────────────┤
+    │ Add file contents to the stagin… │
+    ╰──────────────────────────────────╯"
+`;
 
 exports[`resize recovery restores input and suggestions after becoming too narrow: initial 80 column view 1`] = `
 "> git st
-        ┌──────────────────────────────────────┐┌────────────────────────────┐
-        │📦 stage                              ││Add file contents to the    │
-        │📦 status                             ││staging area                │
-        │📦 stash                              │└────────────────────────────┘
-        └──────────────────────────────────────┘"
+    ╭──────────────────────────────────╮
+    │  $  stage [pathspec...]          │
+    │  $  status [pathspec...]         │
+    │  $  stash                        │
+    ├──────────────────────────────────┤
+    │ Add file contents to the stagin… │
+    ╰──────────────────────────────────╯"
 `;
 
 exports[`resize recovery restores input and suggestions after becoming too narrow: restored 80 column view 1`] = `
 "> git st
-        ┌──────────────────────────────────────┐┌────────────────────────────┐
-        │📦 stage                              ││Add file contents to the    │
-        │📦 status                             ││staging area                │
-        │📦 stash                              │└────────────────────────────┘
-        └──────────────────────────────────────┘"
+    ╭──────────────────────────────────╮
+    │  $  stage [pathspec...]          │
+    │  $  status [pathspec...]         │
+    │  $  stash                        │
+    ├──────────────────────────────────┤
+    │ Add file contents to the stagin… │
+    ╰──────────────────────────────────╯"
 `;

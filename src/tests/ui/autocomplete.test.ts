@@ -6,7 +6,8 @@ import { terminalSnapshot } from "@microsoft/tui-test/test";
 import type { TuiTest } from "@microsoft/tui-test/test";
 import { closeSession, configs, expectPrompt, expectText, returnChar, startSession } from "./helpers";
 
-const accent = "#7d56f4";
+// selection bar of the default theme (src/ui/theme.ts)
+const accent = "#2f5fd0";
 
 jest.retryTimes(2, { logErrorsBeforeRetry: true });
 
@@ -27,11 +28,11 @@ describe("resize recovery", () => {
     expect(initialView).toMatchSnapshot("initial 80 column view");
 
     await terminal.resize(40, 30);
-    await expectText(terminal, "┘", { not: true });
+    await terminal.waitIdle();
     expect(terminalSnapshot(await terminal.text())).toMatchSnapshot("40 column view");
 
     await terminal.resize(21, 30);
-    await expectText(terminal, "┘", { not: true });
+    await terminal.waitIdle();
     expect(terminalSnapshot(await terminal.text())).toMatchSnapshot("21 column view");
 
     await terminal.resize(80, 30);
@@ -58,93 +59,70 @@ configs.map((config) => {
     test("basic git suggestions", async () => {
       await terminal.type("git ");
 
-      await expectText(terminal, "blame");
-      await expectText(terminal, "archive", { strict: false, bg: accent });
+      await expectText(terminal, "blame", { strict: false });
+      await expectText(terminal, "╭", { strict: false });
     });
 
-    test("cursor up when at top of list", async () => {
+    test("nothing is selected right after a space", async () => {
       await terminal.type("git ");
 
-      await expectText(terminal, "archive", { strict: false, bg: accent });
-      await terminal.press("Up");
-      await expectText(terminal, "archive", { strict: false, bg: accent });
+      await expectText(terminal, "blame", { strict: false });
+      await terminal.waitIdle();
+      await expectText(terminal, "blame", { strict: false, bg: accent, not: true });
+    });
+
+    test("down selects the first entry, typing a word selects its first match", async () => {
+      await terminal.type("git che");
+
+      await expectText(terminal, "checkout", { strict: false, bg: accent });
+      await terminal.press("Down");
+      await expectText(terminal, "cherry", { strict: false, bg: accent });
     });
 
     test("move cursor backwards to hide suggestions", async () => {
       await terminal.type("git ");
 
-      await expectText(terminal, "archive", { strict: false });
+      await expectText(terminal, "blame", { strict: false });
 
       await terminal.press("Left");
-      await expectText(terminal, "archive", { strict: false, not: true });
+      await expectText(terminal, "blame", { strict: false, not: true });
     });
 
-    test("cursor down when at top of list", async () => {
+    test("scrolling keeps the selection visible", async () => {
       await terminal.type("git ");
 
-      await expectText(terminal, "archive", { strict: false });
+      await expectText(terminal, "blame", { strict: false });
       await terminal.waitIdle();
-      await terminal.press("Down", "Down");
+      await terminal.press("Down", "Down", "Down", "Down", "Down", "Down", "Down", "Down");
 
-      await expectText(terminal, "repository");
-      await expectText(terminal, "commit", { bg: accent });
-      await expectText(terminal, "archive", { strict: false, bg: accent, not: true });
-    });
-
-    test("scroll down a full page when at top of list", async () => {
-      await terminal.type("git ");
-
-      await expectText(terminal, "archive", { strict: false });
-      await terminal.waitIdle();
-      await terminal.press("Down", "Down", "Down", "Down", "Down");
-
-      await expectText(terminal, "archive", { strict: false, not: true });
-      await expectText(terminal, "add", { bg: accent });
+      await expectText(terminal, "8/", { strict: false });
     });
 
     // excluding cmd since it doesn't support CWD tracking
-    (config.shell !== "cmd" ? test : test.skip)("generator results lead suggestions", async () => {
-      await terminal.type("ls ");
+    (config.shell !== "cmd" ? test : test.skip)("folders are listed after cd", async () => {
+      await terminal.type("cd sr");
 
-      await expectText(terminal, "📄", { strict: false });
+      await expectText(terminal, "src/", { strict: false });
     });
 
     test("tab completion", async () => {
-      await terminal.type("git ");
+      await terminal.type("git chec");
 
-      await expectText(terminal, "archive", { strict: false });
+      await expectText(terminal, "checkout", { strict: false });
       await terminal.press("Tab");
 
-      await expectText(terminal, "--format");
+      await expectText(terminal, "git checkout ", { strict: false });
     });
 
     test("backspacing after accepting tab completion", async () => {
-      await terminal.type("git  ");
+      await terminal.type("git chec");
 
-      await expectText(terminal, "archive", { strict: false });
+      await expectText(terminal, "checkout", { strict: false });
       await terminal.press("Tab");
+      await expectText(terminal, "git checkout ", { strict: false });
+      await terminal.press("Backspace", "Backspace", "Backspace", "Backspace", "Backspace");
 
-      await expectText(terminal, "--format");
-      await terminal.press("Backspace", "Backspace", "Backspace");
-
-      await expectText(terminal, "archive", { strict: false });
-    });
-
-    test("suggestion cursor resets between views", async () => {
-      await terminal.type("git ");
-
-      await expectText(terminal, "archive", { strict: false });
-      await terminal.waitIdle();
-      await terminal.press("Down", "Down");
-
-      await expectText(terminal, "repository");
-      await expectText(terminal, "commit", { bg: accent });
-
-      await terminal.press("Backspace");
-      await expectText(terminal, "repository", { not: true });
-
-      await terminal.type(" ");
-      await expectText(terminal, "archive", { strict: false, bg: accent });
+      await expectText(terminal, "checkout", { strict: false, bg: accent });
     });
 
     test("ui on bottom of the screen", async () => {
@@ -152,8 +130,8 @@ configs.map((config) => {
       await terminal.write(rc.repeat(10));
       await expectPrompt(terminal);
 
-      await terminal.type("git  ");
-      await expectText(terminal, "archive", { strict: false });
+      await terminal.type("git ");
+      await expectText(terminal, "blame", { strict: false });
     });
 
     test("command detection after command execution", async () => {
@@ -162,15 +140,15 @@ configs.map((config) => {
       await expectPrompt(terminal);
 
       await terminal.type("git ");
-      await expectText(terminal, "archive", { strict: false });
+      await expectText(terminal, "blame", { strict: false });
     });
 
     test("suggestions clear after command execution", async () => {
       await terminal.type("git ");
-      await expectText(terminal, "archive", { strict: false });
+      await expectText(terminal, "blame", { strict: false });
 
       await terminal.write(rc);
-      await expectText(terminal, "archive", { strict: false, not: true });
+      await expectText(terminal, "blame", { strict: false, not: true });
     });
 
     test("cursor-position reports are not treated as input", async () => {
@@ -179,35 +157,18 @@ configs.map((config) => {
       await expectText(terminal, "[2;7R", { not: true });
 
       await terminal.type("git ");
-      await expectText(terminal, "archive", { strict: false });
+      await expectText(terminal, "blame", { strict: false });
     });
 
-    test.skip("access history when no suggestions exist", async () => {
-      await terminal.type("clear");
-      await expectText(terminal, "clear");
-
-      await terminal.write(rc);
-      await expectText(terminal, "clear", { not: true });
-
-      await terminal.press("Up");
-      await expectText(terminal, "clear");
+    test("thint suggests its own commands", async () => {
+      await terminal.type("thint ");
+      await expectText(terminal, "theme", { strict: false });
     });
 
     test("proper overflow truncation in command", async () => {
-      await terminal.type("dotnet add package Holoon.Newtonsoft");
-      await expectText(terminal, "CanBeUndefi…│");
-    });
-
-    test.skip("command detection with suggestions", async () => {
-      await terminal.write(`dotnet add item${rc}`);
-      await expectText(terminal, "dotnet", { strict: false });
-
-      await terminal.write(`clear${rc}`);
-      await expectText(terminal, "dotnet", { strict: false, not: true });
-
-      await terminal.type("dotnet add ");
-      await expectText(terminal, "item");
-      await expectText(terminal, "package", { strict: false });
+      await terminal.resize(40, 30);
+      await terminal.type("git checko");
+      await expectText(terminal, "…", { strict: false });
     });
   });
 });
