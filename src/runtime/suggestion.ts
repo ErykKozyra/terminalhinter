@@ -162,7 +162,18 @@ const sortSuggestions = (suggestions: Suggestion[], partialCmd: string | undefin
   const scores = new Map(suggestions.map((s) => [s, score(s)]));
   const used = (s: Suggestion) => scores.get(s) ?? 0;
   const sorted = suggestions.sort((a, b) => b.priority - a.priority || used(b) - used(a));
-  if (!partialCmd) return sorted;
+  // paths: folders before files, hidden entries (.git, .env) after the visible ones unless a dot was typed,
+  // and `..` last
+  const typedDot = partialCmd?.startsWith(".") ?? false;
+  const pathGroup = (s: Suggestion) => (s.name === ".." ? 3 : !typedDot && s.name.startsWith(".") ? 2 : 0) + (s.type === "folder" ? 0 : 1);
+  if (!partialCmd) {
+    const pathIndexes = sorted.flatMap((s, i) => (getPathy(s.type) ? [i] : []));
+    const ranked = pathIndexes
+      .map((i) => sorted[i])
+      .sort((a, b) => b.priority - a.priority || used(b) - used(a) || pathGroup(a) - pathGroup(b) || a.name.localeCompare(b.name));
+    pathIndexes.forEach((sortedIndex, rank) => (sorted[sortedIndex] = ranked[rank]));
+    return sorted;
+  }
   const relevance = (s: Suggestion) => getMatchRelevance(s.name, partialCmd);
   const isExact = (s: Suggestion) => relevance(s) === 3;
   // values (scripts, branches, generator results) prefer the shorter name; subcommands and options keep the
@@ -187,6 +198,7 @@ const sortSuggestions = (suggestions: Suggestion[], partialCmd: string | undefin
         b.priority - a.priority ||
         relevance(b) - relevance(a) ||
         used(b) - used(a) ||
+        pathGroup(a) - pathGroup(b) ||
         a.name.length - b.name.length ||
         a.name.localeCompare(b.name),
     );

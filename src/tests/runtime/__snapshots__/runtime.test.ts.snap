@@ -806,19 +806,6 @@ exports[`parseCommand pathPrefixMatchesRankedFirst 1`] = `
     },
     {
       "allNames": [
-        ".husky/",
-      ],
-      "args": undefined,
-      "description": undefined,
-      "hidden": undefined,
-      "icon": "📁",
-      "insertValue": ".husky/",
-      "name": ".husky",
-      "priority": 60,
-      "type": "folder",
-    },
-    {
-      "allNames": [
         "node_modules/",
       ],
       "args": undefined,
@@ -827,6 +814,19 @@ exports[`parseCommand pathPrefixMatchesRankedFirst 1`] = `
       "icon": "📁",
       "insertValue": "node_modules/",
       "name": "node_modules",
+      "priority": 60,
+      "type": "folder",
+    },
+    {
+      "allNames": [
+        ".husky/",
+      ],
+      "args": undefined,
+      "description": undefined,
+      "hidden": undefined,
+      "icon": "📁",
+      "insertValue": ".husky/",
+      "name": ".husky",
       "priority": 60,
       "type": "folder",
     },
