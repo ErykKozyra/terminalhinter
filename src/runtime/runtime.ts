@@ -20,6 +20,7 @@ import { specResourcesPath } from "../utils/constants.js";
 import { endTiming, startTiming } from "../utils/performance.js";
 import { clearImplicitGeneratorState } from "./generatorCache.js";
 import { loadHistory, recordCommand } from "./history.js";
+import { jumpCommands, jumpSuggestions } from "./jumps.js";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any -- recursive type, setting as any
 const specSet: any = {};
@@ -143,7 +144,15 @@ export const getSuggestions = async (cmd: string, cwd: string, shell: Shell, sig
       lastCommand.isPath = true;
       lastCommand.isPathComplete = pathyComplete;
     }
-    const result = await runSubcommand(activeCmd.slice(1), activeCmd, subcommand, resolvedCwd, shell, undefined, undefined, undefined, undefined, signal);
+    let result = await runSubcommand(activeCmd.slice(1), activeCmd, subcommand, resolvedCwd, shell, undefined, undefined, undefined, undefined, signal);
+    // `cd` also offers bookmarks and frequent folders from anywhere, after the folders of the current directory
+    const root = activeCmd.at(0)?.token ?? "";
+    const typingFirstArg = activeCmd.length === 1 || (activeCmd.length === 2 && lastCommand?.complete === false);
+    if (jumpCommands.has(root) && typingFirstArg) {
+      const partial = lastCommand?.complete === false && activeCmd.length === 2 ? lastCommand.token : "";
+      const jumps = jumpSuggestions(partial, cwd, result?.suggestions ?? []);
+      if (jumps.length > 0) result = { ...result, suggestions: [...(result?.suggestions ?? []), ...jumps] };
+    }
     if (result == null) return;
     if (result.suggestions.length == 0 && !result.argumentDescription) return;
 
