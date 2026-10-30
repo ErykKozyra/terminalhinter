@@ -167,7 +167,7 @@ export const createShellConfigs = async (initResourcesDirectory = initResourcesP
   }
 };
 
-const getShellConfigName = (shell: Shell) => {
+export const getShellConfigName = (shell: Shell) => {
   switch (shell) {
     case Shell.Bash:
       return "init.sh";

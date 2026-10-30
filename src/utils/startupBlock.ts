@@ -47,12 +47,27 @@ export const startupBlock = (shell: Shell, folder = binaryFolder(), home = os.ho
 
 const escape = (text: string) => text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
-// removes an earlier block and loose startup lines, then puts the block first
-export const withStartupBlock = (text: string, block: string, shell: Shell): string => {
+// the config without any terminalhinter block or loose startup line (also those of the old inshellisense install)
+export const withoutStartupBlock = (text: string, shell: Shell): string => {
   let rest = text.replace(new RegExp(`^${escape(beginMark)}\\n[\\s\\S]*?^${escape(endMark)}\\n\\n?`, "gm"), "");
   rest = rest.replace(new RegExp(`^.*(?:inshellisense|terminalhinter)/init/${shell}.*\\n?`, "gm"), "");
-  rest = rest.replace(/^\n+/, "");
+  return rest.replace(/^\n+/, "");
+};
+
+// removes an earlier block and loose startup lines, then puts the block first
+export const withStartupBlock = (text: string, block: string, shell: Shell): string => {
+  const rest = withoutStartupBlock(text, shell);
   return block + (rest.length > 0 ? "\n" + rest : "");
+};
+
+// takes the startup lines out of the shell config; returns the file when something was removed
+export const removeStartupBlock = (shell: Shell, file = profileFile(shell)): string | undefined => {
+  if (file == null || !fs.existsSync(file)) return;
+  const before = fs.readFileSync(file, "utf8");
+  const after = withoutStartupBlock(before, shell);
+  if (after === before) return;
+  fs.writeFileSync(file, after);
+  return file;
 };
 
 export const installStartupBlock = (shell: Shell, file = profileFile(shell)): { file: string; backup?: string } => {
