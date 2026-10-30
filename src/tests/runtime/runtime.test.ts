@@ -27,7 +27,6 @@ const testData = [
   { name: "nestedNonCommands", command: "az az ", skip: true }, // no longer supported
   { name: "loadSpec", command: "aws acm add", skip: true }, // no longer loaded
   { name: "noArgsArgumentGiven", command: "gcc lab ", maxSuggestions: 3 },
-  { name: "generatorUsingPartialInput", command: "dotnet add package Microsoft.Azure.WebJobs.Cor", maxSuggestions: 1 },
   { name: "pathSuggestion", command: "source she" },
   { name: "pathNestedSuggestion", command: "source .github/work" },
   { name: "pathWithFileSuggestion", command: "source shell/", maxSuggestions: 1 },
@@ -66,13 +65,22 @@ const subcommandSuggestionsData = [
   { name: "find", command: "find -", maxSuggestions: 1, expectedIcons: [SuggestionIcons.Option] }, // filtering file generator
   { name: "goTool", command: "go build -buildmode ", maxSuggestions: 1, expectedNames: ["archive"] }, // script + split-on generator
   { name: "preCommitRun", command: "pre-commit run ", maxSuggestions: 1, expectedIcons: [SuggestionIcons.Option] }, // script + post-process generator w/ console logs
+  // asks the NuGet API, so its text changes over time: check only the top name, and only where the network is there (CI)
+  {
+    name: "generatorUsingPartialInput",
+    command: "dotnet add package Microsoft.Azure.WebJobs.Cor",
+    maxSuggestions: 1,
+    expectedNames: ["Microsoft.Azure.WebJobs.Core"],
+    requiresNetwork: true,
+  },
 ];
 
 describe(`getSubcommandSuggestions`, () => {
   beforeAll(async () => await getCommandSuggestionsSetup());
 
-  subcommandSuggestionsData.forEach(({ command, name, maxSuggestions, expectedNames, expectedIcons, platforms }) => {
+  subcommandSuggestionsData.forEach(({ command, name, maxSuggestions, expectedNames, expectedIcons, platforms, requiresNetwork }) => {
     if (platforms != null && !platforms.includes(process.platform)) return;
+    if (requiresNetwork && !process.env.CI) return;
     test(name, async () => {
       const suggestions = await getSuggestions(command, process.cwd(), Shell.Bash);
       if (suggestions != null && suggestions.suggestions != null) {

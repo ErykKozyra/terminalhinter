@@ -551,31 +551,6 @@ exports[`parseCommand fullyTypedSuggestion 1`] = `
 }
 `;
 
-exports[`parseCommand generatorUsingPartialInput 1`] = `
-{
-  "activeToken": {
-    "complete": false,
-    "isOption": false,
-    "token": "Microsoft.Azure.WebJobs.Cor",
-    "tokenLength": 27,
-  },
-  "suggestions": [
-    {
-      "allNames": [
-        "Microsoft.Azure.WebJobs.Core",
-      ],
-      "description": "This package provides the core Types and Attribute definitions for the WebJobs SDK. For more information, please visit https://go.microsoft.com/fwlink/?linkid=2279708.",
-      "hidden": undefined,
-      "icon": "📀",
-      "insertValue": "Microsoft.Azure.WebJobs.Core",
-      "name": "Microsoft.Azure.WebJobs.Core",
-      "priority": 60,
-      "type": undefined,
-    },
-  ],
-}
-`;
-
 exports[`parseCommand noArgsArgumentGiven 1`] = `
 {
   "activeToken": undefined,
