@@ -211,11 +211,12 @@ const matchesName = (name: string, query: string, filterStrategy: FilterStrategy
   if (lower.startsWith(query)) return true;
   if (filterStrategy === "fuzzy" && lower.includes(query)) return true;
   if (!getConfig().fuzzyMatching) return false;
-  // leading dashes are ignored, otherwise "--b" would match every option containing a "b"; the first letter must
-  // match, which keeps the list short and is how people abbreviate ("icpl" for intercars.com.pl)
-  const word = lower.replace(/^-+/, "");
-  const typed = query.replace(/^-+/, "");
-  return typed.length >= 2 && word.startsWith(typed[0]) && isSubsequence(word, typed);
+  // leading dashes and the $ of variables are ignored, otherwise "--b" would match every option containing a "b"
+  // and "$HO" every variable with an H and an O; the first letter must match and at least three letters are needed,
+  // which keeps the list short and is how people abbreviate ("icpl" for intercars.com.pl)
+  const word = lower.replace(/^[-$]+/, "");
+  const typed = query.replace(/^[-$]+/, "");
+  return typed.length >= 3 && word.startsWith(typed[0]) && isSubsequence(word, typed);
 };
 
 // Scores each suggestion by your history in this spot: the context is the words before the one being typed, paths

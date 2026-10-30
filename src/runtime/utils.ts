@@ -123,14 +123,14 @@ export const resolveCwd = async (
   signal?: AbortSignal,
 ): Promise<{ cwd: string; pathy: boolean; complete: boolean }> => {
   if (cmdToken == null || cmdToken.complete) return { cwd, pathy: false, complete: false };
-  const { token: rawToken, isQuoted } = cmdToken;
+  // the parser already removed the quotes and backslash escapes, so the token is the real file name
+  const { token: pathToken } = cmdToken;
   const sep = getPathSeparator(shell);
-  const escapedToken = !isQuoted ? rawToken.replaceAll(" ", "\\ ") : rawToken;
-  if (escapedToken === "~") return { cwd: homedir(), pathy: true, complete: false };
-  if (escapedToken === `~${sep}`) return { cwd: homedir(), pathy: true, complete: true };
-  if (!escapedToken.includes(sep)) return { cwd, pathy: false, complete: false };
-  const tokenComplete = escapedToken.endsWith(sep);
-  const trimmedToken = escapedToken.endsWith(sep) ? escapedToken : path.dirname(escapedToken);
+  if (pathToken === "~") return { cwd: homedir(), pathy: true, complete: false };
+  if (pathToken === `~${sep}`) return { cwd: homedir(), pathy: true, complete: true };
+  if (!pathToken.includes(sep)) return { cwd, pathy: false, complete: false };
+  const tokenComplete = pathToken.endsWith(sep);
+  const trimmedToken = pathToken.endsWith(sep) ? pathToken : path.dirname(pathToken);
   const token = trimmedToken;
   const resolvedCwd = path.isAbsolute(token) ? token : isHomedir(token) ? token.replace("~", homedir()) : path.join(cwd, token);
   try {
