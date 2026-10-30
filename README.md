@@ -27,7 +27,16 @@ The command is `thint` (long form: `terminalhinter`).
   contents. The `↪` entry at the top runs the command, so `cd` + Enter, Enter, Enter lands you deep in a tree.
 - **Descriptions and argument hints** for subcommands and options, e.g. `checkout [branch, file, tag or commit]`.
 - **Your aliases**, with what each one expands to.
-- **Sensible ranking.** An exact match comes first (`pnpm dev` offers the `dev` script before `dev:vite`).
+- **Learns what you use.** Folders, branches and scripts you pick often move up, recent ones more than old ones.
+  An exact match still comes first (`pnpm dev` offers the `dev` script before `dev:vite`). The history stays on
+  your machine in `~/.local/share/terminalhinter/history.jsonl`.
+- **Forgiving matching.** Letters in order are enough: `icpl` finds `intercars.com.pl`, `chkt` finds `checkout`.
+- **Knows your project.** `pnpm --filter`, `turbo run --filter` and `yarn workspace` suggest your workspace
+  packages; `turbo run` suggests the tasks from `turbo.json`; git branches show the age and subject of their last commit.
+- **Jump anywhere with `cd`.** `cd` offers your bookmarks and most used folders from any directory
+  (`thint bookmark add`).
+- **Your own suggestions** for in-house scripts and tools, in a few lines of YAML (`thint specs new`).
+- **Themes.** `thint theme` with a live preview: thint, light, nord, dracula.
 - **Stays out of the way.** Right after a space nothing is selected, so Enter just runs the command.
   `git checkout -` and `cd -` run immediately.
 - **No special fonts.** Icons are plain characters every terminal font has.
@@ -46,6 +55,9 @@ cd terminalhinter
 
 The script builds a single binary, installs it as `~/.local/bin/thint`, adds `~/.local/bin` to your `PATH`
 and puts the startup line at the top of `~/.zshrc`. Open a new terminal tab afterwards.
+
+For other shells, or to pick a theme and icons first, run `thint init`: a short guided setup with a live
+preview that ends by putting the startup lines at the top of your shell config (a backup is kept).
 
 To remove it: `./scripts/uninstall-local.sh`. It also takes the startup block out of `~/.zshrc`.
 
@@ -68,23 +80,51 @@ If you use nvm, loading it lazily saves another half a second per tab.
 Commands:
 
 ```bash
-thint doctor   # check the installation
-thint reinit   # regenerate resources after an update
-thint -c       # is this shell running inside terminalhinter?
+thint init                  # guided setup: shell, theme, icons
+thint theme                 # pick a theme with a live preview (or: thint theme nord)
+thint config list           # every setting and its value
+thint config set maxSuggestions 8
+thint bookmark add . -n api # `cd api` from anywhere
+thint specs new deploy      # start your own suggestions for a command
+thint doctor                # check the installation
+thint reinit                # regenerate resources after an update
+thint -c                    # is this shell running inside terminalhinter?
 ```
+
+### Your own suggestions
+
+Every file in `~/.config/terminalhinter/specs` describes one command, in YAML or JSON:
+
+```yaml
+name: deploy
+description: Deploy our apps
+subcommands:
+  - name: staging
+    args: { name: app, suggestions: [web, admin] }
+  - name: logs
+    args: { name: service, script: "ls services" } # each output line is a suggestion
+options:
+  - name: [--force, -f]
+    description: Skip the checks
+```
+
+`thint specs check` reports mistakes in these files. A broken file is skipped, the rest keep working.
 
 ## Configuration
 
-Settings live in `~/.terminalhinterrc` or `~/.config/terminalhinter/rc.toml` (TOML). Top-level keys go
-before any `[section]`. A broken file never closes your terminal: you get a warning and the defaults.
+Settings live in `~/.terminalhinterrc` or `~/.config/terminalhinter/rc.toml` (TOML). `thint config set`
+changes one without touching the rest; by hand, top-level keys go before any `[section]`. A broken file
+never closes your terminal: you get a warning and the defaults.
 
 ```toml
+theme = "thint"                         # "thint", "light", "nord" or "dracula"
 useAliases = true                       # suggest your shell aliases (default: true)
 maxSuggestions = 10                     # rows visible at once (default: 6)
 enterAcceptsSuggestion = true           # false: Enter always runs, accept with Tab only
+fuzzyMatching = true                    # letters in order are enough (default: true)
 iconStyle = "plain"                     # "plain", "badge" or "nerd" (needs a Nerd Font)
-activeSuggestionBackgroundColor = "#2F5FD0"
-borderColor = "#4B5263"
+activeSuggestionBackgroundColor = "#2F5FD0" # optional, overrides the theme
+borderColor = "#4B5263"                 # optional, overrides the theme
 boxBorderStyle = "rounded"              # or "square"
 
 [bindings.acceptSuggestion]
@@ -99,6 +139,9 @@ key = "up"
 [bindings.dismissSuggestions]
 key = "escape"
 ```
+
+There is no inline "ghost text" on purpose: zsh-autosuggestions already does that well, and the two would
+draw over each other.
 
 ## Supported shells
 
