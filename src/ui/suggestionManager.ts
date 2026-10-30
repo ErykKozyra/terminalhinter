@@ -55,6 +55,8 @@ export class SuggestionManager {
   #requestVersion = 0;
   #scrollTop = 0;
   #navigated = false; // the selection was moved with the arrows since this list appeared
+  #inputVersion = 0; // keys passed to the shell so far
+  #blobInputVersion = 0; // #inputVersion when the current list was requested
 
   constructor(terminal: ISTerm, shell: Shell, runtime?: Promise<SuggestionRuntime>) {
     this.#term = terminal;
@@ -101,6 +103,8 @@ export class SuggestionManager {
     const commandText = commandState.commandText;
     const commandKey = commandText ? `${this.#term.cwd}\u0000${getCommandCacheKey(commandText, this.#shell)}` : "";
     if (commandKey.length !== 0 && commandKey === this.#commandKey && !this.#hideSuggestions && !commandState.hasOutput) {
+      // same text as the list on screen (e.g. the cursor moved), so the list is still right for it
+      this.#blobInputVersion = this.#inputVersion;
       return false;
     }
     // Aborting is cooperative; the version check also rejects generators that ignore cancellation.
@@ -122,6 +126,7 @@ export class SuggestionManager {
     }
     const abortController = new AbortController();
     this.#abortController = abortController;
+    const inputVersion = this.#inputVersion;
     try {
       const { getSuggestions } = await this._getRuntime();
       abortController.signal.throwIfAborted();
@@ -130,6 +135,7 @@ export class SuggestionManager {
         return false;
       }
       this.#commandKey = commandKey;
+      this.#blobInputVersion = inputVersion;
       this.#suggestBlob = suggestionBlob;
       this._resetSelection();
       return true;
@@ -335,11 +341,30 @@ export class SuggestionManager {
     return rows.map((data) => ({ startX, length: width, data }));
   }
   update(keyPress: KeyPress, allowBindings = true): boolean {
+    const handled = this._update(keyPress, allowBindings);
+    // a key that went to the shell changes the line, so the list on screen no longer belongs to it
+    if (!handled && keyPress.name != "return") this.#inputVersion += 1;
+    return handled;
+  }
+
+  private _update(keyPress: KeyPress, allowBindings: boolean): boolean {
     const { name, shift, ctrl } = keyPress;
 
     // if suggestions are hidden, keep them hidden until during command navigation
     if (this.#hideSuggestions) {
       this.#hideSuggestions = name == "up" || name == "down";
+    }
+
+    // the list can lag behind fast typing: if it was made for different text than what is on the line now, Enter
+    // and Tab must not insert one of its entries (`git checkout fix/header` + quick Enter once inserted a branch
+    // picked from the older list)
+    if (this.#suggestBlob != null && (name == "return" || name == "tab") && this._isStale()) {
+      if (name == "return") {
+        this.#suggestBlob = undefined;
+        this._recordExecution();
+        this.#term.clearCommand();
+      }
+      return false;
     }
 
     if (!allowBindings || !this.#suggestBlob) {
@@ -386,6 +411,12 @@ export class SuggestionManager {
     }
     log.debug({ msg: "handled keypress", ...keyPress });
     return true;
+  }
+
+  private _isStale(): boolean {
+    const { commandText } = this.#term.getCommandState();
+    const currentKey = commandText ? `${this.#term.cwd}\u0000${getCommandCacheKey(commandText, this.#shell)}` : "";
+    return currentKey !== this.#commandKey || this.#inputVersion !== this.#blobInputVersion;
   }
 
   private _handleEnter(items: Suggestion[]): boolean {

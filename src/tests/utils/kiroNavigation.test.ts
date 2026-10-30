@@ -192,3 +192,23 @@ test("in a short terminal the list shrinks to the free rows instead of disappear
   expect(rows.length).toBeLessThanOrEqual(8);
   expect(rows.map((r) => r.data).join("\n")).toContain("1/8");
 });
+
+test("enter never inserts from a list made for older text", async () => {
+  const writes: string[] = [];
+  let commandText = "git checkout ";
+  const terminal = {
+    cwd: process.cwd(),
+    cols: 100,
+    getCommandState: () => ({ commandText, cursorTerminated: true, hasOutput: false }),
+    getCursorState: () => ({ cursorX: 0 }),
+    write: (data: string) => writes.push(data),
+    clearCommand: () => {},
+  } as unknown as ISTerm;
+  const blob: SuggestionBlob = { suggestions: [{ name: "feature/login", allNames: ["feature/login"], icon: "🌿", priority: 50 }] };
+  const manager = new SuggestionManager(terminal, Shell.Zsh, Promise.resolve({ getSuggestions: async () => blob }));
+  await manager.exec();
+  expect(manager.update(press("down"))).toBe(true);
+  commandText = "git checkout fix/header"; // typed faster than the list refreshed
+  expect(manager.update(press("return"))).toBe(false);
+  expect(writes).toEqual([]);
+});
