@@ -23,13 +23,15 @@ The command is `thint` (long form: `terminalhinter`).
 
 ## What it does
 
+- **The list is in your order.** Select an entry and press Shift+Up or Shift+Down to move it. The list remembers
+  that order for that spot in the command (after `pnpm`, after `git checkout`), also through aliases (`p` for
+  `pnpm`). `thint order reset` forgets it.
 - **Walk into folders with Enter.** Enter on a folder inserts it and keeps the list open with its
   contents. The `↪` entry at the top runs the command, so `cd` + Enter, Enter, Enter lands you deep in a tree.
 - **Descriptions and argument hints** for subcommands and options, e.g. `checkout [branch, file, tag or commit]`.
 - **Your aliases and functions**, with what each alias expands to and which file a function comes from.
 - **Learns what you use.** Folders, branches, scripts and subcommands you pick often move up, recent ones more
-  than old ones. You can also set the order yourself: select an entry and press Shift+Up or Shift+Down
-  (`thint order reset` forgets it).
+  than old ones.
   An exact match still comes first (`pnpm dev` offers the `dev` script before `dev:vite`). The history stays on
   your machine in `~/.local/share/terminalhinter/history.jsonl`.
 - **Forgiving matching.** Letters in order are enough: `icpl` finds `intercars.com.pl`, `chkt` finds `checkout`.
