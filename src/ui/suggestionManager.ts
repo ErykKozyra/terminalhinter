@@ -14,7 +14,7 @@ import { getCommandCacheKey } from "../runtime/parser.js";
 import { initializeRuntime } from "../runtime/initialize.js";
 
 type SuggestionRuntime = Pick<Awaited<ReturnType<typeof initializeRuntime>>, "getSuggestions"> &
-  Partial<Pick<Awaited<ReturnType<typeof initializeRuntime>>, "clearTransientSuggestionState" | "recordExecutedCommand">>;
+  Partial<Pick<Awaited<ReturnType<typeof initializeRuntime>>, "clearTransientSuggestionState" | "recordExecutedCommand" | "reorderSuggestions">>;
 
 const getMaxSuggestions = () => getConfig().maxSuggestions ?? 6;
 const minBoxWidth = 36;
@@ -52,6 +52,7 @@ type KeyPress = {
   name: string;
   ctrl: boolean;
   shift: boolean;
+  meta?: boolean;
 };
 
 export class SuggestionManager {
@@ -387,6 +388,12 @@ export class SuggestionManager {
       this.#hideSuggestions = name == "up" || name == "down";
     }
 
+    // Shift+Up / Shift+Down (or Alt+Up / Alt+Down) move the selected entry and the list keeps that order next time
+    if ((name == "up" || name == "down") && (shift || keyPress.meta) && !ctrl && this.#suggestBlob != null && allowBindings) {
+      this._move(name == "up" ? -1 : 1);
+      return true;
+    }
+
     // the list can lag behind fast typing: if it was made for different text than what is on the line now, Enter
     // and Tab must not insert one of its entries (`git checkout fix/header` + quick Enter once inserted a branch
     // picked from the older list)
@@ -443,6 +450,26 @@ export class SuggestionManager {
     }
     log.debug({ msg: "handled keypress", ...keyPress });
     return true;
+  }
+
+  private _move(direction: -1 | 1) {
+    const blob = this.#suggestBlob;
+    const items = this._items();
+    const from = this.#activeSuggestionIdx;
+    const to = from + direction;
+    const offset = items.length - (blob?.suggestions.length ?? 0); // the ↪ entry is not part of the suggestions
+    const movable = (s: Suggestion | undefined) => s != null && !s.execute && s.type !== "folder" && s.type !== "file";
+    if (blob == null || from < 0 || !movable(items.at(from)) || to < 0 || !movable(items.at(to))) return;
+    const list = [...blob.suggestions];
+    [list[from - offset], list[to - offset]] = [list[to - offset], list[from - offset]];
+    this.#suggestBlob = { ...blob, suggestions: list };
+    this.#activeSuggestionIdx = to;
+    this.#navigated = true;
+    const names = list.slice(0, Math.max(from, to) - offset + 1).map((s) => s.name);
+    const { commandText } = this.#term.getCommandState();
+    void this._getRuntime()
+      .then((runtime) => runtime.reorderSuggestions?.(commandText ?? "", this.#shell, names))
+      .catch((e) => log.debug({ msg: "could not save the order", e: (e as Error).message }));
   }
 
   private _isStale(): boolean {

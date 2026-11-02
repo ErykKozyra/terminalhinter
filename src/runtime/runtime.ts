@@ -19,7 +19,8 @@ import log from "../utils/log.js";
 import { specResourcesPath } from "../utils/constants.js";
 import { endTiming, startTiming } from "../utils/performance.js";
 import { clearImplicitGeneratorState } from "./generatorCache.js";
-import { loadHistory, recordCommand, topCommands } from "./history.js";
+import { contextOf, loadHistory, recordCommand, topCommands } from "./history.js";
+import { setOrder } from "./order.js";
 import { jumpCommands, jumpSuggestions } from "./jumps.js";
 import { augmentSpec, enrichSuggestions } from "./project.js";
 import { loadCustomSpecs } from "./customSpecs.js";
@@ -132,6 +133,17 @@ export const loadLocalSpecsSet = async () => {
         });
     }),
   );
+};
+
+// Saves the order you arranged with Shift+Up / Shift+Down for the spot being completed in `cmd` (see order.ts).
+export const reorderSuggestions = (cmd: string, shell: Shell, names: string[]): void => {
+  try {
+    const tokens = aliasExpand(parseCommand(cmd, shell));
+    const before = tokens.at(-1)?.complete === false ? tokens.slice(0, -1) : tokens;
+    setOrder(contextOf(before), names);
+  } catch (e) {
+    log.debug({ msg: "could not save the order", e: (e as Error).message });
+  }
 };
 
 // Remembers the arguments of a command that was just run, for frecency ranking (history.ts).

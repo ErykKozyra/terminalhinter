@@ -91,6 +91,14 @@ export const thintSpec: Fig.Subcommand = {
         { name: "list", description: "List the commands with suggestions" },
       ],
     },
+    {
+      name: "order",
+      description: "Your own order of the list (Shift+Up / Shift+Down)",
+      subcommands: [
+        { name: "list", description: "Show the orders you set" },
+        { name: "reset", description: "Forget an order", args: { name: "words", isOptional: true, isVariadic: true } },
+      ],
+    },
     { name: "doctor", description: "Check the installation" },
     { name: "reinit", description: "Regenerate resources after an update" },
     { name: "uninstall", description: "Remove resources and settings" },

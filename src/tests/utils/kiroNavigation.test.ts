@@ -244,3 +244,33 @@ test("enter on a typed short name runs it, tab still expands it", async () => {
   expect(second.manager.update(press("tab"))).toBe(true);
   expect(second.writes).toEqual(["nstall "]);
 });
+
+test("shift+down moves the selected entry and keeps the selection on it", async () => {
+  const saved: string[][] = [];
+  const terminal = {
+    cwd: process.cwd(),
+    cols: 100,
+    getCommandState: () => ({ commandText: "pnpm ", cursorTerminated: true, hasOutput: false }),
+    getCursorState: () => ({ cursorX: 0 }),
+    write: () => {},
+    clearCommand: () => {},
+  } as unknown as ISTerm;
+  const blob: SuggestionBlob = {
+    suggestions: ["dev", "build", "install"].map((name) => ({ name, allNames: [name], icon: "📦", priority: 50 })),
+  };
+  const runtime = { getSuggestions: async () => blob, reorderSuggestions: (_cmd: string, _shell: Shell, names: string[]) => void saved.push(names) };
+  const manager = new SuggestionManager(terminal, Shell.Zsh, Promise.resolve(runtime));
+  await manager.exec();
+  manager.update(press("down")); // select dev
+  expect(manager.update({ name: "down", sequence: "\u001b[1;2B", ctrl: false, shift: true })).toBe(true);
+  await new Promise((r) => setTimeout(r, 0));
+  const rows = manager
+    .render("below", 5)
+    .map((r) => r.data)
+    .join("\n");
+  expect(rows.indexOf("build")).toBeLessThan(rows.indexOf("dev"));
+  expect(saved).toEqual([["build", "dev"]]);
+  expect(manager.update({ name: "up", sequence: "\u001b[1;3A", ctrl: false, shift: false, meta: true })).toBe(true);
+  await new Promise((r) => setTimeout(r, 0));
+  expect(saved.at(-1)).toEqual(["dev", "build"]);
+});

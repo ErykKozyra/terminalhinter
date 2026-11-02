@@ -27,7 +27,9 @@ The command is `thint` (long form: `terminalhinter`).
   contents. The `↪` entry at the top runs the command, so `cd` + Enter, Enter, Enter lands you deep in a tree.
 - **Descriptions and argument hints** for subcommands and options, e.g. `checkout [branch, file, tag or commit]`.
 - **Your aliases and functions**, with what each alias expands to and which file a function comes from.
-- **Learns what you use.** Folders, branches and scripts you pick often move up, recent ones more than old ones.
+- **Learns what you use.** Folders, branches, scripts and subcommands you pick often move up, recent ones more
+  than old ones. You can also set the order yourself: select an entry and press Shift+Up or Shift+Down
+  (`thint order reset` forgets it).
   An exact match still comes first (`pnpm dev` offers the `dev` script before `dev:vite`). The history stays on
   your machine in `~/.local/share/terminalhinter/history.jsonl`.
 - **Forgiving matching.** Letters in order are enough: `icpl` finds `intercars.com.pl`, `chkt` finds `checkout`.
@@ -79,6 +81,7 @@ If you use nvm, loading it lazily saves another half a second per tab.
 | Up / Down | Move the selection; Up with nothing selected goes to shell history |
 | Escape | Close the list |
 | Ctrl+Space | Open the list again (or close it) |
+| Shift+Up / Shift+Down | Move the selected entry; the list keeps your order next time (also Alt+Up / Alt+Down) |
 
 Commands:
 
@@ -89,6 +92,7 @@ thint config list           # every setting and its value
 thint config set maxSuggestions 8
 thint bookmark add . -n api # `cd api` from anywhere
 thint specs new deploy      # start your own suggestions for a command
+thint order list            # the orders you set with Shift+Up / Shift+Down
 thint doctor                # check the installation, with a fix for every problem
 thint reinit                # regenerate resources after an update
 thint -c                    # is this shell running inside terminalhinter?

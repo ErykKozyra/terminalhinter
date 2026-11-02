@@ -13,6 +13,7 @@ import { escapePath } from "./utils.js";
 import { addPathSeparator, endsWithPathSeparator, getPathDirname, removePathSeparator, Shell } from "../utils/shell.js";
 import { getConfig } from "../utils/config.js";
 import { contextOf, frecency } from "./history.js";
+import { orderRank } from "./order.js";
 
 export enum SuggestionIcons {
   File = "📄",
@@ -154,13 +155,23 @@ const getMatchRelevance = (name: string, partialCmd: string): number => {
 };
 
 // An exact match of what was typed always comes first (`pnpm dev` puts the `dev` script above `dev:vite`).
-// Then names that start with the typed text, then names that only contain it, each group by priority. Paths are also ranked by shorter names and alphabetically; everything else keeps its
+// Then names that start with the typed text, then names that only contain it. Inside each group: the order you set
+// yourself, then what you use often, then the priority the spec gives. Paths are also ranked by shorter names and alphabetically; everything else keeps its
 // source order among equally good matches (the sort is stable), except values, where shorter names go first.
-const sortSuggestions = (suggestions: Suggestion[], partialCmd: string | undefined, score: (s: Suggestion) => number = () => 0): Suggestion[] => {
+const sortSuggestions = (
+  suggestions: Suggestion[],
+  partialCmd: string | undefined,
+  score: (s: Suggestion) => number = () => 0,
+  rank: (s: Suggestion) => number | undefined = () => undefined,
+): Suggestion[] => {
   // how often and how recently you used each value here (see history.ts); computed once per suggestion
   const scores = new Map(suggestions.map((s) => [s, score(s)]));
   const used = (s: Suggestion) => scores.get(s) ?? 0;
-  const sorted = suggestions.sort((a, b) => b.priority - a.priority || used(b) - used(a));
+  // the order you set with Shift+Up / Shift+Down (see order.ts): placed entries first, in your order
+  const ranks = new Map(suggestions.map((s) => [s, rank(s) ?? Number.MAX_SAFE_INTEGER]));
+  const placed = (a: Suggestion, b: Suggestion) => (ranks.get(a) ?? 0) - (ranks.get(b) ?? 0);
+  // what you use wins over the order the spec suggests
+  const sorted = suggestions.sort((a, b) => placed(a, b) || used(b) - used(a) || b.priority - a.priority);
   // paths: folders before files, hidden entries (.git, .env) after the visible ones unless a dot was typed,
   // and `..` last
   const typedDot = partialCmd?.startsWith(".") ?? false;
@@ -188,8 +199,9 @@ const sortSuggestions = (suggestions: Suggestion[], partialCmd: string | undefin
       // names that start with the typed text always beat names that only contain it, whatever their priority:
       // `p i` lists install before the `lint` script
       Math.min(relevance(b), 2) - Math.min(relevance(a), 2) ||
-      b.priority - a.priority ||
+      placed(a, b) ||
       used(b) - used(a) ||
+      b.priority - a.priority ||
       (isValue(a) && isValue(b) ? a.name.length - b.name.length : 0),
   );
   const pathIndexes = sorted.flatMap((s, i) => (getPathy(s.type) ? [i] : []));
@@ -241,8 +253,18 @@ const historyScore =
   (s: Suggestion): number => {
     const before = allTokens.at(-1)?.complete === false ? allTokens.slice(0, -1) : allTokens;
     const context = contextOf(before);
-    const value = getPathy(s.type) ? path.join(cwd, removePathSeparator(s.insertValue ?? s.name)) : (s.insertValue ?? s.name).trim();
-    return frecency(context, value);
+    if (getPathy(s.type)) return frecency(context, path.join(cwd, removePathSeparator(s.insertValue ?? s.name)));
+    // `pnpm i` counts for install too
+    const names = new Set([(s.insertValue ?? s.name).trim(), ...s.allNames]);
+    return Math.max(...[...names].map((n) => frecency(context, n)));
+  };
+
+const orderRankOf =
+  (allTokens: CommandToken[]) =>
+  (s: Suggestion): number | undefined => {
+    if (getPathy(s.type)) return undefined;
+    const before = allTokens.at(-1)?.complete === false ? allTokens.slice(0, -1) : allTokens;
+    return orderRank(contextOf(before), s.name);
   };
 
 function filter<T extends Fig.BaseSuggestion & { name?: Fig.SingleOrArray<string>; type?: Fig.SuggestionType | undefined }>(
@@ -441,7 +463,12 @@ export const getSubcommandDrivenRecommendation = async (
         removeHiddenSuggestions(
           removeHomeDirectorySuggestion(
             removeAcceptedSuggestions(
-              adjustPathSuggestions(sortSuggestions(suggestions, partialCmd, historyScore(allTokens, cwd)), partialToken, lastToken, shell),
+              adjustPathSuggestions(
+                sortSuggestions(suggestions, partialCmd, historyScore(allTokens, cwd), orderRankOf(allTokens)),
+                partialToken,
+                lastToken,
+                shell,
+              ),
               acceptedTokens,
             ),
             allTokens,
@@ -491,7 +518,12 @@ export const getArgDrivenRecommendation = async (
         removeHiddenSuggestions(
           removeHomeDirectorySuggestion(
             removeAcceptedSuggestions(
-              adjustPathSuggestions(sortSuggestions(suggestions, partialCmd, historyScore(allTokens, cwd)), partialToken, lastToken, shell),
+              adjustPathSuggestions(
+                sortSuggestions(suggestions, partialCmd, historyScore(allTokens, cwd), orderRankOf(allTokens)),
+                partialToken,
+                lastToken,
+                shell,
+              ),
               acceptedTokens,
             ),
             allTokens,
