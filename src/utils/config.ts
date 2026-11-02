@@ -44,6 +44,7 @@ type Config = {
   enterAcceptsSuggestion: boolean;
   iconStyle: IconStyle;
   fuzzyMatching: boolean;
+  showHints: boolean;
 };
 
 const bindingSchema: JSONSchemaType<Binding> = {
@@ -137,6 +138,11 @@ export const configSchema = {
       nullable: true,
       default: true,
     },
+    showHints: {
+      type: "boolean",
+      nullable: true,
+      default: true,
+    },
   },
   additionalProperties: false,
 };
@@ -168,6 +174,7 @@ let globalConfig: Config = {
   enterAcceptsSuggestion: true,
   iconStyle: "plain",
   fuzzyMatching: true,
+  showHints: true,
 };
 
 export const getConfig = (): Config => globalConfig;
@@ -209,6 +216,7 @@ export const loadConfig = async (_program?: Command) => {
         enterAcceptsSuggestion: config?.enterAcceptsSuggestion ?? true,
         iconStyle: config?.iconStyle ?? (config?.useNerdFont ? "nerd" : "plain"),
         fuzzyMatching: config?.fuzzyMatching ?? true,
+        showHints: config?.showHints ?? true,
       };
     }
   }

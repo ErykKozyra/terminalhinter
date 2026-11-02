@@ -49,6 +49,8 @@ export const setOrder = (context: string, names: string[]) => {
   save();
 };
 
+export const hasCustomOrder = (): boolean => Object.keys(load()).length > 0;
+
 export const listOrders = (): Record<string, string[]> => ({ ...load() });
 
 // forgets the order after these words, or every order when no words are given; returns how many were removed

@@ -274,3 +274,33 @@ test("shift+down moves the selected entry and keeps the selection on it", async 
   await new Promise((r) => setTimeout(r, 0));
   expect(saved.at(-1)).toEqual(["dev", "build"]);
 });
+
+test("walking the list shows a reorder hint until the order was changed once", async () => {
+  const dir = (await import("node:fs")).mkdtempSync((await import("node:path")).join((await import("node:os")).tmpdir(), "thint-hint-"));
+  process.env.THINT_ORDER_FILE = `${dir}/order.json`;
+  const { reloadOrder } = await import("../../runtime/order.js");
+  reloadOrder();
+  const blob: SuggestionBlob = { suggestions: ["dev", "build", "lint"].map((name) => ({ name, allNames: [name], icon: "📦", priority: 50 })) };
+  const runtime = { getSuggestions: async () => blob, reorderSuggestions: () => {} };
+  const terminal = {
+    cwd: process.cwd(),
+    cols: 100,
+    getCommandState: () => ({ commandText: "pnpm ", cursorTerminated: true, hasOutput: false }),
+    getCursorState: () => ({ cursorX: 0 }),
+    write: () => {},
+    clearCommand: () => {},
+  } as unknown as ISTerm;
+  const manager = new SuggestionManager(terminal, Shell.Zsh, Promise.resolve(runtime));
+  await manager.exec();
+  const text = () =>
+    manager
+      .render("below", 5)
+      .map((r) => r.data)
+      .join("\n");
+  expect(text()).not.toContain("reorder");
+  manager.update(press("down"));
+  expect(text()).toContain("shift+↑↓ reorder");
+  manager.update({ name: "down", sequence: "\u001b[1;2B", ctrl: false, shift: true });
+  expect(text()).not.toContain("reorder");
+  delete process.env.THINT_ORDER_FILE;
+});

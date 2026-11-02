@@ -85,6 +85,17 @@ export const runWizard = async () => {
       out(`\nAdd this as the first line of your ${shell} config:\n\n  ${getShellSourceCommand(shell).trim()}\n`);
     }
     out(`\nDone. Open a new terminal tab.\n`);
+    out(
+      [
+        "",
+        chalk.bold("Keys in the list"),
+        `  ${chalk.cyan("Enter")}            accept; on a folder walk into it; on ↪ run the command`,
+        `  ${chalk.cyan("↑ ↓")}              move the selection`,
+        `  ${chalk.cyan("Shift+↑ ↓")}        move the selected entry; the list keeps your order`,
+        `  ${chalk.cyan("Esc / Ctrl+Space")} close the list / open it again`,
+        "",
+      ].join("\n"),
+    );
   } catch (e) {
     if (e instanceof PromptCancelled) {
       out(`\nSetup cancelled, nothing was changed.\n`);

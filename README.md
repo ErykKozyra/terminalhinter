@@ -129,6 +129,7 @@ useAliases = true                       # suggest your shell aliases (default: t
 maxSuggestions = 10                     # rows visible at once (default: 6)
 enterAcceptsSuggestion = true           # false: Enter always runs, accept with Tab only
 fuzzyMatching = true                    # letters in order are enough (default: true)
+showHints = true                        # short tips in the list, e.g. that Shift+Up/Down reorders it
 iconStyle = "plain"                     # "plain", "badge" or "nerd" (needs a Nerd Font)
 activeSuggestionBackgroundColor = "#2F5FD0" # optional, overrides the theme
 borderColor = "#4B5263"                 # optional, overrides the theme

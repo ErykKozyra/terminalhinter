@@ -12,12 +12,14 @@ import { activeTheme, Theme } from "./theme.js";
 import { calculateReplacement, applyReplacement } from "../runtime/replacement.js";
 import { getCommandCacheKey } from "../runtime/parser.js";
 import { initializeRuntime } from "../runtime/initialize.js";
+import { hasCustomOrder } from "../runtime/order.js";
 
 type SuggestionRuntime = Pick<Awaited<ReturnType<typeof initializeRuntime>>, "getSuggestions"> &
   Partial<Pick<Awaited<ReturnType<typeof initializeRuntime>>, "clearTransientSuggestionState" | "recordExecutedCommand" | "reorderSuggestions">>;
 
 const getMaxSuggestions = () => getConfig().maxSuggestions ?? 6;
 const minBoxWidth = 36;
+const reorderHint = "shift+↑↓ reorder";
 const maxBoxWidth = 64;
 const iconWidth = 4; // pill or glyph, then a gap before the name
 // Nerd Font code points: powerline round caps around a pill, and flat Font Awesome glyphs
@@ -69,6 +71,7 @@ export class SuggestionManager {
   #navigated = false; // the selection was moved with the arrows since this list appeared
   #inputVersion = 0; // keys passed to the shell so far
   #refreshRequested = false; // Ctrl+Space asked for the list
+  #reordered = false; // you moved an entry in this session, so the reorder hint is no longer needed
   #blobInputVersion = 0; // #inputVersion when the current list was requested
 
   constructor(terminal: ISTerm, shell: Shell, runtime?: Promise<SuggestionRuntime>) {
@@ -331,7 +334,11 @@ export class SuggestionManager {
     const widest = Math.max(0, ...items.map((item) => this._contentWidth(item)));
     const maxWidth = Math.min(maxBoxWidth, cols);
     if (maxWidth < 12) return [];
-    const width = Math.max(Math.min(Math.max(widest + 4, minBoxWidth), maxWidth), Math.min(minBoxWidth, maxWidth));
+    // the reorder hint may widen the box a little so it fits next to the start of the description
+    const hintWidth = this._wantsReorderHint(active)
+      ? wcswidth(counter ? `${reorderHint} · ${counter}` : reorderHint) + Math.min(wcswidth(footerText), 16) + 5
+      : 0;
+    const width = Math.max(Math.min(Math.max(widest + 4, minBoxWidth, hintWidth), maxWidth), Math.min(minBoxWidth, maxWidth));
     const innerWidth = width - 2;
 
     const rows: string[] = [];
@@ -345,9 +352,11 @@ export class SuggestionManager {
         const selected = idx + this.#scrollTop === this.#activeSuggestionIdx;
         rows.push(border("│") + this._renderRow(item, innerWidth, selected, partial) + border("│"));
       });
-      if (footerText || counter) {
+      // while you walk the list, a short hint tells that the order can be changed; it stops once you have done it
+      const hint = this._reorderHint(active, footerText, counter, innerWidth);
+      if (footerText || counter || hint) {
         rows.push(border("├" + "─".repeat(innerWidth) + "┤"));
-        rows.push(border("│") + this._renderFooter(footerText, counter, innerWidth) + border("│"));
+        rows.push(border("│") + this._renderFooter(footerText, hint ? (counter ? `${hint} · ${counter}` : hint) : counter, innerWidth) + border("│"));
       }
     }
     rows.push(border(bl + "─".repeat(innerWidth) + br));
@@ -452,6 +461,18 @@ export class SuggestionManager {
     return true;
   }
 
+  private _wantsReorderHint(active: Suggestion | undefined): boolean {
+    if (!getConfig().showHints || !this.#navigated || this.#reordered || hasCustomOrder()) return false;
+    return active != null && !active.execute && active.type !== "folder" && active.type !== "file";
+  }
+
+  private _reorderHint(active: Suggestion | undefined, footerText: string, counter: string, innerWidth: number): string {
+    if (!this._wantsReorderHint(active)) return "";
+    // only when enough of the description stays readable next to it
+    const room = innerWidth - 2 - 1 - wcswidth(counter ? `${reorderHint} · ${counter}` : reorderHint);
+    return room >= Math.min(wcswidth(footerText), 16) ? reorderHint : "";
+  }
+
   private _move(direction: -1 | 1) {
     const blob = this.#suggestBlob;
     const items = this._items();
@@ -465,6 +486,7 @@ export class SuggestionManager {
     this.#suggestBlob = { ...blob, suggestions: list };
     this.#activeSuggestionIdx = to;
     this.#navigated = true;
+    this.#reordered = true;
     const names = list.slice(0, Math.max(from, to) - offset + 1).map((s) => s.name);
     const { commandText } = this.#term.getCommandState();
     void this._getRuntime()
