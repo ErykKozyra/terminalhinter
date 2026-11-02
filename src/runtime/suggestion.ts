@@ -154,8 +154,7 @@ const getMatchRelevance = (name: string, partialCmd: string): number => {
 };
 
 // An exact match of what was typed always comes first (`pnpm dev` puts the `dev` script above `dev:vite`).
-// Then by priority, and inside a priority band names that start with the typed text come before names that
-// only contain it. Paths are also ranked by shorter names and alphabetically; everything else keeps its
+// Then names that start with the typed text, then names that only contain it, each group by priority. Paths are also ranked by shorter names and alphabetically; everything else keeps its
 // source order among equally good matches (the sort is stable), except values, where shorter names go first.
 const sortSuggestions = (suggestions: Suggestion[], partialCmd: string | undefined, score: (s: Suggestion) => number = () => 0): Suggestion[] => {
   // how often and how recently you used each value here (see history.ts); computed once per suggestion
@@ -175,7 +174,9 @@ const sortSuggestions = (suggestions: Suggestion[], partialCmd: string | undefin
     return sorted;
   }
   const relevance = (s: Suggestion) => getMatchRelevance(s.name, partialCmd);
-  const isExact = (s: Suggestion) => relevance(s) === 3;
+  // a short alias counts too: `pnpm i` is exactly `install`
+  const typedLower = partialCmd.toLowerCase();
+  const isExact = (s: Suggestion) => relevance(s) === 3 || s.allNames.some((n) => n.toLowerCase() === typedLower);
   // values (scripts, branches, generator results) prefer the shorter name; subcommands and options keep the
   // spec's own order, which puts the popular ones first
   // (specs leave `type` empty on most subcommands, so they are recognized by the icon they were given)
@@ -184,8 +185,10 @@ const sortSuggestions = (suggestions: Suggestion[], partialCmd: string | undefin
   sorted.sort(
     (a, b) =>
       Number(isExact(b)) - Number(isExact(a)) ||
-      b.priority - a.priority ||
+      // names that start with the typed text always beat names that only contain it, whatever their priority:
+      // `p i` lists install before the `lint` script
       Math.min(relevance(b), 2) - Math.min(relevance(a), 2) ||
+      b.priority - a.priority ||
       used(b) - used(a) ||
       (isValue(a) && isValue(b) ? a.name.length - b.name.length : 0),
   );
@@ -195,8 +198,8 @@ const sortSuggestions = (suggestions: Suggestion[], partialCmd: string | undefin
     .sort(
       (a, b) =>
         Number(isExact(b)) - Number(isExact(a)) ||
-        b.priority - a.priority ||
         relevance(b) - relevance(a) ||
+        b.priority - a.priority ||
         used(b) - used(a) ||
         pathGroup(a) - pathGroup(b) ||
         a.name.length - b.name.length ||

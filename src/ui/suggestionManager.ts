@@ -453,7 +453,10 @@ export class SuggestionManager {
 
   private _handleEnter(items: Suggestion[]): boolean {
     const suggestion = this.#activeSuggestionIdx >= 0 ? items.at(this.#activeSuggestionIdx) : undefined;
-    if (getConfig().enterAcceptsSuggestion && suggestion != null && !suggestion.execute && this._accept(suggestion)) {
+    // `pnpm i` typed in full is already a command (i is install's short name), so Enter runs it as typed
+    const token = this.#suggestBlob?.activeToken;
+    const typedShortName = token != null && !token.complete && !token.isPath && suggestion?.allNames.includes(token.token) === true;
+    if (getConfig().enterAcceptsSuggestion && suggestion != null && !suggestion.execute && !typedShortName && this._accept(suggestion)) {
       log.debug({ msg: "accepted suggestion with enter", name: suggestion.name });
       return true;
     }

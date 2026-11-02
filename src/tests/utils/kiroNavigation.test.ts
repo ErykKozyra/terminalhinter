@@ -229,3 +229,18 @@ test("ctrl+space opens the list after escape and closes it again", async () => {
   expect(manager.update(ctrlSpace)).toBe(true);
   expect(manager.render("below", 3)).toEqual([]);
 });
+
+test("enter on a typed short name runs it, tab still expands it", async () => {
+  const blob: SuggestionBlob = {
+    suggestions: [{ name: "install", allNames: ["install", "i"], icon: "📦", priority: 50 }],
+    activeToken: { token: "i", tokenLength: 1, complete: false, isOption: false },
+  };
+  const first = setup(blob);
+  await first.manager.exec();
+  expect(first.manager.update(press("return"))).toBe(false);
+  expect(first.writes).toEqual([]);
+  const second = setup(blob);
+  await second.manager.exec();
+  expect(second.manager.update(press("tab"))).toBe(true);
+  expect(second.writes).toEqual(["nstall "]);
+});

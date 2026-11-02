@@ -48,3 +48,11 @@ test("variables need their own first letter to match fuzzily", async () => {
   expect(found).toContain("$HOTHINT_TEST");
   expect(found).not.toContain("$THINT_TEST_GHO");
 });
+
+test("names starting with the typed text beat scripts that only contain it", async () => {
+  fs.writeFileSync(path.join(root, "package.json"), JSON.stringify({ name: "x", scripts: { lint: "next lint", build: "next build", dev: "next dev" } }));
+  const found = await names("pnpm i");
+  expect(found[0]).toBe("install");
+  expect(found.indexOf("init")).toBeLessThan(found.indexOf("lint"));
+  expect((await names("pnpm d"))[0]).toBe("dev");
+});
