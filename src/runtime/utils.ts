@@ -93,7 +93,11 @@ export const buildExecuteShellCommand =
     signal?.throwIfAborted();
     const executionShell = await getExecutionShell();
     const escapedArgs = escapeArgs(executionShell, args);
-    const child = spawn(command, escapedArgs, { cwd, env: { ...process.env, ...env, ISTERM: "1" }, shell: executionShell, signal });
+    // detached = a session of its own, without the terminal: an interactive shell started here (`zsh -i -c alias` for
+    // the alias list) would otherwise take over the terminal, and terminalhinter, no longer in front, got stopped
+    // ("suspended (tty output)") so the tab was left with a plain shell
+    const detached = process.platform !== "win32";
+    const child = spawn(command, escapedArgs, { cwd, env: { ...process.env, ...env, ISTERM: "1" }, shell: executionShell, signal, detached });
     const killTimeout = setTimeout(() => child.kill("SIGKILL"), timeout);
     let stdout = "";
     let stderr = "";
