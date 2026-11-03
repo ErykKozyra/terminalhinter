@@ -18,8 +18,8 @@ each with a short description.
 
 The command is `thint` (long form: `terminalhinter`).
 
-> **Status:** early, used daily on macOS with zsh and oh-my-zsh. Linux (bash, zsh) is tested.
-> Windows and fish work in the upstream project but are not yet tested with the changes in this fork.
+> **Status:** used daily on macOS with zsh and oh-my-zsh. Linux (bash, zsh) is tested.
+> Windows and fish are experimental: they work in the upstream project but are not yet tested with this fork.
 
 ## What it does
 
@@ -50,7 +50,21 @@ The command is `thint` (long form: `terminalhinter`).
 
 ## Install
 
-Published packages are coming. Until then, build from source (needs Node 18 to 22 and git; Node is only needed for the build):
+With npm (macOS, Linux; Windows is experimental):
+
+```bash
+npm i -g @erykkozyra/terminalhinter
+thint init
+```
+
+`thint init` asks for your shell, theme and icons, then puts the startup lines at the top of your shell
+config. Open a new terminal tab afterwards.
+
+If you use nvm (or another Node version manager): global npm packages belong to one Node version, so after
+switching the default version the `thint` command is gone until you run `npm i -g` again. Suggestions in new tabs
+keep working in the meantime. To avoid this, install from source instead; that build does not depend on Node at all.
+
+From source (needs Node 18 to 22 and git, only for the build):
 
 ```bash
 git clone https://github.com/ErykKozyra/terminalhinter.git
