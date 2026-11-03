@@ -117,6 +117,9 @@ jobs:
         shell: bash
         env:
           NPM_TAG: ${{ github.event.release.prerelease && 'next' || 'latest' }}
+          # only for the very first release: npm lets you set up trusted publishing (no token) once a package
+          # exists. Afterwards delete the NPM_TOKEN secret and publishing uses GitHub's OIDC identity instead.
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           platform_packages=(
             ./pkg/erykkozyra-terminalhinter-darwin-arm64-*.tgz

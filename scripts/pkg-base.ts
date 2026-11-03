@@ -27,15 +27,18 @@ const generatePackageJson = (): void => {
   const packageJson = {
     name: `@erykkozyra/terminalhinter`,
     version: getVersion(),
-    description: "IDE style command line auto complete",
+    description: "IDE-style terminal autocomplete: a dropdown for folders, git, npm and 600+ CLIs",
     license: "MIT",
+    homepage: "https://github.com/ErykKozyra/terminalhinter#readme",
     repository: {
       type: "git",
       url: "git+https://github.com/ErykKozyra/terminalhinter.git",
     },
     author: {
-      name: "Microsoft Corporation",
+      name: "Eryk Kozyra",
     },
+    contributors: [{ name: "Microsoft Corporation", url: "https://github.com/microsoft/inshellisense" }],
+    keywords: ["autocomplete", "terminal", "shell", "zsh", "bash", "fish", "completion", "cli"],
     bugs: {
       url: "https://github.com/ErykKozyra/terminalhinter/issues",
     },

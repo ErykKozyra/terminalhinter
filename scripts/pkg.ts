@@ -267,7 +267,7 @@ const generatePackageJson = (): void => {
   const packageJson = {
     name: `@erykkozyra/terminalhinter-${PLATFORM_ARCH}`,
     version: getVersion(),
-    description: "IDE style command line auto complete",
+    description: "Platform binary for @erykkozyra/terminalhinter",
     license: "MIT",
     repository: {
       type: "git",
