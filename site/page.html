@@ -220,7 +220,7 @@ kbd {
 .os button[aria-pressed="true"] { background: var(--key-bg); color: var(--ink); box-shadow: inset 0 0 0 1px var(--key-edge); }
 .os button:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
 .keys .mac-only { margin-top: 8px; font-size: 14px; }
-code.inline { font: 400 0.88em var(--f-mono); background: var(--code-bg); padding: 2px 6px; border-radius: 5px; }
+code.inline { font: 400 0.88em var(--f-mono); background: var(--code-bg); padding: 2px 6px; border-radius: 5px; white-space: nowrap; }
 
 .steps { list-style: none; padding: 0; margin: 0; display: grid; gap: 22px; counter-reset: s; max-width: 760px; }
 .steps li { display: grid; grid-template-columns: 2.2em minmax(0, 1fr); gap: 4px 14px; counter-increment: s; }
@@ -244,6 +244,25 @@ code.inline { font: 400 0.88em var(--f-mono); background: var(--code-bg); paddin
 pre.block {
   margin: 10px 0 0; background: var(--t-bg); color: var(--t-text); border-radius: 8px; padding: 14px 16px;
   font: 400 14px/1.6 var(--f-mono); overflow-x: auto;
+}
+@media (max-width: 520px) {
+  /* on a phone the long lines wrap inside the block instead of running off its edge */
+  pre.block { font-size: 12.5px; padding: 12px 14px; white-space: pre-wrap; overflow-wrap: anywhere; }
+  .cmd code span { white-space: pre-wrap; overflow: visible; }
+  /* the sticker sits above the terminal and only touches its edge, clear of the title */
+  .tryme { position: relative; top: auto; right: auto; display: flex; width: max-content; margin: 0 4px -12px auto; font-size: 20px; padding: 6px 12px 7px 10px; }
+  .tryme svg { width: 26px; height: 22px; }
+  /* code blocks run to the screen edges, which gives the long lines room */
+  pre.block {
+    font-size: 12px; border-radius: 0;
+    margin-left: calc(-1 * max(16px, env(safe-area-inset-left, 0px)));
+    margin-right: calc(-1 * max(16px, env(safe-area-inset-right, 0px)));
+    padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  }
+}
+@media (max-width: 380px) {
+  .cmd code, .steps .snip { font-size: 12px; }
+  pre.block { font-size: 11.5px; }
 }
 pre.block .k { color: #8BB4FF; } pre.block .s { color: #A5D6A7; } pre.block .n { color: #F5C451; }
 
@@ -393,10 +412,10 @@ footer p { margin: 0; max-width: 60ch; }
     <div class="split">
       <p>A bit more space between lines, and VS Code's own color adjustment turned off, make the list look the way it was designed. No special font is needed; a modern monospace like JetBrains Mono comes closest to this page.</p>
 <pre class="block">{
-  <span class="k">"terminal.integrated.lineHeight"</span>: <span class="n">1.3</span>,
-  <span class="k">"terminal.integrated.fontSize"</span>: <span class="n">13</span>,
-  <span class="k">"terminal.integrated.minimumContrastRatio"</span>: <span class="n">1</span>,
-  <span class="k">"terminal.integrated.gpuAcceleration"</span>: <span class="s">"on"</span>
+  <span class="k">"terminal.integrated.<wbr>lineHeight"</span>: <span class="n">1.3</span>,
+  <span class="k">"terminal.integrated.<wbr>fontSize"</span>: <span class="n">13</span>,
+  <span class="k">"terminal.integrated.<wbr>minimumContrastRatio"</span>: <span class="n">1</span>,
+  <span class="k">"terminal.integrated.<wbr>gpuAcceleration"</span>: <span class="s">"on"</span>
 }</pre>
     </div>
   </section>
