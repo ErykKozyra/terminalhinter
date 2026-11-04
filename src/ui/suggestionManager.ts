@@ -658,13 +658,13 @@ const wrapText = (text: string, width: number, maxLines: number): string[] => {
       line = next;
       continue;
     }
-    if (line) lines.push(line);
-    line = words[i];
     if (lines.length === maxLines - 1) {
       // the last line takes the rest, cut to fit
-      lines.push(fitText([line, ...words.slice(i + 1)].join(" "), width)[0]);
+      lines.push(fitText(words.slice(line ? i - line.split(" ").length : i).join(" "), width)[0]);
       return lines;
     }
+    if (line) lines.push(line);
+    line = words[i];
   }
   if (line) lines.push(fitText(line, width)[0]);
   return lines.slice(0, maxLines);

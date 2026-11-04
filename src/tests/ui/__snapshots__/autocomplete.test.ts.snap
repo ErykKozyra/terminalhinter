@@ -7,7 +7,9 @@ exports[`resize recovery restores input and suggestions after becoming too narro
 │  ■  status        │
 │  ■  stash         │
 ├───────────────────┤
-│ Add file content… │
+│ stage [pathspec.… │
+│ Add file contents │
+│ to the staging a… │
 ╰───────────────────╯"
 `;
 
@@ -18,7 +20,9 @@ exports[`resize recovery restores input and suggestions after becoming too narro
 │  ■  status  Show the working tree …  │
 │  ■  stash   Temporarily stores all…  │
 ├──────────────────────────────────────┤
-│ Add file contents to the staging ar… │
+│ stage [pathspec...]                  │
+│ Add file contents to the staging     │
+│ area                                 │
 ╰──────────────────────────────────────╯"
 `;
 
