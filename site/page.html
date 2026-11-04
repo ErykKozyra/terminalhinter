@@ -76,9 +76,20 @@ a:focus-visible, button:focus-visible, .term:focus-visible { outline: 2px solid 
 .top { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 22px; }
 .mark { display: inline-flex; align-items: center; gap: 10px; font: 700 17px/1 var(--f-mono); color: var(--ink); text-decoration: none; }
 .mark i { width: 12px; height: 12px; background: var(--accent); display: inline-block; }
-.top nav { display: flex; gap: 22px; font-size: 15px; }
-.top nav a { color: var(--muted); text-decoration: none; }
-.top nav a:hover { color: var(--ink); }
+.top nav { display: flex; gap: 8px; font-size: 14px; }
+.top nav a {
+  display: inline-flex; align-items: center; gap: 7px; color: var(--ink); text-decoration: none;
+  border: 1px solid var(--rule); border-radius: 8px; padding: 7px 11px 7px 9px;
+}
+.top nav a:hover { border-color: var(--muted); }
+.top nav a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.top nav svg { width: 17px; height: 17px; flex: none; color: var(--muted); }
+.top nav a:hover svg { color: var(--accent); }
+@media (max-width: 420px) {
+  /* icons alone on narrow phones, the name stays for screen readers */
+  .top nav a { padding: 8px; }
+  .top nav a span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+}
 
 /* hero */
 .hero { padding-block: 40px 28px; display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 28px 56px; align-items: end; }
@@ -232,8 +243,10 @@ footer p { margin: 0; max-width: 60ch; }
   <header class="top">
     <a class="mark" href="#"><i aria-hidden="true"></i>terminalhinter</a>
     <nav aria-label="Links">
-      <a href="https://github.com/ErykKozyra/terminalhinter">GitHub</a>
-      <a href="https://www.npmjs.com/package/@erykkozyra/terminalhinter">npm</a>
+      <a href="https://github.com/ErykKozyra/terminalhinter" title="Source code on GitHub">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6 2 12l6 6M16 6l6 6-6 6M14 4l-4 16"/></svg><span>GitHub</span></a>
+      <a href="https://www.npmjs.com/package/@erykkozyra/terminalhinter" title="Package on npm">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2 3 7v10l9 5 9-5V7l-9-5Z"/><path d="m3 7 9 5 9-5M12 12v10"/></svg><span>npm</span></a>
     </nav>
   </header>
 
