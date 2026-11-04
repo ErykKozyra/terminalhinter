@@ -6,6 +6,8 @@ each with a short description.
 
 ![terminalhinter: the list after typing pnpm d](docs/preview.png)
 
+**[Try it in your browser](https://erykkozyra.github.io/terminalhinter/)**: a live demo of the list, no install needed.
+
 The command is `thint` (long form: `terminalhinter`).
 
 > **Status:** used daily on macOS with zsh and oh-my-zsh. Linux (bash, zsh) is tested.
