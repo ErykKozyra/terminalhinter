@@ -3,7 +3,7 @@
 <meta name="description" content="A dropdown for your terminal: folders, git branches, npm scripts and 600+ CLIs as you type. Enter walks into folders, the list learns what you use.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;700;800&family=JetBrains+Mono:ital,wght@0,400;0,700;1,400&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;700;800&family=JetBrains+Mono:ital,wght@0,400;0,700;1,400&family=Caveat:wght@700&display=swap">
 <style>
 /* Layout: one left-aligned column; the live terminal is the hero object, everything else stays quiet around it. */
 :root {
@@ -13,6 +13,7 @@
   --muted: #566074;
   --rule: #CBD2DD;
   --accent: #2F5FD0;         /* the selection blue of the list itself */
+  --sticker: #2F5FD0;        /* the "try it" sticker keeps the deep blue in both themes, so its white text reads */
   --key-bg: #FFFFFF;
   --key-edge: #B9C1CE;
   --code-bg: #DDE3EC;
@@ -122,7 +123,20 @@ h1 {
 }
 
 /* the terminal */
-.stage { padding-block: 8px 12px; }
+.stage { padding-block: 8px 12px; position: relative; }
+/* a sticker on the corner of the terminal that says it is live; it goes away once you click in */
+.tryme {
+  position: absolute; z-index: 2; right: 22px; top: -14px;
+  display: inline-flex; align-items: center; gap: 6px;
+  font: 700 23px/1 "Caveat", var(--f-body); color: #fff;
+  background: var(--sticker); border-radius: 10px; padding: 7px 14px 8px 12px;
+  transform: rotate(-3deg); box-shadow: 0 10px 22px -10px rgba(20, 40, 110, 0.55);
+  cursor: pointer; border: 0; transition: opacity .25s ease, transform .25s ease;
+}
+.tryme svg { width: 30px; height: 26px; flex: none; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.tryme:hover { transform: rotate(-1deg) scale(1.03); }
+.tryme.gone { opacity: 0; transform: rotate(-3deg) translateY(-6px); pointer-events: none; }
+@media (prefers-reduced-motion: reduce) { .tryme { transition: none; } }
 .term {
   position: relative;
   background: var(--t-bg);
@@ -274,6 +288,9 @@ footer p { margin: 0; max-width: 60ch; }
   </div>
 
   <div class="stage">
+    <button type="button" class="tryme" id="tryme" aria-label="Try the live demo: click and type">
+      <svg viewBox="0 0 30 26" aria-hidden="true"><path d="M27 4c-7 0-15 3-19 12"/><path d="M4 11.5 7.6 17l5.6-2.6"/></svg>Try it, type here
+    </button>
     <div class="term" id="term" tabindex="0" role="application" aria-label="Live demo of terminalhinter. Click and type a command such as git or cd.">
       <div class="bar" aria-hidden="true"><span></span><span></span><span></span><b>zsh</b></div>
       <div class="screen" id="screen"></div>
@@ -302,7 +319,7 @@ footer p { margin: 0; max-width: 60ch; }
       <h2>Everything works from the keyboard.</h2>
       <div class="os" role="group" aria-label="Show the keys for">
         <button type="button" data-os="mac" aria-pressed="false">macOS</button>
-        <button type="button" data-os="pc" aria-pressed="true">Linux</button>
+        <button type="button" data-os="pc" aria-pressed="true">Windows / Linux</button>
       </div>
     </div>
     <div class="keys">
@@ -604,7 +621,7 @@ footer p { margin: 0; max-width: 60ch; }
       const m = q && shown.toLowerCase().startsWith(q) ? q.length : 0;
       const nameHtml = `<span class="name">${m ? `<span class="m">${esc(shown.slice(0, m))}</span>` : ""}${esc(shown.slice(m))}</span>`;
       const color = isSel ? "#fff" : `var(${ICON[it.kind] || "--k-value"})`;
-      rows += `<div class="row${isSel ? " sel" : ""}" data-i="${idx}"><span class="sq"><i style="background:${color}"></i></span>${nameHtml}${args ? ` <span class="args">${esc(args)}</span>` : ""}${d ? `${" ".repeat(start - first)}  <span class="desc">${esc(d)}</span>` : ""}</div>`;
+      rows += `<div class="row${isSel ? " sel" : ""}" data-i="${idx}"><span class="sq"><i style="background:${color}"></i></span>${nameHtml}${args ? `<span class="args"> ${esc(args)}</span>` : ""}${d ? `<span class="desc">${" ".repeat(start - first + 2)}${esc(d)}</span>` : ""}</div>`;
       if (isSel) {
         const lines = [];
         if (it.args && args !== it.args) lines.push(`${it.name} ${it.args}`);
@@ -729,6 +746,9 @@ footer p { margin: 0; max-width: 60ch; }
   // the input sits inside the terminal, so one listener on the terminal sees every key exactly once
   term.addEventListener("keydown", key);
   term.addEventListener("click", () => { ghost.focus({ preventScroll: true }); });
+  const tryme = document.getElementById("tryme");
+  tryme.addEventListener("click", () => ghost.focus({ preventScroll: true }));
+  ghost.addEventListener("focus", () => tryme.classList.add("gone"), { once: true });
   ghost.addEventListener("focus", () => term.classList.add("focused"));
   ghost.addEventListener("blur", () => term.classList.remove("focused"));
   // phones send text through input events rather than keydown
