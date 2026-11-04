@@ -9,7 +9,7 @@ const action = async () => {
 };
 
 const cmd = new Command("uninstall");
-cmd.description(`removes all cache resources and configuration for terminalhinter`);
+cmd.description(`removes the startup lines from your shell config and all terminalhinter resources`);
 cmd.action(action);
 
 export default cmd;
