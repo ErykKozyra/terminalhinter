@@ -1,4 +1,4 @@
-// Wraps site/page.html into a complete document for GitHub Pages: site-dist/index.html
+// Wraps site/page.html into a complete document for GitHub Pages: site/dist/index.html
 import fs from "node:fs";
 const page = fs.readFileSync("site/page.html", "utf8");
 const html = `<!doctype html>
@@ -13,6 +13,6 @@ ${page.slice(page.indexOf("</style>") + 8)}
 </body>
 </html>
 `;
-fs.mkdirSync("site-dist", { recursive: true });
-fs.writeFileSync("site-dist/index.html", html);
-console.log("site-dist/index.html", html.length, "bytes");
+fs.mkdirSync("site/dist", { recursive: true });
+fs.writeFileSync("site/dist/index.html", html);
+console.log("site/dist/index.html", html.length, "bytes");

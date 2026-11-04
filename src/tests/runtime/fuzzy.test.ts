@@ -4,8 +4,8 @@
 import { isSubsequence } from "../../runtime/suggestion.js";
 
 test("matches characters in order, not necessarily next to each other", () => {
-  expect(isSubsequence("intercars.com.pl", "icpl")).toBe(true);
-  expect(isSubsequence("intercars.com.pl", "ipcl")).toBe(false);
+  expect(isSubsequence("acme-store.com", "acst")).toBe(true);
+  expect(isSubsequence("acme-store.com", "asct")).toBe(false);
   expect(isSubsequence("checkout", "co")).toBe(true);
   expect(isSubsequence("anything", "")).toBe(true);
 });

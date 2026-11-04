@@ -600,7 +600,33 @@ exports[`parseCommand noArgsArgumentGiven 1`] = `
 }
 `;
 
-exports[`parseCommand noOptionsSuggestedDuringVariadicArg 1`] = `undefined`;
+exports[`parseCommand noOptionsSuggestedDuringVariadicArg 1`] = `
+{
+  "activeToken": {
+    "complete": false,
+    "isOption": false,
+    "token": "ite",
+    "tokenLength": 3,
+  },
+  "isPathContext": false,
+  "rootCommand": "ls",
+  "suggestions": [
+    {
+      "allNames": [
+        "site",
+      ],
+      "args": undefined,
+      "description": undefined,
+      "hidden": undefined,
+      "icon": "📁",
+      "insertValue": "site/",
+      "name": "site",
+      "priority": 55,
+      "type": "folder",
+    },
+  ],
+}
+`;
 
 exports[`parseCommand optionsSuggestedAfterVariadicArg 1`] = `
 {
@@ -762,6 +788,19 @@ exports[`parseCommand pathPrefixMatchesRankedFirst 1`] = `
       "icon": "📁",
       "insertValue": "src/",
       "name": "src",
+      "priority": 60,
+      "type": "folder",
+    },
+    {
+      "allNames": [
+        "site/",
+      ],
+      "args": undefined,
+      "description": undefined,
+      "hidden": undefined,
+      "icon": "📁",
+      "insertValue": "site/",
+      "name": "site",
       "priority": 60,
       "type": "folder",
     },

@@ -290,7 +290,7 @@ footer p { margin: 0; max-width: 60ch; }
       <div>
         <p>The list ranks by what you use, recent things above old ones, the way zoxide does for folders. Your history stays on your machine.</p>
         <p><code class="inline">pnpm --filter</code>, <code class="inline">turbo run --filter</code> and <code class="inline">yarn workspace</code> list your workspace packages. <code class="inline">turbo run</code> lists the tasks from <code class="inline">turbo.json</code>. Next to each git branch you see how old its last commit is and what it says.</p>
-        <p>Letters in order are enough: <code class="inline">icpl</code> finds <code class="inline">intercars.com.pl</code>. Your aliases and your own zsh functions show up with what they do.</p>
+        <p>Letters in order are enough: <code class="inline">acst</code> finds <code class="inline">acme-store.com</code>. Your aliases and your own zsh functions show up with what they do.</p>
       </div>
       <div>
         <p>For your own scripts and in-house tools, a few lines of YAML in <code class="inline">~/.config/terminalhinter/specs</code> are enough:</p>
@@ -350,7 +350,7 @@ footer p { margin: 0; max-width: 60ch; }
   const FS = {
     apps: { web: { src: {}, "package.json": 0 }, admin: { src: {}, "package.json": 0 } },
     packages: { ui: { src: {} }, config: {} },
-    websites: { "evert.tech": {}, "intercars.com.pl": {}, "qservicetruck.eu": {} },
+    sites: { "acme-store.com": {}, "my-blog.dev": {}, "portfolio.dev": {} },
     scripts: { "release.sh": 0 },
     "package.json": 0, "pnpm-workspace.yaml": 0, "turbo.json": 0, "README.md": 0, ".gitignore": 0,
   };
@@ -680,8 +680,8 @@ footer p { margin: 0; max-width: 60ch; }
     }
   }
 
+  // the input sits inside the terminal, so one listener on the terminal sees every key exactly once
   term.addEventListener("keydown", key);
-  ghost.addEventListener("keydown", key);
   term.addEventListener("click", () => { ghost.focus({ preventScroll: true }); });
   ghost.addEventListener("focus", () => term.classList.add("focused"));
   ghost.addEventListener("blur", () => term.classList.remove("focused"));

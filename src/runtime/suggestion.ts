@@ -221,7 +221,7 @@ const sortSuggestions = (
   return sorted;
 };
 
-// True when every character of `needle` appears in `haystack` in order: "icpl" matches "intercars.com.pl".
+// True when every character of `needle` appears in `haystack` in order: "acst" matches "acme-store.com".
 export const isSubsequence = (haystack: string, needle: string): boolean => {
   let at = 0;
   for (const char of haystack) {
@@ -240,7 +240,7 @@ const matchesName = (name: string, query: string, filterStrategy: FilterStrategy
   if (!getConfig().fuzzyMatching) return false;
   // leading dashes and the $ of variables are ignored, otherwise "--b" would match every option containing a "b"
   // and "$HO" every variable with an H and an O; the first letter must match and at least three letters are needed,
-  // which keeps the list short and is how people abbreviate ("icpl" for intercars.com.pl)
+  // which keeps the list short and is how people abbreviate ("acst" for acme-store.com)
   const word = lower.replace(/^[-$]+/, "");
   const typed = query.replace(/^[-$]+/, "");
   return typed.length >= 3 && word.startsWith(typed[0]) && isSubsequence(word, typed);

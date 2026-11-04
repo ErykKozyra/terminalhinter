@@ -42,7 +42,7 @@ test("enter on a folder inserts it with a trailing slash instead of running the 
 
 test("inside a folder the first entry is ↪ and enter on it runs the command", async () => {
   const { manager, writes, cleared } = setup({
-    suggestions: folders("intercars.com.pl", "qservicetruck.eu"),
+    suggestions: folders("acme-store.com", "portfolio.dev"),
     activeToken: { token: "websites/", tokenLength: 9, complete: false, isOption: false, isPath: true, isPathComplete: true },
     isPathContext: true,
     rootCommand: "cd",
@@ -61,7 +61,7 @@ test("inside a folder the first entry is ↪ and enter on it runs the command", 
 
 test("arrow down then enter walks one level deeper", async () => {
   const { manager, writes } = setup({
-    suggestions: folders("intercars.com.pl", "qservicetruck.eu"),
+    suggestions: folders("acme-store.com", "portfolio.dev"),
     activeToken: { token: "websites/", tokenLength: 9, complete: false, isOption: false, isPath: true, isPathComplete: true },
     isPathContext: true,
     rootCommand: "cd",
@@ -69,7 +69,7 @@ test("arrow down then enter walks one level deeper", async () => {
   await manager.exec();
   expect(manager.update(press("down"))).toBe(true);
   expect(manager.update(press("return"))).toBe(true);
-  expect(writes.at(-1)).toBe("\u007F".repeat(9) + "websites/intercars.com.pl/");
+  expect(writes.at(-1)).toBe("\u007F".repeat(9) + "websites/acme-store.com/");
 });
 
 test("after a space nothing is selected, so enter executes and up reaches shell history", async () => {
@@ -94,14 +94,14 @@ test("after a space, arrow down selects the first entry and enter accepts it", a
 
 test("tab still completes the top entry, skipping ↪", async () => {
   const { manager, writes } = setup({
-    suggestions: folders("intercars.com.pl"),
+    suggestions: folders("acme-store.com"),
     activeToken: { token: "websites/", tokenLength: 9, complete: false, isOption: false, isPath: true, isPathComplete: true },
     isPathContext: true,
     rootCommand: "cd",
   });
   await manager.exec();
   expect(manager.update(press("tab"))).toBe(true);
-  expect(writes.at(-1)).toBe("\u007F".repeat(9) + "websites/intercars.com.pl/");
+  expect(writes.at(-1)).toBe("\u007F".repeat(9) + "websites/acme-store.com/");
 });
 
 test("enter on a fully typed word runs the command instead of re-inserting it", async () => {

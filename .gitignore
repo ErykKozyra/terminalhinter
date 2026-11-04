@@ -5,4 +5,5 @@ t*.md
 tui-traces/
 .idea/
 .vscode/
-pkg/site-dist/
+pkg/
+site/dist/

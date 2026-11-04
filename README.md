@@ -24,7 +24,7 @@ The command is `thint` (long form: `terminalhinter`).
   than old ones.
   An exact match still comes first (`pnpm dev` offers the `dev` script before `dev:vite`). The history stays on
   your machine in `~/.local/share/terminalhinter/history.jsonl`.
-- **Forgiving matching.** Letters in order are enough: `icpl` finds `intercars.com.pl`, `chkt` finds `checkout`.
+- **Forgiving matching.** Letters in order are enough: `acst` finds `acme-store.com`, `chkt` finds `checkout`.
 - **Knows your project.** `pnpm --filter`, `turbo run --filter` and `yarn workspace` suggest your workspace
   packages; `turbo run` suggests the tasks from `turbo.json`; git branches show the age and subject of their last commit.
 - **Jump anywhere with `cd`.** `cd` offers your bookmarks and most used folders from any directory
