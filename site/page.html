@@ -89,22 +89,26 @@ h1 {
   text-wrap: balance;
 }
 .lede { margin: 0 0 18px; color: var(--muted); max-width: 44ch; font-size: 18px; }
-.install {
-  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
-}
+/* the install commands sit on the page itself, like a snippet in docs, not as a second dark terminal */
 .cmd {
-  display: inline-flex; align-items: center; gap: 12px;
-  font: 400 15px/1 var(--f-mono);
-  background: var(--t-bg); color: var(--t-text);
-  border-radius: 8px; padding: 14px 14px 14px 16px; min-width: 0; max-width: 100%;
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: start; gap: 14px;
+  background: var(--key-bg); border: 1px solid var(--rule); border-radius: 10px;
+  padding: 14px 14px 14px 18px;
 }
-.cmd code { white-space: nowrap; overflow-x: auto; }
-.cmd .dollar { color: var(--p-arrow); user-select: none; }
+.cmd code { display: grid; gap: 2px; font: 400 14px/1.65 var(--f-mono); color: var(--ink); min-width: 0; }
+.cmd code span { white-space: nowrap; overflow-x: auto; }
+.cmd code span::before { content: "$ "; color: var(--muted); user-select: none; }
 .copy {
-  font: 500 13px/1 var(--f-body); color: var(--t-text);
-  background: #262C38; border: 0; border-radius: 6px; padding: 8px 10px; cursor: pointer;
+  font: 500 14px/1 var(--f-body); color: var(--ink);
+  background: transparent; border: 1px solid var(--rule); border-radius: 7px; padding: 9px 12px; cursor: pointer;
 }
-.copy:hover { background: #313949; }
+.copy:hover { border-color: var(--muted); }
+.copy[data-done] { color: var(--accent); border-color: var(--accent); }
+@media (max-width: 520px) {
+  .cmd { grid-template-columns: minmax(0, 1fr); gap: 10px; padding: 14px; }
+  .cmd code { font-size: 13px; }
+  .copy { justify-self: start; }
+}
 
 /* the terminal */
 .stage { padding-block: 8px 12px; }
@@ -223,8 +227,9 @@ footer p { margin: 0; max-width: 60ch; }
     <h1>A dropdown for your terminal.</h1>
     <div>
       <p class="lede">Folders, git branches, npm scripts and 600+ CLIs show up as you type, each with a short description. Enter walks into folders, and the list learns what you use.</p>
-      <div class="install">
-        <div class="cmd"><span class="dollar" aria-hidden="true">$</span><code id="install-cmd">npm i -g @erykkozyra/terminalhinter &amp;&amp; thint init</code><button class="copy" id="copy" type="button">Copy</button></div>
+      <div class="cmd">
+        <code id="install-cmd"><span>npm i -g @erykkozyra/terminalhinter</span><span>thint init</span></code>
+        <button class="copy" id="copy" type="button" aria-label="Copy the install commands">Copy</button>
       </div>
     </div>
   </div>
@@ -702,8 +707,8 @@ footer p { margin: 0; max-width: 60ch; }
 
   const copy = document.getElementById("copy");
   copy.addEventListener("click", () => {
-    const text = document.getElementById("install-cmd").textContent;
-    const done = () => { copy.textContent = "Copied"; setTimeout(() => (copy.textContent = "Copy"), 1600); };
+    const text = "npm i -g @erykkozyra/terminalhinter && thint init";
+    const done = () => { copy.textContent = "Copied"; copy.dataset.done = ""; setTimeout(() => { copy.textContent = "Copy"; delete copy.dataset.done; }, 1600); };
     if (navigator.clipboard) navigator.clipboard.writeText(text).then(done, () => selectText());
     else selectText();
     function selectText() { const r = document.createRange(); r.selectNodeContents(document.getElementById("install-cmd")); const s = getSelection(); s.removeAllRanges(); s.addRange(r); }
