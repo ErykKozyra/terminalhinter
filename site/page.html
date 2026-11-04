@@ -735,7 +735,7 @@ footer p { margin: 0; max-width: 60ch; }
       const d = dirAt(cwd) || {};
       history.push(Object.keys(d).filter((n) => !n.startsWith(".")).map((n) => (typeof d[n] === "object" ? n + "/" : n)).join("  "));
     } else if (root === "thint" && args[0] === "doctor") {
-      history.push("✓ thint 1.1.2 · ✓ this shell runs inside terminalhinter");
+      history.push("✓ thint 1.1.3 · ✓ this shell runs inside terminalhinter");
     } else if (cmd) {
       history.push(`(this demo only knows git, cd, ls, pnpm and thint)`);
     }
