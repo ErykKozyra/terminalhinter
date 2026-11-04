@@ -41,6 +41,7 @@ type ISTermOptions = {
   shellArgs?: string[];
   underTest: boolean;
   login: boolean;
+  notice?: string;
 };
 
 export type ISTermPatch = {
@@ -71,7 +72,7 @@ export class ISTerm implements IPty {
   #pendingData: string[] = [];
   #pendingCursorPositionReports = 0;
 
-  constructor({ shell, cols, rows, env, shellTarget, shellArgs, underTest, login }: ISTermOptions & { shellTarget: string }) {
+  constructor({ shell, cols, rows, env, shellTarget, shellArgs, underTest, login, notice }: ISTermOptions & { shellTarget: string }) {
     this.#pty = pty.spawn(shellTarget, shellArgs ?? [], {
       name: "xterm-256color",
       cols,
@@ -105,7 +106,7 @@ export class ISTerm implements IPty {
     this.#shell = shell;
     this.#term.buffer.onBufferChange((buffer) => this.#ptyEmitter.emit(ISTermOnBufferChangeEvent, buffer.type));
 
-    this.#pty.onData((data) => {
+    const handleOutput = (data: string) => {
       const parseTiming = startTiming();
       const cursorY = this.#term.buffer.active.cursorY;
       this.#term.write(data, () => {
@@ -129,7 +130,10 @@ export class ISTerm implements IPty {
           endTiming("pty.parseData", parseTiming);
         }
       });
-    });
+    };
+    this.#pty.onData(handleOutput);
+    // goes through the virtual terminal like shell output, ahead of it, so the cursor rows stay in step
+    if (notice) handleOutput(notice.replaceAll("\n", "\r\n"));
 
     this.onData = (listener) => {
       this.#ptyEmitter.on(ISTermOnDataEvent, listener);

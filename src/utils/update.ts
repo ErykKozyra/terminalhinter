@@ -2,7 +2,8 @@
 // Licensed under the MIT License.
 
 // Knowing about new versions: a check against the npm registry at most once a day, a one-line notice in a new tab
-// once per new version, and how `thint update` installs it again with the tool that installed it.
+// once per new version, and how `thint update` installs it again with the tool that installed it. The same file
+// remembers the first tab, for a one-time note asking for a star on GitHub.
 
 import fs from "node:fs";
 import path from "node:path";
@@ -12,6 +13,7 @@ import { getVersion } from "./version.js";
 
 export const packageName = "@erykkozyra/terminalhinter";
 const checkEvery = 24 * 60 * 60 * 1000;
+const askForStarAfter = 3 * 24 * 60 * 60 * 1000;
 
 // -1, 0 or 1; a prerelease (1.2.0-beta) comes before its release
 export const compareVersions = (a: string, b: string): number => {
@@ -47,7 +49,7 @@ export const fetchLatestVersion = async (timeoutMs = 3000): Promise<string | und
   }
 };
 
-type UpdateState = { checkedAt?: number; latest?: string; notified?: string };
+type UpdateState = { checkedAt?: number; latest?: string; notified?: string; firstSeenAt?: number; starAsked?: boolean };
 
 export const updateStatePath = () => process.env.THINT_UPDATE_FILE ?? path.join(allResourcesPath, "update.json");
 
@@ -78,7 +80,8 @@ export const refreshUpdateState = async (now = Date.now()): Promise<UpdateState>
   if (state.checkedAt != null && now - state.checkedAt < checkEvery && now >= state.checkedAt) return state;
   const latest = await fetchLatestVersion();
   // remember the attempt even when offline, so a tab without network does not wait on every start
-  const next = { ...state, checkedAt: now, latest: latest ?? state.latest };
+  // read again: another tab may have written while this one waited for npm
+  const next = { ...readUpdateState(), checkedAt: now, latest: latest ?? state.latest };
   writeUpdateState(next);
   return next;
 };
@@ -96,10 +99,20 @@ export const takeUpdateNotice = (current = getVersion()): string | undefined => 
   return latest;
 };
 
-export type Install =
-  | { kind: "npm" | "pnpm" | "yarn" | "bun"; command: string; args: string[]; binFolder?: string }
-  | { kind: "source" }
-  | { kind: "unknown" };
+// true once, in the first tab three days after the first one
+export const takeStarNotice = (now = Date.now()): boolean => {
+  const state = readUpdateState();
+  if (state.starAsked) return false;
+  if (state.firstSeenAt == null) {
+    writeUpdateState({ ...state, firstSeenAt: now });
+    return false;
+  }
+  if (now - state.firstSeenAt < askForStarAfter) return false;
+  writeUpdateState({ ...state, starAsked: true });
+  return true;
+};
+
+export type Install = { kind: "npm" | "pnpm" | "yarn" | "bun"; command: string; args: string[]; binFolder?: string } | { kind: "source" } | { kind: "unknown" };
 
 // how this copy was installed, from where its binary lives
 export const detectInstall = (binary = process.execPath, platform = process.platform): Install => {
@@ -108,8 +121,7 @@ export const detectInstall = (binary = process.execPath, platform = process.plat
   const win = platform === "win32";
   if (/\/\.bun\/install\/global\//.test(p)) return { kind: "bun", command: "bun", args: ["add", "-g", spec] };
   if (/\/\.pnpm\//.test(p) || /\/pnpm\/global\//.test(p)) return { kind: "pnpm", command: "pnpm", args: ["add", "-g", spec] };
-  if (/\/yarn\/global\/node_modules\//.test(p) || /\/\.config\/yarn\/global\//.test(p))
-    return { kind: "yarn", command: "yarn", args: ["global", "add", spec] };
+  if (/\/yarn\/global\/node_modules\//.test(p) || /\/\.config\/yarn\/global\//.test(p)) return { kind: "yarn", command: "yarn", args: ["global", "add", spec] };
   // the platform binary sits in node_modules of the main package, or next to it
   const npmGlobal = win ? p.match(/^(.*?)\/node_modules\/@erykkozyra\/terminalhinter/) : p.match(/^(.*?)\/lib\/node_modules\/@erykkozyra\/terminalhinter/);
   if (npmGlobal) {

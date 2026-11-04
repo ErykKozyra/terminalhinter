@@ -5,7 +5,15 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 
-import { availableUpdate, compareVersions, detectInstall, refreshUpdateState, takeUpdateNotice, updateChecksDisabled } from "../../utils/update.js";
+import {
+  availableUpdate,
+  compareVersions,
+  detectInstall,
+  refreshUpdateState,
+  takeStarNotice,
+  takeUpdateNotice,
+  updateChecksDisabled,
+} from "../../utils/update.js";
 import { getShellConfig, Shell } from "../../utils/shell.js";
 
 const folder = fs.mkdtempSync(path.join(os.tmpdir(), "thint-update-"));
@@ -81,6 +89,29 @@ test("offline keeps the last answer and does not ask again right away", async ()
   }
 });
 
+test("a note written by another tab while this one waits for npm is kept", async () => {
+  const original = global.fetch;
+  global.fetch = (async () => {
+    fs.writeFileSync(stateFile, JSON.stringify({ notified: "9.0.0", starAsked: true }));
+    return new Response(JSON.stringify({ latest: "9.0.0" }), { status: 200 });
+  }) as typeof fetch;
+  try {
+    await refreshUpdateState(Date.now());
+    expect(JSON.parse(fs.readFileSync(stateFile, "utf8"))).toMatchObject({ latest: "9.0.0", notified: "9.0.0", starAsked: true });
+  } finally {
+    global.fetch = original;
+  }
+});
+
+test("asks for a star once, three days after the first tab", () => {
+  const day = 24 * 60 * 60 * 1000;
+  const start = Date.now();
+  expect(takeStarNotice(start)).toBe(false);
+  expect(takeStarNotice(start + 2 * day)).toBe(false);
+  expect(takeStarNotice(start + 3 * day)).toBe(true);
+  expect(takeStarNotice(start + 4 * day)).toBe(false);
+});
+
 test("checks can be turned off", () => {
   expect(updateChecksDisabled(false)).toBe(true);
   const ci = process.env.CI;
@@ -93,7 +124,10 @@ test("checks can be turned off", () => {
 });
 
 test("knows how it was installed from where its binary lives", () => {
-  const npm = detectInstall("/Users/e/.nvm/versions/node/v22.1.0/lib/node_modules/@erykkozyra/terminalhinter-darwin-arm64/terminalhinter-darwin-arm64", "darwin");
+  const npm = detectInstall(
+    "/Users/e/.nvm/versions/node/v22.1.0/lib/node_modules/@erykkozyra/terminalhinter-darwin-arm64/terminalhinter-darwin-arm64",
+    "darwin",
+  );
   expect(npm.kind).toBe("npm");
   if (npm.kind === "npm") expect(npm.args).toEqual(["i", "-g", "@erykkozyra/terminalhinter@latest"]);
   expect(detectInstall("/opt/homebrew/lib/node_modules/@erykkozyra/terminalhinter-darwin-arm64/terminalhinter-darwin-arm64", "darwin").kind).toBe("npm");
@@ -102,7 +136,10 @@ test("knows how it was installed from where its binary lives", () => {
     "linux",
   );
   expect(nested.kind === "npm" && nested.command).toBe("npm"); // no npm in /tmp/nowhere/bin, so the one on the PATH
-  const windows = detectInstall("C:/Users/e/AppData/Roaming/npm/node_modules/@erykkozyra/terminalhinter/node_modules/@erykkozyra/terminalhinter-win32-x64/terminalhinter-win32-x64.exe", "win32");
+  const windows = detectInstall(
+    "C:/Users/e/AppData/Roaming/npm/node_modules/@erykkozyra/terminalhinter/node_modules/@erykkozyra/terminalhinter-win32-x64/terminalhinter-win32-x64.exe",
+    "win32",
+  );
   expect(windows.kind).toBe("npm");
   expect(
     detectInstall(
@@ -110,13 +147,19 @@ test("knows how it was installed from where its binary lives", () => {
       "darwin",
     ).kind,
   ).toBe("pnpm");
-  expect(detectInstall("/Users/e/.bun/install/global/node_modules/@erykkozyra/terminalhinter-darwin-arm64/terminalhinter-darwin-arm64", "darwin").kind).toBe("bun");
+  expect(detectInstall("/Users/e/.bun/install/global/node_modules/@erykkozyra/terminalhinter-darwin-arm64/terminalhinter-darwin-arm64", "darwin").kind).toBe(
+    "bun",
+  );
   expect(detectInstall("/Users/e/.local/bin/thint", "darwin").kind).toBe("source");
   expect(detectInstall("/usr/local/bin/node", "darwin").kind).toBe("unknown");
 });
 
 test("a new tab starts the updated binary when the launcher still holds the old one", () => {
-  const config = getShellConfig(Shell.Zsh, "/home/e/.local/share/terminalhinter/bin/zsh", "/home/e/node_modules/@erykkozyra/terminalhinter-linux-x64/terminalhinter-linux-x64");
+  const config = getShellConfig(
+    Shell.Zsh,
+    "/home/e/.local/share/terminalhinter/bin/zsh",
+    "/home/e/node_modules/@erykkozyra/terminalhinter-linux-x64/terminalhinter-linux-x64",
+  );
   expect(config).toContain(`__is_binary='/home/e/node_modules/@erykkozyra/terminalhinter-linux-x64/terminalhinter-linux-x64'`);
   expect(config).toContain(`[[ -x "$__is_binary" && ! "$__is_launcher" -ef "$__is_binary" ]] && __is_launcher=$__is_binary`);
   expect(getShellConfig(Shell.Zsh)).not.toContain("__is_binary");

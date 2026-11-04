@@ -20,9 +20,9 @@ const writeOutput = (data: string) => {
   process.stdout.write(data);
 };
 
-export const render = async (program: Command, shell: Shell, underTest: boolean, login: boolean) => {
+export const render = async (program: Command, shell: Shell, underTest: boolean, login: boolean, notice = "") => {
   const [isterm, { SuggestionManager }] = await Promise.all([import("../isterm/index.js"), import("./suggestionManager.js")]);
-  const term = await isterm.default.spawn(program, { shell, rows: process.stdout.rows, cols: process.stdout.columns, underTest, login });
+  const term = await isterm.default.spawn(program, { shell, rows: process.stdout.rows, cols: process.stdout.columns, underTest, login, notice });
   const suggestions = new SuggestionManager(term, shell);
   const renderer = new SuggestionRenderer(term, suggestions, writeOutput);
   let commandStateVersion = term.getCommandStateVersion();

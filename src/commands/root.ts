@@ -8,8 +8,8 @@ import { Command } from "commander";
 import log from "../utils/log.js";
 import { checkUnpackedVersion } from "../utils/node.js";
 import { endTiming, startTiming } from "../utils/performance.js";
-import { refreshUpdateState, takeUpdateNotice, updateChecksDisabled } from "../utils/update.js";
-import { renderUpdated, renderUpdateNotice } from "../ui/ui-status.js";
+import { refreshUpdateState, takeStarNotice, takeUpdateNotice, updateChecksDisabled } from "../utils/update.js";
+import { renderStarNotice, renderUpdated, renderUpdateNotice } from "../ui/ui-status.js";
 import { allResourcesPath } from "../utils/constants.js";
 import sea from "node:sea";
 
@@ -50,6 +50,8 @@ export const action = (program: Command) => async (options: RootCommandOptions) 
     process.exit(0);
   }
 
+  // shown inside the new session: whatever is written to stdout before it starts gets cleared away
+  let notice = "";
   if (!(await checkUnpackedVersion())) {
     if (!(await refreshAfterUpdate())) {
       const { renderMissingResources } = await import("../ui/ui-status.js");
@@ -57,7 +59,7 @@ export const action = (program: Command) => async (options: RootCommandOptions) 
       endTiming("startup.missingResources", startupTiming);
       process.exit(1);
     }
-    process.stdout.write(renderUpdated());
+    notice += renderUpdated();
   }
 
   if (options.verbose) await log.enable();
@@ -66,10 +68,12 @@ export const action = (program: Command) => async (options: RootCommandOptions) 
 
   if (!options.test && !updateChecksDisabled(getConfig().updateCheck)) {
     const latest = takeUpdateNotice();
-    if (latest != null) process.stdout.write(renderUpdateNotice(latest));
+    if (latest != null) notice += renderUpdateNotice(latest);
     // in the background: the answer is for the next tab, this one does not wait for the network
     void refreshUpdateState();
   }
+  // one note per tab at most, and only for a person at a terminal
+  if (!options.test && notice === "" && process.env.CI == null && process.stdout.isTTY && takeStarNotice()) notice = renderStarNotice();
 
   log.overrideConsole();
 
@@ -84,5 +88,5 @@ export const action = (program: Command) => async (options: RootCommandOptions) 
   const [{ initializeRuntime }, { render }] = await Promise.all([import("../runtime/initialize.js"), import("../ui/ui-root.js")]);
   await initializeRuntime(shell);
   endTiming("startup.beforeRender", startupTiming);
-  await render(program, shell, options.test ?? false, options.login ?? false);
+  await render(program, shell, options.test ?? false, options.login ?? false, notice);
 };

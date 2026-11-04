@@ -24,6 +24,10 @@ export const renderUpdateNotice = (latest: string): string => {
   );
 };
 
+export const renderStarNotice = (): string => {
+  return chalk.dim("enjoying terminalhinter? a star on GitHub helps a lot: ") + chalk.bold("https://github.com/ErykKozyra/terminalhinter") + "\n";
+};
+
 export const renderUpdated = (): string => {
   return chalk.dim(`terminalhinter is now ${getVersion()}\n`);
 };
