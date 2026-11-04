@@ -3,11 +3,32 @@
 
 import { Shell, supportedShells as shells } from "../utils/shell.js";
 import { inferShell } from "../utils/shell.js";
-import { loadConfig } from "../utils/config.js";
+import { getConfig, loadConfig } from "../utils/config.js";
 import { Command } from "commander";
 import log from "../utils/log.js";
 import { checkUnpackedVersion } from "../utils/node.js";
 import { endTiming, startTiming } from "../utils/performance.js";
+import { refreshUpdateState, takeUpdateNotice, updateChecksDisabled } from "../utils/update.js";
+import { renderUpdated, renderUpdateNotice } from "../ui/ui-status.js";
+import { allResourcesPath } from "../utils/constants.js";
+import sea from "node:sea";
+
+// A new binary with the files of the old one: unpack the new files once, here, instead of asking for
+// `thint reinit`. Not on Windows, where files of a running terminalhinter cannot be replaced.
+const refreshAfterUpdate = async (): Promise<boolean> => {
+  if (!sea.isSea() || process.platform === "win32") return false;
+  try {
+    const { installResources, withResourcesLock } = await import("../utils/resources.js");
+    const done = await withResourcesLock(allResourcesPath, async () => {
+      if (!(await checkUnpackedVersion())) await installResources(allResourcesPath);
+      return true;
+    });
+    return done === true && (await checkUnpackedVersion());
+  } catch (e) {
+    log.debug({ msg: "could not unpack after an update", e: (e as Error).message });
+    return false;
+  }
+};
 
 export const supportedShells = shells.join(", ");
 
@@ -29,17 +50,26 @@ export const action = (program: Command) => async (options: RootCommandOptions) 
     process.exit(0);
   }
 
-  const isVersionUpToDate = await checkUnpackedVersion();
-  if (!isVersionUpToDate) {
-    const { renderMissingResources } = await import("../ui/ui-status.js");
-    process.stdout.write(renderMissingResources());
-    endTiming("startup.missingResources", startupTiming);
-    process.exit(1);
+  if (!(await checkUnpackedVersion())) {
+    if (!(await refreshAfterUpdate())) {
+      const { renderMissingResources } = await import("../ui/ui-status.js");
+      process.stdout.write(renderMissingResources());
+      endTiming("startup.missingResources", startupTiming);
+      process.exit(1);
+    }
+    process.stdout.write(renderUpdated());
   }
 
   if (options.verbose) await log.enable();
 
   const [, inferredShell] = await Promise.all([loadConfig(program), options.shell ? Promise.resolve(options.shell) : inferShell()]);
+
+  if (!options.test && !updateChecksDisabled(getConfig().updateCheck)) {
+    const latest = takeUpdateNotice();
+    if (latest != null) process.stdout.write(renderUpdateNotice(latest));
+    // in the background: the answer is for the next tab, this one does not wait for the network
+    void refreshUpdateState();
+  }
 
   log.overrideConsole();
 

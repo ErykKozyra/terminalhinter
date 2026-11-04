@@ -17,6 +17,7 @@ import bookmark from "./commands/bookmark.js";
 import theme from "./commands/theme.js";
 import order from "./commands/order.js";
 import config from "./commands/config.js";
+import update from "./commands/update.js";
 import { action, supportedShells } from "./commands/root.js";
 import { getVersion } from "./utils/version.js";
 
@@ -53,6 +54,7 @@ program.addCommand(theme);
 program.addCommand(order);
 program.addCommand(config);
 program.addCommand(doctor);
+program.addCommand(update);
 program.addCommand(specs);
 program.addCommand(complete);
 program.addCommand(uninstall);

@@ -163,7 +163,11 @@ export const createShellConfigs = async (initResourcesDirectory = initResourcesP
     const shellConfigName = getShellConfigName(shell);
     if (shellConfigName == null) continue;
     await fsAsync.mkdir(path.join(initResourcesDirectory, shell), { recursive: true });
-    await fsAsync.writeFile(path.join(initResourcesDirectory, shell, shellConfigName), getShellConfig(shell, launchers.get(shell)));
+    const launcher = launchers.get(shell);
+    await fsAsync.writeFile(
+      path.join(initResourcesDirectory, shell, shellConfigName),
+      getShellConfig(shell, launcher, launcher != null ? process.execPath : undefined),
+    );
   }
 };
 
@@ -351,15 +355,21 @@ export const getShellSourceCommand = (shell: Shell, initFilePath?: string): stri
   return "";
 };
 
-export const getShellConfig = (shell: Shell, launcher?: string): string => {
+// `binary` is the file the launcher was linked from. When an update replaced it (npm writes a new file, the link
+// keeps the old one), the new tab starts the new binary instead, which unpacks its files and links the launcher again.
+export const getShellConfig = (shell: Shell, launcher?: string, binary?: string): string => {
   const launcherPath = launcher != null ? quotePosixPath(launcher) : "thint";
+  const updated =
+    binary != null
+      ? `\n  __is_binary=${quotePosixPath(binary)}\n  [[ -x "$__is_binary" && ! "$__is_launcher" -ef "$__is_binary" ]] && __is_launcher=$__is_binary`
+      : "";
   switch (shell) {
     case Shell.Zsh:
       // Starts through the launcher (a hard link to the binary, named like the shell so the tab title stays "zsh").
       // It works even when `thint` is not on the PATH yet at the top of .zshrc (npm under nvm adds it later) or is
       // gone after switching the default Node; if neither is there, the shell starts normally instead of exiting.
       return `if [[ -z "\${ISTERM}" && $- = *i* && \${+ZSH_EXECUTION_STRING} -eq 0 && -z "\${VSCODE_RESOLVING_ENVIRONMENT}" ]]; then
-  __is_launcher=${launcherPath}
+  __is_launcher=${launcherPath}${updated}
   [[ -x "$__is_launcher" ]] || __is_launcher=$(command -v thint 2>/dev/null)
   if [[ -n "$__is_launcher" ]]; then
     if [[ -o login ]]; then
@@ -371,7 +381,7 @@ export const getShellConfig = (shell: Shell, launcher?: string): string => {
 fi`;
     case Shell.Bash:
       return `if [[ -z "\${ISTERM}" && $- = *i* && $- != *c* && -z "\${VSCODE_RESOLVING_ENVIRONMENT}" ]]; then
-  __is_launcher=${launcherPath}
+  __is_launcher=${launcherPath}${updated}
   [[ -x "$__is_launcher" ]] || __is_launcher=$(command -v thint 2>/dev/null)
   if [[ -n "$__is_launcher" ]]; then
     shopt -q login_shell

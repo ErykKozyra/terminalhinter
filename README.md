@@ -55,6 +55,7 @@ On a Mac, Ctrl is the Control key (⌃), not Command.
 | `thint bookmark add` | Bookmark a folder, so `cd` offers it from anywhere |
 | `thint specs new` | Start your own suggestions for a command |
 | `thint order reset` | Forget an order you set with Shift+↑ ↓ |
+| `thint update` | Install the newest version |
 | `thint doctor` | Check the installation and tell you how to fix it |
 
 ## Your own suggestions
@@ -88,7 +89,7 @@ options:
 <details>
 <summary><b>Updating, nvm, installing from source, uninstalling</b></summary>
 
-**Updating.** `npm i -g @erykkozyra/terminalhinter`, then `thint reinit` once.
+**Updating.** `thint update`. A new tab tells you once when a new version is out; `thint config set updateCheck false` turns that off. An update with `npm i -g` works too: the next new tab picks it up by itself.
 
 **nvm.** thint carries its own runtime, so switching Node never breaks the list in open tabs. The `thint`
 command itself belongs to the Node version you installed it with, like any global npm package. After you

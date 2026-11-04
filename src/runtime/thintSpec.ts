@@ -100,6 +100,7 @@ export const thintSpec: Fig.Subcommand = {
       ],
     },
     { name: "doctor", description: "Check the installation" },
+    { name: "update", description: "Install the newest version", options: [{ name: ["-f", "--force"], description: "Install again even when up to date" }] },
     { name: "reinit", description: "Regenerate resources after an update" },
     { name: "uninstall", description: "Remove resources and settings" },
   ],

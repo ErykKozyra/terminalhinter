@@ -2,31 +2,17 @@
 // Licensed under the MIT License.
 
 import chalk from "chalk";
-import { unpackResources } from "../utils/node.js";
-import { createShellConfigs } from "../utils/shell.js";
-import { allResourcesPath, getResourcePaths, preferredResourcesPath } from "../utils/constants.js";
 import fs from "node:fs";
-import path from "node:path";
-
-const removeResources = (resourcesPath: string) => {
-  const resources = getResourcePaths(resourcesPath);
-  fs.rmSync(resources.shell, { recursive: true, force: true });
-  fs.rmSync(resources.native, { recursive: true, force: true });
-  fs.rmSync(resources.logging, { recursive: true, force: true });
-  fs.rmSync(resources.init, { recursive: true, force: true });
-  fs.rmSync(resources.spec, { recursive: true, force: true });
-  fs.rmSync(resources.version, { force: true });
-  fs.rmSync(path.join(resourcesPath, "bin"), { recursive: true, force: true });
-};
+import { installResources, withResourcesLock } from "../utils/resources.js";
+import { allResourcesPath, preferredResourcesPath } from "../utils/constants.js";
 
 export const render = async () => {
   if (allResourcesPath !== preferredResourcesPath) fs.rmSync(allResourcesPath, { recursive: true, force: true });
-  removeResources(preferredResourcesPath);
+  const done = await withResourcesLock(preferredResourcesPath, async () => {
+    await installResources(preferredResourcesPath);
+    return true;
+  });
+  if (done == null) throw new Error("another terminalhinter is unpacking its files, try again in a moment");
   process.stdout.write(chalk.green("✓") + " removed old terminalhinter resources \n");
-
-  const preferredResources = getResourcePaths(preferredResourcesPath);
-  await createShellConfigs(preferredResources.init);
-  await unpackResources(preferredResourcesPath);
-
   process.stdout.write(chalk.green("✓") + " successfully installed terminalhinter \n");
 };

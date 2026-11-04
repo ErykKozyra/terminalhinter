@@ -331,7 +331,7 @@ test("the footer shows in full what the selected row had to cut", async () => {
   // eslint-disable-next-line no-control-regex
   const text = manager
     .render("below", 3)
-    .map((r) => r.data.replace(/\x1b\[[0-9;]*m/g, ""))
+    .map((r) => r.data.replace(new RegExp(String.fromCharCode(27) + "\\[[0-9;]*m", "g"), ""))
     .join("\n");
   expect(text).toContain("checkout [branch, file, tag or commit] [pathspec...]");
   expect(text).toContain("Switch branches or restore working tree files, a long");

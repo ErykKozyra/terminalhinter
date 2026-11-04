@@ -11,7 +11,8 @@ import toml from "toml";
 import _Ajv from "ajv";
 
 import { configPaths, configSchema } from "../utils/config.js";
-import { initResourcesPath } from "../utils/constants.js";
+import { allResourcesPath, initResourcesPath } from "../utils/constants.js";
+import { availableUpdate, compareVersions, fetchLatestVersion, readUpdateState, updateChecksDisabled } from "../utils/update.js";
 import { getShellConfigName, getShellSourceCommand, Shell } from "../utils/shell.js";
 import { beginMark, blockShells, profileFile } from "../utils/startupBlock.js";
 import { loadCustomSpecs } from "../runtime/customSpecs.js";
@@ -131,8 +132,47 @@ export const collectChecks = (): Check[] => {
   return checks;
 };
 
+// the startup link is a hard link to the binary; after an update by hand it still holds the old one
+export const launcherChecks = (binFolder = path.join(allResourcesPath, "bin"), binary = process.execPath): Check[] => {
+  const name = path.basename(binary);
+  if (name !== "thint" && !name.startsWith("terminalhinter")) return [];
+  const stale = ["zsh", "bash"].filter((shell) => {
+    try {
+      const link = fs.statSync(path.join(binFolder, shell));
+      const real = fs.statSync(binary);
+      return link.ino !== real.ino || link.dev !== real.dev;
+    } catch {
+      return false;
+    }
+  });
+  if (stale.length === 0) return [];
+  return [{ status: "warn", text: "new tabs still start the previous thint; the next new tab fixes that by itself", hint: "thint reinit" }];
+};
+
+export const updateCheck = (latest: string | undefined, current = getVersion()): Check[] => {
+  if (latest == null) return [];
+  if (compareVersions(latest, current) > 0) return [{ status: "warn", text: `terminalhinter ${latest} is out, you have ${current}`, hint: "thint update" }];
+  return [{ status: "ok", text: "this is the latest version" }];
+};
+
+// read without loadConfig, which would print the problems of a broken file a second time
+const updateCheckEnabled = (): boolean => {
+  let enabled = true;
+  for (const file of configPaths) {
+    try {
+      const parsed = toml.parse(fs.readFileSync(file, "utf8")) as { updateCheck?: unknown };
+      if (typeof parsed.updateCheck === "boolean") enabled = parsed.updateCheck;
+    } catch {
+      /* missing or broken, the checks above say so */
+    }
+  }
+  return enabled;
+};
+
 export const render = async () => {
   const checks = collectChecks();
+  checks.push(...launcherChecks());
+  if (!updateChecksDisabled(updateCheckEnabled())) checks.push(...updateCheck((await fetchLatestVersion()) ?? availableUpdate(readUpdateState())));
   for (const check of checks) {
     const mark = check.status === "ok" ? chalk.green("✓") : check.status === "warn" ? chalk.yellow("!") : chalk.red("✗");
     process.stdout.write(`${mark} ${check.text}\n`);

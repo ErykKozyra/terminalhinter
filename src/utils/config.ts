@@ -47,6 +47,7 @@ type Config = {
   showHints: boolean;
   boxBackground: boolean;
   argumentHints: "selected" | "all" | "none";
+  updateCheck: boolean;
 };
 
 const bindingSchema: JSONSchemaType<Binding> = {
@@ -156,6 +157,11 @@ export const configSchema = {
       enum: ["selected", "all", "none"],
       default: "selected",
     },
+    updateCheck: {
+      type: "boolean",
+      nullable: true,
+      default: true,
+    },
   },
   additionalProperties: false,
 };
@@ -190,6 +196,7 @@ let globalConfig: Config = {
   showHints: true,
   boxBackground: true,
   argumentHints: "selected",
+  updateCheck: true,
 };
 
 export const getConfig = (): Config => globalConfig;
@@ -234,6 +241,7 @@ export const loadConfig = async (_program?: Command) => {
         showHints: config?.showHints ?? true,
         boxBackground: config?.boxBackground ?? true,
         argumentHints: config?.argumentHints ?? "selected",
+        updateCheck: config?.updateCheck ?? true,
       };
     }
   }

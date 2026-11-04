@@ -26,6 +26,7 @@ enterAcceptsSuggestion = true   # false: Enter always runs the command, accept w
 showHints = true                # short tips in the list, e.g. that Shift+Up/Down reorders it
 boxBackground = true            # the list sits on its own background, like a card
 boxBorderStyle = "rounded"      # or "square"
+updateCheck = true              # once a day, ask npm whether a new version is out
 
 # optional, override the theme
 activeSuggestionBackgroundColor = "#2F5FD0"
@@ -55,6 +56,8 @@ key = "escape"
 - `~/.local/share/terminalhinter/order.json` is the order you set with Shift+Up / Shift+Down
   (`thint order list`, `thint order reset`).
 - `~/.config/terminalhinter/specs/` holds your own suggestions (`thint specs new`).
+- `~/.local/share/terminalhinter/update.json` is when thint last asked npm for the newest version, and what it
+  said. It is the same plain request for the version number that `npm view` makes, with nothing about you in it.
 
 ## Why there is no ghost text
 
