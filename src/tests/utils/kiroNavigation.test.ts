@@ -320,3 +320,20 @@ test("rows show the description in a column next to the name, inside an inset ba
   expect(rows[2]).toMatch(/^│ {2}■ {2}build {2}next build +│$/);
   expect(rows.some((r) => r.startsWith("├"))).toBe(false); // the descriptions fit, so no footer repeats them
 });
+
+test("the footer shows in full what the selected row had to cut", async () => {
+  const description = "Switch branches or restore working tree files, a long description that cannot fit next to the name";
+  const { manager } = setup({
+    suggestions: [{ name: "checkout", allNames: ["checkout"], icon: "📦", priority: 50, args: "[branch, file, tag or commit] [pathspec...]", description }],
+    activeToken: { token: "ch", tokenLength: 2, complete: false, isOption: false },
+  });
+  await manager.exec();
+  // eslint-disable-next-line no-control-regex
+  const text = manager
+    .render("below", 3)
+    .map((r) => r.data.replace(/\x1b\[[0-9;]*m/g, ""))
+    .join("\n");
+  expect(text).toContain("checkout [branch, file, tag or commit] [pathspec...]");
+  expect(text).toContain("Switch branches or restore working tree files, a long");
+  expect(text).toContain("cannot fit next to the name");
+});

@@ -161,6 +161,26 @@ key = "escape"
 There is no inline "ghost text" on purpose: zsh-autosuggestions already does that well, and the two would
 draw over each other.
 
+### Looking good in VS Code
+
+The list looks the way it was designed with a little more room between lines and with VS Code's own color
+adjustment turned off. In `settings.json` (Command Palette: "Preferences: Open User Settings (JSON)"):
+
+```json
+"terminal.integrated.lineHeight": 1.3,
+"terminal.integrated.fontSize": 13,
+"terminal.integrated.minimumContrastRatio": 1,
+"terminal.integrated.gpuAcceleration": "on"
+```
+
+- `lineHeight` gives the rows air; this makes the biggest difference.
+- `minimumContrastRatio: 1` stops VS Code from changing the colors of the list (by default it brightens dim
+  text and shifts colors to raise contrast).
+- `gpuAcceleration` draws the box and its backgrounds crisper.
+
+Any monospace font works. A modern one such as JetBrains Mono looks closest to the screenshots:
+`"terminal.integrated.fontFamily": "JetBrains Mono"`.
+
 ## Supported shells
 
 bash, zsh, fish, PowerShell (pwsh and Windows PowerShell), xonsh and nushell, plus cmd (experimental).

@@ -48,7 +48,9 @@ const fileKinds: [RegExp, keyof Theme["icons"]][] = [
 const fileColor = (name: string, theme: Theme): string => theme.icons[fileKinds.find(([pattern]) => pattern.test(name))?.[1] ?? "file"];
 
 // border top + items + separator + footer + border bottom, plus one line for an unhandled newline at the end of the command
-export const getMaxLines = () => getMaxSuggestions() + 5;
+// edges (2) + entries + separator + up to maxFooterLines of footer + one spare line
+const maxFooterLines = 3;
+export const getMaxLines = () => getMaxSuggestions() + 4 + maxFooterLines;
 export const MIN_WIDTH = minBoxWidth;
 export type KeyPressEvent = [string | null | undefined, KeyPress];
 
@@ -323,6 +325,22 @@ export class SuggestionManager {
   }
 
   // true when the row shows the whole description, so the footer does not have to repeat it
+  private _footerLines(active: Suggestion | undefined, argumentDescription: string | undefined, innerWidth: number, nameColumn: number): string[] {
+    const width = innerWidth - 2;
+    if (active == null) return argumentDescription ? [argumentDescription] : [];
+    // the ↪ entry has no description column, so what it does goes in the footer
+    if (active.execute) return active.description ? wrapText(active.description, width, maxFooterLines) : [];
+    const layout = this._layoutRow(active, true, innerWidth, nameColumn);
+    const description = this._inlineDescription(active);
+    const argsCut = getConfig().argumentHints !== "none" && active.args != null && active.args.length > 0 && layout.args !== active.args;
+    const descCut = description.length > 0 && !layout.fits;
+    if (!argsCut && !descCut) return argumentDescription ? [argumentDescription] : [];
+    const lines: string[] = [];
+    if (argsCut) lines.push(...wrapText(`${this._displayName(active)} ${active.args}`, width, descCut ? 1 : maxFooterLines));
+    if (descCut) lines.push(...wrapText(description, width, maxFooterLines - lines.length));
+    return lines;
+  }
+
   private _descriptionFits(suggestion: Suggestion, innerWidth: number, nameColumn: number, selected = true): boolean {
     return this._layoutRow(suggestion, selected, innerWidth, nameColumn).fits;
   }
@@ -410,10 +428,21 @@ export class SuggestionManager {
         const selected = idx + this.#scrollTop === this.#activeSuggestionIdx;
         rows.push(border("│") + panel(this._renderRow(item, innerWidth, selected, partial, nameColumn)) + border("│"));
       });
+      // the footer shows in full whatever the selected row had to cut: its argument hints and its description,
+      // wrapped over up to three lines
+      const footerLines = this._footerLines(active, argumentDescription, innerWidth, nameColumn);
+      const shownFooter = footerLines.at(0) ?? "";
       // while you walk the list, a short hint tells that the order can be changed; it stops once you have done it
-      const shownFooter = active != null && this._descriptionFits(active, innerWidth, nameColumn) ? argumentDescription ?? "" : footerText;
-      const hint = this._reorderHint(active, shownFooter, counter, innerWidth);
-      if (shownFooter || hint) {
+      const hint = footerLines.length <= 1 ? this._reorderHint(active, shownFooter, counter, innerWidth) : "";
+      if (footerLines.length > 1) {
+        footerRows = 1 + footerLines.length;
+        rows.push(edge("├", "┤", true));
+        for (const line of footerLines) rows.push(border("│") + panel(this._renderFooter(line, "", innerWidth)) + border("│"));
+        if (counter && innerWidth >= wcswidth(counter) + 4) {
+          const fill = innerWidth - wcswidth(counter) - 3;
+          rows[0] = border(tl + "─".repeat(fill) + " ") + chalk.hex(activeTheme().counter)(counter) + border(" ─" + tr);
+        }
+      } else if (shownFooter || hint) {
         footerRows = 2;
         rows.push(edge("├", "┤", true));
         rows.push(border("│") + panel(this._renderFooter(shownFooter, hint ? (counter ? `${hint} · ${counter}` : hint) : counter, innerWidth)) + border("│"));
@@ -432,6 +461,11 @@ export class SuggestionManager {
     const startX = Math.max(Math.min(anchor, cols - width), 0);
 
     let shown = rows;
+    // too tall: drop footer lines from the bottom first, then the whole footer
+    while (shown.length > room && footerRows > 2) {
+      shown = [...shown.slice(0, shown.length - 2), shown[shown.length - 1]];
+      footerRows -= 1;
+    }
     if (shown.length > room && footerRows > 0) {
       shown = [...shown.slice(0, shown.length - 1 - footerRows), shown[shown.length - 1]];
       if (counter && innerWidth >= wcswidth(counter) + 4) {
@@ -611,6 +645,30 @@ export class SuggestionManager {
     return true;
   }
 }
+
+// Breaks text into lines at spaces; the last allowed line ends in an ellipsis when something is left over.
+const wrapText = (text: string, width: number, maxLines: number): string[] => {
+  if (maxLines <= 0 || width <= 0) return [];
+  const words = text.split(/\s+/).filter(Boolean);
+  const lines: string[] = [];
+  let line = "";
+  for (let i = 0; i < words.length; i++) {
+    const next = line ? `${line} ${words[i]}` : words[i];
+    if (wcswidth(next) <= width) {
+      line = next;
+      continue;
+    }
+    if (line) lines.push(line);
+    line = words[i];
+    if (lines.length === maxLines - 1) {
+      // the last line takes the rest, cut to fit
+      lines.push(fitText([line, ...words.slice(i + 1)].join(" "), width)[0]);
+      return lines;
+    }
+  }
+  if (line) lines.push(fitText(line, width)[0]);
+  return lines.slice(0, maxLines);
+};
 
 // Cuts text to a display width (wide characters count as two cells) and adds an ellipsis when something was cut.
 const fitText = (text: string, width: number): [string, boolean] => {
