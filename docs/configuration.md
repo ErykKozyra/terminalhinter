@@ -26,7 +26,7 @@ enterAcceptsSuggestion = true   # false: Enter always runs the command, accept w
 showHints = true                # short tips in the list, e.g. that Shift+Up/Down reorders it
 boxBackground = true            # the list sits on its own background, like a card
 boxBorderStyle = "rounded"      # or "square"
-updateCheck = true              # once a day, ask npm whether a new version is out
+updateCheck = true              # once a day, ask npm whether a new version is out; false also hides the star note
 
 # optional, override the theme
 activeSuggestionBackgroundColor = "#2F5FD0"
@@ -58,7 +58,8 @@ key = "escape"
 - `~/.config/terminalhinter/specs/` holds your own suggestions (`thint specs new`).
 - `~/.local/share/terminalhinter/update.json` is when thint last asked npm for the newest version, and what it
   said. It is the same plain request for the version number that `npm view` makes, with nothing about you in it.
-  It also keeps the date of your first tab, so a one-time note asking for a star on GitHub shows three days later.
+  It also keeps the date of your first tab, so a one-time note asking for a star on GitHub shows three days later
+  (not with `updateCheck = false`).
 
 ## Why there is no ghost text
 

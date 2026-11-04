@@ -66,14 +66,15 @@ export const action = (program: Command) => async (options: RootCommandOptions) 
 
   const [, inferredShell] = await Promise.all([loadConfig(program), options.shell ? Promise.resolve(options.shell) : inferShell()]);
 
+  // updateCheck = false turns off every note: the update ones and the one asking for a star
   if (!options.test && !updateChecksDisabled(getConfig().updateCheck)) {
     const latest = takeUpdateNotice();
     if (latest != null) notice += renderUpdateNotice(latest);
     // in the background: the answer is for the next tab, this one does not wait for the network
     void refreshUpdateState();
+    // one note per tab at most, and only for a person at a terminal
+    if (notice === "" && process.stdout.isTTY && takeStarNotice()) notice = renderStarNotice();
   }
-  // one note per tab at most, and only for a person at a terminal
-  if (!options.test && notice === "" && process.env.CI == null && process.stdout.isTTY && takeStarNotice()) notice = renderStarNotice();
 
   log.overrideConsole();
 
