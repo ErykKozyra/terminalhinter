@@ -20,7 +20,10 @@ type SuggestionRuntime = Pick<Awaited<ReturnType<typeof initializeRuntime>>, "ge
 const getMaxSuggestions = () => getConfig().maxSuggestions ?? 6;
 const minBoxWidth = 36;
 const reorderHint = "shift+↑↓ reorder";
-const maxBoxWidth = 64;
+const maxBoxWidth = 76;
+const maxNameColumn = 36;
+const maxArgsWidth = 18;
+const maxDescriptionColumn = 40;
 const iconWidth = 4; // pill or glyph, then a gap before the name
 // Nerd Font code points: powerline round caps around a pill, and flat Font Awesome glyphs
 const NF = {
@@ -218,19 +221,21 @@ export class SuggestionManager {
     const style = getConfig().iconStyle;
     const theme = activeTheme();
     const ICON_COLORS = theme.icons;
-    // on the selection bar a colored mark would fight the bar color, so plain marks take the selection text color
-    const tint = (color: string) => (selected && style === "plain" ? theme.selectionText : color);
+    // on the selection bar a colored mark would fight the bar color, so it takes the selection text color there
+    const tint = (color: string) => (selected && (style === "plain" || style === "marks") ? theme.selectionText : color);
     const badge = (color: string, mark: string) => {
       const inner = chalk.bgHex(color).hex("#FFFFFF").bold(mark);
       if (style === "nerd") return chalk.hex(color)(NF.capLeft) + inner + chalk.hex(color)(NF.capRight) + " ";
       if (style === "badge") return chalk.hex(color)("▐") + inner + chalk.hex(color)("▌") + " ";
+      // plain: one small square per entry, its color tells the kind
+      if (style === "plain") return " " + chalk.hex(tint(color))("■") + "  ";
       return " " + chalk.hex(tint(color)).bold(mark) + "  ";
     };
     const icon = (color: string, nerdGlyph: string, mark: string) => (style === "nerd" ? " " + chalk.hex(color)(nerdGlyph) + "  " : badge(color, mark));
 
-    if (suggestion.execute) return badge(ICON_COLORS.execute, ">");
+    if (suggestion.execute) return style === "plain" ? " " + chalk.hex(tint(ICON_COLORS.execute))("■") + "  " : badge(ICON_COLORS.execute, ">");
     if (suggestion.type === "folder")
-      return style === "plain" ? " " + chalk.hex(tint(ICON_COLORS.folder))("■") + "  " : icon(ICON_COLORS.folder, NF.folder, "/");
+      return style === "plain" || style === "marks" ? " " + chalk.hex(tint(ICON_COLORS.folder))("■") + "  " : icon(ICON_COLORS.folder, NF.folder, "/");
     if (suggestion.type === "file") return icon(fileColor(suggestion.name, theme), NF.file, "≡");
 
     switch (suggestion.icon.replace(/️/g, "")) {
@@ -253,35 +258,60 @@ export class SuggestionManager {
     return suggestion.type === "folder" ? `${suggestion.name}/` : suggestion.name;
   }
 
-  private _contentWidth(suggestion: Suggestion): number {
+  // name and argument hints, the first column of a row
+  private _nameWidth(suggestion: Suggestion): number {
     const name = wcswidth(this._displayName(suggestion));
-    const args = suggestion.args ? 1 + wcswidth(suggestion.args) : 0;
-    return iconWidth + name + args;
+    // long argument hints are cut so they do not push the descriptions out of the box
+    return name + (suggestion.args ? 1 + Math.min(wcswidth(suggestion.args), maxArgsWidth) : 0);
   }
 
-  private _renderRow(suggestion: Suggestion, innerWidth: number, selected: boolean, partial: string): string {
-    const textWidth = innerWidth - 2 - iconWidth; // one space padding on each side, then the icon cell
-    const name = this._displayName(suggestion);
-    const [shownName, nameTruncated] = fitText(name, textWidth);
-    const remaining = textWidth - wcswidth(shownName);
+  // the ↪ entry says what it does in its own row
+  private _inlineDescription(suggestion: Suggestion): string {
+    return suggestion.execute ? "" : (suggestion.description ?? "").replace(/\s+/g, " ").trim();
+  }
+
+  // A row is a bar inside the box with one cell of air on each side, so the selection reads as a highlight floating
+  // in the list rather than a stripe from edge to edge: icon, name (+ argument hints), then the description in its
+  // own column.
+  private _renderRow(suggestion: Suggestion, innerWidth: number, selected: boolean, partial: string, nameColumn: number): string {
+    const theme = activeTheme();
+    const barWidth = innerWidth - 2;
+    const textWidth = barWidth - iconWidth - 1; // the icon cell, then one space at the right end of the bar
+    const column = Math.min(nameColumn, textWidth);
+    const [shownName, nameTruncated] = fitText(this._displayName(suggestion), column);
     let args = "";
-    if (!nameTruncated && suggestion.args && remaining > 4) {
-      args = fitText(suggestion.args, remaining - 1)[0];
-    }
-    const used = wcswidth(shownName) + (args ? 1 + wcswidth(args) : 0);
+    if (!nameTruncated && suggestion.args && column - wcswidth(shownName) > 4) args = fitText(suggestion.args, column - wcswidth(shownName) - 1)[0];
+    const firstWidth = wcswidth(shownName) + (args ? 1 + wcswidth(args) : 0);
+
+    const description = this._inlineDescription(suggestion);
+    const descWidth = textWidth - column - 2;
+    const shownDescription = description && descWidth >= 6 ? fitText(description, descWidth)[0] : "";
 
     const matchLength = partial.length > 0 && shownName.toLowerCase().startsWith(partial.toLowerCase()) ? partial.length : 0;
-    const theme = activeTheme();
+    const nameColor = selected ? theme.selectionText : theme.text;
     const styledName =
       matchLength > 0
-        ? chalk.bold.hex(theme.match)(shownName.slice(0, matchLength)) + chalk.bold(shownName.slice(matchLength))
+        ? chalk.bold.hex(theme.match)(shownName.slice(0, matchLength)) + chalk.bold.hex(nameColor)(shownName.slice(matchLength))
         : selected
-        ? chalk.bold(shownName)
-        : shownName;
-    const styledArgs = args ? " " + chalk.hex(selected ? theme.argsSelected : theme.args)(args) : "";
+        ? chalk.bold.hex(nameColor)(shownName)
+        : chalk.hex(nameColor)(shownName);
+    const dim = (text: string) => chalk.hex(selected ? theme.argsSelected : theme.args)(text);
+    let content = styledName + (args ? " " + dim(args) : "");
+    let contentWidth = firstWidth;
+    if (shownDescription) {
+      content += " ".repeat(column - firstWidth) + "  " + dim(shownDescription);
+      contentWidth = column + 2 + wcswidth(shownDescription);
+    }
+    const bar = this._icon(suggestion, selected) + content + " ".repeat(Math.max(textWidth - contentWidth, 0)) + " ";
+    return " " + (selected ? chalk.bgHex(theme.selection)(bar) : bar) + " ";
+  }
 
-    const row = " " + this._icon(suggestion, selected) + styledName + styledArgs + " ".repeat(Math.max(textWidth - used, 0)) + " ";
-    return selected ? chalk.bgHex(theme.selection).hex(theme.selectionText)(row) : row;
+  // true when the row shows the whole description, so the footer does not have to repeat it
+  private _descriptionFits(suggestion: Suggestion, innerWidth: number, nameColumn: number): boolean {
+    const textWidth = innerWidth - 2 - iconWidth - 1;
+    const descWidth = textWidth - Math.min(nameColumn, textWidth) - 2;
+    const description = this._inlineDescription(suggestion);
+    return description.length > 0 && descWidth >= 6 && wcswidth(description) <= descWidth;
   }
 
   private _renderFooter(text: string, counter: string, innerWidth: number): string {
@@ -316,6 +346,9 @@ export class SuggestionManager {
     const borderColor = activeTheme().border;
     const border = (text: string) => chalk.hex(borderColor)(text);
     const rounded = getConfig().boxBorderStyle === "rounded";
+    // the inside of the box gets the panel color, the border keeps the terminal background so corners stay round
+    const panelColor = activeTheme().panel;
+    const panel = (text: string) => (getConfig().boxBackground ? chalk.bgHex(panelColor)(text) : text);
     const [tl, tr, bl, br] = rounded ? ["╭", "╮", "╰", "╯"] : ["┌", "┐", "└", "┘"];
 
     // keep the selected entry inside the visible window instead of jumping by pages
@@ -331,40 +364,52 @@ export class SuggestionManager {
     const counter =
       items.length <= maxSuggestions ? "" : this.#activeSuggestionIdx >= 0 ? `${this.#activeSuggestionIdx + 1}/${items.length}` : `${items.length}`;
 
-    const widest = Math.max(0, ...items.map((item) => this._contentWidth(item)));
+    // first column as wide as the widest name, the descriptions next to it get what is left (up to maxBoxWidth)
+    const nameColumn = Math.min(Math.max(0, ...visible.map((item) => this._nameWidth(item))), maxNameColumn);
+    const descColumn = Math.min(Math.max(0, ...visible.map((item) => wcswidth(this._inlineDescription(item)))), maxDescriptionColumn);
+    const widest = iconWidth + nameColumn + (descColumn > 0 ? 2 + descColumn : 0) + 1 + 2;
     const maxWidth = Math.min(maxBoxWidth, cols);
     if (maxWidth < 12) return [];
     // the reorder hint may widen the box a little so it fits next to the start of the description
     const hintWidth = this._wantsReorderHint(active)
       ? wcswidth(counter ? `${reorderHint} · ${counter}` : reorderHint) + Math.min(wcswidth(footerText), 16) + 5
       : 0;
-    const width = Math.max(Math.min(Math.max(widest + 4, minBoxWidth, hintWidth), maxWidth), Math.min(minBoxWidth, maxWidth));
+    const width = Math.max(Math.min(Math.max(widest + 2, minBoxWidth, hintWidth), maxWidth), Math.min(minBoxWidth, maxWidth));
     const innerWidth = width - 2;
 
     const rows: string[] = [];
-    rows.push(border(tl + "─".repeat(innerWidth) + tr));
+    // top and bottom lines stay on the terminal background (a line sits in the middle of its cell, so a colored
+    // cell would stick out above or below the card); the separator inside the card is on the panel
+    const edge = (left: string, right: string, onPanel = false) =>
+      border(left) + (onPanel ? panel(border("─".repeat(innerWidth))) : border("─".repeat(innerWidth))) + border(right);
+    rows.push(edge(tl, tr));
     if (visible.length === 0) {
       if (!argumentDescription) return [];
-      rows.push(border("│") + this._renderFooter(argumentDescription, "", innerWidth) + border("│"));
+      rows.push(border("│") + panel(this._renderFooter(argumentDescription, "", innerWidth)) + border("│"));
     } else {
       const partial = this._partialText();
       visible.forEach((item, idx) => {
         const selected = idx + this.#scrollTop === this.#activeSuggestionIdx;
-        rows.push(border("│") + this._renderRow(item, innerWidth, selected, partial) + border("│"));
+        rows.push(border("│") + panel(this._renderRow(item, innerWidth, selected, partial, nameColumn)) + border("│"));
       });
       // while you walk the list, a short hint tells that the order can be changed; it stops once you have done it
-      const hint = this._reorderHint(active, footerText, counter, innerWidth);
-      if (footerText || counter || hint) {
-        rows.push(border("├" + "─".repeat(innerWidth) + "┤"));
-        rows.push(border("│") + this._renderFooter(footerText, hint ? (counter ? `${hint} · ${counter}` : hint) : counter, innerWidth) + border("│"));
+      const shownFooter = active != null && this._descriptionFits(active, innerWidth, nameColumn) ? argumentDescription ?? "" : footerText;
+      const hint = this._reorderHint(active, shownFooter, counter, innerWidth);
+      if (shownFooter || hint) {
+        rows.push(edge("├", "┤", true));
+        rows.push(border("│") + panel(this._renderFooter(shownFooter, hint ? (counter ? `${hint} · ${counter}` : hint) : counter, innerWidth)) + border("│"));
+      } else if (counter && innerWidth >= wcswidth(counter) + 4) {
+        // nothing else for a footer: the position goes into the top edge instead of a row of its own
+        const fill = innerWidth - wcswidth(counter) - 3;
+        rows[0] = border(tl + "─".repeat(fill) + " ") + chalk.hex(activeTheme().counter)(counter) + border(" ─" + tr);
       }
     }
-    rows.push(border(bl + "─".repeat(innerWidth) + br));
+    rows.push(edge(bl, br));
 
     // line the icons up under the word being completed, the way Kiro anchors its popup
     const wrappedCursor = cursorX % cols;
     const partialWidth = activeToken != null && !activeToken.complete ? wcswidth(this._partialText()) : 0;
-    const anchor = Math.max(wrappedCursor - partialWidth - 2, 0);
+    const anchor = Math.max(wrappedCursor - partialWidth - 3, 0); // border, air, then the icon cell
     const startX = Math.max(Math.min(anchor, cols - width), 0);
 
     return rows.map((data) => ({ startX, length: width, data }));

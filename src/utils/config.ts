@@ -20,7 +20,7 @@ type Binding = {
 };
 
 type BoxBorderStyle = "square" | "rounded";
-type IconStyle = "plain" | "badge" | "nerd";
+type IconStyle = "plain" | "marks" | "badge" | "nerd";
 export const themeNameList = ["thint", "light", "nord", "dracula"] as const;
 type ThemeName = (typeof themeNameList)[number];
 
@@ -45,6 +45,7 @@ type Config = {
   iconStyle: IconStyle;
   fuzzyMatching: boolean;
   showHints: boolean;
+  boxBackground: boolean;
 };
 
 const bindingSchema: JSONSchemaType<Binding> = {
@@ -130,7 +131,7 @@ export const configSchema = {
     iconStyle: {
       type: "string",
       nullable: true,
-      enum: ["plain", "badge", "nerd"],
+      enum: ["plain", "marks", "badge", "nerd"],
       default: "plain",
     },
     fuzzyMatching: {
@@ -139,6 +140,11 @@ export const configSchema = {
       default: true,
     },
     showHints: {
+      type: "boolean",
+      nullable: true,
+      default: true,
+    },
+    boxBackground: {
       type: "boolean",
       nullable: true,
       default: true,
@@ -175,6 +181,7 @@ let globalConfig: Config = {
   iconStyle: "plain",
   fuzzyMatching: true,
   showHints: true,
+  boxBackground: true,
 };
 
 export const getConfig = (): Config => globalConfig;
@@ -217,6 +224,7 @@ export const loadConfig = async (_program?: Command) => {
         iconStyle: config?.iconStyle ?? (config?.useNerdFont ? "nerd" : "plain"),
         fuzzyMatching: config?.fuzzyMatching ?? true,
         showHints: config?.showHints ?? true,
+        boxBackground: config?.boxBackground ?? true,
       };
     }
   }

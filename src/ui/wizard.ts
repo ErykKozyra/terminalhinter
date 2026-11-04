@@ -16,9 +16,10 @@ import { renderPreview } from "./preview.js";
 import { PromptCancelled, select } from "./prompt.js";
 import { ThemeName, themeNames, themes } from "./theme.js";
 
-type IconStyle = "plain" | "badge" | "nerd";
+type IconStyle = "plain" | "marks" | "badge" | "nerd";
 const iconStyles: { value: IconStyle; hint: string }[] = [
-  { value: "plain", hint: "colored marks, works with every font" },
+  { value: "plain", hint: "colored squares, works with every font" },
+  { value: "marks", hint: "a symbol per kind ($ for commands, - for options)" },
   { value: "badge", hint: "marks on small colored squares" },
   { value: "nerd", hint: "needs a Nerd Font in your terminal" },
 ];

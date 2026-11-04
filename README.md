@@ -4,17 +4,7 @@ IDE-style autocomplete for your terminal, with the navigation people liked in Fi
 a dropdown under the cursor for folders, git branches, npm scripts and subcommands of 600+ CLIs,
 each with a short description.
 
-```
-➜  my-app git:(main) ✗ cd websites/
-                       ╭──────────────────────────────────╮
-                       │  >  ↪                            │
-                       │  ■  admin-panel/                 │
-                       │  ■  landing/                     │
-                       │  ■  shop/                        │
-                       ├──────────────────────────────────┤
-                       │ Enter the current directory      │
-                       ╰──────────────────────────────────╯
-```
+![terminalhinter: the list after typing pnpm d](docs/preview.png)
 
 The command is `thint` (long form: `terminalhinter`).
 
@@ -43,7 +33,9 @@ The command is `thint` (long form: `terminalhinter`).
 - **Themes.** `thint theme` with a live preview: thint, light, nord, dracula.
 - **Stays out of the way.** Right after a space nothing is selected, so Enter just runs the command.
   `git checkout -` and `cd -` run immediately.
-- **No special fonts.** Icons are plain characters every terminal font has. Folders come first, hidden entries
+- **A clean, modern list.** Each entry shows its description in a column next to the name, the selection is
+  a highlight inside the card, and a colored square tells the kind of entry. No special fonts: everything is
+  made of characters every terminal font has. Folders come first, hidden entries
   last, and files are tinted by kind (code, config, styles, images).
 - **Independent of your Node version.** The binary carries its own runtime, so switching Node with nvm never breaks it.
 - **Your terminal tab still says `zsh`.**
@@ -146,7 +138,8 @@ maxSuggestions = 10                     # rows visible at once (default: 6)
 enterAcceptsSuggestion = true           # false: Enter always runs, accept with Tab only
 fuzzyMatching = true                    # letters in order are enough (default: true)
 showHints = true                        # short tips in the list, e.g. that Shift+Up/Down reorders it
-iconStyle = "plain"                     # "plain", "badge" or "nerd" (needs a Nerd Font)
+iconStyle = "plain"                     # "plain" (colored squares), "marks", "badge" or "nerd" (needs a Nerd Font)
+boxBackground = true                    # the list sits on its own background, like a card
 activeSuggestionBackgroundColor = "#2F5FD0" # optional, overrides the theme
 borderColor = "#4B5263"                 # optional, overrides the theme
 boxBorderStyle = "rounded"              # or "square"

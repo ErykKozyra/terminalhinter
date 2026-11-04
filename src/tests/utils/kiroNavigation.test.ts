@@ -304,3 +304,19 @@ test("walking the list shows a reorder hint until the order was changed once", a
   expect(text()).not.toContain("reorder");
   delete process.env.THINT_ORDER_FILE;
 });
+
+test("rows show the description in a column next to the name, inside an inset bar", async () => {
+  const { manager } = setup({
+    suggestions: [
+      { name: "dev", allNames: ["dev"], icon: "📦", priority: 50, description: "next dev" },
+      { name: "build", allNames: ["build"], icon: "📦", priority: 50, description: "next build" },
+    ],
+    activeToken: { token: "d", tokenLength: 1, complete: false, isOption: false },
+  });
+  await manager.exec();
+  // eslint-disable-next-line no-control-regex
+  const rows = manager.render("below", 3).map((r) => r.data.replace(/\x1b\[[0-9;]*m/g, ""));
+  expect(rows[1]).toMatch(/^│ {2}■ {2}dev {4}next dev +│$/);
+  expect(rows[2]).toMatch(/^│ {2}■ {2}build  next build +│$/);
+  expect(rows.some((r) => r.startsWith("├"))).toBe(false); // the descriptions fit, so no footer repeats them
+});
