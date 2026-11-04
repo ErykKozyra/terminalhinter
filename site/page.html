@@ -194,6 +194,17 @@ kbd {
   border-radius: 6px; padding: 5px 8px; display: inline-block;
 }
 .combo { display: flex; gap: 6px; flex-wrap: wrap; }
+.sec-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px 24px; margin-bottom: 28px; }
+.sec-head h2 { margin: 0; }
+/* which keyboard the key names are for; picked from the browser, can be switched */
+.os { display: inline-flex; border: 1px solid var(--rule); border-radius: 8px; padding: 2px; gap: 2px; }
+.os button {
+  font: 500 14px/1 var(--f-body); color: var(--muted); background: transparent; border: 0; border-radius: 6px;
+  padding: 7px 12px; cursor: pointer;
+}
+.os button[aria-pressed="true"] { background: var(--key-bg); color: var(--ink); box-shadow: inset 0 0 0 1px var(--key-edge); }
+.os button:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.keys .mac-only { margin-top: 8px; font-size: 14px; }
 code.inline { font: 400 0.88em var(--f-mono); background: var(--code-bg); padding: 2px 6px; border-radius: 5px; }
 
 .steps { list-style: none; padding: 0; margin: 0; display: grid; gap: 22px; counter-reset: s; max-width: 760px; }
@@ -253,7 +264,7 @@ footer p { margin: 0; max-width: 60ch; }
   <div class="hero">
     <h1>A dropdown for your terminal.</h1>
     <div>
-      <p class="lede">Folders, git branches, npm scripts and 600+ CLIs show up as you type, each with a short description. Enter walks into folders, and the list learns what you use.</p>
+      <p class="lede">Folders, git branches, npm scripts and 600+ CLIs show up as you type, each with a short description. <span data-mac="Return">Enter</span> walks into folders, and the list learns what you use.</p>
       <div class="cmd">
         <code id="install-cmd"><span>npm i -g @erykkozyra/terminalhinter</span><span>thint init</span></code>
         <button class="copy" id="copy" type="button" aria-label="Copy the install commands">Copy</button>
@@ -286,27 +297,34 @@ footer p { margin: 0; max-width: 60ch; }
   </div>
 
   <section>
-    <h2>Everything works from the keyboard.</h2>
+    <div class="sec-head">
+      <h2>Everything works from the keyboard.</h2>
+      <div class="os" role="group" aria-label="Show the keys for">
+        <button type="button" data-os="mac" aria-pressed="false">macOS</button>
+        <button type="button" data-os="pc" aria-pressed="true">Linux</button>
+      </div>
+    </div>
     <div class="keys">
       <div>
-        <div class="combo"><kbd>Enter</kbd></div>
+        <div class="combo"><kbd data-mac="return">Enter</kbd></div>
         <h3>Walk into folders</h3>
-        <p>Enter on a folder opens it and keeps the list open with what is inside. The first entry, <code class="inline">↪</code>, runs the command where you are, so <code class="inline">cd</code> and a few Enters take you deep into a project.</p>
+        <p><span data-mac="Return">Enter</span> on a folder opens it and keeps the list open with what is inside. The first entry, <code class="inline">↪</code>, runs the command where you are, so <code class="inline">cd</code> and <span data-mac="a few Returns">a few Enters</span> take you deep into a project.</p>
       </div>
       <div>
-        <div class="combo"><kbd>Shift</kbd><kbd>↑</kbd><kbd>↓</kbd></div>
+        <div class="combo"><kbd data-mac="⇧ shift">Shift</kbd><kbd>↑</kbd><kbd>↓</kbd></div>
         <h3>Put the list in your order</h3>
         <p>Move the selected entry up or down and the list keeps that order for that spot in the command. What you arrange after <code class="inline">pnpm</code> also applies when you type your alias <code class="inline">p</code>.</p>
       </div>
       <div>
-        <div class="combo"><kbd>↑</kbd><kbd>↓</kbd><kbd>Tab</kbd></div>
+        <div class="combo"><kbd>↑</kbd><kbd>↓</kbd><kbd data-mac="⇥ tab">Tab</kbd></div>
         <h3>Nothing gets in the way</h3>
-        <p>Right after a space nothing is selected, so Enter just runs the command. Up with nothing selected still walks your shell history, and <code class="inline">git checkout -</code> runs at once.</p>
+        <p>Right after a space nothing is selected, so <span data-mac="Return">Enter</span> just runs the command. Up with nothing selected still walks your shell history, and <code class="inline">git checkout -</code> runs at once.</p>
       </div>
       <div>
-        <div class="combo"><kbd>Esc</kbd><kbd>Ctrl</kbd><kbd>Space</kbd></div>
+        <div class="combo"><kbd data-mac="esc">Esc</kbd><kbd data-mac="⌃ control">Ctrl</kbd><kbd data-mac="space">Space</kbd></div>
         <h3>Close it, open it again</h3>
-        <p>Esc hides the list until you type again. Ctrl+Space brings it back when you want to look.</p>
+        <p>Esc hides the list until you type again. <span data-mac="⌃&#8202;Space">Ctrl+Space</span> brings it back when you want to look.</p>
+        <p class="mac-only" hidden>macOS uses ⌃&#8202;Space to switch keyboard layouts when you have more than one. If it switches the layout instead of showing the list, turn that shortcut off in System Settings › Keyboard › Keyboard Shortcuts › Input Sources.</p>
       </div>
     </div>
   </section>
@@ -731,6 +749,21 @@ footer p { margin: 0; max-width: 60ch; }
     line = b.dataset.try; hidden = false; refresh(true);
     ghost.focus({ preventScroll: true });
   }));
+
+  // key names for the reader's keyboard: macOS says return, ⇧ shift and ⌃ control
+  const osButtons = document.querySelectorAll("[data-os]");
+  document.querySelectorAll("[data-mac]").forEach((el) => { el.dataset.pc = el.textContent; });
+  function setOs(os, remember) {
+    document.querySelectorAll("[data-mac]").forEach((el) => { el.textContent = os === "mac" ? el.dataset.mac : el.dataset.pc; });
+    document.querySelectorAll(".mac-only").forEach((el) => { el.hidden = os !== "mac"; });
+    osButtons.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.os === os)));
+    if (remember) { try { localStorage.setItem("thint-os", os); } catch {} }
+  }
+  osButtons.forEach((b) => b.addEventListener("click", () => setOs(b.dataset.os, true)));
+  let savedOs = null;
+  try { savedOs = localStorage.getItem("thint-os"); } catch {}
+  const platform = (navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform || navigator.userAgent;
+  setOs(savedOs || (/mac|iphone|ipad/i.test(platform) ? "mac" : "pc"), false);
 
   const copy = document.getElementById("copy");
   copy.addEventListener("click", () => {
