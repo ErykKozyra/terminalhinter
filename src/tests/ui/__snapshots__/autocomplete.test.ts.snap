@@ -3,8 +3,8 @@
 exports[`resize recovery restores input and suggestions after becoming too narrow: 21 column view 1`] = `
 "> git st
 ╭───────────────────╮
-│  ■  stage [path…  │
-│  ■  status [pat…  │
+│  ■  stage         │
+│  ■  status        │
 │  ■  stash         │
 ├───────────────────┤
 │ Add file content… │
@@ -14,9 +14,9 @@ exports[`resize recovery restores input and suggestions after becoming too narro
 exports[`resize recovery restores input and suggestions after becoming too narrow: 40 column view 1`] = `
 "> git st
 ╭──────────────────────────────────────╮
-│  ■  stage [pathspec...]   Add file…  │
-│  ■  status [pathspec...]  Show the…  │
-│  ■  stash                 Temporar…  │
+│  ■  stage   Add file contents to t…  │
+│  ■  status  Show the working tree …  │
+│  ■  stash   Temporarily stores all…  │
 ├──────────────────────────────────────┤
 │ Add file contents to the staging ar… │
 ╰──────────────────────────────────────╯"
@@ -24,18 +24,22 @@ exports[`resize recovery restores input and suggestions after becoming too narro
 
 exports[`resize recovery restores input and suggestions after becoming too narrow: initial 80 column view 1`] = `
 "> git st
-   ╭─────────────────────────────────────────────────────────────────────╮
-   │  ■  stage [pathspec...]   Add file contents to the staging area     │
-   │  ■  status [pathspec...]  Show the working tree status              │
-   │  ■  stash                 Temporarily stores all the modified tra…  │
-   ╰─────────────────────────────────────────────────────────────────────╯"
+   ╭───────────────────────────────────────────────────────╮
+   │  ■  stage [pathspec...]  Add file contents to the s…  │
+   │  ■  status  Show the working tree status              │
+   │  ■  stash   Temporarily stores all the modified tra…  │
+   ├───────────────────────────────────────────────────────┤
+   │ Add file contents to the staging area                 │
+   ╰───────────────────────────────────────────────────────╯"
 `;
 
 exports[`resize recovery restores input and suggestions after becoming too narrow: restored 80 column view 1`] = `
 "> git st
-   ╭─────────────────────────────────────────────────────────────────────╮
-   │  ■  stage [pathspec...]   Add file contents to the staging area     │
-   │  ■  status [pathspec...]  Show the working tree status              │
-   │  ■  stash                 Temporarily stores all the modified tra…  │
-   ╰─────────────────────────────────────────────────────────────────────╯"
+   ╭───────────────────────────────────────────────────────╮
+   │  ■  stage [pathspec...]  Add file contents to the s…  │
+   │  ■  status  Show the working tree status              │
+   │  ■  stash   Temporarily stores all the modified tra…  │
+   ├───────────────────────────────────────────────────────┤
+   │ Add file contents to the staging area                 │
+   ╰───────────────────────────────────────────────────────╯"
 `;

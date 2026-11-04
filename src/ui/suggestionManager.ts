@@ -259,10 +259,37 @@ export class SuggestionManager {
   }
 
   // name and argument hints, the first column of a row
+  private _argumentHints(suggestion: Suggestion, selected: boolean): boolean {
+    const mode = getConfig().argumentHints;
+    return suggestion.args != null && suggestion.args.length > 0 && (mode === "all" || (mode === "selected" && selected));
+  }
+
   private _nameWidth(suggestion: Suggestion): number {
     const name = wcswidth(this._displayName(suggestion));
-    // long argument hints are cut so they do not push the descriptions out of the box
-    return name + (suggestion.args ? 1 + Math.min(wcswidth(suggestion.args), maxArgsWidth) : 0);
+    // with hints on every row they are part of the first column (long ones cut so the descriptions stay in the box)
+    if (getConfig().argumentHints !== "all" || !suggestion.args) return name;
+    return name + 1 + Math.min(wcswidth(suggestion.args), maxArgsWidth);
+  }
+
+  // where each part of a row goes: the name, its argument hints, then the description starting at the name column
+  // (or right after the hints when they are longer, which only happens on the selected row)
+  private _layoutRow(suggestion: Suggestion, selected: boolean, innerWidth: number, nameColumn: number) {
+    const textWidth = innerWidth - 2 - iconWidth - 1; // inset bar, icon cell, one space at the right end
+    const column = Math.min(nameColumn, textWidth);
+    const [shownName, nameTruncated] = fitText(this._displayName(suggestion), Math.max(column, Math.min(wcswidth(this._displayName(suggestion)), textWidth)));
+    const description = this._inlineDescription(suggestion);
+    let args = "";
+    if (!nameTruncated && this._argumentHints(suggestion, selected)) {
+      const all = getConfig().argumentHints === "all";
+      const room = all ? column - wcswidth(shownName) - 1 : textWidth - wcswidth(shownName) - 1 - (description ? 24 : 0);
+      if (room > 4) args = fitText(suggestion.args ?? "", room)[0];
+    }
+    const firstWidth = wcswidth(shownName) + (args ? 1 + wcswidth(args) : 0);
+    const descStart = Math.max(column, firstWidth);
+    const descWidth = textWidth - descStart - 2;
+    const shownDescription = description && descWidth >= 6 ? fitText(description, descWidth)[0] : "";
+    const fits = description.length > 0 && descWidth >= 6 && wcswidth(description) <= descWidth;
+    return { textWidth, shownName, args, firstWidth, descStart, shownDescription, fits };
   }
 
   // the ↪ entry says what it does in its own row
@@ -275,18 +302,7 @@ export class SuggestionManager {
   // own column.
   private _renderRow(suggestion: Suggestion, innerWidth: number, selected: boolean, partial: string, nameColumn: number): string {
     const theme = activeTheme();
-    const barWidth = innerWidth - 2;
-    const textWidth = barWidth - iconWidth - 1; // the icon cell, then one space at the right end of the bar
-    const column = Math.min(nameColumn, textWidth);
-    const [shownName, nameTruncated] = fitText(this._displayName(suggestion), column);
-    let args = "";
-    if (!nameTruncated && suggestion.args && column - wcswidth(shownName) > 4) args = fitText(suggestion.args, column - wcswidth(shownName) - 1)[0];
-    const firstWidth = wcswidth(shownName) + (args ? 1 + wcswidth(args) : 0);
-
-    const description = this._inlineDescription(suggestion);
-    const descWidth = textWidth - column - 2;
-    const shownDescription = description && descWidth >= 6 ? fitText(description, descWidth)[0] : "";
-
+    const { textWidth, shownName, args, firstWidth, descStart, shownDescription } = this._layoutRow(suggestion, selected, innerWidth, nameColumn);
     const matchLength = partial.length > 0 && shownName.toLowerCase().startsWith(partial.toLowerCase()) ? partial.length : 0;
     const nameColor = selected ? theme.selectionText : theme.text;
     const styledName =
@@ -299,19 +315,16 @@ export class SuggestionManager {
     let content = styledName + (args ? " " + dim(args) : "");
     let contentWidth = firstWidth;
     if (shownDescription) {
-      content += " ".repeat(column - firstWidth) + "  " + dim(shownDescription);
-      contentWidth = column + 2 + wcswidth(shownDescription);
+      content += " ".repeat(descStart - firstWidth) + "  " + dim(shownDescription);
+      contentWidth = descStart + 2 + wcswidth(shownDescription);
     }
     const bar = this._icon(suggestion, selected) + content + " ".repeat(Math.max(textWidth - contentWidth, 0)) + " ";
     return " " + (selected ? chalk.bgHex(theme.selection)(bar) : bar) + " ";
   }
 
   // true when the row shows the whole description, so the footer does not have to repeat it
-  private _descriptionFits(suggestion: Suggestion, innerWidth: number, nameColumn: number): boolean {
-    const textWidth = innerWidth - 2 - iconWidth - 1;
-    const descWidth = textWidth - Math.min(nameColumn, textWidth) - 2;
-    const description = this._inlineDescription(suggestion);
-    return description.length > 0 && descWidth >= 6 && wcswidth(description) <= descWidth;
+  private _descriptionFits(suggestion: Suggestion, innerWidth: number, nameColumn: number, selected = true): boolean {
+    return this._layoutRow(suggestion, selected, innerWidth, nameColumn).fits;
   }
 
   private _renderFooter(text: string, counter: string, innerWidth: number): string {
@@ -339,7 +352,11 @@ export class SuggestionManager {
     }
     const { argumentDescription, activeToken } = this.#suggestBlob;
     const items = this._items();
-    const maxSuggestions = Math.max(Math.min(getMaxSuggestions(), maxLines - (getMaxLines() - getMaxSuggestions())), 1);
+    // the box needs two lines for its edges, so in a very short terminal the footer goes first, then the edges, and at
+    // least one entry stays (the terminal already keeps a line free below the prompt, see remainingLines in pty.ts)
+    const room = maxLines;
+    const compact = room < 3; // no room for the edges: only the entries
+    const maxSuggestions = compact ? Math.max(room, 1) : Math.min(getMaxSuggestions(), room - 2);
     if (this.#activeSuggestionIdx >= items.length) this.#activeSuggestionIdx = items.length - 1;
 
     const cols = this.#term.cols;
@@ -378,6 +395,7 @@ export class SuggestionManager {
     const innerWidth = width - 2;
 
     const rows: string[] = [];
+    let footerRows = 0;
     // top and bottom lines stay on the terminal background (a line sits in the middle of its cell, so a colored
     // cell would stick out above or below the card); the separator inside the card is on the panel
     const edge = (left: string, right: string, onPanel = false) =>
@@ -396,6 +414,7 @@ export class SuggestionManager {
       const shownFooter = active != null && this._descriptionFits(active, innerWidth, nameColumn) ? argumentDescription ?? "" : footerText;
       const hint = this._reorderHint(active, shownFooter, counter, innerWidth);
       if (shownFooter || hint) {
+        footerRows = 2;
         rows.push(edge("├", "┤", true));
         rows.push(border("│") + panel(this._renderFooter(shownFooter, hint ? (counter ? `${hint} · ${counter}` : hint) : counter, innerWidth)) + border("│"));
       } else if (counter && innerWidth >= wcswidth(counter) + 4) {
@@ -412,7 +431,17 @@ export class SuggestionManager {
     const anchor = Math.max(wrappedCursor - partialWidth - 3, 0); // border, air, then the icon cell
     const startX = Math.max(Math.min(anchor, cols - width), 0);
 
-    return rows.map((data) => ({ startX, length: width, data }));
+    let shown = rows;
+    if (shown.length > room && footerRows > 0) {
+      shown = [...shown.slice(0, shown.length - 1 - footerRows), shown[shown.length - 1]];
+      if (counter && innerWidth >= wcswidth(counter) + 4) {
+        const fill = innerWidth - wcswidth(counter) - 3;
+        shown[0] = border(tl + "─".repeat(fill) + " ") + chalk.hex(activeTheme().counter)(counter) + border(" ─" + tr);
+      }
+    }
+    if (compact || shown.length > room) shown = rows.slice(1, 1 + Math.min(visible.length, Math.max(room, 1))); // no edges, only the entries
+    if (shown.length > room) return [];
+    return shown.map((data) => ({ startX, length: width, data }));
   }
   update(keyPress: KeyPress, allowBindings = true): boolean {
     const handled = this._update(keyPress, allowBindings);

@@ -46,6 +46,7 @@ type Config = {
   fuzzyMatching: boolean;
   showHints: boolean;
   boxBackground: boolean;
+  argumentHints: "selected" | "all" | "none";
 };
 
 const bindingSchema: JSONSchemaType<Binding> = {
@@ -149,6 +150,12 @@ export const configSchema = {
       nullable: true,
       default: true,
     },
+    argumentHints: {
+      type: "string",
+      nullable: true,
+      enum: ["selected", "all", "none"],
+      default: "selected",
+    },
   },
   additionalProperties: false,
 };
@@ -182,6 +189,7 @@ let globalConfig: Config = {
   fuzzyMatching: true,
   showHints: true,
   boxBackground: true,
+  argumentHints: "selected",
 };
 
 export const getConfig = (): Config => globalConfig;
@@ -225,6 +233,7 @@ export const loadConfig = async (_program?: Command) => {
         fuzzyMatching: config?.fuzzyMatching ?? true,
         showHints: config?.showHints ?? true,
         boxBackground: config?.boxBackground ?? true,
+        argumentHints: config?.argumentHints ?? "selected",
       };
     }
   }

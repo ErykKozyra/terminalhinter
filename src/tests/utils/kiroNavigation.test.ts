@@ -317,6 +317,6 @@ test("rows show the description in a column next to the name, inside an inset ba
   // eslint-disable-next-line no-control-regex
   const rows = manager.render("below", 3).map((r) => r.data.replace(/\x1b\[[0-9;]*m/g, ""));
   expect(rows[1]).toMatch(/^│ {2}■ {2}dev {4}next dev +│$/);
-  expect(rows[2]).toMatch(/^│ {2}■ {2}build  next build +│$/);
+  expect(rows[2]).toMatch(/^│ {2}■ {2}build {2}next build +│$/);
   expect(rows.some((r) => r.startsWith("├"))).toBe(false); // the descriptions fit, so no footer repeats them
 });

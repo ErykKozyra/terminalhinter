@@ -140,6 +140,7 @@ fuzzyMatching = true                    # letters in order are enough (default: 
 showHints = true                        # short tips in the list, e.g. that Shift+Up/Down reorders it
 iconStyle = "plain"                     # "plain" (colored squares), "marks", "badge" or "nerd" (needs a Nerd Font)
 boxBackground = true                    # the list sits on its own background, like a card
+argumentHints = "selected"              # hints like [branch]: "selected" (only the selected row), "all", "none"
 activeSuggestionBackgroundColor = "#2F5FD0" # optional, overrides the theme
 borderColor = "#4B5263"                 # optional, overrides the theme
 boxBorderStyle = "rounded"              # or "square"
