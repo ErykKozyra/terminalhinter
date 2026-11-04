@@ -1,0 +1,751 @@
+<title>terminalhinter</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="A dropdown for your terminal: folders, git branches, npm scripts and 600+ CLIs as you type. Enter walks into folders, the list learns what you use.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;700;800&family=JetBrains+Mono:ital,wght@0,400;0,700;1,400&display=swap">
+<style>
+/* Layout: one left-aligned column; the live terminal is the hero object, everything else stays quiet around it. */
+:root {
+  /* page */
+  --paper: #EBEFF5;
+  --ink: #141A26;
+  --muted: #566074;
+  --rule: #CBD2DD;
+  --accent: #2F5FD0;         /* the selection blue of the list itself */
+  --key-bg: #FFFFFF;
+  --key-edge: #B9C1CE;
+  --code-bg: #DDE3EC;
+  /* the terminal looks the same in both themes, like the product */
+  --t-bg: #12151B;
+  --t-edge: #2C313B;
+  --t-panel: #171B23;
+  --t-border: #4B5263;
+  --t-text: #D6DAE3;
+  --t-dim: #7F8796;
+  --t-dim-sel: #DCE5FF;
+  --t-footer: #9AA3B2;
+  --t-counter: #6B7280;
+  --t-select: #2F5FD0;
+  --t-match: #F5C451;
+  --k-command: #8E5CF5;
+  --k-value: #2F9E6E;
+  --k-option: #E8862E;
+  --k-folder: #4C9AFF;
+  --k-file: #8B95A7;
+  --k-run: #E5484D;
+  --k-alias: #22B8CF;
+  --p-arrow: #3BC28A;
+  --p-dir: #22B8CF;
+  --p-git: #4C9AFF;
+  --p-branch: #E5484D;
+
+  --f-display: "Schibsted Grotesk", "Helvetica Neue", Arial, sans-serif;
+  --f-body: "Schibsted Grotesk", "Helvetica Neue", Arial, sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --measure: 62ch;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0F131A; --ink: #E6EAF2; --muted: #98A2B5; --rule: #262D39; --accent: #7FA2FF;
+    --key-bg: #1B212C; --key-edge: #39414F; --code-bg: #171C25; --t-edge: #2E3440; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0F131A; --ink: #E6EAF2; --muted: #98A2B5; --rule: #262D39; --accent: #7FA2FF;
+  --key-bg: #1B212C; --key-edge: #39414F; --code-bg: #171C25; --t-edge: #2E3440; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font: 400 17px/1.6 var(--f-body);
+  -webkit-font-smoothing: antialiased;
+}
+.wrap {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding-left: max(20px, env(safe-area-inset-left, 0px));
+  padding-right: max(20px, env(safe-area-inset-right, 0px));
+}
+a { color: var(--accent); text-underline-offset: 3px; }
+a:focus-visible, button:focus-visible, .term:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+/* header */
+.top { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 22px; }
+.mark { display: inline-flex; align-items: center; gap: 10px; font: 700 17px/1 var(--f-mono); color: var(--ink); text-decoration: none; }
+.mark i { width: 12px; height: 12px; background: var(--accent); display: inline-block; }
+.top nav { display: flex; gap: 22px; font-size: 15px; }
+.top nav a { color: var(--muted); text-decoration: none; }
+.top nav a:hover { color: var(--ink); }
+
+/* hero */
+.hero { padding-block: 40px 28px; display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 28px 56px; align-items: end; }
+h1 {
+  font: 800 clamp(44px, 7.4vw, 86px)/0.94 var(--f-display);
+  letter-spacing: -0.035em;
+  margin: 0;
+  text-wrap: balance;
+}
+.lede { margin: 0 0 18px; color: var(--muted); max-width: 44ch; font-size: 18px; }
+.install {
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+}
+.cmd {
+  display: inline-flex; align-items: center; gap: 12px;
+  font: 400 15px/1 var(--f-mono);
+  background: var(--t-bg); color: var(--t-text);
+  border-radius: 8px; padding: 14px 14px 14px 16px; min-width: 0; max-width: 100%;
+}
+.cmd code { white-space: nowrap; overflow-x: auto; }
+.cmd .dollar { color: var(--p-arrow); user-select: none; }
+.copy {
+  font: 500 13px/1 var(--f-body); color: var(--t-text);
+  background: #262C38; border: 0; border-radius: 6px; padding: 8px 10px; cursor: pointer;
+}
+.copy:hover { background: #313949; }
+
+/* the terminal */
+.stage { padding-block: 8px 12px; }
+.term {
+  position: relative;
+  background: var(--t-bg);
+  border: 1px solid var(--t-edge);
+  border-radius: 14px;
+  font: 400 15px/1.6 var(--f-mono);
+  color: var(--t-text);
+  height: 27.2em; /* 17 lines */
+  overflow: hidden;
+  cursor: text;
+  box-shadow: 0 30px 60px -30px rgba(20, 30, 60, 0.45);
+}
+.bar { display: flex; align-items: center; gap: 8px; height: 40px; padding: 0 16px; border-bottom: 1px solid #1C2029; }
+.bar span { width: 11px; height: 11px; border-radius: 50%; background: #343A46; }
+.bar b { flex: 1; text-align: center; font-weight: 400; color: var(--t-counter); font-size: 13px; margin-right: 54px; }
+.screen { position: absolute; inset: 40px 0 0 0; padding: 14px 20px; }
+.line { white-space: pre; height: 1.6em; }
+.p-arrow { color: var(--p-arrow); font-weight: 700; }
+.p-dir { color: var(--p-dir); font-weight: 700; }
+.p-git { color: var(--p-git); font-weight: 700; }
+.p-branch { color: var(--p-branch); }
+.out { color: var(--t-footer); }
+.caret { display: inline-block; width: 0.6em; height: 1.2em; vertical-align: -0.2em; background: #F2F4F8; }
+.term:not(.focused) .caret { animation: blink 1.1s steps(1) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+.ghost-input { position: absolute; opacity: 0; width: 1px; height: 1px; left: 0; top: 0; border: 0; padding: 0; }
+
+/* the list, drawn the way terminalhinter draws it */
+.list {
+  position: absolute; z-index: 2;
+  background: var(--t-panel);
+  border: 1px solid var(--t-border);
+  border-radius: 9px;
+  padding: 0.3em 0;
+}
+.list .edge-count { position: absolute; top: -0.85em; right: 1.2ch; background: var(--t-bg); color: var(--t-counter); padding: 0 0.6ch; font-size: 0.92em; line-height: 1.6; }
+.row { display: flex; white-space: pre; height: 1.6em; margin: 0 1ch; padding-right: 1ch; }
+.row.sel { background: var(--t-select); color: #fff; }
+.row .sq { width: 4ch; flex: none; display: inline-flex; align-items: center; padding-left: 1ch; }
+.row .sq i { width: 0.62em; height: 0.62em; display: inline-block; }
+.row .name { flex: none; }
+.row.sel .name { font-weight: 700; }
+.row .m { color: var(--t-match); font-weight: 700; }
+.row .args, .row .desc { color: var(--t-dim); }
+.row.sel .args, .row.sel .desc { color: var(--t-dim-sel); }
+.foot { border-top: 1px solid var(--t-border); margin-top: 0.3em; padding: 0.3em 1ch 0; color: var(--t-footer); font-style: italic; white-space: pre-wrap; }
+.foot .hint { font-style: normal; color: var(--t-counter); }
+
+.try { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; padding-top: 14px; font-size: 15px; color: var(--muted); }
+.try button {
+  font: 500 14px/1 var(--f-mono); color: var(--ink);
+  background: transparent; border: 1px solid var(--rule); border-radius: 999px; padding: 8px 13px; cursor: pointer;
+}
+.try button:hover { border-color: var(--muted); }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 18px; padding-top: 10px; font-size: 14px; color: var(--muted); }
+.legend span { display: inline-flex; align-items: center; gap: 7px; }
+.legend i { width: 10px; height: 10px; display: inline-block; }
+
+/* sections */
+section { padding-block: 64px 0; }
+h2 { font: 800 clamp(30px, 4vw, 42px)/1.05 var(--f-display); letter-spacing: -0.025em; margin: 0 0 28px; text-wrap: balance; max-width: 20ch; }
+.keys { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 30px 56px; }
+.keys > div { min-width: 0; }
+.keys h3 { font: 700 19px/1.3 var(--f-body); margin: 10px 0 6px; }
+.keys p { margin: 0; color: var(--muted); max-width: var(--measure); }
+kbd {
+  font: 500 13px/1 var(--f-mono); color: var(--ink);
+  background: var(--key-bg); border: 1px solid var(--key-edge); border-bottom-width: 2px;
+  border-radius: 6px; padding: 5px 8px; display: inline-block;
+}
+.combo { display: flex; gap: 6px; flex-wrap: wrap; }
+code.inline { font: 400 0.88em var(--f-mono); background: var(--code-bg); padding: 2px 6px; border-radius: 5px; }
+
+.steps { list-style: none; padding: 0; margin: 0; display: grid; gap: 22px; counter-reset: s; max-width: 760px; }
+.steps li { display: grid; grid-template-columns: 2.2em minmax(0, 1fr); gap: 4px 14px; counter-increment: s; }
+.steps li::before { content: counter(s); font: 800 26px/1 var(--f-display); color: var(--accent); grid-row: span 2; padding-top: 2px; }
+.steps h3 { font: 700 19px/1.3 var(--f-body); margin: 0; }
+.steps p { margin: 0; color: var(--muted); }
+pre.block {
+  margin: 10px 0 0; background: var(--t-bg); color: var(--t-text); border-radius: 8px; padding: 14px 16px;
+  font: 400 14px/1.6 var(--f-mono); overflow-x: auto;
+}
+pre.block .k { color: #8BB4FF; } pre.block .s { color: #A5D6A7; } pre.block .n { color: #F5C451; }
+
+.split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 28px 56px; align-items: start; }
+.split p { color: var(--muted); max-width: var(--measure); margin: 0 0 12px; }
+
+footer { margin-top: 80px; border-top: 1px solid var(--rule); padding-block: 28px 40px; color: var(--muted); font-size: 15px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 32px; }
+footer p { margin: 0; max-width: 60ch; }
+
+@media (max-width: 820px) {
+  .hero, .keys, .split { grid-template-columns: minmax(0, 1fr); }
+  .hero { padding-block: 24px 20px; }
+  .term { font-size: 12.5px; height: 25.6em; }
+  .screen { padding: 12px 12px; }
+  .bar b { margin-right: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .term:not(.focused) .caret { animation: none; }
+}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <a class="mark" href="#"><i aria-hidden="true"></i>terminalhinter</a>
+    <nav aria-label="Links">
+      <a href="https://github.com/ErykKozyra/terminalhinter">GitHub</a>
+      <a href="https://www.npmjs.com/package/@erykkozyra/terminalhinter">npm</a>
+    </nav>
+  </header>
+
+  <div class="hero">
+    <h1>A dropdown for your terminal.</h1>
+    <div>
+      <p class="lede">Folders, git branches, npm scripts and 600+ CLIs show up as you type, each with a short description. Enter walks into folders, and the list learns what you use.</p>
+      <div class="install">
+        <div class="cmd"><span class="dollar" aria-hidden="true">$</span><code id="install-cmd">npm i -g @erykkozyra/terminalhinter &amp;&amp; thint init</code><button class="copy" id="copy" type="button">Copy</button></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="stage">
+    <div class="term" id="term" tabindex="0" role="application" aria-label="Live demo of terminalhinter. Click and type a command such as git or cd.">
+      <div class="bar" aria-hidden="true"><span></span><span></span><span></span><b>zsh</b></div>
+      <div class="screen" id="screen"></div>
+      <input class="ghost-input" id="ghost" aria-label="Type in the demo terminal" autocomplete="off" autocapitalize="off" spellcheck="false">
+    </div>
+    <div class="try" aria-label="Examples">
+      <span>Try it, or start with</span>
+      <button type="button" data-try="git checkout ">git checkout</button>
+      <button type="button" data-try="cd ">cd into folders</button>
+      <button type="button" data-try="pnpm ">pnpm scripts</button>
+      <button type="button" data-try="pnpm --filter ">pnpm --filter</button>
+      <button type="button" data-try="thint ">thint</button>
+    </div>
+    <div class="legend" aria-label="What the colors mean">
+      <span><i style="background:var(--k-command)"></i>command</span>
+      <span><i style="background:var(--k-value)"></i>script, branch or value</span>
+      <span><i style="background:var(--k-option)"></i>option</span>
+      <span><i style="background:var(--k-folder)"></i>folder</span>
+      <span><i style="background:var(--k-file)"></i>file</span>
+      <span><i style="background:var(--k-alias)"></i>your alias</span>
+    </div>
+  </div>
+
+  <section>
+    <h2>Everything works from the keyboard.</h2>
+    <div class="keys">
+      <div>
+        <div class="combo"><kbd>Enter</kbd></div>
+        <h3>Walk into folders</h3>
+        <p>Enter on a folder opens it and keeps the list open with what is inside. The first entry, <code class="inline">↪</code>, runs the command where you are, so <code class="inline">cd</code> and a few Enters take you deep into a project.</p>
+      </div>
+      <div>
+        <div class="combo"><kbd>Shift</kbd><kbd>↑</kbd><kbd>↓</kbd></div>
+        <h3>Put the list in your order</h3>
+        <p>Move the selected entry up or down and the list keeps that order for that spot in the command. What you arrange after <code class="inline">pnpm</code> also applies when you type your alias <code class="inline">p</code>.</p>
+      </div>
+      <div>
+        <div class="combo"><kbd>↑</kbd><kbd>↓</kbd><kbd>Tab</kbd></div>
+        <h3>Nothing gets in the way</h3>
+        <p>Right after a space nothing is selected, so Enter just runs the command. Up with nothing selected still walks your shell history, and <code class="inline">git checkout -</code> runs at once.</p>
+      </div>
+      <div>
+        <div class="combo"><kbd>Esc</kbd><kbd>Ctrl</kbd><kbd>Space</kbd></div>
+        <h3>Close it, open it again</h3>
+        <p>Esc hides the list until you type again. Ctrl+Space brings it back when you want to look.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>It gets to know your projects.</h2>
+    <div class="split">
+      <div>
+        <p>The list ranks by what you use, recent things above old ones, the way zoxide does for folders. Your history stays on your machine.</p>
+        <p><code class="inline">pnpm --filter</code>, <code class="inline">turbo run --filter</code> and <code class="inline">yarn workspace</code> list your workspace packages. <code class="inline">turbo run</code> lists the tasks from <code class="inline">turbo.json</code>. Next to each git branch you see how old its last commit is and what it says.</p>
+        <p>Letters in order are enough: <code class="inline">icpl</code> finds <code class="inline">intercars.com.pl</code>. Your aliases and your own zsh functions show up with what they do.</p>
+      </div>
+      <div>
+        <p>For your own scripts and in-house tools, a few lines of YAML in <code class="inline">~/.config/terminalhinter/specs</code> are enough:</p>
+<pre class="block"><span class="k">name</span>: deploy
+<span class="k">subcommands</span>:
+  - <span class="k">name</span>: staging
+    <span class="k">args</span>: { <span class="k">name</span>: app, <span class="k">suggestions</span>: [web, admin] }
+<span class="k">options</span>:
+  - <span class="k">name</span>: [--force, -f]
+    <span class="k">description</span>: <span class="s">Skip the checks</span></pre>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Set it up in a minute.</h2>
+    <ol class="steps">
+      <li>
+        <h3>Install it</h3>
+        <p>One binary with its own runtime, so switching Node with nvm never breaks it. macOS and Linux; Windows and fish are experimental.</p>
+        <pre class="block">npm i -g @erykkozyra/terminalhinter</pre>
+      </li>
+      <li>
+        <h3>Run the setup</h3>
+        <p>Pick your shell, a theme and icons with a live preview. The setup puts its startup lines at the top of your shell config and keeps a backup.</p>
+        <pre class="block">thint init</pre>
+      </li>
+      <li>
+        <h3>Open a new terminal tab</h3>
+        <p>Type <code class="inline">git</code> or <code class="inline">cd</code> and the list is there. <code class="inline">thint doctor</code> checks the setup and tells you how to fix anything it finds.</p>
+      </li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>Looks its best in VS Code with a little room.</h2>
+    <div class="split">
+      <p>A bit more space between lines, and VS Code's own color adjustment turned off, make the list look the way it was designed. No special font is needed; a modern monospace like JetBrains Mono comes closest to this page.</p>
+<pre class="block">{
+  <span class="k">"terminal.integrated.lineHeight"</span>: <span class="n">1.3</span>,
+  <span class="k">"terminal.integrated.fontSize"</span>: <span class="n">13</span>,
+  <span class="k">"terminal.integrated.minimumContrastRatio"</span>: <span class="n">1</span>,
+  <span class="k">"terminal.integrated.gpuAcceleration"</span>: <span class="s">"on"</span>
+}</pre>
+    </div>
+  </section>
+
+  <footer>
+    <p>terminalhinter is open source under the MIT License, a fork of <a href="https://github.com/microsoft/inshellisense">microsoft/inshellisense</a>, with command specs from <a href="https://github.com/withfig/autocomplete">withfig/autocomplete</a>. Not affiliated with Microsoft, Amazon or Fig.</p>
+    <p><a href="https://github.com/ErykKozyra/terminalhinter">GitHub</a> &nbsp; <a href="https://www.npmjs.com/package/@erykkozyra/terminalhinter">npm</a> &nbsp; <a href="https://github.com/ErykKozyra">Eryk Kozyra</a></p>
+  </footer>
+</div>
+
+<script>
+(() => {
+  // ---- a small world to complete in ------------------------------------------------------------
+  const FS = {
+    apps: { web: { src: {}, "package.json": 0 }, admin: { src: {}, "package.json": 0 } },
+    packages: { ui: { src: {} }, config: {} },
+    websites: { "evert.tech": {}, "intercars.com.pl": {}, "qservicetruck.eu": {} },
+    scripts: { "release.sh": 0 },
+    "package.json": 0, "pnpm-workspace.yaml": 0, "turbo.json": 0, "README.md": 0, ".gitignore": 0,
+  };
+  const BRANCHES = [
+    ["main", "2 hours ago · release 1.1.0"],
+    ["feature/login", "yesterday · add login form"],
+    ["fix/header", "3 days ago · sticky header on mobile"],
+    ["chore/deps", "last week · bump turbo"],
+  ];
+  const SCRIPTS = [["dev", "next dev"], ["build", "next build"], ["lint", "next lint"], ["test", "vitest"], ["dev:turbo", "next dev --turbopack"]];
+  const PACKAGES = [["@acme/web", "workspace package · apps/web"], ["@acme/admin", "workspace package · apps/admin"], ["@acme/ui", "workspace package · packages/ui"]];
+  const sub = (name, desc, args, kind = "command") => ({ name, desc, args, kind });
+  const opt = (name, desc, args) => ({ name, desc, args, kind: "option" });
+  const SPEC = {
+    git: { desc: "The stupid content tracker", subs: [
+      sub("checkout", "Switch branches or restore working tree files", "[branch, file, tag or commit] [pathspec...]"),
+      sub("commit", "Record changes to the repository", "[pathspec...]"),
+      sub("push", "Update remote refs along with associated objects", "[remote] [branch]"),
+      sub("pull", "Integrate with another repository or a local branch", "[remote] [branch]"),
+      sub("status", "Show the working tree status"),
+      sub("switch", "Switch branches", "[branch]"),
+      sub("stash", "Stash the changes in a dirty working directory away"),
+      sub("rebase", "Reapply commits on top of another base tip", "[base]"),
+      sub("branch", "List, create, or delete branches"),
+      sub("log", "Show commit logs"),
+      sub("cherry-pick", "Apply the changes introduced by some existing commits", "<commit...>"),
+      { name: "gco", desc: "alias: git checkout", kind: "alias" },
+    ] },
+    pnpm: { desc: "Fast, disk space efficient package manager", subs: [
+      ...SCRIPTS.map(([n, d]) => ({ name: n, desc: d, kind: "value" })),
+      sub("install", "Install all dependencies for a project"),
+      sub("add", "Install a package and any packages that it depends on", "<package...>"),
+      sub("run", "Run a script defined in the package's manifest", "<script>"),
+      sub("dlx", "Run a package without installing it", "<command>"),
+      opt("--filter", "Run only in the matching workspace packages", "<package>"),
+    ] },
+    thint: { desc: "terminalhinter itself", subs: [
+      sub("init", "Guided setup: shell, theme, icons", "[shell]"),
+      sub("theme", "Pick the colors of the dropdown", "[theme]"),
+      sub("order", "Your own order of the list"),
+      sub("config", "Show or change settings"),
+      sub("bookmark", "Folders cd offers from anywhere"),
+      sub("doctor", "Check the installation"),
+    ] },
+    cd: { desc: "Change the shell working directory", path: "dirs" },
+    ls: { desc: "List directory contents", path: "all" },
+    cat: { desc: "Print files", path: "all" },
+  };
+  const ICON = { command: "--k-command", value: "--k-value", option: "--k-option", folder: "--k-folder", file: "--k-file", run: "--k-run", alias: "--k-alias" };
+
+  // ---- state ----------------------------------------------------------------------------------
+  const term = document.getElementById("term");
+  const screen = document.getElementById("screen");
+  const ghost = document.getElementById("ghost");
+  let cwd = [];                 // path segments under ~/my-app
+  let branch = "main";
+  let line = "";
+  let history = [];             // output lines above the prompt
+  let cmdHistory = [];
+  let sel = -1;
+  let navigated = false;
+  let reordered = false;
+  let hidden = false;
+  let scroll = 0;
+  const order = {};             // context -> names, set with Shift+Up/Down
+  const MAX_ROWS = 6;
+
+  const dirAt = (segs) => segs.reduce((d, s) => (d && typeof d[s] === "object" ? d[s] : null), FS);
+  // on a phone-width terminal the git part of the prompt is left out, so the command still fits on the line
+  const promptParts = () => {
+    const dir = [["p-arrow", "➜  "], ["p-dir", cwd.length ? cwd[cwd.length - 1] : "my-app"], ["", " "]];
+    return cols < 64 ? dir : [...dir, ["p-git", "git:("], ["p-branch", branch], ["p-git", ")"], ["", " "]];
+  };
+  const promptText = () => promptParts().map((p) => p[1]).join("");
+
+  // tokens: words split on spaces; the last one is being typed unless the line ends with a space
+  const tokens = () => {
+    const parts = line.split(" ");
+    const typing = parts.pop();
+    return { done: parts.filter((p) => p.length > 0), typing };
+  };
+
+  const fuzzy = (name, q) => {
+    if (q.length < 3) return false;
+    const n = name.toLowerCase(); if (n[0] !== q[0]) return false;
+    let i = 0; for (const c of n) { if (c === q[i]) i++; if (i === q.length) return true; } return false;
+  };
+
+  function suggestions() {
+    const { done, typing } = tokens();
+    const q = typing.toLowerCase();
+    let items = [];
+    let isPath = false;
+    let pathTyped = "";
+    if (done.length === 0) {
+      items = Object.entries(SPEC).map(([name, s]) => ({ name, desc: s.desc, kind: "command" }));
+      items.push({ name: "p", desc: "alias: pnpm", kind: "alias" });
+    } else {
+      let root = done[0] === "p" ? "pnpm" : done[0] === "gco" ? "git" : done[0];
+      const spec = SPEC[root];
+      if (!spec) return { items: [], q, isPath };
+      const rest = done[0] === "gco" ? ["checkout", ...done.slice(1)] : done.slice(1);
+      if (spec.path) {
+        isPath = true;
+        const slash = typing.lastIndexOf("/");
+        pathTyped = slash >= 0 ? typing.slice(0, slash + 1) : "";
+        const segs = [...cwd, ...pathTyped.split("/").filter(Boolean)];
+        const dir = dirAt(segs);
+        if (!dir) return { items: [], q, isPath };
+        const name = typing.slice(slash + 1).toLowerCase();
+        items = Object.entries(dir)
+          .filter(([n]) => spec.path === "all" || typeof dir[n] === "object")
+          .map(([n, v]) => ({ name: typeof v === "object" ? n + "/" : n, base: n, kind: typeof v === "object" ? "folder" : "file", path: pathTyped }));
+        if (pathTyped === "" || segs.length > 0) items.push({ name: "../", base: "..", kind: "folder", path: pathTyped });
+        items.sort((a, b) => (a.kind === b.kind ? 0 : a.kind === "folder" ? -1 : 1) || (a.base.startsWith(".") - b.base.startsWith(".")) || a.base.localeCompare(b.base));
+        const filtered = items.filter((i) => i.base.toLowerCase().startsWith(name) || fuzzy(i.base, name));
+        if (pathTyped && name === "") filtered.unshift({ name: "↪", kind: "run", desc: root === "cd" ? "Enter the current directory" : "Run the command with this path", run: true });
+        return { items: filtered, q: name, isPath, root };
+      }
+      if (rest[0] === "--filter" && rest.length === 1) {
+        items = PACKAGES.map(([n, d]) => ({ name: n, desc: d, kind: "value" }));
+      } else if ((rest[0] === "checkout" || rest[0] === "switch") && rest.length === 1) {
+        items = BRANCHES.map(([n, d]) => ({ name: n, desc: d, kind: "value" }));
+        items.push(opt("-b", "Create a new branch and switch to it", "<new-branch>"));
+      } else if (rest.length === 0) {
+        items = spec.subs.slice();
+      } else {
+        return { items: [], q, isPath };
+      }
+    }
+    // the order you set comes first, then names that start with the text, then fuzzy ones
+    const ctx = contextKey();
+    const mine = order[ctx] || [];
+    const rank = (i) => { const r = mine.indexOf(i.name); return r === -1 ? 999 : r; };
+    const matches = items.filter((i) => i.name.toLowerCase().startsWith(q) || fuzzy(i.name, q));
+    matches.sort((a, b) => {
+      const pa = a.name.toLowerCase().startsWith(q) ? 0 : 1, pb = b.name.toLowerCase().startsWith(q) ? 0 : 1;
+      return (q ? pa - pb : 0) || rank(a) - rank(b);
+    });
+    return { items: matches, q, isPath };
+  }
+  const contextKey = () => { const d = tokens().done.slice(); if (d[0] === "p") d[0] = "pnpm"; return d.join(" "); };
+
+  // ---- drawing --------------------------------------------------------------------------------
+  const esc = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  const fit = (s, w) => (w <= 0 ? "" : s.length <= w ? s : s.slice(0, Math.max(w - 1, 0)) + "…");
+  let charW = 9;
+  let cols = 100;
+  function measure() {
+    const probe = document.createElement("span");
+    probe.textContent = "0".repeat(50);
+    probe.style.cssText = "position:absolute;visibility:hidden;white-space:pre";
+    screen.appendChild(probe);
+    charW = probe.getBoundingClientRect().width / 50 || 9;
+    probe.remove();
+    cols = Math.floor((screen.clientWidth - 2 * parseFloat(getComputedStyle(screen).paddingLeft)) / charW);
+  }
+
+  let current = { items: [], q: "" };
+  function refresh(resetSel) {
+    current = suggestions();
+    if (resetSel) {
+      const typing = tokens().typing;
+      scroll = 0;
+      navigated = false;
+      sel = (typing.length > 0 && typing !== "-") || (current.isPath && current.items[0] && current.items[0].run) ? 0 : -1;
+    }
+    if (sel >= current.items.length) sel = current.items.length - 1;
+    draw();
+  }
+
+  function draw() {
+    const visibleHistory = history.slice(-4);
+    let html = visibleHistory.map((h) => `<div class="line out">${esc(h)}</div>`).join("");
+    const parts = promptParts().map(([c, t]) => (c ? `<span class="${c}">${esc(t)}</span>` : esc(t))).join("");
+    html += `<div class="line" id="pl">${parts}${esc(line)}<span class="caret"></span></div>`;
+    screen.innerHTML = html;
+    const items = current.items;
+    if (hidden || items.length === 0 || !line) return;
+    const promptRow = visibleHistory.length;
+    // geometry, as in the real list
+    const names = items.slice(scroll, scroll + MAX_ROWS);
+    const nameCol = Math.min(Math.max(...names.map((i) => i.name.length)), 26);
+    const descCol = Math.min(Math.max(0, ...names.map((i) => (i.desc || "").length)), 46);
+    const anchor = Math.max(promptText().length + line.length - tokens().typing.length + (current.isPath ? tokens().typing.lastIndexOf("/") + 1 : 0) - 3, 0);
+    let width = Math.max(4 + nameCol + (descCol ? 2 + descCol : 0) + 3, 34);
+    width = Math.min(width, cols);
+    const startCol = Math.max(Math.min(anchor, cols - width), 0);
+    const text = width - 2 - 4 - 1;
+    const column = Math.min(nameCol, text);
+    let rows = "";
+    let footer = "";
+    names.forEach((it, k) => {
+      const idx = k + scroll;
+      const isSel = idx === sel;
+      const shown = fit(it.name, Math.max(column, Math.min(it.name.length, text)));
+      let args = "";
+      if (isSel && it.args) args = fit(it.args, text - shown.length - 1 - (it.desc ? 24 : 0));
+      if (args.length < 3) args = "";
+      const first = shown.length + (args ? 1 + args.length : 0);
+      const start = Math.max(column, first);
+      const dw = text - start - 2;
+      const d = it.desc && !it.run && dw >= 6 ? fit(it.desc, dw) : "";
+      const q = current.q;
+      const m = q && shown.toLowerCase().startsWith(q) ? q.length : 0;
+      const nameHtml = `<span class="name">${m ? `<span class="m">${esc(shown.slice(0, m))}</span>` : ""}${esc(shown.slice(m))}</span>`;
+      const color = isSel ? "#fff" : `var(${ICON[it.kind] || "--k-value"})`;
+      rows += `<div class="row${isSel ? " sel" : ""}" data-i="${idx}"><span class="sq"><i style="background:${color}"></i></span>${nameHtml}${args ? ` <span class="args">${esc(args)}</span>` : ""}${d ? `${" ".repeat(start - first)}  <span class="desc">${esc(d)}</span>` : ""}</div>`;
+      if (isSel) {
+        const lines = [];
+        if (it.args && args !== it.args) lines.push(`${it.name} ${it.args}`);
+        if ((it.desc && d !== it.desc) || it.run) lines.push(it.desc || "");
+        footer = lines.filter(Boolean).join("\n");
+      }
+    });
+    const counter = items.length > MAX_ROWS ? `${sel >= 0 ? sel + 1 + "/" : ""}${items.length}` : "";
+    let hint = "";
+    if (navigated && !reordered && sel >= 0 && !items[sel].run && items[sel].kind !== "folder" && items[sel].kind !== "file" && !footer) hint = "shift+↑↓ reorder";
+    const box = document.createElement("div");
+    box.className = "list";
+    box.style.left = `calc(${startCol * charW}px + ${getComputedStyle(screen).paddingLeft})`;
+    box.style.top = `calc(${(promptRow + 1) * 1.6}em + ${getComputedStyle(screen).paddingTop})`;
+    box.style.width = `${width * charW}px`;
+    box.innerHTML = (counter ? `<span class="edge-count">${counter}</span>` : "") + rows +
+      (footer ? `<div class="foot">${esc(footer)}</div>` : hint ? `<div class="foot"><span class="hint">${hint}</span></div>` : "");
+    screen.appendChild(box);
+  }
+
+  // ---- editing --------------------------------------------------------------------------------
+  function accept(it) {
+    const { typing } = tokens();
+    const base = line.slice(0, line.length - typing.length);
+    if (it.kind === "folder" || it.kind === "file") {
+      line = base + it.path + it.name + (it.kind === "file" ? " " : "");
+    } else {
+      line = base + it.name + " ";
+    }
+    hidden = false;
+    refresh(true);
+  }
+
+  function run() {
+    const cmd = line.trim();
+    history.push(promptText() + line);
+    if (cmd) cmdHistory.push(cmd);
+    const [c, ...args] = cmd.split(/\s+/);
+    const root = c === "p" ? "pnpm" : c;
+    if (root === "cd") {
+      const target = (args[0] || "").replace(/\/$/, "");
+      if (!target) cwd = [];
+      else {
+        const segs = [...cwd];
+        for (const s of target.split("/")) { if (s === "..") segs.pop(); else if (s) segs.push(s); }
+        if (dirAt(segs)) cwd = segs; else history.push(`cd: no such file or directory: ${target}`);
+      }
+    } else if (root === "git" && (args[0] === "checkout" || args[0] === "switch") && args[1]) {
+      if (args[1] === "-") { const prev = branch === "main" ? "feature/login" : "main"; branch = prev; history.push(`Switched to branch '${branch}'`); }
+      else if (BRANCHES.some((b) => b[0] === args[1])) { branch = args[1]; history.push(`Switched to branch '${branch}'`); }
+      else history.push(`error: pathspec '${args[1]}' did not match any file(s) known to git`);
+    } else if (root === "git" && args[0] === "status") {
+      history.push(`On branch ${branch}`, "nothing to commit, working tree clean");
+    } else if (root === "pnpm" && SCRIPTS.some((s) => s[0] === args[0])) {
+      history.push(`> ${SCRIPTS.find((s) => s[0] === args[0])[1]}`);
+    } else if (root === "ls") {
+      const d = dirAt(cwd) || {};
+      history.push(Object.keys(d).filter((n) => !n.startsWith(".")).map((n) => (typeof d[n] === "object" ? n + "/" : n)).join("  "));
+    } else if (root === "thint" && args[0] === "doctor") {
+      history.push("✓ thint 1.1.1 · ✓ this shell runs inside terminalhinter");
+    } else if (cmd) {
+      history.push(`(this demo only knows git, cd, ls, pnpm and thint)`);
+    }
+    line = "";
+    hidden = false;
+    refresh(true);
+  }
+
+  function key(e) {
+    stopTour();
+    const items = current.items;
+    const visible = !hidden && items.length > 0 && line;
+    if ((e.key === "ArrowUp" || e.key === "ArrowDown") && (e.shiftKey || e.altKey) && visible && sel >= 0) {
+      e.preventDefault();
+      const to = sel + (e.key === "ArrowUp" ? -1 : 1);
+      const movable = (i) => i && !i.run && i.kind !== "folder" && i.kind !== "file";
+      if (to >= 0 && movable(items[to]) && movable(items[sel])) {
+        const list = items.slice(); [list[sel], list[to]] = [list[to], list[sel]];
+        order[contextKey()] = list.slice(0, Math.max(sel, to) + 1).map((i) => i.name);
+        sel = to; navigated = true; reordered = true;
+        current.items = list; draw();
+      }
+      return;
+    }
+    if (e.key === " " && e.ctrlKey) { e.preventDefault(); hidden = !hidden; if (!hidden) refresh(true); else draw(); return; }
+    if (e.key === "Escape") { e.preventDefault(); hidden = true; draw(); return; }
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      if (visible) { sel = Math.min(sel + 1, items.length - 1); navigated = true; if (sel >= scroll + MAX_ROWS) scroll = sel - MAX_ROWS + 1; draw(); }
+      return;
+    }
+    if (e.key === "ArrowUp") {
+      e.preventDefault();
+      if (visible && sel > 0 && (navigated || sel > 0)) { sel -= 1; navigated = true; if (sel < scroll) scroll = sel; draw(); return; }
+      if (cmdHistory.length) { line = cmdHistory[cmdHistory.length - 1]; refresh(true); }
+      return;
+    }
+    if (e.key === "Tab") {
+      e.preventDefault();
+      if (visible) { const it = items[Math.max(sel, 0)]; if (it.run) { if (items[1]) accept(items[1]); } else accept(it); }
+      return;
+    }
+    if (e.key === "Enter") {
+      e.preventDefault();
+      if (visible && sel >= 0) {
+        const it = items[sel];
+        const typed = tokens().typing;
+        if (!it.run && !(it.name === typed || it.name === typed + "/")) { accept(it); return; }
+      }
+      run();
+      return;
+    }
+    if (e.key === "Backspace") { e.preventDefault(); line = line.slice(0, -1); hidden = false; refresh(true); return; }
+    if (e.key.length === 1 && !e.ctrlKey && !e.metaKey) {
+      e.preventDefault();
+      if (line.length < 60) line += e.key;
+      if (e.key !== " " || line.trim()) hidden = false;
+      refresh(true);
+    }
+  }
+
+  term.addEventListener("keydown", key);
+  ghost.addEventListener("keydown", key);
+  term.addEventListener("click", () => { ghost.focus({ preventScroll: true }); });
+  ghost.addEventListener("focus", () => term.classList.add("focused"));
+  ghost.addEventListener("blur", () => term.classList.remove("focused"));
+  // phones send text through input events rather than keydown
+  ghost.addEventListener("input", () => {
+    const v = ghost.value; ghost.value = "";
+    for (const ch of v) key({ key: ch, preventDefault() {}, ctrlKey: false, metaKey: false, shiftKey: false, altKey: false });
+  });
+  screen.addEventListener("mousedown", (e) => {
+    const row = e.target.closest(".row");
+    if (!row) return;
+    e.preventDefault();
+    const it = current.items[Number(row.dataset.i)];
+    if (it.run) run(); else accept(it);
+    ghost.focus({ preventScroll: true });
+  });
+
+  document.querySelectorAll("[data-try]").forEach((b) => b.addEventListener("click", () => {
+    stopTour();
+    line = b.dataset.try; hidden = false; refresh(true);
+    ghost.focus({ preventScroll: true });
+  }));
+
+  const copy = document.getElementById("copy");
+  copy.addEventListener("click", () => {
+    const text = document.getElementById("install-cmd").textContent;
+    const done = () => { copy.textContent = "Copied"; setTimeout(() => (copy.textContent = "Copy"), 1600); };
+    if (navigator.clipboard) navigator.clipboard.writeText(text).then(done, () => selectText());
+    else selectText();
+    function selectText() { const r = document.createRange(); r.selectNodeContents(document.getElementById("install-cmd")); const s = getSelection(); s.removeAllRanges(); s.addRange(r); }
+  });
+
+  // ---- a short tour on load, until you touch the keyboard --------------------------------------
+  let tourTimer = null;
+  let touring = true;
+  function stopTour() { if (touring) { touring = false; clearTimeout(tourTimer); } }
+  const steps = [];
+  const type = (s) => { for (const ch of s) steps.push(() => { line += ch; hidden = false; refresh(true); }); };
+  const press = (fn, wait = 700) => steps.push([fn, wait]);
+  type("git ch");
+  press(() => key2("Enter"), 1300);
+  type("fe");
+  press(() => key2("Enter"), 1000);
+  press(() => key2("Enter"), 1400);
+  type("cd ");
+  for (let i = 0; i < 4; i++) press(() => key2("ArrowDown"), i === 0 ? 900 : 450);
+  press(() => key2("Enter"), 1000);
+  press(() => key2("ArrowDown"), 900);
+  press(() => key2("ArrowDown"), 450);
+  press(() => key2("Enter"), 1000);
+  press(() => key2("Enter"), 1500);
+  type("p ");
+  press(() => key2("ArrowDown"), 700);
+  press(() => key2("ArrowDown"), 700);
+  function key2(k) { const saved = touring; touring = false; key({ key: k, preventDefault() {}, shiftKey: false, altKey: false, ctrlKey: false, metaKey: false }); touring = saved; }
+  function next(i) {
+    if (!touring || i >= steps.length) { touring = false; return; }
+    const s = steps[i];
+    if (typeof s === "function") { s(); tourTimer = setTimeout(() => next(i + 1), 90 + Math.random() * 70); }
+    else { tourTimer = setTimeout(() => { s[0](); next(i + 1); }, s[1]); }
+  }
+
+  measure();
+  addEventListener("resize", () => { measure(); draw(); });
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  // the first frame already shows the list
+  line = "git ch"; refresh(true);
+  if (!reduce) { line = ""; refresh(true); tourTimer = setTimeout(() => next(0), 600); }
+  else touring = false;
+  document.fonts && document.fonts.ready.then(() => { measure(); draw(); });
+})();
+</script>
