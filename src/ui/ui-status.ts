@@ -14,7 +14,14 @@ export const renderMissingResources = (): string => {
 };
 
 export const renderUpdateNotice = (latest: string): string => {
-  return chalk.dim(`terminalhinter ${latest} is out (you have ${getVersion()}), run `) + chalk.bold("thint update") + chalk.dim(" to get it\n");
+  return (
+    chalk.dim(`terminalhinter ${latest} is out (you have ${getVersion()}), run `) +
+    chalk.bold("thint update") +
+    chalk.dim(" to get it\n") +
+    chalk.dim("no more of these notes: ") +
+    chalk.bold("thint config set updateCheck false") +
+    "\n"
+  );
 };
 
 export const renderUpdated = (): string => {
