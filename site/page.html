@@ -188,10 +188,11 @@ h2 { font: 800 clamp(30px, 4vw, 42px)/1.05 var(--f-display); letter-spacing: -0.
 .keys > div { min-width: 0; }
 .keys h3 { font: 700 19px/1.3 var(--f-body); margin: 10px 0 6px; }
 .keys p { margin: 0; color: var(--muted); max-width: var(--measure); }
+kbd .ki { width: 12px; height: 12px; display: block; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
 kbd {
   font: 500 13px/1 var(--f-mono); color: var(--ink);
   background: var(--key-bg); border: 1px solid var(--key-edge); border-bottom-width: 2px;
-  border-radius: 6px; padding: 5px 8px; display: inline-block;
+  border-radius: 6px; padding: 5px 8px; display: inline-flex; align-items: center; gap: 5px; min-height: 25px; box-sizing: border-box;
 }
 .combo { display: flex; gap: 6px; flex-wrap: wrap; }
 .sec-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px 24px; margin-bottom: 28px; }
@@ -311,20 +312,20 @@ footer p { margin: 0; max-width: 60ch; }
         <p><span data-mac="Return">Enter</span> on a folder opens it and keeps the list open with what is inside. The first entry, <code class="inline">↪</code>, runs the command where you are, so <code class="inline">cd</code> and <span data-mac="a few Returns">a few Enters</span> take you deep into a project.</p>
       </div>
       <div>
-        <div class="combo"><kbd data-mac="⇧ shift">Shift</kbd><kbd>↑</kbd><kbd>↓</kbd></div>
+        <div class="combo"><kbd data-mac="shift" data-icon="shift">Shift</kbd><kbd aria-label="Up"><svg class="ki" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 13V3M3.5 7.5 8 3l4.5 4.5"/></svg></kbd><kbd aria-label="Down"><svg class="ki" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 3v10M3.5 8.5 8 13l4.5-4.5"/></svg></kbd></div>
         <h3>Put the list in your order</h3>
         <p>Move the selected entry up or down and the list keeps that order for that spot in the command. What you arrange after <code class="inline">pnpm</code> also applies when you type your alias <code class="inline">p</code>.</p>
       </div>
       <div>
-        <div class="combo"><kbd>↑</kbd><kbd>↓</kbd><kbd data-mac="⇥ tab">Tab</kbd></div>
+        <div class="combo"><kbd aria-label="Up"><svg class="ki" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 13V3M3.5 7.5 8 3l4.5 4.5"/></svg></kbd><kbd aria-label="Down"><svg class="ki" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 3v10M3.5 8.5 8 13l4.5-4.5"/></svg></kbd><kbd data-mac="tab" data-icon="tab">Tab</kbd></div>
         <h3>Nothing gets in the way</h3>
         <p>Right after a space nothing is selected, so <span data-mac="Return">Enter</span> just runs the command. Up with nothing selected still walks your shell history, and <code class="inline">git checkout -</code> runs at once.</p>
       </div>
       <div>
-        <div class="combo"><kbd data-mac="esc">Esc</kbd><kbd data-mac="⌃ control">Ctrl</kbd><kbd data-mac="space">Space</kbd></div>
+        <div class="combo"><kbd data-mac="esc">Esc</kbd><kbd data-mac="control" data-icon="control">Ctrl</kbd><kbd data-mac="space">Space</kbd></div>
         <h3>Close it, open it again</h3>
-        <p>Esc hides the list until you type again. <span data-mac="⌃&#8202;Space">Ctrl+Space</span> brings it back when you want to look.</p>
-        <p class="mac-only" hidden>macOS uses ⌃&#8202;Space to switch keyboard layouts when you have more than one. If it switches the layout instead of showing the list, turn that shortcut off in System Settings › Keyboard › Keyboard Shortcuts › Input Sources.</p>
+        <p>Esc hides the list until you type again. <span data-mac="Control+Space">Ctrl+Space</span> brings it back when you want to look.</p>
+        <p class="mac-only" hidden>macOS uses Control+Space to switch keyboard layouts when you have more than one. If it switches the layout instead of showing the list, turn that shortcut off in System Settings › Keyboard › Keyboard Shortcuts › Input Sources.</p>
       </div>
     </div>
   </section>
@@ -751,10 +752,20 @@ footer p { margin: 0; max-width: 60ch; }
   }));
 
   // key names for the reader's keyboard: macOS says return, ⇧ shift and ⌃ control
+  const keyIcon = (d) => `<svg class="ki" viewBox="0 0 16 16" aria-hidden="true"><path d="${d}"/></svg>`;
+  const KEY_ICONS = {
+    shift: keyIcon("M8 2.5 2.5 8.5h3V13h5V8.5h3Z"),
+    control: keyIcon("M3.5 10 8 5.5l4.5 4.5"),
+    tab: keyIcon("M2.5 8h9M8.5 4.5 12 8l-3.5 3.5M13.5 4v8"),
+  };
   const osButtons = document.querySelectorAll("[data-os]");
   document.querySelectorAll("[data-mac]").forEach((el) => { el.dataset.pc = el.textContent; });
   function setOs(os, remember) {
-    document.querySelectorAll("[data-mac]").forEach((el) => { el.textContent = os === "mac" ? el.dataset.mac : el.dataset.pc; });
+    document.querySelectorAll("[data-mac]").forEach((el) => {
+      el.textContent = os === "mac" ? el.dataset.mac : el.dataset.pc;
+      // macOS prints a symbol next to the name on these keys; drawn, because the font's ⇧ ⌃ ⇥ come out tiny
+      if (os === "mac" && el.dataset.icon) el.insertAdjacentHTML("afterbegin", KEY_ICONS[el.dataset.icon]);
+    });
     document.querySelectorAll(".mac-only").forEach((el) => { el.hidden = os !== "mac"; });
     osButtons.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.os === os)));
     if (remember) { try { localStorage.setItem("thint-os", os); } catch {} }
