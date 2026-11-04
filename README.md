@@ -50,7 +50,7 @@ thint init
 ```
 
 `thint init` asks for your shell, theme and icons, then puts the startup lines at the top of your shell
-config. Open a new terminal tab afterwards.
+config. Open a new terminal tab afterwards. After updating with `npm i -g` later, run `thint reinit` once.
 
 If you use nvm (or another Node version manager): global npm packages belong to one Node version, so after
 switching the default version the `thint` command is gone until you run `npm i -g` again. Suggestions in new tabs

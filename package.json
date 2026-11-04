@@ -1,6 +1,6 @@
 {
   "name": "@erykkozyra/terminalhinter",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Kiro-style terminal autocomplete: an IDE-like dropdown for folders, git, npm and 600+ CLIs",
   "type": "module",
   "engines": {

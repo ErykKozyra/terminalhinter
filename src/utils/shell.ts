@@ -355,26 +355,32 @@ export const getShellConfig = (shell: Shell, launcher?: string): string => {
   const launcherPath = launcher != null ? quotePosixPath(launcher) : "thint";
   switch (shell) {
     case Shell.Zsh:
-      // command -v guard: if the binary is gone (e.g. nvm switched the default Node), skip instead of exiting the shell
-      return `if [[ -z "\${ISTERM}" && $- = *i* && \${+ZSH_EXECUTION_STRING} -eq 0 && -z "\${VSCODE_RESOLVING_ENVIRONMENT}" ]] && command -v thint >/dev/null 2>&1; then
+      // Starts through the launcher (a hard link to the binary, named like the shell so the tab title stays "zsh").
+      // It works even when `thint` is not on the PATH yet at the top of .zshrc (npm under nvm adds it later) or is
+      // gone after switching the default Node; if neither is there, the shell starts normally instead of exiting.
+      return `if [[ -z "\${ISTERM}" && $- = *i* && \${+ZSH_EXECUTION_STRING} -eq 0 && -z "\${VSCODE_RESOLVING_ENVIRONMENT}" ]]; then
   __is_launcher=${launcherPath}
-  [[ -x "$__is_launcher" ]] || __is_launcher=thint
-  if [[ -o login ]]; then
-    "$__is_launcher" -s zsh --login ; exit
-  else
-    "$__is_launcher" -s zsh ; exit
+  [[ -x "$__is_launcher" ]] || __is_launcher=$(command -v thint 2>/dev/null)
+  if [[ -n "$__is_launcher" ]]; then
+    if [[ -o login ]]; then
+      "$__is_launcher" -s zsh --login ; exit
+    else
+      "$__is_launcher" -s zsh ; exit
+    fi
   fi
 fi`;
     case Shell.Bash:
-      return `if [[ -z "\${ISTERM}" && $- = *i* && $- != *c* && -z "\${VSCODE_RESOLVING_ENVIRONMENT}" ]] && command -v thint >/dev/null 2>&1; then
+      return `if [[ -z "\${ISTERM}" && $- = *i* && $- != *c* && -z "\${VSCODE_RESOLVING_ENVIRONMENT}" ]]; then
   __is_launcher=${launcherPath}
-  [[ -x "$__is_launcher" ]] || __is_launcher=thint
-  shopt -q login_shell
-  login_shell=$?
-  if [ $login_shell -eq 0 ]; then
-    "$__is_launcher" -s bash --login ; exit
-  else
-    "$__is_launcher" -s bash ; exit
+  [[ -x "$__is_launcher" ]] || __is_launcher=$(command -v thint 2>/dev/null)
+  if [[ -n "$__is_launcher" ]]; then
+    shopt -q login_shell
+    login_shell=$?
+    if [ $login_shell -eq 0 ]; then
+      "$__is_launcher" -s bash --login ; exit
+    else
+      "$__is_launcher" -s bash ; exit
+    fi
   fi
 fi`;
     case Shell.Powershell:
