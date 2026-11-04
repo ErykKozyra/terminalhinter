@@ -1,0 +1,30 @@
+# terminalhinter
+
+> terminalhinter is a free, open source autocomplete dropdown for the terminal (zsh and bash on macOS and Linux). As you type, it shows folders, git branches, npm scripts and the subcommands and options of more than 600 command line tools, each with a short description. It is an alternative to the autocomplete of Fig and Kiro CLI, runs only on your machine and needs no account. MIT License.
+
+- Command: `thint` (long form `terminalhinter`)
+- Install: `npm i -g @erykkozyra/terminalhinter`, then `thint init`, then open a new terminal tab
+- Update: `thint update`
+- Uninstall: `thint uninstall`, then `npm rm -g @erykkozyra/terminalhinter`
+- Shells: zsh and bash on macOS and Linux; Windows, fish, PowerShell, nushell and xonsh are experimental
+- Works in any terminal app, including VS Code, iTerm2, Terminal.app, Ghostty, WezTerm, Kitty and Alacritty
+
+## What it does
+
+- Enter on a folder walks into it and keeps the list open, so `cd` plus a few Enters reaches deep folders
+- Ranks entries by what you pick, recent ones above old ones; history stays on your machine
+- Shift+Up / Shift+Down sets your own order of the list
+- Knows pnpm, yarn and turbo workspaces, turbo.json tasks, and shows the age and message of the last commit next to git branches
+- Fuzzy matching: letters in order are enough (`chkt` finds `checkout`)
+- Shows your aliases and zsh functions
+- Your own suggestions for in-house tools in a few lines of YAML in `~/.config/terminalhinter/specs`
+- Themes: thint, light, nord, dracula (`thint theme`)
+
+## Links
+
+- [Website with a live demo](https://erykkozyra.github.io/terminalhinter/)
+- [Source code on GitHub](https://github.com/ErykKozyra/terminalhinter)
+- [npm package](https://www.npmjs.com/package/@erykkozyra/terminalhinter)
+- [All settings](https://github.com/ErykKozyra/terminalhinter/blob/main/docs/configuration.md)
+
+terminalhinter is a fork of microsoft/inshellisense and uses command specs from withfig/autocomplete. It is not affiliated with Microsoft, Amazon or Fig.

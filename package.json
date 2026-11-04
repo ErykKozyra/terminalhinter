@@ -1,7 +1,7 @@
 {
   "name": "@erykkozyra/terminalhinter",
   "version": "1.1.2",
-  "description": "Kiro-style terminal autocomplete: an IDE-like dropdown for folders, git, npm and 600+ CLIs",
+  "description": "Open source terminal autocomplete for zsh and bash: a dropdown of folders, git branches, npm scripts and 600+ CLIs, like Fig and Kiro CLI",
   "type": "module",
   "engines": {
     "node": ">=18.0"
@@ -42,7 +42,7 @@
   "bugs": {
     "url": "https://github.com/ErykKozyra/terminalhinter/issues"
   },
-  "homepage": "https://github.com/ErykKozyra/terminalhinter#readme",
+  "homepage": "https://erykkozyra.github.io/terminalhinter/",
   "dependencies": {
     "@withfig/autocomplete": "2.675.0",
     "@xterm/addon-unicode11": "^0.9.0",
@@ -102,13 +102,19 @@
   ],
   "keywords": [
     "autocomplete",
+    "terminal",
+    "shell",
+    "zsh",
     "bash",
-    "cli",
+    "fish",
     "completion",
+    "cli",
+    "dropdown",
+    "intellisense",
     "fig",
     "kiro",
-    "shell",
-    "terminal",
-    "zsh"
+    "git",
+    "npm",
+    "developer-tools"
   ]
 }
