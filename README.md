@@ -56,7 +56,7 @@ If you use nvm (or another Node version manager): global npm packages belong to 
 switching the default version the `thint` command is gone until you run `npm i -g` again. Suggestions in new tabs
 keep working in the meantime. To avoid this, install from source instead; that build does not depend on Node at all.
 
-From source (needs Node 18 to 22 and git, only for the build):
+From source (needs Node 18 or newer and git, only for the build):
 
 ```bash
 git clone https://github.com/ErykKozyra/terminalhinter.git
