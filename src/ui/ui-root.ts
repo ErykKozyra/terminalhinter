@@ -5,13 +5,14 @@ import ansi from "ansi-escapes";
 import { Command } from "commander";
 
 import log from "../utils/log.js";
-import { getBackspaceSequence, Shell } from "../utils/shell.js";
+import { Shell } from "../utils/shell.js";
 import { resetToInitialState } from "../utils/ansi.js";
 import { endTiming, incrementMetric, startTiming } from "../utils/performance.js";
 import type { KeyPressEvent } from "./suggestionManager.js";
 import { BatchScheduler } from "./batchScheduler.js";
 import { SuggestionRenderer } from "./suggestionRenderer.js";
 import { StdioProxy } from "./stdioProxy.js";
+import { InputRouter } from "./inputRouter.js";
 
 const writeOutput = (data: string) => {
   if (data.length === 0) return;
@@ -78,29 +79,17 @@ export const render = async (program: Command, shell: Shell, underTest: boolean,
     }
   });
 
-  stdio.onKeypress((...keyPress: KeyPressEvent) => {
-    const press = keyPress[1];
-    if (term.isAlternateBuffer()) {
-      term.write(press.name === "backspace" ? getBackspaceSequence(keyPress, shell) : press.sequence);
-      return;
-    }
-
-    const inputHandled = suggestions.update(press, renderer.hasVisibleSuggestions);
-    if (suggestions.consumeRefreshRequest()) {
-      suggestions.invalidate();
-      suggestionScheduler.request();
-    }
-    if (renderer.hasVisibleSuggestions && inputHandled) {
-      term.noop();
-    } else if (!inputHandled) {
-      if (press.name === "backspace") {
-        backspaceEchoPending = true;
-        term.write(getBackspaceSequence(keyPress, shell));
-      } else {
-        term.write(press.sequence);
-      }
-    }
+  const router = new InputRouter({
+    term,
+    suggestions,
+    shell,
+    hasVisibleSuggestions: () => renderer.hasVisibleSuggestions,
+    requestSuggestions: () => suggestionScheduler.request(),
+    onBackspaceEcho: () => {
+      backspaceEchoPending = true;
+    },
   });
+  stdio.onKeypress((...keyPress: KeyPressEvent) => router.handle(...keyPress));
 
   term.onExit(({ exitCode }) => {
     process.stdin.removeListener("data", handleInput);
