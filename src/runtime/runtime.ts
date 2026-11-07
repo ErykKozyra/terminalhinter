@@ -31,7 +31,7 @@ import { refreshGitAliases } from "./extras/git.js";
 import { describeRecent, recentCommands, rememberCommand } from "./extras/recent.js";
 import { loadSnippets, previewSnippet } from "./extras/snippets.js";
 import { findFixes, Failure } from "./extras/fixes.js";
-import { run as runProgram } from "./extras/util.js";
+import { looksSecret, run as runProgram } from "./extras/util.js";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any -- recursive type, setting as any
 const specSet: any = {};
@@ -161,6 +161,8 @@ export const reorderSuggestions = (cmd: string, shell: Shell, names: string[]): 
 
 // Remembers the arguments of a command that was just run, for frecency ranking (history.ts).
 export const recordExecutedCommand = (cmd: string, cwd: string, shell: Shell): void => {
+  // the words of a line that holds a password or a token never go to disk either
+  if (looksSecret(cmd)) return;
   try {
     const tokens = aliasExpand(parseCommand(cmd.trim() + " ", shell));
     if (tokens.length > 1) recordCommand(tokens, cwd);

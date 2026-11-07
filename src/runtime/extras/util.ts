@@ -116,7 +116,12 @@ export const closest = (word: string, names: Iterable<string>, max = word.length
 // Words that look like secrets never get stored or shown from history: values after --token or --password,
 // NAME_KEY=value assignments, and long random strings.
 const secretShapes = [
-  /authorization:\s*\S/i, // curl -H "Authorization: Bearer ..."
+  /\b(authorization|proxy-authorization|x-api-key|api-key|x-auth-token|private-token|cookie):\s*\S/i, // curl -H "Authorization: Bearer ..."
+  /_?auth_?token\b/i, // npm config set //registry.npmjs.org/:_authToken ...
+  /\b(npm|glpat|pypi|dop_v1|hf)[-_][A-Za-z0-9_-]{16,}/, // npm, GitLab, PyPI, DigitalOcean, Hugging Face tokens
+  /\bredis-cli\b.*\s-a\s*\S/,
+  /\bopenssl\b.*\s-(k|pass|passin|passout)\s+\S/,
+  /\bhtpasswd\b.*\s-[a-zA-Z]*b/,
   /\bbearer\s+[\w.~+/-]{8,}/i,
   /\b\w+:\/\/[^\s/:@]+:[^\s/@]+@/, // https://user:pass@host
   /\s-u\s*['"]?[^\s:'"]+:\S+/, // curl -u admin:s3cr3t
