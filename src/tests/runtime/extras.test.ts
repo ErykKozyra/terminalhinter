@@ -125,9 +125,9 @@ describe("package versions", () => {
       "dist-tags": { latest: "19.0.0", next: "19.1.0-rc.1" },
       versions: { "18.3.1": {}, "19.0.0": {}, "19.1.0-rc.1": {}, "18.2.0": { deprecated: "x" } },
     });
-    expect(list.map((s) => s.name)).toEqual(["latest", "next", "19.1.0-rc.1", "19.0.0", "18.3.1", "18.2.0"]);
+    expect(list.map((s) => s.name)).toEqual(["latest", "next", "19.0.0", "18.3.1", "18.2.0", "19.1.0-rc.1"]);
     expect(list[0].insertValue).toBe("react@latest ");
-    expect(list.at(-1)?.description).toBe("deprecated");
+    expect(list.find((s) => s.name === "18.2.0")?.description).toBe("deprecated");
   });
 });
 

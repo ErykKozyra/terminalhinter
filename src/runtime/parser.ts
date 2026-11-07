@@ -35,6 +35,10 @@ const unescapeSpaceTokens = (cmdTokens: CommandToken[], shell: Shell): CommandTo
   const escapeChar = getShellWhitespaceEscapeChar(shell);
   return cmdTokens.map((cmdToken) => {
     const { token, isQuoted } = cmdToken;
+    // in POSIX shells any special character can be escaped: `my\ app\ \(v2\)` is the folder `my app (v2)`
+    if (!isQuoted && escapeChar === "\\" && /\\[ '"()&;|<>$`\\!*?[\]{}#~=,]/.test(token)) {
+      return { ...cmdToken, token: token.replace(/\\([ '"()&;|<>$`\\!*?[\]{}#~=,])/g, "$1") };
+    }
     if (!isQuoted && token.includes(`${escapeChar} `)) {
       return { ...cmdToken, token: token.replaceAll(`${escapeChar} `, " ") };
     }

@@ -72,9 +72,11 @@ const toSuggestion = (dir: string, description: string, priority: number): Sugge
 // normal folder suggestions.
 // The folders zoxide (or z) knows, best first. Read at most every ten seconds; an empty list when neither is there.
 let zoxideCache: { at: number; dirs: string[] } | undefined;
+let zoxideSource = "zoxide";
 export const zoxideFolders = (now = Date.now()): string[] => {
   if (zoxideCache != null && now - zoxideCache.at < 10_000) return zoxideCache.dirs;
   let dirs: string[] = [];
+  zoxideSource = "zoxide";
   if (process.env.THINT_NO_ZOXIDE !== "1") {
     try {
       const out = execFileSync("zoxide", ["query", "--list", "--score"], { timeout: 800, encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] });
@@ -84,6 +86,7 @@ export const zoxideFolders = (now = Date.now()): string[] => {
         .filter((d): d is string => d != null);
     } catch {
       // z keeps "path|rank|time" lines in ~/.z
+      zoxideSource = "z";
       try {
         dirs = fs
           .readFileSync(process.env._Z_DATA ?? path.join(os.homedir(), ".z"), "utf8")
@@ -136,7 +139,7 @@ export const jumpSuggestions = (partial: string, cwd: string, alreadyShown: Sugg
       continue;
     }
     seen.add(dir);
-    out.push(toSuggestion(dir, "from zoxide", 60));
+    out.push(toSuggestion(dir, `from ${zoxideSource}`, 60));
   }
   return out.slice(0, maxJumps);
 };

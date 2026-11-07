@@ -44,17 +44,17 @@ export const splitSpec = (token: string): [string, string] | undefined => {
   return [name, token.slice(at + 1)];
 };
 
+// semver order: numbers by value, and a release after its prereleases (19.3.0 after 19.3.0-canary.1)
 const compare = (a: string, b: string) => {
-  const pa = a.split(/[.-]/).map((p) => (/^\d+$/.test(p) ? Number(p) : p));
-  const pb = b.split(/[.-]/).map((p) => (/^\d+$/.test(p) ? Number(p) : p));
-  for (let i = 0; i < Math.max(pa.length, pb.length); i++) {
-    const x = pa[i] ?? -1;
-    const y = pb[i] ?? -1;
-    if (x === y) continue;
-    if (typeof x === "number" && typeof y === "number") return x - y;
-    return String(x) < String(y) ? -1 : 1;
-  }
-  return 0;
+  const [mainA, preA] = a.split(/-(.*)/s);
+  const [mainB, preB] = b.split(/-(.*)/s);
+  const pa = mainA.split(".").map(Number);
+  const pb = mainB.split(".").map(Number);
+  for (let i = 0; i < 3; i++) if ((pa[i] || 0) !== (pb[i] || 0)) return (pa[i] || 0) - (pb[i] || 0);
+  if (!preA && !preB) return 0;
+  if (!preA) return 1;
+  if (!preB) return -1;
+  return preA < preB ? -1 : preA > preB ? 1 : 0;
 };
 
 export const versionSuggestions = (name: string, doc: Packument): (Fig.Suggestion & { kind: "version" })[] => {
@@ -64,9 +64,9 @@ export const versionSuggestions = (name: string, doc: Packument): (Fig.Suggestio
   const out: (Fig.Suggestion & { kind: "version" })[] = tags
     .sort(([a], [b]) => (a === "latest" ? -1 : b === "latest" ? 1 : a.localeCompare(b)))
     .map(([tag, version], i) => ({ name: tag, insertValue: `${name}@${tag} `, description: `${version}`, priority: 95 - i, icon: "⭐", kind: "version" }));
-  const versions = Object.entries(doc.versions ?? {})
-    .sort(([a], [b]) => compare(b, a))
-    .slice(0, 40);
+  // releases first, newest on top; prereleases after them (their tags are already at the top)
+  const all = Object.entries(doc.versions ?? {}).sort(([a], [b]) => compare(b, a));
+  const versions = [...all.filter(([v]) => !v.includes("-")).slice(0, 30), ...all.filter(([v]) => v.includes("-")).slice(0, 10)];
   versions.forEach(([version, meta], i) => {
     const notes = [tagged.get(version)?.join(", "), meta.deprecated ? "deprecated" : undefined].filter(Boolean).join(" · ");
     out.push({ name: version, insertValue: `${name}@${version} `, description: notes || undefined, priority: 80 - Math.min(i, 30), kind: "version" });
@@ -75,6 +75,8 @@ export const versionSuggestions = (name: string, doc: Packument): (Fig.Suggestio
 };
 
 export const versionGenerator: Fig.Generator = {
+  // the answer depends on the package before the @, so a new package (or no @ any more) asks again
+  trigger: (newToken: string, oldToken: string) => splitSpec(newToken)?.[0] !== splitSpec(oldToken)?.[0],
   getQueryTerm: (token: string) => splitSpec(token)?.[1] ?? token,
   custom: async (tokens) => {
     const spec = splitSpec(tokens.at(-1) ?? "");

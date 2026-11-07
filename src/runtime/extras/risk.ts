@@ -36,7 +36,7 @@ const rules: Rule[] = [
   { command: "kill", name: "-9", reason: "stops the process without letting it clean up" },
 ];
 
-const productionLike = /(^|[^a-z])(prod|production|live)([^a-z]|$)/i;
+const productionLike = /(^|[^a-z])(prod|production)([^a-z]|$)/i;
 
 // for an option or subcommand offered after `words` (the command and the subcommands before it)
 export const riskOfEntry = (words: string[], name: string): string | undefined => {

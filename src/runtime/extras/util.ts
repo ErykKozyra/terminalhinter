@@ -51,18 +51,20 @@ export const readText = (file: string): string => {
   }
 };
 
+// the way git says it: "6 seconds ago", "3 minutes ago", "2 days ago"
 export const relativeAge = (ms: number): string => {
   const s = Math.max(0, Math.round(ms / 1000));
-  if (s < 60) return "just now";
+  const unit = (n: number, word: string) => `${n} ${word}${n === 1 ? "" : "s"} ago`;
+  if (s < 90) return unit(s, "second");
   const m = Math.round(s / 60);
-  if (m < 60) return `${m} min ago`;
+  if (m < 90) return unit(m, "minute");
   const h = Math.round(m / 60);
-  if (h < 24) return `${h} h ago`;
+  if (h < 36) return unit(h, "hour");
   const d = Math.round(h / 24);
-  if (d < 30) return `${d} ${d === 1 ? "day" : "days"} ago`;
-  const mo = Math.round(d / 30);
-  if (mo < 12) return `${mo} mo ago`;
-  return `${Math.round(d / 365)} y ago`;
+  if (d < 14) return unit(d, "day");
+  if (d < 70) return unit(Math.round(d / 7), "week");
+  if (d < 365) return unit(Math.round(d / 30), "month");
+  return unit(Math.round(d / 365), "year");
 };
 
 export const tildify = (dir: string, home = process.env.HOME ?? ""): string =>

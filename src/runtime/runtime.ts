@@ -27,6 +27,7 @@ import { loadCustomSpecs } from "./customSpecs.js";
 import { thintSpec } from "./thintSpec.js";
 import { bundledSpecs } from "../specs/index.js";
 import { riskOfEntry, riskOfLine, riskOfValue } from "./extras/risk.js";
+import { refreshGitAliases } from "./extras/git.js";
 import { describeRecent, recentCommands, rememberCommand } from "./extras/recent.js";
 import { loadSnippets, previewSnippet } from "./extras/snippets.js";
 import { findFixes, Failure } from "./extras/fixes.js";
@@ -190,6 +191,7 @@ export const getSuggestions = async (cmd: string, cwd: string, shell: Shell, sig
     if (spec == null) return;
     const subcommand = getSubcommand(spec);
     if (subcommand == null) return;
+    if (activeCmd[0]?.token === "git") refreshGitAliases(subcommand as Parameters<typeof refreshGitAliases>[0], cwd);
 
     signal?.throwIfAborted();
     const lastCommand = activeCmd.at(-1);
@@ -289,6 +291,7 @@ const genSubcommand = async (command: string, parentCommand: Fig.Subcommand, sig
           ...subcommand,
           ...(subcommands.find((s) => s?.name == command) ?? []),
           loadSpec: undefined,
+          name: subcommand.name, // the loaded spec is named after its file (docker-compose), the entry stays `compose`
         };
         return (parentCommand.subcommands as Fig.Subcommand[])[subcommandIdx];
       } else if (Object.prototype.hasOwnProperty.call(partSpec, "type")) {
@@ -297,6 +300,7 @@ const genSubcommand = async (command: string, parentCommand: Fig.Subcommand, sig
           ...subcommand,
           ...(getSubcommand(locationSingleSpec) ?? []),
           loadSpec: undefined,
+          name: subcommand.name, // the loaded spec is named after its file (docker-compose), the entry stays `compose`
         };
         return (parentCommand.subcommands as Fig.Subcommand[])[subcommandIdx];
       } else {
@@ -304,6 +308,7 @@ const genSubcommand = async (command: string, parentCommand: Fig.Subcommand, sig
           ...subcommand,
           ...partSpec,
           loadSpec: undefined,
+          name: subcommand.name, // the loaded spec is named after its file (docker-compose), the entry stays `compose`
         };
         return (parentCommand.subcommands as Fig.Subcommand[])[subcommandIdx];
       }
@@ -314,6 +319,7 @@ const genSubcommand = async (command: string, parentCommand: Fig.Subcommand, sig
         ...subcommand,
         ...(getSubcommand(spec) ?? []),
         loadSpec: undefined,
+        name: subcommand.name, // the loaded spec is named after its file (docker-compose), the entry stays `compose`
       };
       return (parentCommand.subcommands as Fig.Subcommand[])[subcommandIdx];
     }
@@ -322,6 +328,7 @@ const genSubcommand = async (command: string, parentCommand: Fig.Subcommand, sig
         ...subcommand,
         ...(subcommand.loadSpec ?? {}),
         loadSpec: undefined,
+        name: subcommand.name, // the loaded spec is named after its file (docker-compose), the entry stays `compose`
       };
       return (parentCommand.subcommands as Fig.Subcommand[])[subcommandIdx];
     }

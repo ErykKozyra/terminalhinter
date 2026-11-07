@@ -15,7 +15,7 @@ import { SuggestionIcons } from "./suggestion.js";
 import log from "../utils/log.js";
 import { augmentGit } from "./extras/git.js";
 import { pidGenerator, portGenerator } from "./extras/processes.js";
-import { composeGenerator, composeSubcommands, justGenerator, makeGenerator, miseGenerator, taskGenerator } from "./extras/tasks.js";
+import { composeGenerator, composeSubcommands, denoTaskGenerator, justGenerator, makeGenerator, miseGenerator, taskGenerator } from "./extras/tasks.js";
 import { versionGenerator } from "./extras/versions.js";
 
 const findUp = (start: string, names: string[]): string | undefined => {
@@ -252,13 +252,29 @@ const prepend = (node: SpecNode | undefined, generator: Fig.Generator, argName =
 // git stashes, worktrees, reflog and aliases; ports and processes; project tasks; package versions
 const augmentMore = (command: string, root: SpecNode) => {
   if (command === "git") augmentGit(root as Parameters<typeof augmentGit>[0]);
-  if (command === "kill" || command === "pkill") prepend(root, pidGenerator, "pid");
+  if (command === "kill") {
+    prepend(root, pidGenerator, "pid");
+    // kill -9 <pid>: the signal written as an option, which the spec does not know
+    const signals: [string[], string][] = [
+      [["-9", "-KILL", "-SIGKILL"], "Stop at once, without letting the process clean up"],
+      [["-15", "-TERM", "-SIGTERM"], "Ask the process to stop (the default)"],
+      [["-2", "-INT", "-SIGINT"], "Interrupt, like Ctrl+C"],
+      [["-1", "-HUP", "-SIGHUP"], "Hang up; many servers reload their config"],
+    ];
+    const known = new Set((root.options ?? []).flatMap(namesOf));
+    for (const [names, description] of signals)
+      if (!names.some((n) => known.has(n))) root.options = [...(root.options ?? []), { name: names, description, args: undefined } as SpecNode];
+  }
   if (command === "lsof") {
     const option = (root.options ?? []).find((o) => namesOf(o).includes("-i"));
-    if (option != null) prepend(option, portGenerator(":"), "address");
+    if (option != null) prepend(option, portGenerator(":"), "address", true);
   }
-  if (command === "kill-port" || command === "fkill") prepend(root, portGenerator(""), "port");
-  if (command === "make") prepend(root, makeGenerator, "target", true);
+  if (command === "make") {
+    prepend(root, makeGenerator, "target", true);
+    const first = (Array.isArray(root.args) ? root.args.at(0) : root.args) as { isVariadic?: boolean } | undefined;
+    if (first != null) first.isVariadic = true; // make build test lint
+  }
+  if (command === "deno") prepend(subOf(root, "task"), denoTaskGenerator, "task");
   if (command === "just") prepend(root, justGenerator, "recipe");
   if (command === "task") prepend(root, taskGenerator, "task");
   if (command === "mise") {
