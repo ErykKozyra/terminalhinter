@@ -1,0 +1,91 @@
+- name: cd lists only folders
+  steps:
+    - type: "cd "
+      list_has: ["docs/", "src/"]
+      list_not: ["README.md", "package.json"]
+
+- name: Enter on a folder walks into it and keeps the list open
+  steps:
+    - type: "cd sr"
+    - key: ENTER
+      expect_line: "cd src/"
+      list_has: "components/"
+      expect_ran_count: 0
+
+- name: the run entry runs cd where you are
+  steps:
+    - type: "cd sr"
+    - key: ENTER
+    - key: ENTER
+      expect_ran: "cd src/"
+    - type: "pwd<ENTER>"
+      expect: "/Dev/shop/src"
+
+- name: a folder with a space is escaped on the line
+  steps:
+    - type: "cd fol"
+    - key: TAB
+      expect_regex: "cd (folder\\\\ with\\\\ space/|'folder with space/'|\"folder with space/\")"
+
+- name: a folder with a space works after Enter
+  shells: [zsh, bash, fish]
+  steps:
+    - type: "cd fol"
+    - key: TAB
+    - key: C-E
+    - key: ENTER
+      wait: 300
+    - type: "pwd<ENTER>"
+      expect: "folder with space"
+
+- name: a folder with Polish letters
+  steps:
+    - type: "cd za"
+    - key: TAB
+      expect_line_starts: "cd zażółć/"
+
+- name: files are offered for cat with their names
+  shells: [zsh, bash, fish]
+  steps:
+    - type: "cat REA"
+      list_has: "README.md"
+    - key: TAB
+      expect_line_starts: "cat README.md"
+
+- name: a path in a subfolder
+  steps:
+    - type: "ls src/"
+      list_has: ["components/", "index.ts"]
+
+- name: parent folder
+  steps:
+    - type: "ls ../"
+      list_has: "shop/"
+
+- name: home with a tilde
+  shells: [zsh, bash, fish]
+  steps:
+    - type: "ls ~/"
+      list_has: "Dev/"
+
+- name: hidden files after a dot
+  steps:
+    - type: "ls ."
+      list_has: ".git/"
+
+- name: an absolute path
+  shells: [zsh, bash, fish]
+  steps:
+    - type: "ls /us"
+      list_has: "usr/"
+
+- name: a bookmarked folder is offered by cd from anywhere
+  shells: [zsh, bash, fish]
+  steps:
+    - type: "thint bookmark add {proj}/docs<ENTER>"
+      wait: 1000
+    - type: "cd /<ENTER>"
+      wait: 300
+    - type: "cd doc"
+      wait: 300
+      list_has: "docs"

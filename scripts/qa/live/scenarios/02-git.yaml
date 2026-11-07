@@ -1,0 +1,102 @@
+- name: git switch offers local branches with their last commit
+  steps:
+    - type: "git switch "
+      list_has: ["feature/login", "fix/cart-total", "first commit"]
+
+- name: git checkout narrows branches by letters in order
+  steps:
+    - type: "git checkout crt"
+      list_has: "fix/cart-total"
+    - key: TAB
+      expect_line_starts: "git checkout fix/cart-total"
+
+- name: a branch picked with Enter runs only after a second Enter
+  steps:
+    - type: "git switch rel"
+    - key: ENTER
+      expect_line_starts: "git switch release/1.2"
+      expect_ran_count: 0
+    - key: ENTER
+      expect_ran: "git switch release/1.2"
+      expect: "Switched to branch 'release/1.2'"
+
+- name: git stash show lists stashes by what they hold
+  steps:
+    - type: "git stash show "
+      list_has: ["stash@{0}", "half done cart"]
+
+- name: git stash pop takes the stash from the list
+  steps:
+    - type: "git stash pop "
+    - key: DOWN
+    - key: TAB
+      expect_line_starts: "git stash pop stash@{0}"
+
+- name: git reset --hard is marked as risky and says why
+  steps:
+    - type: "git reset --ha"
+      expect: "throws away uncommitted changes"
+
+- name: git push --force is marked as risky
+  steps:
+    - type: "git push --forc"
+      expect: "overwrites the remote branch"
+
+- name: git branch -D is marked as risky
+  steps:
+    - type: "git branch -"
+      list_has: "-D"
+
+- name: a git alias completes like the command behind it
+  steps:
+    - type: "git config alias.co checkout<ENTER>"
+      expect_ran: "git config alias.co checkout"
+    - type: "git co fea"
+      wait: 300
+      list_has: "feature/login"
+
+- name: git add offers changed files
+  files:
+    src/new-file.ts: "export const y = 2;\n"
+  steps:
+    - type: "git add "
+      list_has: "new-file.ts"
+
+- name: git log options with descriptions
+  steps:
+    - type: "git log --one"
+      list_has: "--oneline"
+
+- name: git commit -m keeps the quoted message as typed
+  steps:
+    - type: "git commit --allow-empty -m \"a message with spaces\""
+    - key: ENTER
+      expect_ran: "git commit --allow-empty -m \"a message with spaces\""
+      expect: "a message with spaces"
+
+- name: git merge offers branches
+  steps:
+    - type: "git merge fi"
+      list_has: "fix/cart-total"
+
+- name: git worktree add and remove
+  steps:
+    - type: "git worktree add ../shop-wt feature/login<ENTER>"
+      wait: 800
+    - type: "git worktree remove "
+      list_has: "shop-wt"
+
+- name: git reflog after a reset
+  steps:
+    - type: "git commit --allow-empty -m second<ENTER>"
+      wait: 500
+    - type: "git reset HEAD~1<ENTER>"
+      wait: 500
+    - type: "git reset HEAD@"
+      list_has: "HEAD@{1}"
+
+- name: outside a repository git still shows subcommands
+  cwd: ..
+  steps:
+    - type: "git sta"
+      list_has: ["status", "stash"]

@@ -1,0 +1,79 @@
+- name: npm run lists the package.json scripts with their commands
+  steps:
+    - type: "npm run "
+      list_has: ["dev", "build", "echo build"]
+
+- name: a production-looking script is marked
+  steps:
+    - type: "npm run depl"
+      list_has: "deploy:prod"
+      expect: "looks like production"
+
+- name: pnpm, yarn and bun list the same scripts
+  steps:
+    - type: "pnpm run "
+      list_has: ["dev", "build"]
+    - key: C-U
+    - type: "yarn run "
+      list_has: ["dev", "build"]
+    - key: C-U
+    - type: "bun run "
+      list_has: ["dev", "build"]
+
+- name: make lists targets with their sections and descriptions
+  steps:
+    - type: "make "
+      list_has: ["build", "Work · Build everything", "Release · Ship it"]
+
+- name: a make target tagged prod is marked
+  steps:
+    - type: "make dep"
+      list_has: "deploy"
+      expect: "production"
+
+- name: make -C reads the Makefile of that folder
+  files:
+    sub/Makefile: "lint: ## Lint the code\n\techo lint\n"
+  steps:
+    - type: "make -C sub "
+      list_has: ["lint", "Lint the code"]
+
+- name: docker compose lists services
+  steps:
+    - type: "docker compose up "
+      list_has: ["web", "db"]
+
+- name: a Makefile picked up after it changes
+  steps:
+    - type: "printf 'fresh: ## New one\\n\\techo f\\n' >> Makefile<ENTER>"
+      wait: 300
+    - type: "make fre"
+      list_has: "fresh"
+
+- name: a Taskfile without task installed still lists tasks
+  files:
+    Taskfile.yml: "version: '3'\ntasks:\n  serve:\n    desc: Start the dev server\n    cmds: [echo serve]\n"
+  steps:
+    - type: "task "
+      list_has: ["serve", "Start the dev server"]
+
+- name: just recipes from the justfile
+  files:
+    justfile: "# Build the app\nbuild:\n    echo build\n\n# Run the tests\ntest filter='':\n    echo test\n"
+  steps:
+    - type: "just "
+      list_has: ["build", "Build the app", "test"]
+
+- name: mise tasks from mise.toml
+  files:
+    mise.toml: "[tasks.fmt]\ndescription = \"Format the code\"\nrun = \"echo fmt\"\n"
+  steps:
+    - type: "mise run "
+      list_has: ["fmt", "Format the code"]
+
+- name: deno tasks from deno.json
+  files:
+    deno.json: "{ \"tasks\": { \"start\": \"deno run main.ts\" } }"
+  steps:
+    - type: "deno task "
+      list_has: "start"

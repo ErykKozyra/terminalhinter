@@ -1,0 +1,40 @@
+- name: Ctrl+G explains every word of a pipe
+  steps:
+    - type: "ls -la | grep x<C-G>"
+      list_has: ["ls", "-la", "grep", "sends the output into the next command"]
+
+- name: Ctrl+G warns about a destructive line
+  steps:
+    - type: "git reset --hard HEAD~1<C-G>"
+      expect: "throws away uncommitted changes"
+
+- name: Ctrl+G through sudo and &&
+  steps:
+    - type: "sudo rm -rf / && echo done<C-G>"
+      expect: ["rm", "deletes a whole tree"]
+
+- name: Ctrl+G knows combined short flags
+  steps:
+    - type: "tar -xzvf backup.tar.gz<C-G>"
+      list_not: "unknown option"
+
+- name: Ctrl+G knows an option that takes a value
+  steps:
+    - type: "kubectl --context prod get pods<C-G>"
+      list_not: "unknown option"
+      expect: "production"
+
+- name: Esc closes the explanation and keeps the line
+  steps:
+    - type: "ls -la<C-G>"
+      expect_list: true
+    - key: ESC
+      expect_list: false
+      expect_line: "ls -la"
+
+- name: the line runs as typed after an explanation
+  steps:
+    - type: "echo explained<C-G>"
+    - key: ESC
+    - key: ENTER
+      expect_ran: "echo explained"

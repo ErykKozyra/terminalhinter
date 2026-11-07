@@ -20,6 +20,12 @@ type RenderSnapshot = {
   layout: { direction: Direction; lines: number };
 };
 
+// a chunk from the pty can stop in the middle of an escape sequence: a lone ESC, a CSI without its final byte,
+// or an OSC/DCS string without its terminator
+export const endsInsideSequence = (data: string): boolean =>
+  // eslint-disable-next-line no-control-regex
+  /\x1b(\[[0-?]*[ -/]*|[\]P^_X][^\x07\x1b]*|\x1b?)$/.test(data);
+
 type RenderCache = {
   patch?: string;
   clear?: string;
@@ -166,6 +172,18 @@ export class SuggestionRenderer {
         return;
       }
 
+      // The list goes away while the shell writes (Enter and the output after it): wipe it where it was drawn,
+      // before that output moves the cursor. A clear worked out now would start one row lower and leave the
+      // bottom border of the list behind in a small window.
+      if (previouslyVisible && !showSuggestions && data.length > 0 && this.#cache.clear != null) {
+        this.#writeOutput(this.#cache.clear + data);
+        this.#cache.patch = undefined;
+        this.#cache.clear = undefined;
+        this.#visible = false;
+        this.#direction = direction;
+        return;
+      }
+
       const patch = this.#term.getPatch(lines, visibleSuggestions, direction);
       this.#writeOutput(this.#renderOutput(data, patch, snapshot));
       this.#cache.patch = renderKey;
@@ -187,7 +205,11 @@ export class SuggestionRenderer {
     if (direction === "above") {
       return data + ansi.cursorHide + cursorSavePosition + ansi.cursorPrevLine.repeat(lines) + patch + cursorRestorePosition + showCursor;
     }
-    return ansi.cursorHide + cursorSavePosition + ansi.cursorNextLine + patch + cursorRestorePosition + showCursor + data;
+    const list = ansi.cursorHide + cursorSavePosition + ansi.cursorNextLine + patch + cursorRestorePosition + showCursor;
+    // the snapshot was taken after the virtual terminal took `data`, so the list is drawn from where `data` leaves
+    // the cursor (a typed letter that wraps the line moves it a row down). A chunk that stops inside an escape
+    // sequence must stay last, or the list would land in the middle of that sequence.
+    return endsInsideSequence(data) ? list + data : data + list;
   }
 
   #clearOutput(direction: Direction, snapshot: RenderSnapshot, bufferType: PatchBuffer = "active"): string {

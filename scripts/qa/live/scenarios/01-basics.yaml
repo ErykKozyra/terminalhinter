@@ -1,0 +1,192 @@
+- name: git branch from the list with Tab
+  steps:
+    - type: "git checkout fe"
+      expect_list: true
+      expect: "feature/login"
+    - key: TAB
+      expect_line_starts: "git checkout feature/login"
+    - key: ENTER
+      expect_ran: "git checkout feature/login"
+
+- name: the list opens after a command and a space
+  steps:
+    - type: "git "
+      expect_list: true
+      expect: ["commit", "Record changes to the repository"]
+
+- name: typing narrows the list
+  steps:
+    - type: "git sta"
+      expect: ["status", "stash"]
+      expect_not: "commit"
+
+- name: Tab puts the selected entry on the line
+  steps:
+    - type: "git stat"
+    - key: TAB
+      expect_line_starts: "git status"
+
+- name: Enter on a typed word takes the entry and does not run
+  steps:
+    - type: "git stat"
+    - key: ENTER
+      expect_line_starts: "git status"
+      expect_ran_count: 0
+
+- name: Enter right after a space runs the command
+  steps:
+    - type: "git status "
+    - key: ENTER
+      expect_ran: "git status"
+      expect: "On branch main"
+
+- name: Enter runs a word typed in full that no entry starts with
+  steps:
+    - type: "echo one"
+    - key: ENTER
+      expect_ran: "echo one"
+
+- name: Esc hides the list until the next letter
+  steps:
+    - type: "git sta"
+      expect_list: true
+    - key: ESC
+      expect_list: false
+      expect_line: "git sta"
+    - type: "t"
+      expect_list: true
+      expect_line: "git stat"
+
+- name: Ctrl+Space shows the list again
+  steps:
+    - type: "git sta"
+    - key: ESC
+      expect_list: false
+    - key: C-SPC
+      expect_list: true
+      expect_line: "git sta"
+
+- name: Down and Tab pick the second entry
+  steps:
+    - type: "git sta"
+    - key: DOWN
+    - key: TAB
+      expect_line_starts: "git status"
+
+- name: Backspace brings back what was there
+  steps:
+    - type: "git stat"
+      list_not: "stash"
+    - key: BS
+      list_has: ["status", "stash"]
+      expect_line: "git sta"
+
+- name: Ctrl+U empties the line and hides the list
+  steps:
+    - type: "git sta"
+      expect_list: true
+    - key: C-U
+      expect_line: ""
+      expect_list: false
+
+- name: Ctrl+C gives a fresh prompt with no list
+  steps:
+    - type: "git sta"
+    - key: C-C
+      expect_list: false
+    - type: "echo after"
+    - key: ENTER
+      expect_ran: "echo after"
+
+- name: Up on a line with no selection walks the shell history
+  steps:
+    - type: "echo first-entry<ENTER>"
+      expect_ran: "echo first-entry"
+    - key: UP
+      expect_line: "echo first-entry"
+
+- name: a pasted command lands as pasted
+  steps:
+    - paste: "echo pasted-text"
+      expect_line: "echo pasted-text"
+    - key: ENTER
+      expect_ran: "echo pasted-text"
+
+- name: a fast typist loses no letters
+  steps:
+    - type: "echo the-quick-brown-fox-jumps-over-the-lazy-dog-0123456789"
+      delay: 2
+      expect_line: "echo the-quick-brown-fox-jumps-over-the-lazy-dog-0123456789"
+    - key: ENTER
+      expect_ran: "echo the-quick-brown-fox-jumps-over-the-lazy-dog-0123456789"
+
+- name: a long line that wraps keeps every letter
+  steps:
+    - type: "echo aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+      delay: 5
+    - key: ENTER
+      expect_ran: "echo aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+
+- name: Polish letters and emoji go through untouched
+  steps:
+    - type: "echo zażółć-gęślą-jaźń-🙂"
+      expect_line: "echo zażółć-gęślą-jaźń-🙂"
+    - key: ENTER
+      expect_ran: "echo zażółć-gęślą-jaźń-🙂"
+      expect: "zażółć-gęślą-jaźń-🙂"
+
+- name: options of a command show with their descriptions
+  steps:
+    - type: "grep --ignore-c"
+      list_has: "--ignore-case"
+
+- name: an option already on the line is not offered again
+  steps:
+    - type: "git commit --amend --am"
+      list_not: " --amend "
+
+- name: a command the specs do not know does not break anything
+  steps:
+    - type: "qa-unknown-tool --flag value"
+      expect_list: false
+    - key: ENTER
+      expect_ran: "qa-unknown-tool --flag value"
+
+- name: the list follows the line after a resize
+  steps:
+    - type: "git sta"
+      expect_list: true
+    - resize: 60x20
+      expect_list: true
+      expect_line: "git sta"
+    - key: TAB
+      expect_line_starts: "git stage"
+
+- name: a full-screen program and back
+  shells: [zsh, bash, fish]
+  steps:
+    - type: "less README.md<ENTER>"
+      wait_for: "# shop"
+    - type: "q"
+      wait: 300
+    - type: "git sta"
+      expect_list: true
+      expect_line: "git sta"
+
+- name: lots of output while typing the next command
+  shells: [zsh, bash, fish]
+  steps:
+    - type: "seq 1 3000<ENTER>"
+      wait_for: "3000"
+    - type: "git sta"
+      expect_list: true
+      expect_line: "git sta"
+
+- name: Ctrl+L clears the screen and the list comes back on the new line
+  shells: [zsh, bash, fish]
+  steps:
+    - type: "git sta"
+    - key: C-L
+      wait: 300
+    - type: "t"
+      expect_line: "git stat"

@@ -259,7 +259,18 @@ export class SuggestionManager {
     const token = this.#suggestBlob?.activeToken;
     // a lone "-" means "previous" (git checkout -, git switch -, cd -), so nothing is preselected and Enter runs it
     const typing = token != null && !token.complete && token.token.length > 0 && token.token !== "-";
-    return typing || this.#suggestBlob?.isPathContext ? 0 : -1;
+    if (this.#suggestBlob?.isPathContext) return 0;
+    if (!typing) return -1;
+    // Only an entry that starts with what you typed is preselected. One found by letters in order (`one` in
+    // $OPENBLAS_NUM_THREADS) stays unselected, so Enter runs the line as you typed it; Tab still takes it.
+    const top = this.#suggestBlob?.suggestions[0];
+    const typed = token.token.toLowerCase();
+    const starts = (name: string) =>
+      name
+        .toLowerCase()
+        .replace(/^['"$]/, "")
+        .startsWith(typed.replace(/^['"$]/, ""));
+    return top != null && (top.allNames.some(starts) || starts(top.name)) ? 0 : -1;
   }
 
   private _items(): Suggestion[] {

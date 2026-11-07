@@ -1,0 +1,24 @@
+- name: a command run in this folder comes back as a whole
+  steps:
+    - type: "git log --oneline -n 3<ENTER>"
+      wait: 600
+    - type: "git "
+      wait: 400
+      list_has: "git log --oneline -n 3"
+
+- name: a line with a token is never remembered
+  steps:
+    - type: "echo --token=ghp_abcdefghijklmnopqrstuvwxyz123456<ENTER>"
+      wait: 500
+    - type: "echo "
+      wait: 400
+      list_not: "ghp_"
+
+- name: a failed command is not offered again as a recent one
+  steps:
+    - type: "git checkout does-not-exist<ENTER>"
+      wait: 800
+    - key: C-U
+    - type: "git "
+      wait: 400
+      list_not: "does-not-exist"

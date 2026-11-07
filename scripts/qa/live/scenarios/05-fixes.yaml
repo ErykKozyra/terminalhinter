@@ -1,0 +1,113 @@
+- name: a typo in the command gets the fix on the empty line
+  steps:
+    - type: "gti status<ENTER>"
+      wait: 600
+      list_has: "git status"
+    - key: TAB
+      expect_line_starts: "git status"
+    - key: ENTER
+      expect_ran: "git status"
+
+- name: the fix is never run without Enter
+  steps:
+    - type: "gti log<ENTER>"
+      wait: 600
+    - key: TAB
+      wait: 400
+      expect_ran_count: 1
+
+- name: a git subcommand typo uses what git suggests
+  steps:
+    - type: "git stauts<ENTER>"
+      wait: 800
+      list_has: "git status"
+
+- name: a missing npm script gets the near one
+  steps:
+    - type: "npm run biuld<ENTER>"
+      wait: 2500
+      timeout: 6000
+      list_has: "npm run build"
+
+- name: mkdir of a nested folder gets -p
+  steps:
+    - type: "mkdir deep/er/folder<ENTER>"
+      wait: 600
+      list_has: "mkdir -p deep/er/folder"
+    - key: TAB
+    - key: ENTER
+      expect_ran: "mkdir -p deep/er/folder"
+
+- name: cd to a near folder name
+  steps:
+    - type: "cd docz<ENTER>"
+      wait: 600
+      list_has: "cd docs"
+
+- name: rm of a folder gets -r
+  files:
+    old/file.txt: "x\n"
+  steps:
+    - type: "rm old<ENTER>"
+      wait: 600
+      list_has: "rm -r old"
+
+- name: checkout of a near branch name
+  steps:
+    - type: "git checkout feature/logn<ENTER>"
+      wait: 800
+      list_has: "feature/login"
+
+- name: a port in use offers to stop the process
+  shells: [zsh, bash, fish]
+  steps:
+    - type: "node -e \"require('http').createServer().listen(48731)\" &<ENTER>"
+      wait: 1500
+    - type: "node -e \"require('http').createServer().listen(48731)\"<ENTER>"
+      wait: 2500
+      timeout: 6000
+      list_has: "kill"
+      expect: "48731"
+    - key: C-U
+    - type: "kill %1<ENTER>"
+      wait: 300
+
+- name: Esc dismisses the fix and the line stays empty
+  steps:
+    - type: "gti status<ENTER>"
+      wait: 600
+      expect_list: true
+    - key: ESC
+      expect_list: false
+      expect_line: ""
+
+- name: typing over the fix list starts a new command
+  steps:
+    - type: "gti status<ENTER>"
+      wait: 600
+    - type: "echo next"
+      expect_line: "echo next"
+    - key: ENTER
+      expect_ran: "echo next"
+
+- name: Ctrl+C on a long command gives no fix
+  shells: [zsh, bash, fish]
+  steps:
+    - type: "sleep 30<ENTER>"
+      wait: 500
+    - key: C-C
+      wait: 600
+      expect_list: false
+
+- name: a command that worked gives no fix
+  steps:
+    - type: "git status<ENTER>"
+      wait: 600
+      expect_list: false
+
+- name: fixes can be turned off
+  config: { fixSuggestions: false }
+  steps:
+    - type: "gti status<ENTER>"
+      wait: 800
+      expect_list: false

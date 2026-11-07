@@ -1,0 +1,47 @@
+- name: a snippet with fields fills in and runs
+  files:
+    ../../.config/terminalhinter/snippets.yaml: "- name: greet\n  description: Say hello\n  command: echo hello {{name}} from {{place=Krakow}}\n"
+  steps:
+    - type: "gre"
+      list_has: "greet"
+    - key: TAB
+      wait: 300
+      expect: "name"
+    - type: "Eryk"
+    - key: TAB
+    - key: ENTER
+      wait: 400
+      expect_line: "echo hello Eryk from Krakow"
+    - key: ENTER
+      expect_ran: "echo hello Eryk from Krakow"
+
+- name: a field value with spaces is quoted
+  files:
+    ../../.config/terminalhinter/snippets.yaml: "- name: say\n  command: echo {{text}}\n"
+  steps:
+    - type: "say"
+    - key: TAB
+      wait: 300
+    - type: "two words"
+    - key: ENTER
+      wait: 400
+      expect_regex: "echo ('two words'|\"two words\")"
+
+- name: Esc leaves the snippet form without running anything
+  files:
+    ../../.config/terminalhinter/snippets.yaml: "- name: greet\n  command: echo hi {{who}}\n"
+  steps:
+    - type: "gree"
+    - key: TAB
+      wait: 300
+    - key: ESC
+      wait: 300
+      expect_ran_count: 0
+      expect_list: false
+
+- name: a broken snippets file does not break the list
+  files:
+    ../../.config/terminalhinter/snippets.yaml: "- name: [broken\n  command: : :\n"
+  steps:
+    - type: "git sta"
+      list_has: "status"

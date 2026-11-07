@@ -1,0 +1,53 @@
+- name: a broken spec of your own is skipped
+  files:
+    ../../.config/terminalhinter/specs/deploy.yaml: "name: deploy\nsubcommands: [ { name: \n"
+    ../../.config/terminalhinter/specs/ok.yaml: "name: qa-ok\nsubcommands:\n  - name: staging\n    description: The staging server\n"
+  steps:
+    - type: "qa-ok "
+      list_has: ["staging", "The staging server"]
+    - key: C-U
+    - type: "git sta"
+      list_has: "status"
+
+- name: a spec with a generator that hangs does not block typing
+  files:
+    ../../.config/terminalhinter/specs/slow.yaml: "name: qa-slow\nargs:\n  name: thing\n  script: \"sleep 30\"\n"
+  steps:
+    - type: "qa-slow abc"
+      wait: 300
+      expect_line: "qa-slow abc"
+    - key: ENTER
+      expect_ran: "qa-slow abc"
+
+- name: the shell works when the config file is broken
+  steps:
+    - type: "printf 'theme = [\\n' > ~/.terminalhinterrc<ENTER>"
+      wait: 300
+    - type: "git sta"
+      expect_line: "git sta"
+
+- name: thint inside thint does not start a second one
+  shells: [zsh, bash]
+  steps:
+    - type: "thint -c && echo inside<ENTER>"
+      wait: 800
+      expect: "inside"
+
+- name: quick resize back and forth with the list open
+  steps:
+    - type: "git sta"
+    - resize: 50x15
+    - resize: 120x40
+    - resize: 80x24
+      wait: 400
+      expect_line: "git sta"
+    - key: TAB
+      expect_line_starts: "git stage"
+
+- name: a command that prints without a newline at the end
+  shells: [zsh, bash, fish]
+  steps:
+    - type: "printf no-newline<ENTER>"
+      wait: 400
+    - type: "git sta"
+      list_has: "status"

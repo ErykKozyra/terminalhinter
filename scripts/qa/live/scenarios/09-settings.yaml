@@ -1,0 +1,26 @@
+- name: tab like a shell completes the shared part
+  config: { tabBehavior: "shell" }
+  steps:
+    - type: "git sta"
+    - key: TAB
+      expect_line_starts: "git sta"
+
+- name: the list only on Tab
+  config: { showListOn: "tab" }
+  steps:
+    - type: "git sta"
+      expect_list: false
+    - key: TAB
+      expect_list: true
+
+- name: the light theme draws the same list
+  config: { theme: "light" }
+  steps:
+    - type: "git sta"
+      list_has: "status"
+
+- name: an invalid setting falls back to the defaults
+  config: { maxSuggestions: "lots" }
+  steps:
+    - type: "git sta"
+      list_has: "status"
