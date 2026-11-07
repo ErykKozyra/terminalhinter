@@ -45,9 +45,10 @@ export const splitSpec = (token: string): [string, string] | undefined => {
 };
 
 // semver order: numbers by value, and a release after its prereleases (19.3.0 after 19.3.0-canary.1)
+// (build metadata after + does not count: 1.2.3+build.5 is 1.2.3)
 const compare = (a: string, b: string) => {
-  const [mainA, preA] = a.split(/-(.*)/s);
-  const [mainB, preB] = b.split(/-(.*)/s);
+  const [mainA, preA] = a.split("+")[0].split(/-(.*)/s);
+  const [mainB, preB] = b.split("+")[0].split(/-(.*)/s);
   const pa = mainA.split(".").map(Number);
   const pb = mainB.split(".").map(Number);
   for (let i = 0; i < 3; i++) if ((pa[i] || 0) !== (pb[i] || 0)) return (pa[i] || 0) - (pb[i] || 0);

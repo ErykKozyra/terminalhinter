@@ -406,8 +406,10 @@ const removeDuplicateSuggestion = (suggestions: Suggestion[]): Suggestion[] => {
   const seen = new Set<string>();
   return suggestions
     .map((s) => {
-      if (seen.has(s.name)) return null;
-      seen.add(s.name);
+      // a snippet called like a command (`deploy`, `kill`) stays next to the command instead of hiding it or being hidden
+      const key = s.kind === "snippet" ? `\u0000snippet:${s.name}` : s.name;
+      if (seen.has(key)) return null;
+      seen.add(key);
       return s;
     })
     .filter((s): s is Suggestion => s != null);

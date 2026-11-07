@@ -51,10 +51,25 @@ export const riskOfEntry = (words: string[], name: string): string | undefined =
 };
 
 // for a value: a branch, an ssh host, a script, a kube context, a docker context
+// "non-prod" and "not-prod" say the opposite
+const notProduction = /(^|[^a-z])no[nt][-_]?(prod|production)([^a-z]|$)/i;
+
+// words that are written in capitals for other reasons: git refs, the usual project files, signals, HTTP methods,
+// environment variables
+const capitalWords = new Set(
+  (
+    "HEAD FETCH_HEAD ORIG_HEAD MERGE_HEAD CHERRY_PICK_HEAD README LICENSE LICENCE TODO CHANGELOG CHANGES AUTHORS CONTRIBUTING " +
+    "CODEOWNERS NOTICE COPYING INSTALL MAINTAINERS SECURITY GET POST PUT PATCH DELETE OPTIONS TRACE CONNECT PATH HOME USER SHELL " +
+    "TERM LANG PWD EDITOR TMPDIR DISPLAY JSON YAML TOML CSV HTML XML API URL SQL"
+  ).split(" "),
+);
+
 export const riskOfValue = (name: string): string | undefined => {
-  if (productionLike.test(name)) return "looks like production";
-  // all capitals and at least three letters, the way people name the server they must be careful with: PROD, LIVE-DB
-  if (/^[A-Z][A-Z0-9_-]{2,}$/.test(name) && /[A-Z]{3}/.test(name)) return "written in capitals, often a production name";
+  if (productionLike.test(name) && !notProduction.test(name)) return "looks like production";
+  // all capitals and at least three letters, the way people name the server they must be careful with: PROD, LIVE-DB;
+  // not with an underscore, that is how environment variables are named (PRODUCT_ID, NODE_ENV)
+  if (/^[A-Z][A-Z0-9-]{2,}$/.test(name) && /[A-Z]{3}/.test(name) && !capitalWords.has(name) && !/^SIG[A-Z0-9]+$/.test(name))
+    return "written in capitals, often a production name";
   return undefined;
 };
 

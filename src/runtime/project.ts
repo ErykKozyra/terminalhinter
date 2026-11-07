@@ -265,6 +265,23 @@ const augmentMore = (command: string, root: SpecNode) => {
     for (const [names, description] of signals)
       if (!names.some((n) => known.has(n))) root.options = [...(root.options ?? []), { name: names, description, args: undefined } as SpecNode];
   }
+  if (command === "kubectl") {
+    // the flags kubectl takes before or after any subcommand, which the spec does not list
+    const described = root as { description?: string };
+    if (!described.description) described.description = "Controls Kubernetes clusters";
+    const contexts: Fig.Generator = { script: ["kubectl", "config", "get-contexts", "-o", "name"], splitOn: "\n" };
+    const globals: [string[], string, Fig.Arg][] = [
+      [["--context"], "The kubeconfig context to use", { name: "context", generators: contexts }],
+      [["--kubeconfig"], "The kubeconfig file to use", { name: "file", template: "filepaths" }],
+      [["--cluster"], "The kubeconfig cluster to use", { name: "cluster" }],
+      [["--user"], "The kubeconfig user to use", { name: "user" }],
+      [["--as"], "Act as this user", { name: "user" }],
+    ];
+    const known = new Set((root.options ?? []).flatMap(namesOf));
+    for (const [names, description, args] of globals)
+      if (!names.some((n) => known.has(n))) root.options = [...(root.options ?? []), { name: names, description, args, isPersistent: true } as SpecNode];
+    for (const option of root.options ?? []) if (namesOf(option).includes("--namespace")) (option as { isPersistent?: boolean }).isPersistent = true;
+  }
   if (command === "lsof") {
     const option = (root.options ?? []).find((o) => namesOf(o).includes("-i"));
     if (option != null) prepend(option, portGenerator(":"), "address", true);

@@ -12,7 +12,7 @@ export type Listener = { port: number; pid: number; command: string; cwd?: strin
 
 const cached = memo<Listener[]>(2000);
 
-const parseLsof = (out: string): { port: number; pid: number; command: string }[] => {
+export const parseLsof = (out: string): { port: number; pid: number; command: string }[] => {
   const found: { port: number; pid: number; command: string }[] = [];
   let pid = 0;
   let command = "";
@@ -27,7 +27,7 @@ const parseLsof = (out: string): { port: number; pid: number; command: string }[
   return found;
 };
 
-const parseSs = (out: string): { port: number; pid: number; command: string }[] => {
+export const parseSs = (out: string): { port: number; pid: number; command: string }[] => {
   const found: { port: number; pid: number; command: string }[] = [];
   for (const line of out.split("\n")) {
     const port = Number(line.match(/\S+:(\d+)\s+\S+:\S+/)?.[1]);
@@ -61,7 +61,7 @@ const processCwd = async (pid: number): Promise<string | undefined> => {
 };
 
 // `node /x/node_modules/.bin/next dev` reads better as "next dev"
-const shortCommand = (full: string | undefined, fallback: string): string => {
+export const shortCommand = (full: string | undefined, fallback: string): string => {
   if (!full) return fallback;
   const words = full.split(/\s+/);
   const scriptAt = words.findIndex((w, i) => i > 0 && /\.bin\/|\/(next|vite|nuxt|astro|remix|webpack|tsx|ts-node|nodemon)(\.js)?$/.test(w));

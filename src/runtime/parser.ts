@@ -17,11 +17,34 @@ export type CommandToken = {
   isQuoteContinued?: boolean; // used for strings that are fully wrapped in quotes with content after the quotes
 };
 
-const cmdDelim = /(\|\|)|(&&)|(;)|(\|)/;
 const spaceRegex = /\s/;
 
+// the part after the last |, ||, && or ; that is not inside quotes: `git commit -m "a && b" --am` stays one command
+const lastCommandOf = (command: string, shell: Shell): string => {
+  const escapeChar = getShellWhitespaceEscapeChar(shell);
+  let quote: string | undefined;
+  let start = 0;
+  for (let i = 0; i < command.length; i++) {
+    const c = command[i];
+    if (c === escapeChar && quote !== "'") {
+      i++;
+      continue;
+    }
+    if (quote != null) {
+      if (c === quote) quote = undefined;
+      continue;
+    }
+    if (c === '"' || c === "'" || c === "`") quote = c;
+    else if (c === ";" || c === "|" || (c === "&" && command[i + 1] === "&")) {
+      if (command[i + 1] === c) i++;
+      start = i + 1;
+    }
+  }
+  return command.slice(start);
+};
+
 export const parseCommand = (command: string, shell: Shell): CommandToken[] => {
-  const lastCommand = command.split(cmdDelim).at(-1)?.trimStart();
+  const lastCommand = lastCommandOf(command, shell).trimStart();
   const tokens = lastCommand ? lex(lastCommand, shell) : [];
   return sanitizeTokens(tokens, shell);
 };
@@ -106,7 +129,7 @@ const lex = (command: string, shell: Shell): CommandToken[] => {
         isQuoted: true,
         isQuoteContinued: true,
       });
-    } else if ((readingFlag && spaceRegex.test(char)) || char === "=") {
+    } else if (readingFlag && (spaceRegex.test(char) || char === "=")) {
       readingFlag = false;
       tokens.push({
         token: command.slice(readingIdx, idx),

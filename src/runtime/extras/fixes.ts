@@ -19,7 +19,8 @@ const lines = (output: string) => output.split(/\r?\n/).map((l) => l.replace(/\s
 const suggestedCommands = (output: string, root: string): string[] =>
   lines(output)
     .map((l) => l.match(new RegExp(`^\\s{2,}(${root} [^\\n]+)$`))?.[1]?.trim())
-    .filter((c): c is string => c != null && c.length < 200);
+    // `git branch --set-upstream-to=origin/<branch> main` has a placeholder to fill in, it is not a command to run
+    .filter((c): c is string => c != null && c.length < 200 && !/<[^>\s]+>/.test(c));
 
 const replaceWord = (command: string, index: number, word: string): string => {
   const words = command.split(/(\s+)/);
@@ -31,9 +32,12 @@ type Context = { failure: Failure; words: string[]; commands: () => Iterable<str
 type Rule = (c: Context) => Fix[] | Promise<Fix[]>;
 
 const rules: Rule[] = [
-  // zsh: command not found: gti / bash: gti: command not found
+  // zsh: command not found: gti / bash: gti: command not found / sh: 1: gti: not found / fish: Unknown command: gti /
+  // PowerShell: The term 'gti' is not recognized / cmd: 'gti' is not recognized as an internal or external command
   ({ failure, words, commands }) => {
-    if (failure.exitCode !== 127 || !/command not found|not found/.test(failure.output)) return [];
+    const notFound = /command not found|: not found|Unknown command/i.test(failure.output);
+    const notRecognized = /is not recognized as/i.test(failure.output);
+    if (!((failure.exitCode === 127 && notFound) || ((failure.exitCode === 9009 || failure.exitCode === 1) && notRecognized))) return [];
     const match = closest(words[0], commands());
     return match ? [{ command: replaceWord(failure.command, 0, match), reason: `"${words[0]}" is not a command, ${match} is` }] : [];
   },
@@ -63,9 +67,11 @@ const rules: Rule[] = [
   // npm error Missing script: "biuld" / pnpm: Command "biuld" not found
   ({ failure, words }) => {
     if (!["npm", "pnpm", "yarn", "bun"].includes(words[0])) return [];
-    const missing = failure.output.match(/Missing script: "?([^"\s]+)"?|Command "([^"]+)" not found|Script not found "([^"]+)"/);
+    const missing = failure.output.match(
+      /Missing script: "?([^"\s]+)"?|Command "([^"]+)" not found|Script not found "([^"]+)"|Couldn't find a script named "([^"]+)"/,
+    );
     if (!missing) return [];
-    const wanted = missing[1] ?? missing[2] ?? missing[3];
+    const wanted = missing[1] ?? missing[2] ?? missing[3] ?? missing[4];
     let scripts: string[] = [];
     try {
       scripts = Object.keys((JSON.parse(fs.readFileSync(path.join(failure.cwd, "package.json"), "utf8")) as { scripts?: object }).scripts ?? {});
@@ -89,7 +95,8 @@ const rules: Rule[] = [
       : [],
   // cd into a folder that is not there, with a near name that is
   ({ failure, words }) => {
-    if (words[0] !== "cd" || words.length !== 2 || !/no such file or directory|not a directory/i.test(failure.output)) return [];
+    if (words[0] !== "cd" || words.length !== 2 || !/no such file or directory|not a directory|does not exist|cannot find path/i.test(failure.output))
+      return [];
     const target = words[1].replace(/\/+$/, "");
     const parent = path.resolve(failure.cwd, path.dirname(target));
     let dirs: string[] = [];
@@ -107,12 +114,7 @@ const rules: Rule[] = [
   },
   // EADDRINUSE / address already in use :3000 → kill what holds the port
   async ({ failure }) => {
-    if (!/EADDRINUSE|address already in use|port is already allocated|already in use/i.test(failure.output)) return [];
-    // the port from the message, or else from the command (python's message has none: `http.server 8177`, -p 8177)
-    const port =
-      Number(failure.output.match(/(?:EADDRINUSE|address already in use|port is already allocated|already in use)[^\n]*?:(\d{2,5})\b/i)?.[1]) ||
-      Number(failure.command.match(/(?:--port[= ]|-p\s*|:)(\d{2,5})\b/)?.[1]) ||
-      Number(failure.command.match(/\s(\d{4,5})(?:\s|$)/)?.[1]);
+    const port = portInUse(failure);
     if (!port) return [];
     const holder = (await listeningProcesses()).find((l) => l.port === port);
     return holder
@@ -126,14 +128,38 @@ const rules: Rule[] = [
   ({ failure, words }) =>
     /permission denied|EACCES|Operation not permitted|are you root/i.test(failure.output) &&
     words[0] !== "sudo" &&
-    ["apt", "apt-get", "dnf", "yum", "pacman", "systemctl", "chown", "mount", "umount", "npm", "docker", "service", "snap"].includes(words[0])
+    // not npm: `sudo npm i -g` leaves root-owned files behind, the fix there is a Node version manager
+    ["apt", "apt-get", "dnf", "yum", "pacman", "zypper", "systemctl", "chown", "mount", "umount", "docker", "service", "snap"].includes(words[0])
       ? [{ command: `sudo ${failure.command}`, reason: "needs administrator rights" }]
       : [],
 ];
 
+// The port a failed server could not get: from the message, or else from the command (python's message has none:
+// `http.server 8177`, -p 8177). 0 when the failure is not about a port in use.
+export const portInUse = (failure: Failure): number => {
+  if (!/EADDRINUSE|address already in use|port is already allocated|already in use|address in use|\bport \d+ is in use/i.test(failure.output)) return 0;
+  const fromOutput = [
+    /(?:EADDRINUSE|address already in use)[^\n]*?:(\d{2,5})\b/i, // node, next: listen EADDRINUSE: address already in use :::3000
+    /\bport\s+(\d{2,5})\s+is\s+(?:already\s+)?in use/i, // vite: Port 5173 is already in use
+    /Bind for [^\s]*:(\d{2,5}) failed/i, // docker: Bind for 0.0.0.0:8080 failed: port is already allocated
+    /listen tcp[46]? [^\s]*:(\d{2,5}): bind/i, // go: listen tcp :8080: bind: address already in use
+    /address already in use[^\n]*?\bport\s+(\d{2,5})/i, // rails: ... bind(2) for "127.0.0.1" port 3000
+    /bind on address \([^)]*?,\s*(\d{2,5})\)/i, // uvicorn: bind on address ('127.0.0.1', 8000)
+  ];
+  for (const pattern of fromOutput) {
+    const port = Number(failure.output.match(pattern)?.[1]);
+    if (port > 0 && port < 65536) return port;
+  }
+  const port = Number(failure.command.match(/(?:--port[= ]|-p\s*|:)(\d{2,5})\b/)?.[1]) || Number(failure.command.match(/\s(\d{4,5})(?:\s|$)/)?.[1]);
+  return port > 0 && port < 65536 ? port : 0;
+};
+
+// 130: Ctrl+C, 148: Ctrl+Z; neither is a mistake to fix
+const notFailures = new Set([0, 130, 148]);
+
 export const findFixes = async (failure: Failure, commands: () => Iterable<string>, branches: () => Promise<string[]>): Promise<Fix[]> => {
   const words = failure.command.trim().split(/\s+/);
-  if (words.length === 0 || !words[0] || failure.exitCode === 0 || failure.exitCode === 130) return [];
+  if (words.length === 0 || !words[0] || notFailures.has(failure.exitCode)) return [];
   const fixes: Fix[] = [];
   for (const rule of rules) {
     try {
