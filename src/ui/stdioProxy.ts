@@ -101,6 +101,12 @@ export class StdioProxy {
       this.#onCursorPositionReport(response);
       return "";
     });
+    // A lone Esc is the Esc key. Given to readline it would wait half a second for more bytes and read a key typed
+    // in that time as Alt+key (Esc then `k` became Alt+K and the k was lost); Alt+key arrives in one piece anyway.
+    if (keypressInput === "\u001b") {
+      this.#keypressInput.emit("keypress", "\u001b", { sequence: "\u001b", name: "escape", ctrl: false, meta: false, shift: false });
+      return;
+    }
     if (keypressInput.length !== 0) this.#keypressInput.write(keypressInput);
   }
 }

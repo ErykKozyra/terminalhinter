@@ -74,8 +74,10 @@ export const planMigration = (files = shellFiles()): Change[] =>
 export const applyMigration = (changes: Change[]): Change[] =>
   changes.map((change) => {
     const text = fs.readFileSync(change.file, "utf8");
-    const backup = `${change.file}.before-thint-migrate`;
-    if (!fs.existsSync(backup)) fs.writeFileSync(backup, text);
+    // one copy per run, so a second migration never points to the copy of the first
+    let backup = `${change.file}.before-thint-migrate`;
+    for (let n = 2; fs.existsSync(backup); n++) backup = `${change.file}.before-thint-migrate.${n}`;
+    fs.writeFileSync(backup, text);
     fs.writeFileSync(change.file, withoutTheirLines(text).text);
     return { ...change, backup };
   });

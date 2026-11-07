@@ -184,7 +184,12 @@ export class CommandManager {
     const buffer = this.#terminal.buffer.active;
     const end = buffer.baseY + buffer.cursorY;
     const lines: string[] = [];
-    for (let y = Math.max(run.marker.line + 1, end - 200); y < end; y++) lines.push(buffer.getLine(y)?.translateToString(true) ?? "");
+    for (let y = Math.max(run.marker.line + 1, end - 200); y < end; y++) {
+      const line = buffer.getLine(y);
+      // a line the terminal wrapped belongs to the one above: git's hint stays one command in a narrow window
+      if (line?.isWrapped && lines.length > 0) lines[lines.length - 1] += line.translateToString(true);
+      else lines.push(line?.translateToString(true) ?? "");
+    }
     run.marker.dispose();
     this.#lastFailure = { id: ++this.#failureId, command: run.command, exitCode: code, output: lines.slice(-80).join("\n"), cwd };
   }

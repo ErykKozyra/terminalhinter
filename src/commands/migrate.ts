@@ -23,6 +23,7 @@ const action = async (options: { yes?: boolean; dryRun?: boolean }) => {
     for (const line of change.removed) process.stdout.write(chalk.dim(`  - ${line.trim()}\n`));
   }
 
+  let applied = false;
   if (changes.length > 0 && !options.dryRun) {
     let go = options.yes === true;
     if (!go && process.stdin.isTTY) {
@@ -33,6 +34,7 @@ const action = async (options: { yes?: boolean; dryRun?: boolean }) => {
     }
     if (go) {
       for (const done of applyMigration(changes)) process.stdout.write(chalk.green("✓") + ` ${tildify(done.file)} (copy in ${tildify(done.backup ?? "")})\n`);
+      applied = true;
     } else process.stdout.write("nothing changed; run thint migrate --yes to do it without asking\n");
   }
 
@@ -44,7 +46,8 @@ const action = async (options: { yes?: boolean; dryRun?: boolean }) => {
     process.stdout.write(`\nStill installed: ${apps.map((a) => tildify(a)).join(", ")}.\n`);
     process.stdout.write("Quit it from the menu bar, or remove it for good with its own uninstaller (kiro-cli uninstall, q uninstall).\n");
   }
-  process.stdout.write(`\nOpen a new terminal tab to start with terminalhinter only.\n`);
+  if (applied) process.stdout.write(`\nOpen a new terminal tab to start with terminalhinter only.\n`);
+  else if (options.dryRun && changes.length > 0) process.stdout.write(`\nthint migrate takes them out (a copy of each file is kept).\n`);
 };
 
 const cmd = new Command("migrate");

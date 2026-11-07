@@ -87,8 +87,9 @@ describe("risk", () => {
     expect(riskOfValue("CI")).toBeUndefined();
   });
   test("whole lines", () => {
-    expect(riskOfLine(["rm", "-rf", "/"])).toHaveLength(1);
-    expect(riskOfLine(["git", "push", "--force", "origin", "main"])).toHaveLength(1);
+    expect(riskOfLine(["rm", "-rf", "/"])).toContain("deletes a whole tree: check the path twice");
+    expect(riskOfLine(["git", "push", "--force", "origin", "main"])).toContain("force push to a main branch");
+    expect(riskOfLine(["git", "reset", "--hard", "HEAD~1"])).toEqual(["--hard: throws away uncommitted changes"]);
     expect(riskOfLine(["ls", "-la"])).toHaveLength(0);
   });
 });

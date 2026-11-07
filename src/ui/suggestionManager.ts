@@ -19,7 +19,7 @@ type SuggestionRuntime = Pick<Awaited<ReturnType<typeof initializeRuntime>>, "ge
   Partial<
     Pick<
       Awaited<ReturnType<typeof initializeRuntime>>,
-      "clearTransientSuggestionState" | "recordExecutedCommand" | "reorderSuggestions" | "getFixes" | "explainCommand"
+      "clearTransientSuggestionState" | "recordExecutedCommand" | "reorderSuggestions" | "getFixes" | "explainCommand" | "rememberWholeCommand"
     >
   >;
 
@@ -85,6 +85,7 @@ export class SuggestionManager {
   #reordered = false; // you moved an entry in this session, so the reorder hint is no longer needed
   #blobInputVersion = 0; // #inputVersion when the current list was requested
   #shownFailureId = 0; // the failed command whose fixes were already offered
+  #pendingCommand?: { command: string; cwd: string; failureId?: number }; // ran, waiting to see if it failed
   #explainRequested = false; // Ctrl+G asked what the words of the line mean
   #openedByUser = false; // with showListOn = "tab", the list only appears after Tab or Ctrl+Space
   // filling in the fields of a snippet: the typed text goes into the field, not to the shell
@@ -136,8 +137,10 @@ export class SuggestionManager {
     const commandKey = commandText ? `${this.#term.cwd}\u0000${getCommandCacheKey(commandText, this.#shell)}` : "";
     if (this.#fill != null) return false;
     // the fixes belong to the empty line; once you type, they go
-    if (commandText && this.#suggestBlob?.mode === "fix") this.#suggestBlob = undefined;
+    const hadFixes = commandText != null && commandText !== "" && this.#suggestBlob?.mode === "fix";
+    if (hadFixes) this.#suggestBlob = undefined;
     if (!commandText) {
+      if (commandState.promptText != null) this._rememberFinished();
       this.#openedByUser = false;
       this.#explainRequested = false;
       // the fixes for a command that just failed stay while the line is empty
@@ -147,7 +150,7 @@ export class SuggestionManager {
     }
     if (this.#explainRequested && commandText) return this._loadExplanation(commandText, commandKey);
     if (getConfig().showListOn === "tab" && !this.#openedByUser && commandText) {
-      const changed = this.#suggestBlob != null;
+      const changed = this.#suggestBlob != null || hadFixes;
       this.#suggestBlob = undefined;
       this.#commandKey = "";
       return changed;
@@ -205,6 +208,8 @@ export class SuggestionManager {
   // Right after a command failed, an empty line shows fixes for it, once.
   private async _loadFixes(hasOutput: boolean): Promise<boolean | undefined> {
     const failure = this.#term.getLastFailure?.();
+    // wait for the new prompt: zsh redraws it with a clear-below that would wipe a list drawn earlier
+    if (this.#term.getCommandState().promptText == null) return;
     if (!getConfig().fixSuggestions || hasOutput || failure == null || failure.id === this.#shownFailureId) return;
     this.#shownFailureId = failure.id;
     const ownVersion = ++this.#requestVersion;
@@ -415,7 +420,8 @@ export class SuggestionManager {
       return notes.length > 0 ? notes.flatMap((n) => wrapText(`⚠ ${n}`, width, 1)) : ["what each word does · ↑↓ to read more · esc closes"];
     }
     if (mode === "fill" && this.#fill != null) {
-      const preview = fillSnippet(this.#fill.command, { ...this.#fill.values, [this.#fill.fields[this.#fill.index]?.name ?? ""]: this.#fill.buffer || "…" });
+      const current = this.#fill.fields[this.#fill.index];
+      const preview = fillSnippet(this.#fill.command, { ...this.#fill.values, [current?.name ?? ""]: this.#fill.buffer || current?.default || "…" });
       return [...wrapText(preview, width, 2), "tab next field · enter when done · esc cancels"];
     }
     if (active == null) return argumentDescription ? [argumentDescription] : [];
@@ -470,7 +476,9 @@ export class SuggestionManager {
     // least one entry stays (the terminal already keeps a line free below the prompt, see remainingLines in pty.ts)
     const room = maxLines;
     const compact = room < 3; // no room for the edges: only the entries
-    const maxSuggestions = compact ? Math.max(room, 1) : Math.min(getMaxSuggestions(), room - 2);
+    // a warning about the line matters more than one more row
+    const warns = (this.#suggestBlob.mode === "explain" && (this.#suggestBlob.notes?.length ?? 0) > 0) || this.#suggestBlob.mode === "fill";
+    const maxSuggestions = compact ? Math.max(room, 1) : Math.max(1, Math.min(getMaxSuggestions(), room - (warns ? 5 : 2)));
     if (this.#activeSuggestionIdx >= items.length) this.#activeSuggestionIdx = items.length - 1;
 
     const cols = this.#term.cols;
@@ -505,7 +513,9 @@ export class SuggestionManager {
     const hintWidth = this._wantsReorderHint(active)
       ? wcswidth(counter ? `${reorderHint} · ${counter}` : reorderHint) + Math.min(wcswidth(footerText), 16) + 5
       : 0;
-    const width = Math.max(Math.min(Math.max(widest + 2, minBoxWidth, hintWidth), maxWidth), Math.min(minBoxWidth, maxWidth));
+    // the snippet form shows the whole command under its fields, so it gets room for it
+    const formWidth = this.#suggestBlob.mode === "fill" ? 64 : 0;
+    const width = Math.max(Math.min(Math.max(widest + 2, minBoxWidth, hintWidth, formWidth), maxWidth), Math.min(minBoxWidth, maxWidth));
     const innerWidth = width - 2;
 
     const rows: string[] = [];
@@ -752,7 +762,7 @@ export class SuggestionManager {
       this.#term.write("\u007F".repeat(replaceLength) + fillSnippet(command, {}));
       return true;
     }
-    this.#fill = { command, fields, index: 0, values: {}, buffer: fields[0].default ?? "", replaceLength };
+    this.#fill = { command, fields, index: 0, values: {}, buffer: "", replaceLength };
     this._showFill();
     return true;
   }
@@ -768,7 +778,12 @@ export class SuggestionManager {
         icon: "✂",
         kind: "snippet",
         priority: 0,
-        description: i === fill.index ? `${fill.buffer}▏` : fill.values[f.name] ?? (f.default ? `${f.default} (default)` : ""),
+        description:
+          i === fill.index
+            ? fill.buffer
+              ? `${fill.buffer}▏`
+              : `▏${f.default ? ` ${f.default} if you leave it empty` : ""}`
+            : fill.values[f.name] || (f.default ? `${f.default} (default)` : ""),
       })),
     };
     this.#activeSuggestionIdx = fill.index;
@@ -782,14 +797,15 @@ export class SuggestionManager {
       this.#fill = undefined;
       this.#suggestBlob = undefined;
       this.#hideSuggestions = true;
-      return true;
+      // Ctrl+C also clears the line, as it always does
+      return !(ctrl && name == "c");
     }
     if (name == "tab" || name == "return" || (name == "down" && !ctrl)) {
       fill.values[fill.fields[fill.index].name] = fill.buffer || fill.fields[fill.index].default || "";
       if (fill.index + 1 < fill.fields.length && !(name == "return" && keyPress.shift)) {
         fill.index += 1;
         const next = fill.fields[fill.index];
-        fill.buffer = fill.values[next.name] ?? next.default ?? "";
+        fill.buffer = fill.values[next.name] ?? "";
         this._showFill();
         return true;
       }
@@ -816,7 +832,7 @@ export class SuggestionManager {
   }
 
   private _wantsReorderHint(active: Suggestion | undefined): boolean {
-    if (!getConfig().showHints || !this.#navigated || this.#reordered || hasCustomOrder()) return false;
+    if (!getConfig().showHints || !this.#navigated || this.#reordered || hasCustomOrder() || this.#suggestBlob?.mode != null) return false;
     return active != null && !active.execute && active.type !== "folder" && active.type !== "file";
   }
 
@@ -871,11 +887,24 @@ export class SuggestionManager {
     return false;
   }
 
+  // A whole command goes into the history entries once the next prompt shows it did not fail.
+  private _rememberFinished() {
+    const pending = this.#pendingCommand;
+    if (pending == null) return;
+    this.#pendingCommand = undefined;
+    const failure = this.#term.getLastFailure?.();
+    if (failure != null && failure.id !== pending.failureId && failure.command === pending.command) return;
+    void this._getRuntime()
+      .then((runtime) => runtime.rememberWholeCommand?.(pending.command, pending.cwd))
+      .catch((e) => log.debug({ msg: "could not remember the command", e: (e as Error).message }));
+  }
+
   // feeds the frecency ranking; only what was typed at the prompt, never program output
   private _recordExecution() {
     const { commandText, hasOutput } = this.#term.getCommandState();
     if (!commandText || hasOutput) return;
     const cwd = this.#term.cwd;
+    this.#pendingCommand = { command: commandText.trim(), cwd, failureId: this.#term.getLastFailure?.()?.id };
     void this._getRuntime()
       .then((runtime) => runtime.recordExecutedCommand?.(commandText, cwd, this.#shell))
       .catch((e) => log.debug({ msg: "could not record command", e: (e as Error).message }));

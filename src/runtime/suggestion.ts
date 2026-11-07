@@ -195,9 +195,12 @@ const sortSuggestions = (
   // (specs leave `type` empty on most subcommands, so they are recognized by the icon they were given)
   const isValue = (s: Suggestion) =>
     s.type !== "subcommand" && s.type !== "option" && s.icon !== SuggestionIcons.Subcommand && s.icon !== SuggestionIcons.Option && !s.name.startsWith("-");
+  // `-D` typed exactly beats `-d`
+  const isExactCase = (s: Suggestion) => s.name === partialCmd || s.allNames.includes(partialCmd);
   sorted.sort(
     (a, b) =>
       Number(isExact(b)) - Number(isExact(a)) ||
+      Number(isExactCase(b)) - Number(isExactCase(a)) ||
       // names that start with the typed text always beat names that only contain it, whatever their priority:
       // `p i` lists install before the `lint` script
       Math.min(relevance(b), 2) - Math.min(relevance(a), 2) ||

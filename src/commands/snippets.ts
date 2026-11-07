@@ -17,7 +17,11 @@ const list = new Command("list").description("show your snippets").action(() => 
     return;
   }
   if (snippets.length === 0) {
-    process.stdout.write(`no snippets yet: thint snippets new puts a few examples in ${tildify(snippetsFile())}\n`);
+    process.stdout.write(
+      fs.existsSync(snippetsFile())
+        ? `no snippets in ${tildify(snippetsFile())}: it should be a list where each entry has a name and a command\n`
+        : `no snippets yet: thint snippets new puts a few examples in ${tildify(snippetsFile())}\n`,
+    );
     return;
   }
   for (const s of snippets)

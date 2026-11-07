@@ -107,7 +107,12 @@ const rules: Rule[] = [
   },
   // EADDRINUSE / address already in use :3000 → kill what holds the port
   async ({ failure }) => {
-    const port = Number(failure.output.match(/(?:EADDRINUSE|address already in use|port is already allocated|already in use)[^\n]*?:(\d{2,5})\b/i)?.[1]);
+    if (!/EADDRINUSE|address already in use|port is already allocated|already in use/i.test(failure.output)) return [];
+    // the port from the message, or else from the command (python's message has none: `http.server 8177`, -p 8177)
+    const port =
+      Number(failure.output.match(/(?:EADDRINUSE|address already in use|port is already allocated|already in use)[^\n]*?:(\d{2,5})\b/i)?.[1]) ||
+      Number(failure.command.match(/(?:--port[= ]|-p\s*|:)(\d{2,5})\b/)?.[1]) ||
+      Number(failure.command.match(/\s(\d{4,5})(?:\s|$)/)?.[1]);
     if (!port) return [];
     const holder = (await listeningProcesses()).find((l) => l.port === port);
     return holder

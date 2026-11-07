@@ -62,6 +62,16 @@ export const riskOfValue = (name: string): string | undefined => {
 export const riskOfLine = (tokens: string[]): string[] => {
   const notes: string[] = [];
   const [command] = tokens;
+  // every risky option or subcommand on the line, with the words before it: git reset --hard HEAD~1
+  const words: string[] = [];
+  for (const token of tokens) {
+    if (words.length > 0) {
+      const reason =
+        riskOfEntry(words, token) ?? (token.startsWith("--") && token.includes("=") ? riskOfEntry(words, token.slice(0, token.indexOf("="))) : undefined);
+      if (reason) notes.push(`${token}: ${reason}`);
+    }
+    if (!token.startsWith("-")) words.push(token);
+  }
   if (command === "rm" && tokens.some((t) => /^-[a-zA-Z]*[rR]/.test(t)) && tokens.some((t) => /^(\/|~\/?|\*|\.\/?\*?|\.\.)$/.test(t)))
     notes.push("deletes a whole tree: check the path twice");
   if (

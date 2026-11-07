@@ -164,10 +164,14 @@ export const recordExecutedCommand = (cmd: string, cwd: string, shell: Shell): v
   try {
     const tokens = aliasExpand(parseCommand(cmd.trim() + " ", shell));
     if (tokens.length > 1) recordCommand(tokens, cwd);
-    if (getConfig().historyEntries) rememberCommand(cmd, cwd);
   } catch (e) {
     log.debug({ msg: "could not record command", e: (e as Error).message });
   }
+};
+
+// A whole command for the history entries, once it is known that it did not fail.
+export const rememberWholeCommand = (cmd: string, cwd: string): void => {
+  if (getConfig().historyEntries) rememberCommand(cmd, cwd);
 };
 
 export { loadHistory };
@@ -598,7 +602,12 @@ const runCommand = async (token: CommandToken, cwd: string): Promise<SuggestionB
     ),
   ];
   return {
-    suggestions: [...names.slice(0, 1), ...recent, ...snippets, ...names.slice(1)],
+    // history right after the command it starts with (`git` then your git lines), or first when no name matches it
+    suggestions: (() => {
+      const first = recent[0]?.name.split(/\s+/)[0];
+      const at = names.findIndex((n) => n.name === first);
+      return at === -1 ? [...recent, ...snippets, ...names] : [...names.slice(0, at + 1), ...recent, ...snippets, ...names.slice(at + 1)];
+    })(),
     activeToken: token,
   };
 };
@@ -628,12 +637,107 @@ export const getFixes = async (failure: Failure): Promise<SuggestionBlob | undef
 };
 
 // What each word of the line means, from the command specs: the command, its subcommands, options and arguments.
+const operators: Record<string, string> = {
+  "|": "sends the output into the next command",
+  "|&": "sends the output and the errors into the next command",
+  "&&": "runs the next command if this one worked",
+  "||": "runs the next command if this one failed",
+  ";": "then runs the next command",
+  "&": "runs it in the background",
+  ">": "writes the output to the file, replacing what is there",
+  ">>": "adds the output to the end of the file",
+  "<": "reads the input from the file",
+  "2>": "writes the errors to the file",
+  "2>&1": "sends the errors where the output goes",
+  "&>": "writes output and errors to the file",
+};
+
+// words that run the command after them: their own note, then the command is explained as usual
+const wrappers: Record<string, string> = {
+  sudo: "runs the rest as the administrator",
+  doas: "runs the rest as the administrator",
+  env: "runs the rest with these environment variables",
+  time: "runs the rest and prints how long it took",
+  nohup: "keeps the rest running after you close the terminal",
+  nice: "runs the rest with a lower priority",
+  command: "runs the rest, skipping aliases and functions",
+  exec: "replaces the shell with the rest",
+  watch: "runs the rest again every few seconds",
+};
+
+// splits a line at |, &&, ||, ; and redirects, outside quotes
+const splitLine = (line: string): string[] => {
+  const parts: string[] = [];
+  let current = "";
+  let quote: string | undefined;
+  for (let i = 0; i < line.length; i++) {
+    const c = line[i];
+    if (quote) {
+      current += c;
+      if (c === quote && line[i - 1] !== "\\") quote = undefined;
+      continue;
+    }
+    if (c === '"' || c === "'") {
+      quote = c;
+      current += c;
+      continue;
+    }
+    const op = ["2>&1", "&&", "||", "|&", ">>", "&>", "2>", "|", ";", ">", "<", "&"].find((o) => line.startsWith(o, i) && line[i - 1] !== "\\");
+    if (op && !(op === "&" && line[i + 1] === ">")) {
+      if (current.trim()) parts.push(current.trim());
+      parts.push(op);
+      current = "";
+      i += op.length - 1;
+      continue;
+    }
+    current += c;
+  }
+  if (current.trim()) parts.push(current.trim());
+  return parts;
+};
+
 export const explainCommand = async (cmd: string, shell: Shell): Promise<SuggestionBlob | undefined> => {
-  const tokens = parseCommand(cmd.trim() + " ", shell).filter((t) => t.complete);
-  if (tokens.length === 0) return;
   const entries: Suggestion[] = [];
+  const notes: string[] = [];
+  const parts = splitLine(cmd.trim());
+  let afterRedirect = false;
+  for (const part of parts) {
+    if (operators[part] != null) {
+      entries.push({ name: part, allNames: [part], description: operators[part], icon: "📀", priority: 0, kind: "explain" });
+      afterRedirect = [">", ">>", "<", "2>", "&>"].includes(part);
+      continue;
+    }
+    if (afterRedirect) {
+      // the file after a redirect, and whatever follows it on the same side
+      const [file, ...rest] = part.split(/\s+/);
+      entries.push({ name: file, allNames: [file], description: "the file", icon: "📀", priority: 0, kind: "explain" });
+      afterRedirect = false;
+      if (rest.length > 0) await explainSegment(rest.join(" "), shell, entries, notes);
+      continue;
+    }
+    await explainSegment(part, shell, entries, notes);
+  }
+  if (entries.length === 0) return;
+  return { mode: "explain", suggestions: entries, notes: [...new Set(notes)] };
+};
+
+const explainSegment = async (segment: string, shell: Shell, entries: Suggestion[], notes: string[]): Promise<void> => {
+  let tokens = parseCommand(segment + " ", shell).filter((t) => t.complete);
   const add = (name: string, description: string | undefined, risk?: string) =>
     entries.push({ name, allNames: [name], description: description ?? "", icon: "📀", priority: 0, risk, kind: "explain" });
+  // sudo, env FOO=1, time and friends: say what they do, then explain the command they run
+  while (tokens.length > 1 && (wrappers[tokens[0].token] != null || /^[A-Za-z_]\w*=/.test(tokens[0].token))) {
+    const word = tokens[0].token;
+    add(word, wrappers[word] ?? "sets this environment variable for the command");
+    tokens = tokens.slice(1);
+    while (tokens.length > 1 && tokens[0].token.startsWith("-") && wrappers[word] != null) {
+      add(tokens[0].token, `option of ${word}`);
+      tokens = tokens.slice(1);
+    }
+    if (word === "sudo" || word === "doas") notes.push("runs as the administrator: mistakes can touch the whole system");
+  }
+  if (tokens.length === 0) return;
+  notes.push(...riskOfLine(tokens.map((t) => t.token)));
   const rootName = tokens[0].token;
   const alias = getAliasCommand(rootName);
   if (alias && getAliasNames().includes(rootName)) add(rootName, `alias: ${alias}`);
@@ -685,5 +789,4 @@ export const explainCommand = async (cmd: string, shell: Shell): Promise<Suggest
     add(word, arg ? `${arg.name ?? "argument"}${arg.description ? `: ${arg.description}` : ""}` : "argument", riskOfValue(word));
     if (arg != null && !arg.isVariadic) args = args.slice(1);
   }
-  return { mode: "explain", suggestions: entries, notes: riskOfLine(expanded.map((t) => t.token)) };
 };

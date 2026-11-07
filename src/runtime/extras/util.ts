@@ -115,7 +115,19 @@ export const closest = (word: string, names: Iterable<string>, max = word.length
 
 // Words that look like secrets never get stored or shown from history: values after --token or --password,
 // NAME_KEY=value assignments, and long random strings.
+const secretShapes = [
+  /authorization:\s*\S/i, // curl -H "Authorization: Bearer ..."
+  /\bbearer\s+[\w.~+/-]{8,}/i,
+  /\b\w+:\/\/[^\s/:@]+:[^\s/@]+@/, // https://user:pass@host
+  /\s-u\s*['"]?[^\s:'"]+:\S+/, // curl -u admin:s3cr3t
+  /\b(mysql|mysqldump|mariadb)\b.*\s-p\S/, // mysql -pHunter2
+  /\b(docker|podman|helm|npm|buildah)\s+login\b.*\s(-p|--password)[\s=]?\S/,
+  /\bsshpass\b.*\s-p\s*\S/,
+];
+
 export const looksSecret = (command: string): boolean =>
+  secretShapes.some((shape) => shape.test(command)) ||
   /(--?(token|password|passwd|secret|api[-_]?key|auth)[= ]\S)|(\b[A-Z0-9_]*(TOKEN|SECRET|PASSWORD|PASSWD|API_?KEY|PRIVATE_KEY)[A-Z0-9_]*=\S)|(\b(ghp|gho|github_pat|sk|xox[abp]|AKIA)[-_A-Za-z0-9]{12,})/i.test(
     command,
-  ) || /\b(?=[A-Za-z0-9+/_-]*\d)(?=[A-Za-z0-9+/_-]*[a-z])(?=[A-Za-z0-9+/_-]*[A-Z])[A-Za-z0-9+/_-]{32,}\b/.test(command);
+  ) ||
+  /\b(?=[A-Za-z0-9+/_-]*\d)(?=[A-Za-z0-9+/_-]*[a-z])(?=[A-Za-z0-9+/_-]*[A-Z])[A-Za-z0-9+/_-]{32,}\b/.test(command);

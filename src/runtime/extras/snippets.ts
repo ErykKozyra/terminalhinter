@@ -56,9 +56,24 @@ export const snippetFields = (command: string): Field[] => {
 };
 
 // a field used twice takes its default from wherever it is given
+// A value with spaces or shell characters gets single quotes, unless the field already sits inside quotes.
+const quoteValue = (value: string, insideQuotes: boolean) =>
+  insideQuotes || value === "" || /^[\w@%+=:,./~-]+$/.test(value) ? value : `'${value.replace(/'/g, "'\\''")}'`;
+
 export const fillSnippet = (command: string, values: Record<string, string>): string => {
   const defaults = new Map(snippetFields(command).map((f) => [f.name, f.default]));
-  return command.replace(fieldPattern, (_, name: string, fallback?: string) => values[name] || fallback?.trim() || defaults.get(name) || "");
+  let out = "";
+  let last = 0;
+  for (const m of command.matchAll(fieldPattern)) {
+    const before = command.slice(last, m.index);
+    out += before;
+    // inside "..." or '...' when the text so far has an odd number of that quote
+    const text = command.slice(0, m.index);
+    const inside = (text.match(/(?<!\\)"/g)?.length ?? 0) % 2 === 1 || (text.match(/'/g)?.length ?? 0) % 2 === 1;
+    out += quoteValue(values[m[1]] || m[2]?.trim() || defaults.get(m[1]) || "", inside);
+    last = (m.index ?? 0) + m[0].length;
+  }
+  return out + command.slice(last);
 };
 
 // how the snippet reads in the list: fields shown as <name>
@@ -68,11 +83,11 @@ export const exampleSnippets = `# terminalhinter snippets: type the start of a n
 # {{field}} asks for a value, {{field:default}} has a default. Nothing runs until you press Enter.
 - name: release
   description: Tag a version and push the tag
-  command: git tag v{{version}} && git push origin v{{version}}
+  command: 'git tag v{{version}} && git push origin v{{version}}'
 - name: freeport
   description: Stop whatever listens on a port
-  command: kill $(lsof -ti :{{port:3000}})
+  command: 'kill $(lsof -ti :{{port:3000}})'
 - name: wip
   description: Commit everything as work in progress
-  command: git add -A && git commit -m "wip: {{what}}"
+  command: 'git add -A && git commit -m "wip: {{what}}"'
 `;

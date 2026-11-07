@@ -642,19 +642,6 @@ exports[`parseCommand optionsSuggestedAfterVariadicArg 1`] = `
   "suggestions": [
     {
       "allNames": [
-        "-L",
-      ],
-      "args": undefined,
-      "description": "Follow all symbolic links to final target and list the file or directory the link references rather than the link itself.  This option cancels the -P option",
-      "hidden": undefined,
-      "icon": "🔗",
-      "insertValue": undefined,
-      "name": "-L",
-      "priority": 50,
-      "type": undefined,
-    },
-    {
-      "allNames": [
         "-l",
       ],
       "args": undefined,
@@ -663,6 +650,19 @@ exports[`parseCommand optionsSuggestedAfterVariadicArg 1`] = `
       "icon": "🔗",
       "insertValue": undefined,
       "name": "-l",
+      "priority": 50,
+      "type": undefined,
+    },
+    {
+      "allNames": [
+        "-L",
+      ],
+      "args": undefined,
+      "description": "Follow all symbolic links to final target and list the file or directory the link references rather than the link itself.  This option cancels the -P option",
+      "hidden": undefined,
+      "icon": "🔗",
+      "insertValue": undefined,
+      "name": "-L",
       "priority": 50,
       "type": undefined,
     },
