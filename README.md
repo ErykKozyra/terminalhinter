@@ -21,16 +21,34 @@ Works on macOS and Linux with zsh and bash. Windows and fish are experimental.
 
 ## What it does
 
-- **Enter walks into folders.** The list stays open with what is inside, so `cd` and a few Enters take you deep
-  into a project. The `↪` entry at the top runs the command where you are.
-- **It learns what you use.** Entries you pick often move up, recent ones more than old ones.
-- **You can set the order yourself.** Shift+Up / Shift+Down moves the selected entry, and the list keeps that
-  order next time.
-- **It knows your project.** Workspace packages for `pnpm --filter` and `yarn workspace`, tasks from `turbo.json`,
-  and the age and message of the last commit next to every git branch.
+**When something goes wrong**
+
+- **It offers the fix for the command that just failed.** A typo (`gti` → `git`), a missing upstream branch, a
+  branch or script with a near name, a folder that needs `-p`, a port that is taken. Tab puts it on the line;
+  nothing runs by itself.
+- **Ctrl+G explains a line before you run it**: every word with what it means, through pipes, `&&`, redirects and
+  `sudo`, with a warning for the parts that delete or overwrite things.
+- **Risky entries are marked red** and say why: `--force`, `reset --hard`, `rm -r`, a Make target tagged `[prod]`,
+  an ssh host called `PROD`.
+
+**It knows your project**
+
+- **Your tasks:** Makefile targets with their `##` descriptions and sections, just recipes, Taskfile tasks, docker
+  compose services, mise and deno tasks, package.json scripts, turbo tasks, workspace packages for `--filter`.
+- **git with context:** the age and message of the last commit next to every branch, stashes by what they hold,
+  the reflog after `git reset`, and your aliases complete like the command behind them.
+- **Ports:** `kill` starts with the processes listening on a port, with their folder (`:3000 next dev · ~/Dev/shop`).
+- **Package versions:** `npm i react@` lists the tags and the newest releases (pnpm, yarn and bun too).
+- **What you ran here:** typing the first word brings back whole commands you ran in this folder. Lines that look
+  like they hold a password or token are never stored.
+
+**And it gets out of the way**
+
+- **Enter walks into folders.** The list stays open with what is inside; the `↪` entry runs the command where you
+  are. `cd` also finds folders from anywhere through your bookmarks and zoxide.
+- **It learns what you use**, and Shift+Up / Shift+Down puts the list in your own order.
 - **Letters in order are enough.** `chkt` finds `checkout`.
-- **Your aliases and zsh functions** show up too: an alias with what it expands to, a function with the file it comes from.
-- **It stays out of the way.** Right after a space nothing is selected, so Enter just runs the command.
+- **Right after a space nothing is selected**, so Enter just runs the command.
 
 ## Keys
 
@@ -42,6 +60,8 @@ Works on macOS and Linux with zsh and bash. Windows and fish are experimental.
 | Shift+↑ ↓ | Move the selected entry in the list |
 | Esc | Hide the list until you type again |
 | Ctrl+Space | Show it again |
+| Ctrl+G | What each word of the line does |
+| Tab on an empty line | Take the fix offered after a failed command |
 
 On a Mac, Ctrl is the Control key (⌃), not Command.
 
@@ -55,8 +75,16 @@ On a Mac, Ctrl is the Control key (⌃), not Command.
 | `thint bookmark add` | Bookmark a folder, so `cd` offers it from anywhere |
 | `thint specs new` | Start your own suggestions for a command |
 | `thint order reset` | Forget an order you set with Shift+↑ ↓ |
+| `thint snippets new` | Start your snippets: commands with fields to fill in |
+| `thint migrate` | Move over from Kiro CLI, Amazon Q or Fig |
 | `thint update` | Install the newest version |
 | `thint doctor` | Check the installation and tell you how to fix it |
+
+## Coming from Kiro CLI or Fig
+
+Kiro CLI 3.0 dropped its autocomplete, and Fig is gone. terminalhinter gives you the same dropdown, locally and
+without an account. `thint migrate` takes the Kiro CLI, Amazon Q or Fig lines out of your shell files (keeping a
+copy of each file), and your own Fig specs in `~/.fig/autocomplete/build` can be loaded as they are.
 
 ## Your own suggestions
 
