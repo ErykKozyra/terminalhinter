@@ -13,7 +13,10 @@ const products = "Kiro CLI|Kiro|Amazon Q|Q|CodeWhisperer|Fig";
 // a comment like "# Kiro CLI pre block. Keep at the top of this file." and the line after it that loads their script
 const blockComment = new RegExp(`^\\s*#\\s*(${products})\\s+(pre|post)\\s+block\\b.*$`, "i");
 const theirScript =
-  /(kiro-cli|amazon-q|codewhisperer|\/\.fig\/|\.fig\/shell|fig\/shell)[^\n]*(zshrc|bashrc|bash_profile|zprofile|profile|config\.fish|\.zsh|\.bash|\.fish)/i;
+  /(kiro-cli|amazon-q|codewhisperer|\/\.fig\/|\.fig\/shell|fig\/shell)[^\n]*(zshrc|bashrc|bash_profile|zprofile|profile|config\.fish|\.zsh|\.bash|\.fish|\.sh\b)/i;
+// the first Fig versions wrapped their lines in #### FIG ENV VARIABLES #### ... #### END FIG ENV VARIABLES ####
+const oldFigStart = /^\s*####\s*FIG ENV VARIABLES\s*####\s*$/i;
+const oldFigEnd = /^\s*####\s*END FIG ENV VARIABLES\s*####\s*$/i;
 const theirInit = /^\s*(eval\s+"\$\((kiro-cli|q|fig|cw)\s+init\b[^)]*\)"|(kiro-cli|q|fig)\s+init\s+\S+\s+(pre|post)\s*\|\s*source)/;
 
 export type Change = { file: string; removed: string[]; backup?: string };
@@ -37,12 +40,23 @@ export const withoutTheirLines = (text: string): { text: string; removed: string
   const lines = text.split("\n");
   const kept: string[] = [];
   const removed: string[] = [];
+  // a file saved on Windows ends its lines in \r: they are matched without it, and kept with it
+  const plain = (l: string | undefined) => (l ?? "").replace(/\r$/, "");
   for (let i = 0; i < lines.length; i++) {
-    const line = lines[i];
+    const raw = lines[i];
+    const line = plain(raw);
+    if (oldFigStart.test(line)) {
+      const end = lines.findIndex((l, j) => j > i && oldFigEnd.test(plain(l)));
+      if (end !== -1) {
+        removed.push(...lines.slice(i, end + 1).map(plain));
+        i = end;
+        continue;
+      }
+    }
     if (blockComment.test(line)) {
       removed.push(line);
       // the line that loads their script right below the comment goes too
-      if (i + 1 < lines.length && (theirScript.test(lines[i + 1]) || theirInit.test(lines[i + 1]))) removed.push(lines[++i]);
+      if (i + 1 < lines.length && (theirScript.test(plain(lines[i + 1])) || theirInit.test(plain(lines[i + 1])))) removed.push(plain(lines[++i]));
       continue;
     }
     if (theirScript.test(line) && /\b(source|\.|builtin source|eval)\b/.test(line)) {
@@ -53,10 +67,10 @@ export const withoutTheirLines = (text: string): { text: string; removed: string
       removed.push(line);
       continue;
     }
-    kept.push(line);
+    kept.push(raw);
   }
   // no run of empty lines where a block was
-  return { text: kept.join("\n").replace(/\n{3,}/g, "\n\n"), removed };
+  return { text: kept.join("\n").replace(/(\r?\n){3,}/g, (run) => (run.includes("\r") ? "\r\n\r\n" : "\n\n")), removed };
 };
 
 export const planMigration = (files = shellFiles()): Change[] =>

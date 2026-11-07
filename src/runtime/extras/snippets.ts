@@ -22,40 +22,46 @@ const xdgConfigHome = process.env.XDG_CONFIG_HOME;
 export const snippetsFile = () =>
   process.env.THINT_SNIPPETS_FILE ?? path.join(xdgConfigHome ?? path.join(os.homedir(), ".config"), "terminalhinter", "snippets.yaml");
 
-let cache: { mtime: number; snippets: Snippet[]; error?: string } | undefined;
+let cache: { key: string; snippets: Snippet[]; error?: string } | undefined;
 
 export const loadSnippets = (): { snippets: Snippet[]; error?: string } => {
   const file = snippetsFile();
-  let mtime = -1;
+  let key: string;
   try {
-    mtime = fs.statSync(file).mtimeMs;
+    const stat = fs.statSync(file);
+    // the file, its time and its size: an edit within the same millisecond still counts
+    key = `${file}\u0000${stat.mtimeMs}\u0000${stat.size}`;
   } catch {
     return { snippets: [] };
   }
-  if (cache?.mtime === mtime) return cache;
+  if (cache?.key === key) return { snippets: cache.snippets, error: cache.error };
   try {
     const doc = YAML.parse(fs.readFileSync(file, "utf8")) as unknown;
     const list = Array.isArray(doc) ? doc : Array.isArray((doc as { snippets?: unknown })?.snippets) ? (doc as { snippets: unknown[] }).snippets : [];
     const snippets = list
       .filter((s): s is Snippet => s != null && typeof (s as Snippet).name === "string" && typeof (s as Snippet).command === "string")
       .map((s) => ({ name: s.name.trim(), command: s.command.trim(), description: typeof s.description === "string" ? s.description : undefined }));
-    cache = { mtime, snippets };
+    cache = { key, snippets };
   } catch (e) {
-    cache = { mtime, snippets: [], error: (e as Error).message };
+    cache = { key, snippets: [], error: (e as Error).message };
   }
-  return cache;
+  return cache.error == null ? { snippets: cache.snippets } : { snippets: cache.snippets, error: cache.error };
 };
 
 const fieldPattern = /\{\{\s*([A-Za-z_][\w-]*)\s*(?::([^}]*))?\}\}/g;
 
-// each field once, in the order it first appears
+// each field once, in the order it first appears; a field used twice takes its default from wherever it is given
 export const snippetFields = (command: string): Field[] => {
   const seen = new Map<string, Field>();
-  for (const m of command.matchAll(fieldPattern)) if (!seen.has(m[1])) seen.set(m[1], { name: m[1], default: m[2]?.trim() || undefined });
+  for (const m of command.matchAll(fieldPattern)) {
+    const given = m[2]?.trim() || undefined;
+    const known = seen.get(m[1]);
+    if (known == null) seen.set(m[1], { name: m[1], default: given });
+    else known.default ??= given;
+  }
   return [...seen.values()];
 };
 
-// a field used twice takes its default from wherever it is given
 // A value with spaces or shell characters gets single quotes, unless the field already sits inside quotes.
 const quoteValue = (value: string, insideQuotes: boolean) =>
   insideQuotes || value === "" || /^[\w@%+=:,./~-]+$/.test(value) ? value : `'${value.replace(/'/g, "'\\''")}'`;

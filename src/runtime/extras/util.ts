@@ -98,8 +98,10 @@ export const closest = (word: string, names: Iterable<string>, max = word.length
   let best: string | undefined;
   let bestScore = max + 1;
   const sorted = [...word].sort().join("");
-  for (const name of names) {
-    if (name === word) continue;
+  const all = [...names];
+  // a known name is not a typo: `git` not installed is not a reason to offer `gt`
+  if (all.includes(word)) return undefined;
+  for (const name of all) {
     const d = editDistance(word, name, max);
     if (d > max) continue;
     // on a tie, a name of the same length wins (a swap or a wrong letter, "gti" → git rather than gt), and one
@@ -121,13 +123,30 @@ const secretShapes = [
   /\b\w+:\/\/[^\s/:@]+:[^\s/@]+@/, // https://user:pass@host
   /\s-u\s*['"]?[^\s:'"]+:\S+/, // curl -u admin:s3cr3t
   /\b(mysql|mysqldump|mariadb)\b.*\s-p\S/, // mysql -pHunter2
-  /\b(docker|podman|helm|npm|buildah)\s+login\b.*\s(-p|--password)[\s=]?\S/,
+  /\b(docker|podman|helm|npm|buildah|oras|skopeo)\b[^|;&]*?\slogin\b.*\s(-p|--password)[\s=]?\S/, // helm registry login -p x
   /\bsshpass\b.*\s-p\s*\S/,
 ];
 
+// a run of 32+ letters and digits that switches between capitals, small letters and digits as often as random text
+// does; CamelCase file names and paths (src/components/UserProfileSettingsPanel2) switch far less
+const randomLooking = (word: string): boolean =>
+  word.split(/[/+_-]/).some((part) => {
+    if (part.length < 32 || !/\d/.test(part) || !/[a-z]/.test(part) || !/[A-Z]/.test(part)) return false;
+    const kind = (c: string) => (/\d/.test(c) ? 0 : /[a-z]/.test(c) ? 1 : 2);
+    let changes = 0;
+    for (let i = 1; i < part.length; i++) if (kind(part[i]) !== kind(part[i - 1])) changes++;
+    return changes / part.length >= 0.3;
+  });
+
+// tokens that announce themselves: GitHub, GitLab, OpenAI and Anthropic, Slack, AWS access keys, Google API keys
+const knownTokens =
+  /\b(gh[pousr]_[A-Za-z0-9]{20,}|github_pat_\w{20,}|glpat-[\w-]{20,}|sk-(?:proj-|ant-)?[\w-]{20,}|xox[abprs]-[\w-]{10,}|AKIA[0-9A-Z]{16}|AIza[\w-]{35})/;
+
 export const looksSecret = (command: string): boolean =>
   secretShapes.some((shape) => shape.test(command)) ||
-  /(--?(token|password|passwd|secret|api[-_]?key|auth)[= ]\S)|(\b[A-Z0-9_]*(TOKEN|SECRET|PASSWORD|PASSWD|API_?KEY|PRIVATE_KEY)[A-Z0-9_]*=\S)|(\b(ghp|gho|github_pat|sk|xox[abp]|AKIA)[-_A-Za-z0-9]{12,})/i.test(
+  knownTokens.test(command) ||
+  // --token x, --password=x, and NAME_TOKEN=x / api_key=x (a whole word, so --tokenizer=gpt2 is not one)
+  /(--?(token|password|passwd|secret|api[-_]?key|auth)[= ]\S)|(\b[A-Z0-9_]*(TOKEN|SECRET|PASSWORD|PASSWD|API_?KEY|PRIVATE_KEY)(_[A-Z0-9]+)*=\S)/i.test(
     command,
   ) ||
-  /\b(?=[A-Za-z0-9+/_-]*\d)(?=[A-Za-z0-9+/_-]*[a-z])(?=[A-Za-z0-9+/_-]*[A-Z])[A-Za-z0-9+/_-]{32,}\b/.test(command);
+  command.split(/[\s"'=:@]+/).some(randomLooking);

@@ -157,7 +157,7 @@ export const composeServices = (dir: string): Task[] => {
   const file = findUp(dir, composeFiles);
   if (file == null) return [];
   try {
-    const doc = YAML.parse(readText(file)) as { services?: Record<string, { image?: string; build?: unknown; container_name?: string }> };
+    const doc = YAML.parse(readText(file), { merge: true }) as { services?: Record<string, { image?: string; build?: unknown; container_name?: string }> };
     return Object.entries(doc?.services ?? {}).map(([name, s]) => ({
       name,
       description: `service · ${s?.image ?? (s?.build != null ? "built here" : "")}`.replace(/ · $/, ""),

@@ -665,6 +665,16 @@ const wrappers: Record<string, string> = {
   watch: "runs the rest again every few seconds",
 };
 
+// `ps aux`: the letters BSD ps takes without a dash, which the spec (written for the dashed forms) does not have
+const bsdPsLetters: Record<string, string> = {
+  a: "processes of every user",
+  u: "with the user, CPU and memory use",
+  x: "also processes without a terminal",
+  w: "wide output",
+  f: "as a tree",
+  e: "with the environment",
+};
+
 // splits a line at |, &&, ||, ; and redirects, outside quotes
 const splitLine = (line: string): string[] => {
   const parts: string[] = [];
@@ -749,6 +759,39 @@ const explainSegment = async (segment: string, shell: Shell, entries: Suggestion
   let persistent: Fig.Option[] = (node?.options ?? []).filter((o) => o.isPersistent);
   let args = getArgs(node?.args);
   const rest = expanded.slice(1);
+  const namesOfOption = (o: Fig.Option | Fig.Subcommand) => (Array.isArray(o.name) ? o.name : [o.name]);
+  // -rf, -xzvf, and the old style without a dash (ps aux, tar xzf): every letter is an option of its own, or the
+  // first one picks the mode (tar -x) and the rest are options of that mode. The last letter can take the next word
+  // as its value: tar -xzf file.tgz. Gives back how many words it used, 0 when the letters are not such a bundle.
+  const explainBundle = async (word: string, next: string | undefined): Promise<number> => {
+    if (node == null) return 0;
+    const letters = [...word.replace(/^-/, "")];
+    const find = (options: Fig.Option[], l: string) => options.find((o) => namesOfOption(o).includes(`-${l}`));
+    let options = [...persistent, ...(node.options ?? [])];
+    const parts: string[] = [];
+    let found = letters.map((l) => find(options, l));
+    if (!found.every((o) => o != null)) {
+      const mode = (await genSubcommand(`-${letters[0]}`, node)) ?? (await genSubcommand(letters[0], node));
+      if (mode == null) return 0;
+      options = [...persistent, ...(mode.options ?? [])];
+      found = letters.slice(1).map((l) => find(options, l));
+      if (!found.every((o) => o != null)) return 0;
+      parts.push(`-${letters[0]}: ${mode.description ?? ""}`);
+      path.push(namesOfOption(mode)[0]);
+      node = mode;
+      persistent = [...persistent, ...(mode.options ?? []).filter((o) => o.isPersistent)];
+      args = getArgs(mode.args);
+      letters.shift();
+    }
+    parts.push(...letters.map((l, j) => `-${l}: ${found[j]?.description ?? ""}`));
+    add(word, parts.join("; "), riskOfEntry(path, word));
+    const valueArgs = getArgs(found.at(-1)?.args).filter((a) => !a.isOptional);
+    if (valueArgs.length > 0 && next != null) {
+      add(next, `value of -${letters.at(-1)}: ${valueArgs[0].description ?? valueArgs[0].name ?? "value"}`, riskOfValue(next));
+      return 2;
+    }
+    return 1;
+  };
   for (let i = 0; i < rest.length; i++) {
     const word = rest[i].token;
     if (node == null) {
@@ -760,11 +803,10 @@ const explainSegment = async (segment: string, shell: Shell, entries: Suggestion
         word.startsWith("--") && word.includes("=") ? [word.slice(0, word.indexOf("=")), word.slice(word.indexOf("=") + 1)] : [word, undefined];
       const options = [...persistent, ...(node.options ?? [])];
       const option = options.find((o) => (Array.isArray(o.name) ? o.name : [o.name]).includes(flag));
-      // -rf: every letter is an option of its own
       if (option == null && /^-[a-zA-Z]{2,}$/.test(word)) {
-        const letters = [...word.slice(1)].map((l) => options.find((o) => (Array.isArray(o.name) ? o.name : [o.name]).includes(`-${l}`)));
-        if (letters.every((o) => o != null)) {
-          add(word, letters.map((o, j) => `-${word[j + 1]}: ${o?.description ?? ""}`).join("; "), riskOfEntry(path, word));
+        const used = await explainBundle(word, rest[i + 1]?.token);
+        if (used > 0) {
+          i += used - 1;
           continue;
         }
       }
@@ -784,6 +826,18 @@ const explainSegment = async (segment: string, shell: Shell, entries: Suggestion
       persistent = [...persistent, ...(sub.options ?? []).filter((o) => o.isPersistent)];
       args = getArgs(sub.args);
       continue;
+    }
+    // ps aux, tar xzf a.tgz: commands that take their letters without a dash
+    if (i === 0 && path[0] === "ps" && /^[auxwfe]+$/.test(word)) {
+      add(word, [...word].map((l) => `${l}: ${bsdPsLetters[l]}`).join("; "));
+      continue;
+    }
+    if (i === 0 && ["tar", "ps", "ar"].includes(path[0]) && /^[a-zA-Z]{2,}$/.test(word)) {
+      const used = await explainBundle(word, rest[i + 1]?.token);
+      if (used > 0) {
+        i += used - 1;
+        continue;
+      }
     }
     const arg = args.at(0);
     add(word, arg ? `${arg.name ?? "argument"}${arg.description ? `: ${arg.description}` : ""}` : "argument", riskOfValue(word));
