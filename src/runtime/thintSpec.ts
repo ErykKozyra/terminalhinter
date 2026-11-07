@@ -99,6 +99,23 @@ export const thintSpec: Fig.Subcommand = {
         { name: "reset", description: "Forget an order", args: { name: "words", isOptional: true, isVariadic: true } },
       ],
     },
+    {
+      name: "migrate",
+      description: "Move over from Kiro CLI, Amazon Q or Fig",
+      options: [
+        { name: ["-y", "--yes"], description: "Take their lines out without asking" },
+        { name: ["-n", "--dry-run"], description: "Only show what would change" },
+      ],
+    },
+    {
+      name: "snippets",
+      description: "Commands with fields to fill in",
+      subcommands: [
+        { name: "list", description: "Show your snippets" },
+        { name: "new", description: "Start the file with examples" },
+        { name: "path", description: "Where the snippets file is" },
+      ],
+    },
     { name: "doctor", description: "Check the installation" },
     { name: "update", description: "Install the newest version", options: [{ name: ["-f", "--force"], description: "Install again even when up to date" }] },
     { name: "reinit", description: "Regenerate resources after an update" },

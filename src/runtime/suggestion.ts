@@ -130,6 +130,8 @@ const toSuggestion = (suggestion: Fig.Suggestion, name?: string, type?: Fig.Sugg
     type: suggestion.type,
     hidden: suggestion.hidden,
     args: formatArgs(suggestion),
+    ...((suggestion as { risk?: string }).risk ? { risk: (suggestion as { risk?: string }).risk } : {}),
+    ...((suggestion as { kind?: Suggestion["kind"] }).kind ? { kind: (suggestion as { kind?: Suggestion["kind"] }).kind } : {}),
   };
 };
 
@@ -295,6 +297,8 @@ function filter<T extends Fig.BaseSuggestion & { name?: Fig.SingleOrArray<string
         type: s.type,
         hidden: s.hidden,
         args: formatArgs(s),
+        ...((s as { risk?: string }).risk ? { risk: (s as { risk?: string }).risk } : {}),
+        ...((s as { kind?: Suggestion["kind"] }).kind ? { kind: (s as { kind?: Suggestion["kind"] }).kind } : {}),
       };
     })
     .filter((s) => s != null) as Suggestion[];

@@ -19,7 +19,7 @@ interface ICellData extends IBufferCell {
   extended: { underlineStyle: number };
   hasExtendedAttrs(): number;
 }
-import { CommandManager, CommandState } from "./commandManager.js";
+import { CommandManager, CommandState, Failure } from "./commandManager.js";
 import log from "../utils/log.js";
 import { gitBashPath } from "../utils/shell.js";
 import styles from "ansi-styles";
@@ -188,6 +188,9 @@ export class ISTerm implements IPty {
       case IstermOscPt.PromptEnded:
         this.#commandManager.handlePromptEnd();
         break;
+      case IstermOscPt.ExitStatus:
+        this.#commandManager.handleExitStatus(Number(data.split(";").at(1)), this.cwd);
+        break;
       case IstermOscPt.CurrentWorkingDirectory: {
         const cwd = data.split(";").at(1);
         if (cwd != null) {
@@ -232,6 +235,10 @@ export class ISTerm implements IPty {
   write(data: string): void {
     log.debug({ msg: "reading data", data, bytes: Uint8Array.from([...data].map((c) => c.charCodeAt(0))) });
     this.#pty.write(data);
+  }
+
+  getLastFailure(): Failure | undefined {
+    return this.#commandManager.getLastFailure();
   }
 
   getCommandState(): CommandState {

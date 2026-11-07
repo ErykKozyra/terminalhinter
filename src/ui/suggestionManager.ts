@@ -13,9 +13,15 @@ import { calculateReplacement, applyReplacement } from "../runtime/replacement.j
 import { getCommandCacheKey } from "../runtime/parser.js";
 import { initializeRuntime } from "../runtime/initialize.js";
 import { hasCustomOrder } from "../runtime/order.js";
+import { Field, fillSnippet, snippetFields } from "../runtime/extras/snippets.js";
 
 type SuggestionRuntime = Pick<Awaited<ReturnType<typeof initializeRuntime>>, "getSuggestions"> &
-  Partial<Pick<Awaited<ReturnType<typeof initializeRuntime>>, "clearTransientSuggestionState" | "recordExecutedCommand" | "reorderSuggestions">>;
+  Partial<
+    Pick<
+      Awaited<ReturnType<typeof initializeRuntime>>,
+      "clearTransientSuggestionState" | "recordExecutedCommand" | "reorderSuggestions" | "getFixes" | "explainCommand"
+    >
+  >;
 
 const getMaxSuggestions = () => getConfig().maxSuggestions ?? 6;
 const minBoxWidth = 36;
@@ -78,6 +84,11 @@ export class SuggestionManager {
   #refreshRequested = false; // Ctrl+Space asked for the list
   #reordered = false; // you moved an entry in this session, so the reorder hint is no longer needed
   #blobInputVersion = 0; // #inputVersion when the current list was requested
+  #shownFailureId = 0; // the failed command whose fixes were already offered
+  #explainRequested = false; // Ctrl+G asked what the words of the line mean
+  #openedByUser = false; // with showListOn = "tab", the list only appears after Tab or Ctrl+Space
+  // filling in the fields of a snippet: the typed text goes into the field, not to the shell
+  #fill?: { command: string; fields: Field[]; index: number; values: Record<string, string>; buffer: string; replaceLength: number };
 
   constructor(terminal: ISTerm, shell: Shell, runtime?: Promise<SuggestionRuntime>) {
     this.#term = terminal;
@@ -123,6 +134,24 @@ export class SuggestionManager {
     const commandState = this.#term.getCommandState();
     const commandText = commandState.commandText;
     const commandKey = commandText ? `${this.#term.cwd}\u0000${getCommandCacheKey(commandText, this.#shell)}` : "";
+    if (this.#fill != null) return false;
+    // the fixes belong to the empty line; once you type, they go
+    if (commandText && this.#suggestBlob?.mode === "fix") this.#suggestBlob = undefined;
+    if (!commandText) {
+      this.#openedByUser = false;
+      this.#explainRequested = false;
+      // the fixes for a command that just failed stay while the line is empty
+      if (this.#suggestBlob?.mode === "fix" && !this.#hideSuggestions && !commandState.hasOutput) return false;
+      const fixes = await this._loadFixes(commandState.hasOutput === true);
+      if (fixes != null) return fixes;
+    }
+    if (this.#explainRequested && commandText) return this._loadExplanation(commandText, commandKey);
+    if (getConfig().showListOn === "tab" && !this.#openedByUser && commandText) {
+      const changed = this.#suggestBlob != null;
+      this.#suggestBlob = undefined;
+      this.#commandKey = "";
+      return changed;
+    }
     if (commandKey.length !== 0 && commandKey === this.#commandKey && !this.#hideSuggestions && !commandState.hasOutput) {
       // same text as the list on screen (e.g. the cursor moved), so the list is still right for it
       this.#blobInputVersion = this.#inputVersion;
@@ -170,6 +199,46 @@ export class SuggestionManager {
       if (this.#abortController === abortController) {
         this.#abortController = undefined;
       }
+    }
+  }
+
+  // Right after a command failed, an empty line shows fixes for it, once.
+  private async _loadFixes(hasOutput: boolean): Promise<boolean | undefined> {
+    const failure = this.#term.getLastFailure?.();
+    if (!getConfig().fixSuggestions || hasOutput || failure == null || failure.id === this.#shownFailureId) return;
+    this.#shownFailureId = failure.id;
+    const ownVersion = ++this.#requestVersion;
+    try {
+      const runtime = await this._getRuntime();
+      const blob = await runtime.getFixes?.(failure);
+      log.debug({ msg: "fixes found", count: blob?.suggestions.length, failure });
+      if (blob == null || ownVersion !== this.#requestVersion || this.#term.getCommandState().commandText) return;
+      this.#suggestBlob = blob;
+      this.#commandKey = "";
+      this.#blobInputVersion = this.#inputVersion;
+      this._resetSelection();
+      return true;
+    } catch (e) {
+      log.debug({ msg: "could not find fixes", e: (e as Error).message });
+      return;
+    }
+  }
+
+  private async _loadExplanation(commandText: string, commandKey: string): Promise<boolean> {
+    this.#explainRequested = false;
+    const ownVersion = ++this.#requestVersion;
+    try {
+      const runtime = await this._getRuntime();
+      const blob = await runtime.explainCommand?.(commandText, this.#shell);
+      if (ownVersion !== this.#requestVersion) return false;
+      this.#suggestBlob = blob;
+      this.#commandKey = commandKey;
+      this.#blobInputVersion = this.#inputVersion;
+      this._resetSelection();
+      return true;
+    } catch (e) {
+      log.debug({ msg: "could not explain the command", e: (e as Error).message });
+      return false;
     }
   }
 
@@ -236,6 +305,11 @@ export class SuggestionManager {
     const icon = (color: string, nerdGlyph: string, mark: string) => (style === "nerd" ? " " + chalk.hex(color)(nerdGlyph) + "  " : badge(color, mark));
 
     if (suggestion.execute) return style === "plain" ? " " + chalk.hex(tint(ICON_COLORS.execute))("■") + "  " : badge(ICON_COLORS.execute, ">");
+    // deletes, force-pushes or looks like production: red, whatever kind of entry it is
+    if (suggestion.risk) return style === "plain" ? " " + chalk.hex(ICON_COLORS.execute)("■") + "  " : badge(ICON_COLORS.execute, "!");
+    if (suggestion.kind === "recent") return icon(ICON_COLORS.star, NF.star, "↺");
+    if (suggestion.kind === "snippet") return icon(ICON_COLORS.subcommand, NF.tag, "{");
+    if (suggestion.kind === "fix") return icon(ICON_COLORS.value, NF.star, "✓");
     if (suggestion.type === "folder")
       return style === "plain" || style === "marks" ? " " + chalk.hex(tint(ICON_COLORS.folder))("■") + "  " : icon(ICON_COLORS.folder, NF.folder, "/");
     if (suggestion.type === "file") return icon(fileColor(suggestion.name, theme), NF.file, "≡");
@@ -327,6 +401,23 @@ export class SuggestionManager {
   // true when the row shows the whole description, so the footer does not have to repeat it
   private _footerLines(active: Suggestion | undefined, argumentDescription: string | undefined, innerWidth: number, nameColumn: number): string[] {
     const width = innerWidth - 2;
+    const lines = this._footerLinesWithoutRisk(active, argumentDescription, innerWidth, nameColumn);
+    if (active?.risk) return [...wrapText(`⚠ ${active.risk}`, width, 2), ...lines].slice(0, maxFooterLines);
+    return lines;
+  }
+
+  private _footerLinesWithoutRisk(active: Suggestion | undefined, argumentDescription: string | undefined, innerWidth: number, nameColumn: number): string[] {
+    const width = innerWidth - 2;
+    const mode = this.#suggestBlob?.mode;
+    if (active == null && mode === "fix") return ["the last command failed · tab puts the fix on the line · esc hides it"];
+    if (active == null && mode === "explain") {
+      const notes = this.#suggestBlob?.notes ?? [];
+      return notes.length > 0 ? notes.flatMap((n) => wrapText(`⚠ ${n}`, width, 1)) : ["what each word does · ↑↓ to read more · esc closes"];
+    }
+    if (mode === "fill" && this.#fill != null) {
+      const preview = fillSnippet(this.#fill.command, { ...this.#fill.values, [this.#fill.fields[this.#fill.index]?.name ?? ""]: this.#fill.buffer || "…" });
+      return [...wrapText(preview, width, 2), "tab next field · enter when done · esc cancels"];
+    }
     if (active == null) return argumentDescription ? [argumentDescription] : [];
     // the ↪ entry has no description column, so what it does goes in the footer
     if (active.execute) return active.description ? wrapText(active.description, width, maxFooterLines) : [];
@@ -352,6 +443,11 @@ export class SuggestionManager {
     const theme = activeTheme();
     return " " + chalk.italic.hex(theme.footer)(shown) + " ".repeat(Math.max(gap, 0)) + (counter ? " " + chalk.hex(theme.counter)(counter) : "") + " ";
   }
+  // the fixes for a failed command are the one list shown on an empty line
+  showsOnEmptyLine(): boolean {
+    return this.#suggestBlob?.mode === "fix";
+  }
+
   // true once after Ctrl+Space asked to open the list, so the UI loads it without waiting for new output
   consumeRefreshRequest(): boolean {
     const requested = this.#refreshRequested;
@@ -487,6 +583,51 @@ export class SuggestionManager {
   private _update(keyPress: KeyPress, allowBindings: boolean): boolean {
     const { name, shift, ctrl } = keyPress;
 
+    if (this.#fill != null) return this._updateFill(keyPress);
+
+    // Ctrl+G: what each word of the line does; again to close
+    if (ctrl && name == "g") {
+      if (this.#suggestBlob?.mode === "explain") {
+        this.#suggestBlob = undefined;
+        this.#hideSuggestions = true;
+      } else if (this.#term.getCommandState().commandText) {
+        this.#explainRequested = true;
+        this.#hideSuggestions = false;
+        this.#commandKey = "";
+        this.#refreshRequested = true;
+      } else return false;
+      return true;
+    }
+    if (this.#suggestBlob?.mode === "explain") {
+      const { nextSuggestion, previousSuggestion, dismissSuggestions } = getConfig().bindings;
+      if (name == nextSuggestion.key || name == previousSuggestion.key) {
+        const count = this.#suggestBlob.suggestions.length;
+        this.#navigated = true;
+        this.#activeSuggestionIdx = Math.max(-1, Math.min(this.#activeSuggestionIdx + (name == nextSuggestion.key ? 1 : -1), count - 1));
+        return true;
+      }
+      // any other key closes it and does what it always does
+      this.#suggestBlob = undefined;
+      if (name == dismissSuggestions.key) {
+        this.#hideSuggestions = true;
+        return true;
+      }
+      this.#commandKey = "";
+      if (name == "return") {
+        this._recordExecution();
+        this.#term.clearCommand();
+      }
+      return false;
+    }
+    // showListOn = "tab": Tab opens the list for the word being typed
+    if (name == "tab" && !shift && !ctrl && this.#suggestBlob == null && getConfig().showListOn === "tab" && this.#term.getCommandState().commandText) {
+      this.#openedByUser = true;
+      this.#hideSuggestions = false;
+      this.#commandKey = "";
+      this.#refreshRequested = true;
+      return true;
+    }
+
     // Ctrl+Space (sent as ^@, which readline names "`") opens the list on demand, or closes it when it is open
     if (ctrl && (name == "`" || name == "space")) {
       if (this.#suggestBlob != null && allowBindings) {
@@ -495,6 +636,7 @@ export class SuggestionManager {
       } else {
         this.#hideSuggestions = false;
         this.#commandKey = "";
+        this.#openedByUser = true;
         this.#refreshRequested = true;
       }
       return true;
@@ -555,6 +697,8 @@ export class SuggestionManager {
       this.#activeSuggestionIdx = Math.min(this.#activeSuggestionIdx + 1, items.length - 1);
     } else if (name == "return" && !shift && !ctrl) {
       return this._handleEnter(items);
+    } else if (name == "tab" && !shift && !ctrl && getConfig().tabBehavior === "shell" && this.#suggestBlob.mode == null) {
+      if (!this._shellTab(items)) return false;
     } else if ((name == acceptKey && shift == !!acceptShift && ctrl == !!acceptCtrl) || (name == "tab" && !shift && !ctrl)) {
       const idx = Math.max(this.#activeSuggestionIdx, 0);
       const suggestion = items.at(idx)?.execute ? items.at(idx + 1) : items.at(idx);
@@ -566,6 +710,108 @@ export class SuggestionManager {
       return false;
     }
     log.debug({ msg: "handled keypress", ...keyPress });
+    return true;
+  }
+
+  // Like a shell: Tab adds the part all entries share; when nothing more is shared, it walks down the list, and with
+  // a single entry it accepts it.
+  private _shellTab(items: Suggestion[]): boolean {
+    const entries = items.filter((s) => !s.execute);
+    if (entries.length === 0) return false;
+    if (entries.length === 1) return this._accept(entries[0]);
+    const partial = this._partialText();
+    const names = entries.map((s) => s.insertValue?.trimEnd() ?? s.name);
+    let common = names[0];
+    for (const n of names) {
+      let i = 0;
+      while (i < common.length && i < n.length && common[i] === n[i]) i++;
+      common = common.slice(0, i);
+    }
+    const token = this.#suggestBlob?.activeToken;
+    const typed = token != null && !token.complete ? token.token : "";
+    if (common.length > typed.length && common.startsWith(typed) && !token?.isPath) {
+      this.#term.write(common.slice(typed.length));
+      return true;
+    }
+    if (partial.length > 0 && common.length > partial.length && token?.isPath && common.startsWith(partial)) {
+      this.#term.write(common.slice(partial.length));
+      return true;
+    }
+    this.#navigated = true;
+    this.#activeSuggestionIdx = (this.#activeSuggestionIdx + 1) % items.length;
+    if (items.at(this.#activeSuggestionIdx)?.execute) this.#activeSuggestionIdx = (this.#activeSuggestionIdx + 1) % items.length;
+    return true;
+  }
+
+  // a snippet without fields goes on the line at once; with fields, the list asks for each of them first
+  private _startSnippet(command: string): boolean {
+    const token = this.#suggestBlob?.activeToken;
+    const replaceLength = token != null && !token.complete ? token.tokenLength : 0;
+    const fields = snippetFields(command);
+    if (fields.length === 0) {
+      this.#term.write("\u007F".repeat(replaceLength) + fillSnippet(command, {}));
+      return true;
+    }
+    this.#fill = { command, fields, index: 0, values: {}, buffer: fields[0].default ?? "", replaceLength };
+    this._showFill();
+    return true;
+  }
+
+  private _showFill() {
+    const fill = this.#fill;
+    if (fill == null) return;
+    this.#suggestBlob = {
+      mode: "fill",
+      suggestions: fill.fields.map((f, i) => ({
+        name: f.name,
+        allNames: [f.name],
+        icon: "✂",
+        kind: "snippet",
+        priority: 0,
+        description: i === fill.index ? `${fill.buffer}▏` : fill.values[f.name] ?? (f.default ? `${f.default} (default)` : ""),
+      })),
+    };
+    this.#activeSuggestionIdx = fill.index;
+    this.#scrollTop = 0;
+  }
+
+  private _updateFill(keyPress: KeyPress): boolean {
+    const fill = this.#fill!;
+    const { name, ctrl, sequence } = keyPress;
+    if (name == "escape" || (ctrl && name == "c")) {
+      this.#fill = undefined;
+      this.#suggestBlob = undefined;
+      this.#hideSuggestions = true;
+      return true;
+    }
+    if (name == "tab" || name == "return" || (name == "down" && !ctrl)) {
+      fill.values[fill.fields[fill.index].name] = fill.buffer || fill.fields[fill.index].default || "";
+      if (fill.index + 1 < fill.fields.length && !(name == "return" && keyPress.shift)) {
+        fill.index += 1;
+        const next = fill.fields[fill.index];
+        fill.buffer = fill.values[next.name] ?? next.default ?? "";
+        this._showFill();
+        return true;
+      }
+      // every field filled: the finished command replaces the snippet name on the line, ready to run
+      this.#fill = undefined;
+      this.#suggestBlob = undefined;
+      this.#hideSuggestions = true;
+      this.#term.write("\u007F".repeat(fill.replaceLength) + fillSnippet(fill.command, fill.values));
+      return true;
+    }
+    if (name == "up" && fill.index > 0) {
+      fill.values[fill.fields[fill.index].name] = fill.buffer;
+      fill.index -= 1;
+      fill.buffer = fill.values[fill.fields[fill.index].name] ?? "";
+    } else if (name == "backspace") {
+      fill.buffer = [...fill.buffer].slice(0, -1).join("");
+    } else if (ctrl && name == "u") {
+      fill.buffer = "";
+    } else if (!ctrl && sequence && sequence.length > 0 && !sequence.startsWith("\u001b") && sequence >= " ") {
+      fill.buffer += sequence;
+    }
+    this._showFill();
     return true;
   }
 
@@ -636,7 +882,8 @@ export class SuggestionManager {
   }
 
   private _accept(suggestion: Suggestion | undefined): boolean {
-    if (suggestion == null || suggestion.execute) return false;
+    if (suggestion == null || suggestion.execute || suggestion.kind === "explain") return false;
+    if (suggestion.snippet != null) return this._startSnippet(suggestion.snippet);
     const action = calculateReplacement(this.#suggestBlob?.activeToken, suggestion);
     if (action == null) return false;
     const token = this.#suggestBlob?.activeToken;

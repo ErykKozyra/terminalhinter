@@ -13,6 +13,10 @@ import { execFile } from "node:child_process";
 import { Suggestion } from "./model.js";
 import { SuggestionIcons } from "./suggestion.js";
 import log from "../utils/log.js";
+import { augmentGit } from "./extras/git.js";
+import { pidGenerator, portGenerator } from "./extras/processes.js";
+import { composeGenerator, composeSubcommands, justGenerator, makeGenerator, miseGenerator, taskGenerator } from "./extras/tasks.js";
+import { versionGenerator } from "./extras/versions.js";
 
 const findUp = (start: string, names: string[]): string | undefined => {
   let dir = path.resolve(start);
@@ -220,10 +224,52 @@ export const augmentSpec = <T extends Fig.Spec | undefined>(command: string, spe
         run.args = arg;
       }
     }
+    augmentMore(command, root);
   } catch (e) {
     log.debug({ msg: "could not add project suggestions to spec", command, e: (e as Error).message });
   }
   return spec;
+};
+
+const subOf = (node: SpecNode | undefined, ...path: string[]): SpecNode | undefined => {
+  let current = node;
+  for (const part of path) current = current?.subcommands?.find((s) => namesOf(s).includes(part));
+  return current;
+};
+
+// puts a generator first on the first argument of a node (creating that argument when the spec has none)
+const prepend = (node: SpecNode | undefined, generator: Fig.Generator, argName = "value", replace = false) => {
+  if (node == null) return;
+  const first = (Array.isArray(node.args) ? node.args.at(0) : node.args) ?? ({ name: argName, isOptional: true } as Fig.Arg);
+  const existing = replace || first.generators == null ? [] : Array.isArray(first.generators) ? first.generators : [first.generators];
+  if (existing.includes(generator)) return;
+  (first as { generators?: Fig.Generator[] }).generators = [generator, ...existing];
+  if (node.args == null) node.args = first;
+  else if (Array.isArray(node.args)) node.args[0] = first;
+  else node.args = first;
+};
+
+// git stashes, worktrees, reflog and aliases; ports and processes; project tasks; package versions
+const augmentMore = (command: string, root: SpecNode) => {
+  if (command === "git") augmentGit(root as Parameters<typeof augmentGit>[0]);
+  if (command === "kill" || command === "pkill") prepend(root, pidGenerator, "pid");
+  if (command === "lsof") {
+    const option = (root.options ?? []).find((o) => namesOf(o).includes("-i"));
+    if (option != null) prepend(option, portGenerator(":"), "address");
+  }
+  if (command === "kill-port" || command === "fkill") prepend(root, portGenerator(""), "port");
+  if (command === "make") prepend(root, makeGenerator, "target", true);
+  if (command === "just") prepend(root, justGenerator, "recipe");
+  if (command === "task") prepend(root, taskGenerator, "task");
+  if (command === "mise") {
+    for (const node of [subOf(root, "run"), subOf(root, "r"), subOf(root, "tasks", "run")]) prepend(node, miseGenerator, "task");
+  }
+  if (command === "docker" || command === "docker-compose") {
+    const compose = command === "docker" ? subOf(root, "compose") : root;
+    for (const name of composeSubcommands) prepend(subOf(compose, name), composeGenerator, "service");
+  }
+  const installs: Record<string, string[]> = { npm: ["install", "i", "add"], pnpm: ["add", "install", "i"], yarn: ["add"], bun: ["add", "install", "i"] };
+  for (const name of installs[command] ?? []) prepend(subOf(root, name), versionGenerator, "package");
 };
 
 // git: "Remote branch" becomes "Remote branch · 2 days ago · fix login redirect"

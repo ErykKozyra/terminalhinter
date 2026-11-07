@@ -4,6 +4,7 @@
 // Folder jumps for `cd`: your bookmarks and the folders you visit most, from anywhere on disk, offered after the
 // folders of the current directory. `cd tur` from your home folder finds ~/Work/clones/turbo-cloned.
 
+import { execFileSync } from "node:child_process";
 import fs from "node:fs";
 import fsAsync from "node:fs/promises";
 import os from "node:os";
@@ -69,6 +70,37 @@ const toSuggestion = (dir: string, description: string, priority: number): Sugge
 
 // `partial` is the word being typed after `cd` (empty right after the space); paths with a slash are left to the
 // normal folder suggestions.
+// The folders zoxide (or z) knows, best first. Read at most every ten seconds; an empty list when neither is there.
+let zoxideCache: { at: number; dirs: string[] } | undefined;
+export const zoxideFolders = (now = Date.now()): string[] => {
+  if (zoxideCache != null && now - zoxideCache.at < 10_000) return zoxideCache.dirs;
+  let dirs: string[] = [];
+  if (process.env.THINT_NO_ZOXIDE !== "1") {
+    try {
+      const out = execFileSync("zoxide", ["query", "--list", "--score"], { timeout: 800, encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] });
+      dirs = out
+        .split("\n")
+        .map((l) => l.trim().match(/^[\d.]+\s+(.+)$/)?.[1])
+        .filter((d): d is string => d != null);
+    } catch {
+      // z keeps "path|rank|time" lines in ~/.z
+      try {
+        dirs = fs
+          .readFileSync(process.env._Z_DATA ?? path.join(os.homedir(), ".z"), "utf8")
+          .split("\n")
+          .map((l) => l.split("|"))
+          .filter((p) => p.length >= 3)
+          .sort((a, b) => Number(b[1]) - Number(a[1]))
+          .map((p) => p[0]);
+      } catch {
+        dirs = [];
+      }
+    }
+  }
+  zoxideCache = { at: now, dirs };
+  return dirs;
+};
+
 export const jumpSuggestions = (partial: string, cwd: string, alreadyShown: Suggestion[]): Suggestion[] => {
   if (partial.includes("/") || partial.startsWith(".") || partial.startsWith("~")) return [];
   const query = partial.toLowerCase();
@@ -93,6 +125,18 @@ export const jumpSuggestions = (partial: string, cwd: string, alreadyShown: Sugg
     }
     seen.add(value);
     out.push(toSuggestion(value, "frequent folder", 65));
+  }
+  // folders from zoxide or z, when you use one of them
+  for (const dir of zoxideFolders()) {
+    if (out.length >= maxJumps) break;
+    if (seen.has(dir) || !matches(path.basename(dir), query)) continue;
+    try {
+      if (!fs.statSync(dir).isDirectory()) continue;
+    } catch {
+      continue;
+    }
+    seen.add(dir);
+    out.push(toSuggestion(dir, "from zoxide", 60));
   }
   return out.slice(0, maxJumps);
 };

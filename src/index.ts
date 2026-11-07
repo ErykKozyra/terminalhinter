@@ -18,6 +18,8 @@ import theme from "./commands/theme.js";
 import order from "./commands/order.js";
 import config from "./commands/config.js";
 import update from "./commands/update.js";
+import migrate from "./commands/migrate.js";
+import snippets from "./commands/snippets.js";
 import { action, supportedShells } from "./commands/root.js";
 import { getVersion } from "./utils/version.js";
 
@@ -55,6 +57,8 @@ program.addCommand(order);
 program.addCommand(config);
 program.addCommand(doctor);
 program.addCommand(update);
+program.addCommand(migrate);
+program.addCommand(snippets);
 program.addCommand(specs);
 program.addCommand(complete);
 program.addCommand(uninstall);

@@ -17,6 +17,9 @@ type TerminalCommand = {
   persistentOutput?: boolean;
 } & CommandState;
 
+// a command that ended with an error, what it printed and where it ran; the next prompt can offer a fix
+export type Failure = { id: number; command: string; exitCode: number; output: string; cwd: string };
+
 export type CommandState = {
   promptText?: string;
   commandText?: string;
@@ -34,6 +37,9 @@ export class CommandManager {
   #state: CommandState = {};
   #stateVersion = 0;
   #suspended = false;
+  #lastRun?: { command: string; marker: IMarker };
+  #lastFailure?: Failure;
+  #failureId = 0;
 
   constructor(terminal: Terminal, shell: Shell) {
     this.#terminal = terminal;
@@ -153,9 +159,38 @@ export class CommandManager {
 
   clearActiveCommand() {
     if (this.#suspended) return;
+    const text = this.#activeCommand.commandText?.trim();
+    if (text) {
+      this.#lastRun?.marker.dispose();
+      const marker = this.#terminal.registerMarker(0);
+      this.#lastRun = marker == null ? undefined : { command: text, marker };
+    }
     this.#acceptedCommandLines.add(this.#activeCommand.promptEndMarker?.line ?? -1);
     this.#activeCommand = {};
     this._syncStateSnapshot();
+  }
+
+  // The shell reports the exit code before it draws the next prompt, so the lines between the command and the
+  // cursor are what the command printed. Exit codes 130 and 148 are Ctrl+C and Ctrl+Z, not errors.
+  handleExitStatus(code: number, cwd: string) {
+    const run = this.#lastRun;
+    this.#lastRun = undefined;
+    if (run == null || this.#suspended) return;
+    if (code === 0 || code === 130 || code === 148 || Number.isNaN(code) || run.marker.isDisposed) {
+      this.#lastFailure = undefined;
+      run.marker.dispose();
+      return;
+    }
+    const buffer = this.#terminal.buffer.active;
+    const end = buffer.baseY + buffer.cursorY;
+    const lines: string[] = [];
+    for (let y = Math.max(run.marker.line + 1, end - 200); y < end; y++) lines.push(buffer.getLine(y)?.translateToString(true) ?? "");
+    run.marker.dispose();
+    this.#lastFailure = { id: ++this.#failureId, command: run.command, exitCode: code, output: lines.slice(-80).join("\n"), cwd };
+  }
+
+  getLastFailure(): Failure | undefined {
+    return this.#lastFailure;
   }
 
   private _getCommandLines(): IBufferLine[] {

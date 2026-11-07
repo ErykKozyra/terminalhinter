@@ -48,6 +48,10 @@ type Config = {
   boxBackground: boolean;
   argumentHints: "selected" | "all" | "none";
   updateCheck: boolean;
+  tabBehavior: "accept" | "shell";
+  showListOn: "typing" | "tab";
+  fixSuggestions: boolean;
+  historyEntries: boolean;
 };
 
 const bindingSchema: JSONSchemaType<Binding> = {
@@ -162,6 +166,28 @@ export const configSchema = {
       nullable: true,
       default: true,
     },
+    tabBehavior: {
+      type: "string",
+      nullable: true,
+      enum: ["accept", "shell"],
+      default: "accept",
+    },
+    showListOn: {
+      type: "string",
+      nullable: true,
+      enum: ["typing", "tab"],
+      default: "typing",
+    },
+    fixSuggestions: {
+      type: "boolean",
+      nullable: true,
+      default: true,
+    },
+    historyEntries: {
+      type: "boolean",
+      nullable: true,
+      default: true,
+    },
   },
   additionalProperties: false,
 };
@@ -197,6 +223,10 @@ let globalConfig: Config = {
   boxBackground: true,
   argumentHints: "selected",
   updateCheck: true,
+  tabBehavior: "accept",
+  showListOn: "typing",
+  fixSuggestions: true,
+  historyEntries: true,
 };
 
 export const getConfig = (): Config => globalConfig;
@@ -242,6 +272,10 @@ export const loadConfig = async (_program?: Command) => {
         boxBackground: config?.boxBackground ?? true,
         argumentHints: config?.argumentHints ?? "selected",
         updateCheck: config?.updateCheck ?? true,
+        tabBehavior: config?.tabBehavior ?? "accept",
+        showListOn: config?.showListOn ?? "typing",
+        fixSuggestions: config?.fixSuggestions ?? true,
+        historyEntries: config?.historyEntries ?? true,
       };
     }
   }

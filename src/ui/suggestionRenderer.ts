@@ -149,7 +149,12 @@ export class SuggestionRenderer {
       }
 
       const cursorTerminated = preserveDuringBackspaceEcho || command.cursorTerminated === true;
-      const showSuggestions = suggestions.length !== 0 && fitsViewport && cursorTerminated && !command.hasOutput && !cursorShift && !!command.commandText;
+      const showSuggestions =
+        suggestions.length !== 0 &&
+        fitsViewport &&
+        cursorTerminated &&
+        !command.hasOutput &&
+        (command.commandText ? !cursorShift : this.#suggestions.showsOnEmptyLine());
       const visibleSuggestions = showSuggestions ? suggestions : [];
       const renderKey = `${direction}:${lines}:${cursorHidden}:${visibleSuggestions
         .map(({ startX, length, data: patchData }) => `${startX}:${length}:${patchData}`)

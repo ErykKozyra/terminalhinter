@@ -70,7 +70,13 @@ if [[ -n "${bash_preexec_imported:-}" ]]; then
     precmd_functions+=(__is_precmd)
 fi
 
+# the exit code of the command that just ran, so a failed one can be offered a fix at the next prompt
+__is_report_status() {
+	builtin printf '\e]6973;EX;%s\a' "$1"
+}
+
 __is_precmd() {
+	__is_report_status "${1:-$?}"
 	__is_update_cwd
 	__is_update_prompt
 }
@@ -87,19 +93,21 @@ __is_update_prompt() {
 }
 
 __is_prompt_cmd_original() {
+	local __is_status=$?
 	for cmd in "${__is_original_prompt_command[@]}"; do
 		eval "${cmd:-}"
 	done
-	__is_precmd
+	__is_precmd "$__is_status"
 }
 
 # handles when a user's PROMPT_COMMAND resets their prompt after the precmd hook is triggered
 __is_prompt_cmd_safe() {
+	local __is_status=$?
 	for cmd in "${__is_original_prompt_command[@]}"; do
 		eval "${cmd:-}"
 	done
 	if [[ "$PS1" != "$__is_safe_PS1" ]]; then 
-		__is_precmd
+		__is_precmd "$__is_status"
 		__is_safe_PS1="$PS1"
 	fi
 }

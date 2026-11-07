@@ -82,3 +82,10 @@ fi
 zle -N zle-line-init __is_zle_line_init
 
 add-zsh-hook precmd __is_precmd
+
+# the exit code of the command that just ran, so a failed one can be offered a fix at the next prompt; it has to be
+# the first precmd hook, the ones before it would change $?
+__is_report_status() {
+	builtin printf '\e]6973;EX;%s\a' "$?"
+}
+precmd_functions=(__is_report_status ${precmd_functions:#__is_report_status})

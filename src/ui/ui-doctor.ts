@@ -12,6 +12,7 @@ import _Ajv from "ajv";
 
 import { configPaths, configSchema } from "../utils/config.js";
 import { allResourcesPath, initResourcesPath } from "../utils/constants.js";
+import { planMigration } from "../utils/migrate.js";
 import { availableUpdate, compareVersions, fetchLatestVersion, readUpdateState, updateChecksDisabled } from "../utils/update.js";
 import { getShellConfigName, getShellSourceCommand, Shell } from "../utils/shell.js";
 import { beginMark, blockShells, profileFile } from "../utils/startupBlock.js";
@@ -172,6 +173,14 @@ const updateCheckEnabled = (): boolean => {
 export const render = async () => {
   const checks = collectChecks();
   checks.push(...launcherChecks());
+  // Kiro CLI, Amazon Q or Fig still starting next to terminalhinter draw their own popup and slow the shell down
+  const leftovers = planMigration();
+  if (leftovers.length > 0)
+    checks.push({
+      status: "warn",
+      text: `startup lines of Kiro CLI, Amazon Q or Fig in ${leftovers.map((c) => path.basename(c.file)).join(", ")}`,
+      hint: "thint migrate",
+    });
   if (!updateChecksDisabled(updateCheckEnabled())) checks.push(...updateCheck((await fetchLatestVersion()) ?? availableUpdate(readUpdateState())));
   for (const check of checks) {
     const mark = check.status === "ok" ? chalk.green("✓") : check.status === "warn" ? chalk.yellow("!") : chalk.red("✗");

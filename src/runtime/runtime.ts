@@ -5,7 +5,7 @@ import figSpecList, {
   diffVersionedCompletions as figVersionedSpeclist,
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
-} from "@withfig/autocomplete/build/index.js";
+} from "@withfig/autocomplete";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 import { parseCommand, CommandToken } from "./parser.js";
@@ -25,6 +25,12 @@ import { jumpCommands, jumpSuggestions } from "./jumps.js";
 import { augmentSpec, enrichSuggestions } from "./project.js";
 import { loadCustomSpecs } from "./customSpecs.js";
 import { thintSpec } from "./thintSpec.js";
+import { bundledSpecs } from "../specs/index.js";
+import { riskOfEntry, riskOfLine, riskOfValue } from "./extras/risk.js";
+import { describeRecent, recentCommands, rememberCommand } from "./extras/recent.js";
+import { loadSnippets, previewSnippet } from "./extras/snippets.js";
+import { findFixes, Failure } from "./extras/fixes.js";
+import { run as runProgram } from "./extras/util.js";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any -- recursive type, setting as any
 const specSet: any = {};
@@ -98,7 +104,8 @@ const lazyLoadSpec = async (key: string, signal?: AbortSignal): Promise<Fig.Spec
   signal?.throwIfAborted();
   const specPath = path.join(specResourcesPath, `${key}.js`);
   const importPath = path.isAbsolute(specPath) ? pathToFileURL(specPath).href : specPath;
-  return (await import(importPath)).default;
+  // `docker compose` loads the docker-compose spec this way; it gets the project suggestions too
+  return augmentSpec(key, (await import(importPath)).default);
 };
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars -- will be implemented in below TODO
@@ -110,7 +117,12 @@ const lazyLoadSpecLocation = async (location: Fig.SpecLocation, signal?: AbortSi
 const loadUserSpecs = () => {
   const { specs: custom } = loadCustomSpecs();
   // terminalhinter's own commands first, so a user file with the same name still wins
-  const specs = new Map<string, Fig.Spec>([["thint", thintSpec], ["terminalhinter", { ...thintSpec, name: "terminalhinter" }], ...custom]);
+  const specs = new Map<string, Fig.Spec>([
+    ...bundledSpecs.map(([name, spec]) => [name, augmentSpec(name, spec)] as [string, Fig.Spec]),
+    ["thint", thintSpec],
+    ["terminalhinter", { ...thintSpec, name: "terminalhinter" }],
+    ...custom,
+  ]);
   for (const [name, spec] of specs) loadedSpecs[name] = spec;
   ownSpecNames = [...specs.keys()];
   specNames = [...new Set([...specNames, ...ownSpecNames])].sort();
@@ -151,6 +163,7 @@ export const recordExecutedCommand = (cmd: string, cwd: string, shell: Shell): v
   try {
     const tokens = aliasExpand(parseCommand(cmd.trim() + " ", shell));
     if (tokens.length > 1) recordCommand(tokens, cwd);
+    if (getConfig().historyEntries) rememberCommand(cmd, cwd);
   } catch (e) {
     log.debug({ msg: "could not record command", e: (e as Error).message });
   }
@@ -167,7 +180,7 @@ export const getSuggestions = async (cmd: string, cwd: string, shell: Shell, sig
       return;
     }
     if (rootToken != null && !rootToken.complete) {
-      return runCommand(rootToken);
+      return runCommand(rootToken, cwd);
     }
 
     activeCmd = aliasExpand(activeCmd);
@@ -197,6 +210,9 @@ export const getSuggestions = async (cmd: string, cwd: string, shell: Shell, sig
     if (result == null) return;
     if (result.suggestions.length == 0 && !result.argumentDescription) return;
     await enrichSuggestions(root, result.suggestions, cwd);
+    markRisks(activeCmd, result.suggestions);
+    // `react@` lists versions only, not the package names a search would find for the same text
+    if (result.suggestions.some((s) => s.kind === "version")) result = { ...result, suggestions: result.suggestions.filter((s) => s.kind === "version") };
 
     const activeToken = lastCommand?.complete ? undefined : lastCommand;
     // a fully typed directory like `websites/` lets the UI offer "run it here" as the first entry, like Kiro/Fig did
@@ -507,33 +523,160 @@ const runSubcommand = async (
   return runSubcommand(tokens.slice(1), allTokens, subcommand, cwd, shell, persistentOptions, acceptedTokens.concat(activeToken), undefined, undefined, signal);
 };
 
-const runCommand = async (token: CommandToken): Promise<SuggestionBlob | undefined> => {
+// the words before the one being completed decide which options and subcommands are risky (`git push` + --force)
+const markRisks = (tokens: CommandToken[], suggestions: Suggestion[]) => {
+  const before = (tokens.at(-1)?.complete === false ? tokens.slice(0, -1) : tokens).filter((t) => !t.isOption && !t.token.startsWith("-")).map((t) => t.token);
+  for (const s of suggestions) {
+    if (s.risk != null || s.type === "file" || s.type === "folder") continue;
+    const entry =
+      s.type === "option" || s.type === "subcommand" || s.icon === SuggestionIcons.Option || s.icon === SuggestionIcons.Subcommand || s.name.startsWith("-");
+    const risk = entry ? riskOfEntry(before, s.name) : riskOfValue(s.name);
+    if (risk) s.risk = risk;
+  }
+};
+
+const runCommand = async (token: CommandToken, cwd: string): Promise<SuggestionBlob | undefined> => {
   const specs = prefixMatches(specNames, token.token);
   const aliases = prefixMatches(getAliasNames(), token.token);
+  // whole commands you ran in this folder that start with what you typed, right after the best command name
+  const recent = getConfig().historyEntries
+    ? (await recentCommands(cwd, token.token, 3).catch(() => [])).map(
+        (r) =>
+          ({
+            name: r.command,
+            allNames: [r.command],
+            insertValue: r.command,
+            description: describeRecent(r),
+            icon: "🕘",
+            priority: 90,
+            kind: "recent",
+          }) as Suggestion,
+      )
+    : [];
+  const snippets = loadSnippets()
+    .snippets.filter((s) => s.name.toLowerCase().startsWith(token.token.toLowerCase()))
+    .map(
+      (s) =>
+        ({
+          name: s.name,
+          allNames: [s.name],
+          description: s.description ? `${s.description} · ${previewSnippet(s.command)}` : previewSnippet(s.command),
+          icon: "✂",
+          priority: 80,
+          snippet: s.command,
+          kind: "snippet",
+        }) as Suggestion,
+    );
+  const names = [
+    ...aliases.map(
+      (alias) =>
+        ({
+          name: alias,
+          description: getAliasCommand(alias),
+          type: "shortcut",
+          allNames: [alias],
+          icon: SuggestionIcons.Shortcut,
+          priority: 100,
+        }) as Suggestion,
+    ),
+    ...specs.map(
+      (spec) =>
+        ({
+          name: spec,
+          type: "subcommand",
+          allNames: [spec],
+          icon: SuggestionIcons.Subcommand,
+          priority: 40,
+        }) as Suggestion,
+    ),
+  ];
   return {
-    suggestions: [
-      ...aliases.map(
-        (alias) =>
-          ({
-            name: alias,
-            description: getAliasCommand(alias),
-            type: "shortcut",
-            allNames: [alias],
-            icon: SuggestionIcons.Shortcut,
-            priority: 100,
-          }) as Suggestion,
-      ),
-      ...specs.map(
-        (spec) =>
-          ({
-            name: spec,
-            type: "subcommand",
-            allNames: [spec],
-            icon: SuggestionIcons.Subcommand,
-            priority: 40,
-          }) as Suggestion,
-      ),
-    ],
+    suggestions: [...names.slice(0, 1), ...recent, ...snippets, ...names.slice(1)],
     activeToken: token,
   };
+};
+
+// Fixes for a command that just failed, as list entries that put the fixed command on the line.
+export const getFixes = async (failure: Failure): Promise<SuggestionBlob | undefined> => {
+  const commands = () => new Set([...specNames, ...getAliasNames()]);
+  const branches = async () =>
+    (await runProgram("git", ["for-each-ref", "--format=%(refname:short)", "refs/heads", "refs/remotes"], failure.cwd))
+      .split("\n")
+      .filter(Boolean)
+      .map((b) => b.replace(/^origin\//, ""));
+  const fixes = await findFixes(failure, commands, branches);
+  if (fixes.length === 0) return;
+  return {
+    mode: "fix",
+    suggestions: fixes.map((f) => ({
+      name: f.command,
+      allNames: [f.command],
+      insertValue: f.command,
+      description: f.reason,
+      icon: "⭐",
+      priority: 100,
+      kind: "fix",
+    })),
+  };
+};
+
+// What each word of the line means, from the command specs: the command, its subcommands, options and arguments.
+export const explainCommand = async (cmd: string, shell: Shell): Promise<SuggestionBlob | undefined> => {
+  const tokens = parseCommand(cmd.trim() + " ", shell).filter((t) => t.complete);
+  if (tokens.length === 0) return;
+  const entries: Suggestion[] = [];
+  const add = (name: string, description: string | undefined, risk?: string) =>
+    entries.push({ name, allNames: [name], description: description ?? "", icon: "📀", priority: 0, risk, kind: "explain" });
+  const rootName = tokens[0].token;
+  const alias = getAliasCommand(rootName);
+  if (alias && getAliasNames().includes(rootName)) add(rootName, `alias: ${alias}`);
+  const expanded = aliasExpand(tokens);
+  const spec = await loadSpec(expanded);
+  let node = getSubcommand(spec);
+  if (!(alias && getAliasNames().includes(rootName))) add(rootName, node?.description ?? (node == null ? "no description for this command" : ""));
+  const path: string[] = [expanded[0].token];
+  let persistent: Fig.Option[] = (node?.options ?? []).filter((o) => o.isPersistent);
+  let args = getArgs(node?.args);
+  const rest = expanded.slice(1);
+  for (let i = 0; i < rest.length; i++) {
+    const word = rest[i].token;
+    if (node == null) {
+      add(word, "");
+      continue;
+    }
+    if (word.startsWith("-") && word !== "-") {
+      const [flag, inline] =
+        word.startsWith("--") && word.includes("=") ? [word.slice(0, word.indexOf("=")), word.slice(word.indexOf("=") + 1)] : [word, undefined];
+      const options = [...persistent, ...(node.options ?? [])];
+      const option = options.find((o) => (Array.isArray(o.name) ? o.name : [o.name]).includes(flag));
+      // -rf: every letter is an option of its own
+      if (option == null && /^-[a-zA-Z]{2,}$/.test(word)) {
+        const letters = [...word.slice(1)].map((l) => options.find((o) => (Array.isArray(o.name) ? o.name : [o.name]).includes(`-${l}`)));
+        if (letters.every((o) => o != null)) {
+          add(word, letters.map((o, j) => `-${word[j + 1]}: ${o?.description ?? ""}`).join("; "), riskOfEntry(path, word));
+          continue;
+        }
+      }
+      add(word, option?.description ?? "unknown option", riskOfEntry(path, flag) ?? riskOfEntry(path, word));
+      const optionArgs = getArgs(option?.args).filter((a) => !a.isOptional);
+      if (optionArgs.length > 0 && inline == null && i + 1 < rest.length) {
+        i++;
+        add(rest[i].token, `value of ${flag}: ${optionArgs[0].description ?? optionArgs[0].name ?? "value"}`, riskOfValue(rest[i].token));
+      }
+      continue;
+    }
+    const sub = await genSubcommand(word, node);
+    if (sub != null) {
+      add(word, sub.description, riskOfEntry(path, word));
+      path.push(word);
+      node = sub;
+      persistent = [...persistent, ...(sub.options ?? []).filter((o) => o.isPersistent)];
+      args = getArgs(sub.args);
+      continue;
+    }
+    const arg = args.at(0);
+    add(word, arg ? `${arg.name ?? "argument"}${arg.description ? `: ${arg.description}` : ""}` : "argument", riskOfValue(word));
+    if (arg != null && !arg.isVariadic) args = args.slice(1);
+  }
+  return { mode: "explain", suggestions: entries, notes: riskOfLine(expanded.map((t) => t.token)) };
 };
