@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 import { Shell, supportedShells as shells } from "../utils/shell.js";
-import { inferShell } from "../utils/shell.js";
+import { inferShell, startupFailedExitCode } from "../utils/shell.js";
 import { getConfig, loadConfig } from "../utils/config.js";
 import { Command } from "commander";
 import log from "../utils/log.js";
@@ -57,7 +57,7 @@ export const action = (program: Command) => async (options: RootCommandOptions) 
       const { renderMissingResources } = await import("../ui/ui-status.js");
       process.stdout.write(renderMissingResources());
       endTiming("startup.missingResources", startupTiming);
-      process.exit(1);
+      process.exit(startupFailedExitCode);
     }
     notice += renderUpdated();
   }
@@ -86,8 +86,14 @@ export const action = (program: Command) => async (options: RootCommandOptions) 
     program.error(`Unsupported shell: '${shell}', supported shells: ${supportedShells}`, { exitCode: 1 });
   }
 
-  const [{ initializeRuntime }, { render }] = await Promise.all([import("../runtime/initialize.js"), import("../ui/ui-root.js")]);
-  await initializeRuntime(shell);
-  endTiming("startup.beforeRender", startupTiming);
-  await render(program, shell, options.test ?? false, options.login ?? false, notice);
+  try {
+    const [{ initializeRuntime }, { render }] = await Promise.all([import("../runtime/initialize.js"), import("../ui/ui-root.js")]);
+    await initializeRuntime(shell);
+    endTiming("startup.beforeRender", startupTiming);
+    await render(program, shell, options.test ?? false, options.login ?? false, notice);
+  } catch (e) {
+    // the startup lines start the shell without the list instead of closing the tab
+    process.stderr.write(`thint could not start: ${(e as Error).message}\nthe shell starts without the list; thint doctor says what is wrong\n`);
+    process.exit(startupFailedExitCode);
+  }
 };

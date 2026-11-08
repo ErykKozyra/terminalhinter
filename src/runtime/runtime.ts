@@ -139,7 +139,7 @@ export const loadLocalSpecsSet = async () => {
       return import(importPath)
         .then((res) => {
           const { default: speclist, diffVersionedCompletions: versionedSpeclist } = res;
-          loadSpecsSet(speclist, versionedSpeclist, specPath);
+          loadSpecsSet(speclist, versionedSpeclist ?? [], specPath);
         })
         .catch((e) => {
           log.debug({ msg: `no local specs imported from '${specPath}', this will not break the current session`, e: (e as Error).message, specPath });

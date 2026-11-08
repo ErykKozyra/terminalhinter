@@ -118,7 +118,9 @@ describe("from Atuin", () => {
     fs.mkdirSync(bin);
     const lines = [...secrets, "git checkout main"].map((l) => `2026-11-07 10:00:00\t${l}`).join("\n");
     fs.writeFileSync(path.join(dir, "atuin.txt"), lines + "\n");
-    fs.writeFileSync(path.join(bin, "atuin"), `#!/bin/sh\n[ "$1" = "--version" ] && echo "atuin 18.0.0" && exit 0\ncat "${path.join(dir, "atuin.txt")}"\n`, { mode: 0o755 });
+    fs.writeFileSync(path.join(bin, "atuin"), `#!/bin/sh\n[ "$1" = "--version" ] && echo "atuin 18.0.0" && exit 0\ncat "${path.join(dir, "atuin.txt")}"\n`, {
+      mode: 0o755,
+    });
   });
 
   test("lines from Atuin that hold secrets are never offered", async () => {

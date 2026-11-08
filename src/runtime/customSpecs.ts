@@ -61,17 +61,39 @@ const scriptGenerator = (script: string): Fig.Generator => ({
       }),
 });
 
+// YAML reads `3000` or `true` as a number or a boolean, and `~` as nothing; names are text, so `ports: [3000, 8080]`
+// works and an empty entry is left out
+const text = (value: unknown): string | undefined =>
+  typeof value === "string" ? value : typeof value === "number" || typeof value === "boolean" ? String(value) : undefined;
+const names = (value: unknown): string | string[] | undefined => {
+  if (!Array.isArray(value)) return text(value);
+  const list = value.map(text).filter((n): n is string => n != null);
+  return list.length > 0 ? list : undefined;
+};
+
 const toArg = (raw: RawArg): Fig.Arg => {
   const arg: Fig.Arg = { name: raw.name, description: raw.description, isOptional: raw.isOptional, isVariadic: raw.isVariadic };
-  if (raw.suggestions != null) arg.suggestions = raw.suggestions.map((s) => (typeof s === "string" ? { name: s } : s));
+  if (raw.suggestions != null)
+    arg.suggestions = (Array.isArray(raw.suggestions) ? raw.suggestions : [raw.suggestions])
+      .map((s): Fig.Suggestion | undefined => {
+        if (s != null && typeof s === "object" && !Array.isArray(s)) {
+          const name = names(s.name);
+          return name == null ? undefined : { ...s, name };
+        }
+        const name = text(s);
+        return name == null ? undefined : { name };
+      })
+      .filter((s): s is Fig.Suggestion => s != null);
   if (raw.script != null) arg.generators = scriptGenerator(raw.script);
   if (raw.template != null) arg.template = raw.template;
   return arg;
 };
 
 const toNode = (raw: RawNode): Fig.Subcommand => {
-  if (raw.name == null || (Array.isArray(raw.name) && raw.name.length === 0)) throw new Error("every command, subcommand and option needs a name");
-  const node: Fig.Subcommand = { name: raw.name, description: raw.description, priority: raw.priority, hidden: raw.hidden };
+  if (raw == null || typeof raw !== "object") throw new Error("every command, subcommand and option needs a name");
+  const name = names(raw.name);
+  if (name == null) throw new Error("every command, subcommand and option needs a name");
+  const node: Fig.Subcommand = { name, description: raw.description, priority: raw.priority, hidden: raw.hidden };
   if (raw.subcommands != null) node.subcommands = raw.subcommands.map(toNode);
   if (raw.options != null) node.options = raw.options.map((o) => ({ ...toNode(o), isPersistent: o.isPersistent, isRequired: o.isRequired }) as Fig.Option);
   if (raw.args != null) node.args = Array.isArray(raw.args) ? raw.args.map(toArg) : toArg(raw.args);

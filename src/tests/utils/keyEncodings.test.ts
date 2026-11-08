@@ -297,15 +297,17 @@ const setup = async (commandText = "git checkout ma") => {
     noop: () => {},
     isAlternateBuffer: () => false,
   } as unknown as ISTerm;
-  const manager = new SuggestionManager(
-    terminal,
-    Shell.Zsh,
-    Promise.resolve({ getSuggestions: async () => branches, reorderSuggestions: async () => {} }),
-  );
+  const manager = new SuggestionManager(terminal, Shell.Zsh, Promise.resolve({ getSuggestions: async () => branches, reorderSuggestions: async () => {} }));
   await manager.exec();
   const visible = () => manager.render("below", 0).length > 0;
   let refreshes = 0;
-  const router = new InputRouter({ term: terminal, suggestions: manager, shell: Shell.Zsh, hasVisibleSuggestions: visible, requestSuggestions: () => (refreshes += 1) });
+  const router = new InputRouter({
+    term: terminal,
+    suggestions: manager,
+    shell: Shell.Zsh,
+    hasVisibleSuggestions: visible,
+    requestSuggestions: () => (refreshes += 1),
+  });
   const press = async (sequence: string) => {
     const keys = await feed([Buffer.from(sequence)]);
     for (const key of keys) router.handle(key.sequence, key);

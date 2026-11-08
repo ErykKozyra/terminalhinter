@@ -68,6 +68,15 @@ type KeyPress = {
   meta?: boolean;
 };
 
+// An entry without a text name (a broken spec or generator) would throw while the list is drawn, inside the code that
+// passes the shell's output to the screen; it is left out instead.
+const usable = (blob: SuggestionBlob | undefined): SuggestionBlob | undefined =>
+  blob == null || !Array.isArray(blob.suggestions)
+    ? undefined
+    : blob.suggestions.every((s) => s != null && typeof s.name === "string")
+    ? blob
+    : { ...blob, suggestions: blob.suggestions.filter((s) => s != null && typeof s.name === "string") };
+
 export class SuggestionManager {
   #term: ISTerm;
   #commandKey: string;
@@ -189,7 +198,7 @@ export class SuggestionManager {
       }
       this.#commandKey = commandKey;
       this.#blobInputVersion = inputVersion;
-      this.#suggestBlob = suggestionBlob;
+      this.#suggestBlob = usable(suggestionBlob);
       this._resetSelection();
       return true;
     } catch (e) {
@@ -218,7 +227,7 @@ export class SuggestionManager {
       const blob = await runtime.getFixes?.(failure);
       log.debug({ msg: "fixes found", count: blob?.suggestions.length, failure });
       if (blob == null || ownVersion !== this.#requestVersion || this.#term.getCommandState().commandText) return;
-      this.#suggestBlob = blob;
+      this.#suggestBlob = usable(blob);
       this.#commandKey = "";
       this.#blobInputVersion = this.#inputVersion;
       this._resetSelection();
@@ -236,7 +245,7 @@ export class SuggestionManager {
       const runtime = await this._getRuntime();
       const blob = await runtime.explainCommand?.(commandText, this.#shell);
       if (ownVersion !== this.#requestVersion) return false;
-      this.#suggestBlob = blob;
+      this.#suggestBlob = usable(blob);
       this.#commandKey = commandKey;
       this.#blobInputVersion = this.#inputVersion;
       this._resetSelection();

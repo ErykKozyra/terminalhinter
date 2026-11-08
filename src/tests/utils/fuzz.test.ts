@@ -27,7 +27,29 @@ const random = (seed: number) => {
 };
 
 const words = ["git", "checkout", "status", "main", "npm", "run", "dev", "docker", "compose", "up", "rel", "gti", "cd", "src/", "-f", "--force", "żółw"];
-const vocabulary = ["git", "go", "grep", "gti", "checkout", "cherry-pick", "status", "stash", "main", "master", "develop", "run", "dev", "docker", "compose", "up", "down", "--force", "--follow", "-f", "rel"];
+const vocabulary = [
+  "git",
+  "go",
+  "grep",
+  "gti",
+  "checkout",
+  "cherry-pick",
+  "status",
+  "stash",
+  "main",
+  "master",
+  "develop",
+  "run",
+  "dev",
+  "docker",
+  "compose",
+  "up",
+  "down",
+  "--force",
+  "--follow",
+  "-f",
+  "rel",
+];
 
 // what the shell does with the bytes it gets: a line editor that runs the line on a newline outside a paste
 class FakeShell {
@@ -53,6 +75,7 @@ class FakeShell {
         rest = rest.slice(6);
         continue;
       }
+      // eslint-disable-next-line no-control-regex
       const sequence = /^\u001b(\[[\d;:?]*[\x40-\x7e]|O.|.)?/u.exec(rest);
       if (sequence != null) {
         rest = rest.slice(sequence[0].length);
@@ -81,7 +104,18 @@ const blobFor = (line: string): SuggestionBlob | undefined => {
   return {
     suggestions: [
       ...matches.map((name, i) => ({ name, allNames: [name], icon: "*", priority: 60 - i })),
-      ...(token.length > 0 && "rel".startsWith(token) ? [{ name: "release", allNames: ["release"], icon: "✂", priority: 70, snippet: "git tag {{version}} && git push {{remote:origin}}", kind: "snippet" as const }] : []),
+      ...(token.length > 0 && "rel".startsWith(token)
+        ? [
+            {
+              name: "release",
+              allNames: ["release"],
+              icon: "✂",
+              priority: 70,
+              snippet: "git tag {{version}} && git push {{remote:origin}}",
+              kind: "snippet" as const,
+            },
+          ]
+        : []),
     ],
     activeToken: { token, tokenLength: token.length, complete: false, isOption: token.startsWith("-") },
   };
@@ -105,8 +139,14 @@ const setup = () => {
     Shell.Zsh,
     Promise.resolve({
       getSuggestions: async (command: string) => blobFor(command) ?? { suggestions: [] },
-      getFixes: async () => ({ mode: "fix" as const, suggestions: [{ name: "git status", allNames: ["git status"], icon: "↻", priority: 90, kind: "fix" as const, insertValue: "git status" }] }),
-      explainCommand: async (command: string) => ({ mode: "explain" as const, suggestions: command.split(" ").map((w) => ({ name: w, allNames: [w], icon: "?", priority: 50, kind: "explain" as const })) }),
+      getFixes: async () => ({
+        mode: "fix" as const,
+        suggestions: [{ name: "git status", allNames: ["git status"], icon: "↻", priority: 90, kind: "fix" as const, insertValue: "git status" }],
+      }),
+      explainCommand: async (command: string) => ({
+        mode: "explain" as const,
+        suggestions: command.split(" ").map((w) => ({ name: w, allNames: [w], icon: "?", priority: 50, kind: "explain" as const })),
+      }),
       reorderSuggestions: async () => {},
       recordExecutedCommand: async (command: string) => {
         shell.recorded.push(command);
@@ -233,11 +273,15 @@ afterEach(() => jest.useRealTimers());
 
 const seeds = Array.from({ length: 20 }, (_, i) => 1000 + i * 7919);
 
-test.each(seeds)("seed %i: 600 random keys keep every rule", async (seed) => {
-  const result = await runSeed(seed, 600);
-  if (result.failures.length > 0) throw new Error(`${result.failures[0]}\nlast inputs: ${result.log.join(" ")}`);
-  expect(result.failures).toEqual([]);
-}, 60_000);
+test.each(seeds)(
+  "seed %i: 600 random keys keep every rule",
+  async (seed) => {
+    const result = await runSeed(seed, 600);
+    if (result.failures.length > 0) throw new Error(`${result.failures[0]}\nlast inputs: ${result.log.join(" ")}`);
+    expect(result.failures).toEqual([]);
+  },
+  60_000,
+);
 
 test("12 000 keys in one session do not grow the memory without bound", async () => {
   const start = process.memoryUsage().heapUsed;

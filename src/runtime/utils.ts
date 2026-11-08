@@ -98,7 +98,6 @@ export const buildExecuteShellCommand =
     // ("suspended (tty output)") so the tab was left with a plain shell
     const detached = process.platform !== "win32";
     const child = spawn(command, escapedArgs, { cwd, env: { ...process.env, ...env, ISTERM: "1" }, shell: executionShell, signal, detached });
-    const killTimeout = setTimeout(() => child.kill("SIGKILL"), timeout);
     let stdout = "";
     let stderr = "";
     child.stdout.on("data", (data) => (stdout += data));
@@ -107,14 +106,38 @@ export const buildExecuteShellCommand =
       log.debug({ msg: "shell command failed", command, args, e: err.message });
     });
     return new Promise((resolve) => {
-      child.on("close", (code) => {
+      let settled = false;
+      // `sleep 30; echo x` or `kubectl get pods | awk ...` run under a shell: killing only that shell left the
+      // programs it started holding the output open, so the command never ended and the list stopped updating for the
+      // whole session. The whole group goes, and the answer comes back at the time limit whatever is still running.
+      const stop = () => {
+        try {
+          if (detached && child.pid != null) process.kill(-child.pid, "SIGKILL");
+          else child.kill("SIGKILL");
+        } catch {
+          child.kill("SIGKILL");
+        }
+        child.stdout.destroy();
+        child.stderr.destroy();
+      };
+      const finish = (status: number) => {
+        if (settled) return;
+        settled = true;
         clearTimeout(killTimeout);
-        resolve({
-          status: code ?? 0,
-          stderr,
-          stdout,
-        });
-      });
+        signal?.removeEventListener("abort", onAbort);
+        resolve({ status, stderr, stdout });
+      };
+      const onAbort = () => {
+        stop();
+        finish(0);
+      };
+      const killTimeout = setTimeout(() => {
+        log.debug({ msg: "shell command timed out", command, args, timeout });
+        stop();
+        finish(0);
+      }, timeout);
+      signal?.addEventListener("abort", onAbort, { once: true });
+      child.on("close", (code) => finish(code ?? 0));
     });
   };
 
