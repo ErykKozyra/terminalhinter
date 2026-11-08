@@ -35,6 +35,11 @@ Apps on Windows: Windows Terminal with PowerShell 7, Windows PowerShell 5.1, cmd
 (conhost); VS Code with PowerShell. Also try a fresh install with `npm i -g @erykkozyra/terminalhinter` and watch for
 Defender or SmartScreen warnings on the first start.
 
-## 3. Write down
+## 3. Updating with a tab open (Mac)
+
+Open a tab, run `npm i -g @erykkozyra/terminalhinter@latest` in another one, then go back to the first tab and type
+`git st`. The list should still open there. In CI on macOS it did not (on Linux it does), so this needs a real Mac.
+
+## 4. Write down
 
 For anything that looks wrong: the app, the shell, the window size, a screenshot, and the step number.
