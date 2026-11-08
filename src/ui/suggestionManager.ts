@@ -68,6 +68,15 @@ type KeyPress = {
   meta?: boolean;
 };
 
+// An entry without a text name (a broken spec or generator) would throw while the list is drawn, inside the code that
+// passes the shell's output to the screen; it is left out instead.
+const usable = (blob: SuggestionBlob | undefined): SuggestionBlob | undefined =>
+  blob == null || !Array.isArray(blob.suggestions)
+    ? undefined
+    : blob.suggestions.every((s) => s != null && typeof s.name === "string")
+    ? blob
+    : { ...blob, suggestions: blob.suggestions.filter((s) => s != null && typeof s.name === "string") };
+
 export class SuggestionManager {
   #term: ISTerm;
   #commandKey: string;
@@ -189,7 +198,7 @@ export class SuggestionManager {
       }
       this.#commandKey = commandKey;
       this.#blobInputVersion = inputVersion;
-      this.#suggestBlob = suggestionBlob;
+      this.#suggestBlob = usable(suggestionBlob);
       this._resetSelection();
       return true;
     } catch (e) {
@@ -218,7 +227,7 @@ export class SuggestionManager {
       const blob = await runtime.getFixes?.({ ...failure, shell: this.#shell });
       log.debug({ msg: "fixes found", count: blob?.suggestions.length, failure });
       if (blob == null || ownVersion !== this.#requestVersion || this.#term.getCommandState().commandText) return;
-      this.#suggestBlob = blob;
+      this.#suggestBlob = usable(blob);
       this.#commandKey = "";
       this.#blobInputVersion = this.#inputVersion;
       this._resetSelection();
@@ -236,7 +245,7 @@ export class SuggestionManager {
       const runtime = await this._getRuntime();
       const blob = await runtime.explainCommand?.(commandText, this.#shell);
       if (ownVersion !== this.#requestVersion) return false;
-      this.#suggestBlob = blob;
+      this.#suggestBlob = usable(blob);
       this.#commandKey = commandKey;
       this.#blobInputVersion = this.#inputVersion;
       this._resetSelection();
@@ -594,6 +603,11 @@ export class SuggestionManager {
     if (shown.length > room) return [];
     return shown.map((data) => ({ startX, length: width, data }));
   }
+  // text reached the shell without going through update (a paste), so the list on screen no longer belongs to the line
+  noteInput(): void {
+    this.#inputVersion += 1;
+  }
+
   update(keyPress: KeyPress, allowBindings = true): boolean {
     const handled = this._update(keyPress, allowBindings);
     // a key that went to the shell changes the line, so the list on screen no longer belongs to it
@@ -605,6 +619,14 @@ export class SuggestionManager {
     const { name, shift, ctrl } = keyPress;
 
     if (this.#fill != null) return this._updateFill(keyPress);
+
+    // Ctrl+J (a bare line feed) runs the line in zsh, bash and fish, as typed
+    if (name == "enter" && keyPress.sequence === "\n" && !ctrl && (this.#shell == Shell.Zsh || this.#shell == Shell.Bash || this.#shell == Shell.Fish)) {
+      this.#suggestBlob = undefined;
+      this._recordExecution();
+      this.#term.clearCommand();
+      return false;
+    }
 
     // Ctrl+G: what each word of the line does; again to close
     if (ctrl && name == "g") {

@@ -355,6 +355,10 @@ export const getShellSourceCommand = (shell: Shell, initFilePath?: string): stri
   return "";
 };
 
+// thint exits with this when it could not start the session (its files missing, a folder it cannot write): the
+// startup lines then let the shell start normally instead of closing the new tab
+export const startupFailedExitCode = 86;
+
 // `binary` is the file the launcher was linked from. When an update replaced it (npm writes a new file, the link
 // keeps the old one), the new tab starts the new binary instead, which unpacks its files and links the launcher again.
 export const getShellConfig = (shell: Shell, launcher?: string, binary?: string): string => {
@@ -373,9 +377,9 @@ export const getShellConfig = (shell: Shell, launcher?: string, binary?: string)
   [[ -x "$__is_launcher" ]] || __is_launcher=$(command -v thint 2>/dev/null)
   if [[ -n "$__is_launcher" ]]; then
     if [[ -o login ]]; then
-      "$__is_launcher" -s zsh --login ; exit
+      "$__is_launcher" -s zsh --login ; (( $? == ${startupFailedExitCode} )) || exit
     else
-      "$__is_launcher" -s zsh ; exit
+      "$__is_launcher" -s zsh ; (( $? == ${startupFailedExitCode} )) || exit
     fi
   fi
 fi`;
@@ -387,9 +391,9 @@ fi`;
     shopt -q login_shell
     login_shell=$?
     if [ $login_shell -eq 0 ]; then
-      "$__is_launcher" -s bash --login ; exit
+      "$__is_launcher" -s bash --login ; [ $? -eq ${startupFailedExitCode} ] || exit
     else
-      "$__is_launcher" -s bash ; exit
+      "$__is_launcher" -s bash ; [ $? -eq ${startupFailedExitCode} ] || exit
     fi
   fi
 fi`;
@@ -400,14 +404,14 @@ $__IsNoExitFlag = ([Environment]::GetCommandLineArgs() | Where-Object { $_ -imat
 $__IsInteractive = -not $__IsCommandFlag -or ($__IsCommandFlag -and $__IsNoExitFlag)
 if ([string]::IsNullOrEmpty($env:ISTERM) -and [Environment]::UserInteractive -and $__IsInteractive -and [string]::IsNullOrEmpty($env:VSCODE_RESOLVING_ENVIRONMENT)) {
   thint -s ${shell}
-  Stop-Process -Id $pid
+  if ($LASTEXITCODE -ne ${startupFailedExitCode}) { Stop-Process -Id $pid }
 }`;
     case Shell.Fish:
       return `if test -z "$ISTERM" && status --is-interactive && test -z "$VSCODE_RESOLVING_ENVIRONMENT"
   if status --is-login
-    thint -s fish --login ; kill %self
+    thint -s fish --login ; test $status -eq ${startupFailedExitCode}; or kill %self
   else
-    thint -s fish ; kill %self
+    thint -s fish ; test $status -eq ${startupFailedExitCode}; or kill %self
   end 
 end`;
     case Shell.Xonsh:
