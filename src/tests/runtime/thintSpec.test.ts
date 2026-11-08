@@ -26,7 +26,7 @@ test("thint lists its subcommands, themes and settings", async () => {
   expect(await names("thint ")).toEqual(expect.arrayContaining(["init", "theme", "config", "bookmark", "specs"]));
   expect(await names("thint theme ")).toEqual(expect.arrayContaining(["thint", "light", "nord", "dracula"]));
   expect(await names("thint config set ")).toContain("iconStyle");
-  expect(await names("thint config set iconStyle ")).toEqual(["plain", "marks", "badge", "nerd"]);
+  expect(await names("thint config set iconStyle ")).toEqual(["plain", "marks", "badge"]);
   expect(await names("thint config set fuzzyMatching ")).toEqual(["true", "false"]);
 });
 

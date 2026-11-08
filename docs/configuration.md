@@ -18,7 +18,7 @@ When you edit the file by hand, keep the top-level keys above any `[section]`.
 ```toml
 theme = "thint"                 # "thint", "light", "nord" or "dracula"
 maxSuggestions = 10             # rows visible at once (default: 6)
-iconStyle = "plain"             # "plain" (colored squares), "marks", "badge" or "nerd" (needs a Nerd Font)
+iconStyle = "plain"             # "plain" (colored squares), "marks" or "badge"
 argumentHints = "selected"      # hints like [branch]: "selected" (only the selected row), "all" or "none"
 fuzzyMatching = true            # letters in order are enough: chkt finds checkout
 useAliases = true               # suggest your shell aliases

@@ -18,10 +18,14 @@ import { Field, fillSnippet, snippetFields } from "../runtime/extras/snippets.js
 // Answers a terminal sends back on stdin: device attributes (CSI ? 62 ; 22 c, CSI > 1 ; 10 ; 0 c), cursor position
 // (CSI 12 ; 5 R), status (CSI 0 n), keyboard flags (CSI ? 1 u), mode reports (CSI ? 2026 ; 2 $ y), focus in and out,
 // and OSC or DCS replies (colors, XTGETTCAP).
+/* eslint-disable no-control-regex */
 export const isTerminalReport = (sequence: string | undefined): boolean =>
   sequence != null &&
-  // eslint-disable-next-line no-control-regex
-  (/^\x1b\[[?>=]?[\d;]*(c|R|n|\$y)$/.test(sequence) || /^\x1b\[\?\d*u$/.test(sequence) || /^\x1b\[[IO]$/.test(sequence) || /^\x1b[\]P_][\s\S]*(\x07|\x1b\\)$/.test(sequence));
+  (/^\x1b\[[?>=]?[\d;]*(c|R|n|\$y)$/.test(sequence) ||
+    /^\x1b\[\?\d*u$/.test(sequence) ||
+    /^\x1b\[[IO]$/.test(sequence) ||
+    /^\x1b[\]P_][\s\S]*(\x07|\x1b\\)$/.test(sequence));
+/* eslint-enable no-control-regex */
 
 type SuggestionRuntime = Pick<Awaited<ReturnType<typeof initializeRuntime>>, "getSuggestions"> &
   Partial<
@@ -39,17 +43,6 @@ const maxNameColumn = 36;
 const maxArgsWidth = 18;
 const maxDescriptionColumn = 40;
 const iconWidth = 4; // pill or glyph, then a gap before the name
-// Nerd Font code points: powerline round caps around a pill, and flat Font Awesome glyphs
-const NF = {
-  capLeft: "\ue0b6",
-  capRight: "\ue0b4",
-  folder: "\uf07b",
-  file: "\uf15b",
-  flag: "\uf024",
-  star: "\uf005",
-  tag: "\uf02b",
-  alias: "\uf0c1",
-};
 // Files are tinted by kind with colors the theme already has, so a long `ls` list is easier to scan.
 const fileKinds: [RegExp, keyof Theme["icons"]][] = [
   [/(^|[.-])lock$|\.lock$|-lock\.(json|ya?ml)$/i, "file"],
@@ -322,7 +315,7 @@ export class SuggestionManager {
 
   // Every icon takes the same 4 cells so names line up. The default "plain" style is a colored mark with no
   // background (every terminal font has these and rows keep their gaps); "badge" puts the mark on a square built
-  // from half blocks; "nerd" uses Nerd Font glyphs and rounded pills for terminals that have that font.
+  // from half blocks.
   private _icon(suggestion: Suggestion, selected: boolean): string {
     const style = getConfig().iconStyle;
     const theme = activeTheme();
@@ -331,38 +324,34 @@ export class SuggestionManager {
     const tint = (color: string) => (selected && (style === "plain" || style === "marks") ? theme.selectionText : color);
     const badge = (color: string, mark: string) => {
       const inner = chalk.bgHex(color).hex("#FFFFFF").bold(mark);
-      if (style === "nerd") return chalk.hex(color)(NF.capLeft) + inner + chalk.hex(color)(NF.capRight) + " ";
       if (style === "badge") return chalk.hex(color)("▐") + inner + chalk.hex(color)("▌") + " ";
       // plain: one small square per entry, its color tells the kind
       if (style === "plain") return " " + chalk.hex(tint(color))("■") + "  ";
       return " " + chalk.hex(tint(color)).bold(mark) + "  ";
     };
-    const icon = (color: string, nerdGlyph: string, mark: string) => (style === "nerd" ? " " + chalk.hex(color)(nerdGlyph) + "  " : badge(color, mark));
 
     if (suggestion.execute) return style === "plain" ? " " + chalk.hex(tint(ICON_COLORS.execute))("■") + "  " : badge(ICON_COLORS.execute, ">");
     // deletes, force-pushes or looks like production: red, whatever kind of entry it is
     if (suggestion.risk) return style === "plain" ? " " + chalk.hex(ICON_COLORS.execute)("■") + "  " : badge(ICON_COLORS.execute, "!");
-    if (suggestion.kind === "recent") return icon(ICON_COLORS.star, NF.star, "↺");
-    if (suggestion.kind === "snippet") return icon(ICON_COLORS.subcommand, NF.tag, "{");
-    if (suggestion.kind === "fix") return icon(ICON_COLORS.value, NF.star, "✓");
+    if (suggestion.kind === "recent") return badge(ICON_COLORS.star, "↺");
+    if (suggestion.kind === "snippet") return badge(ICON_COLORS.subcommand, "{");
+    if (suggestion.kind === "fix") return badge(ICON_COLORS.value, "✓");
     if (suggestion.type === "folder")
-      return style === "plain" || style === "marks" ? " " + chalk.hex(tint(ICON_COLORS.folder))("■") + "  " : icon(ICON_COLORS.folder, NF.folder, "/");
-    if (suggestion.type === "file") return icon(fileColor(suggestion.name, theme), NF.file, "≡");
+      return style === "plain" || style === "marks" ? " " + chalk.hex(tint(ICON_COLORS.folder))("■") + "  " : badge(ICON_COLORS.folder, "/");
+    if (suggestion.type === "file") return badge(fileColor(suggestion.name, theme), "≡");
 
     switch (suggestion.icon.replace(/️/g, "")) {
       case "📦":
         return badge(ICON_COLORS.subcommand, "$");
       case "🔗":
-        return icon(ICON_COLORS.option, NF.flag, "-");
+        return badge(ICON_COLORS.option, "-");
       case "⭐":
-        return icon(ICON_COLORS.star, NF.star, "*");
+        return badge(ICON_COLORS.star, "*");
       case "🔥":
         // aliases from your shell config
-        return icon(ICON_COLORS.alias, NF.alias, "=");
+        return badge(ICON_COLORS.alias, "=");
     }
-    // a nerd font glyph the spec chose itself (only produced in the nerd style)
-    if (style === "nerd" && wcswidth(suggestion.icon) <= 1) return " " + chalk.hex(ICON_COLORS.file)(suggestion.icon) + "  ";
-    return icon(ICON_COLORS.value, NF.tag, "#");
+    return badge(ICON_COLORS.value, "#");
   }
 
   private _displayName(suggestion: Suggestion): string {

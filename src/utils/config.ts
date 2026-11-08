@@ -20,7 +20,7 @@ type Binding = {
 };
 
 type BoxBorderStyle = "square" | "rounded";
-type IconStyle = "plain" | "marks" | "badge" | "nerd";
+type IconStyle = "plain" | "marks" | "badge";
 export const themeNameList = ["thint", "light", "nord", "dracula"] as const;
 type ThemeName = (typeof themeNameList)[number];
 
@@ -35,7 +35,6 @@ type Config = {
     path: string[];
   };
   useAliases: boolean;
-  useNerdFont: boolean;
   maxSuggestions?: number;
   activeSuggestionBackgroundColor?: string;
   boxBorderStyle: BoxBorderStyle;
@@ -98,11 +97,6 @@ export const configSchema = {
       nullable: true,
       default: true,
     },
-    useNerdFont: {
-      type: "boolean",
-      nullable: true,
-      default: false,
-    },
     maxSuggestions: {
       type: "number",
       nullable: true,
@@ -138,7 +132,7 @@ export const configSchema = {
     iconStyle: {
       type: "string",
       nullable: true,
-      enum: ["plain", "marks", "badge", "nerd"],
+      enum: ["plain", "marks", "badge"],
       default: "plain",
     },
     fuzzyMatching: {
@@ -219,7 +213,6 @@ let globalConfig: Config = {
     path: [],
   },
   useAliases: true,
-  useNerdFont: false,
   boxBorderStyle: "rounded",
   theme: "thint",
   enterAcceptsSuggestion: true,
@@ -250,6 +243,11 @@ export const loadConfig = async (_program?: Command) => {
         process.stderr.write(`terminalhinter: ${configPath} is invalid toml (line ${e.line}, column ${e.column}: ${e.message}), using defaults\n`);
         continue;
       }
+      // the Nerd Font style is gone: a config that still asks for it (or for the old useNerdFont) gets the default look
+      // instead of being thrown away as invalid
+      const legacy = config as Record<string, unknown> | undefined;
+      if (legacy?.iconStyle === "nerd") delete legacy.iconStyle;
+      if (legacy != null && "useNerdFont" in legacy) delete legacy.useNerdFont;
       const isValid = ajv.validate(configSchema, config);
       if (!isValid) {
         process.stderr.write(`terminalhinter: ${configPath} is invalid (${ajv.errorsText()}), using defaults\n`);
@@ -266,14 +264,13 @@ export const loadConfig = async (_program?: Command) => {
           path: [...(config?.specs?.path ?? [])],
         },
         useAliases: config.useAliases ?? true,
-        useNerdFont: config?.useNerdFont ?? false,
         maxSuggestions: config?.maxSuggestions ?? 6,
         activeSuggestionBackgroundColor: config?.activeSuggestionBackgroundColor,
         boxBorderStyle: config?.boxBorderStyle ?? "rounded",
         borderColor: config?.borderColor,
         theme: config?.theme ?? "thint",
         enterAcceptsSuggestion: config?.enterAcceptsSuggestion ?? true,
-        iconStyle: config?.iconStyle ?? (config?.useNerdFont ? "nerd" : "plain"),
+        iconStyle: config?.iconStyle ?? "plain",
         fuzzyMatching: config?.fuzzyMatching ?? true,
         showHints: config?.showHints ?? true,
         boxBackground: config?.boxBackground ?? true,

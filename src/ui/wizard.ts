@@ -16,12 +16,11 @@ import { renderPreview } from "./preview.js";
 import { PromptCancelled, select } from "./prompt.js";
 import { ThemeName, themeNames, themes } from "./theme.js";
 
-type IconStyle = "plain" | "marks" | "badge" | "nerd";
+type IconStyle = "plain" | "marks" | "badge";
 const iconStyles: { value: IconStyle; hint: string }[] = [
   { value: "plain", hint: "colored squares, works with every font" },
   { value: "marks", hint: "a symbol per kind ($ for commands, - for options)" },
   { value: "badge", hint: "marks on small colored squares" },
-  { value: "nerd", hint: "needs a Nerd Font in your terminal" },
 ];
 
 const tildify = (file: string) => (file.startsWith(os.homedir() + path.sep) ? "~" + file.slice(os.homedir().length) : file);
