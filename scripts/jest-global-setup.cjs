@@ -1,5 +1,6 @@
 // Copyright (c) 2026 Eryk Kozyra.
 // Licensed under the MIT License.
+/* eslint-disable @typescript-eslint/no-var-requires */
 
 // The specs and shell files are unpacked into the home folder once, before the test files start in parallel. Each
 // file unpacking them for itself rewrote files another one was reading at that moment.
