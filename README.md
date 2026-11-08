@@ -48,7 +48,9 @@ Works on macOS and Linux with zsh and bash. Windows and fish are experimental.
   are. `cd` also finds folders from anywhere through your bookmarks and zoxide.
 - **It learns what you use**, and Shift+Up / Shift+Down puts the list in your own order.
 - **Letters in order are enough.** `chkt` finds `checkout`.
-- **Right after a space nothing is selected**, so Enter just runs the command.
+- **Right after a space nothing is selected**, so Enter just runs the command. A word you typed in full that no
+  entry starts with runs as typed too.
+- **Enter can run at once:** `thint config set enterRuns true` makes Enter take the entry and run the line.
 
 ## Keys
 
