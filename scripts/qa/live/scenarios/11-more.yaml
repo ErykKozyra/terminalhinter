@@ -1,0 +1,160 @@
+- name: Shift+Down moves an entry and the order stays
+  steps:
+    - type: "git sta"
+      list_has: "stage"
+    - key: S-DOWN
+      wait: 300
+    - key: C-U
+    - type: "git sta"
+      wait: 300
+      expect_regex: "■  status[^\\n]*\\n[^\\n]*■  stage"
+
+- name: a lone dash runs the previous folder
+  steps:
+    - type: "cd src<ENTER>"
+      wait: 300
+    - type: "cd -"
+    - key: ENTER
+      expect_ran: "cd -"
+
+- name: git checkout - runs as typed
+  steps:
+    - type: "git checkout -"
+    - key: ENTER
+      expect_ran: "git checkout -"
+
+- name: the second command after && gets its own list
+  steps:
+    - type: "git status && git sta"
+      list_has: ["status", "stash"]
+
+- name: the command after a pipe gets its own list
+  shells: [zsh, bash, fish]
+  steps:
+    - type: "cat README.md | gre"
+      list_has: "grep"
+
+- name: sudo in front keeps the list of the command
+  steps:
+    - type: "sudo git sta"
+      list_has: "status"
+
+- name: a variable in front keeps the list of the command
+  shells: [zsh, bash]
+  steps:
+    - type: "NODE_ENV=production npm run "
+      list_has: ["dev", "build"]
+
+- name: an option with an equals sign
+  steps:
+    - type: "git log --format="
+      expect_line: "git log --format="
+    - type: "oneline"
+    - key: ENTER
+      wait: 200
+    - key: ENTER
+      expect_ran: "git log --format=oneline"
+
+- name: editing in the middle of the line
+  steps:
+    - type: "git sta README.md"
+    - key: LEFT
+    - key: LEFT
+    - key: LEFT
+    - key: LEFT
+    - key: LEFT
+    - key: LEFT
+    - key: LEFT
+    - key: LEFT
+    - key: LEFT
+    - key: LEFT
+    - type: "t"
+      expect_line: "git stat README.md"
+    - key: C-E
+    - key: ENTER
+      expect_ran: "git stat README.md"
+
+- name: ssh hosts from the ssh config, a capital one is marked
+  shells: [zsh, bash, fish]
+  files:
+    ../../.ssh/config: "Host web-staging\n  HostName 10.0.0.2\nHost PROD\n  HostName 10.0.0.3\n"
+  steps:
+    - type: "ssh "
+      list_has: ["web-staging", "PROD"]
+    - type: "PR"
+      expect: "looks like production"
+
+- name: environment variables after a dollar
+  shells: [zsh, bash, fish]
+  steps:
+    - type: "echo $HO"
+      list_has: "HOME"
+
+- name: docker compose logs takes a service
+  steps:
+    - type: "docker compose logs -f w"
+      list_has: "web"
+
+- name: npm install of a version does not block typing without network
+  env: { npm_config_registry: "http://127.0.0.1:9" }
+  steps:
+    - type: "npm i react@"
+      wait: 500
+    - type: "18"
+      expect_line: "npm i react@18"
+
+- name: Ctrl+R history search still belongs to the shell
+  shells: [zsh, bash]
+  steps:
+    - type: "echo searchable-line<ENTER>"
+      wait: 300
+    - key: C-R
+      wait: 300
+    - type: "searchable"
+      expect: "searchable-line"
+    - key: C-C
+
+- name: tmux around thint
+  wrapper: tmux
+  shells: [zsh, bash, fish]
+  min_cols: 60
+  steps:
+    - type: "git sta"
+      expect_list: true
+      list_has: "status"
+    - key: TAB
+      expect_line_starts: "git stage"
+    - key: C-U
+    - type: "echo in-tmux<ENTER>"
+      expect_ran: "echo in-tmux"
+
+- name: GNU screen around thint
+  wrapper: screen
+  shells: [zsh, bash, fish]
+  min_cols: 60
+  steps:
+    - type: "git sta"
+      expect_list: true
+      list_has: "status"
+    - key: C-U
+    - type: "echo in-screen<ENTER>"
+      expect_ran: "echo in-screen"
+
+- name: icons off still shows the entries
+  config: { icons: false }
+  steps:
+    - type: "git sta"
+      list_has: "status"
+
+- name: a long description is cut, not wrapped
+  steps:
+    - type: "git rebase --"
+      expect_list: true
+
+- name: the first word with recent commands
+  steps:
+    - type: "echo recent-one<ENTER>"
+      wait: 400
+    - type: "ech"
+      wait: 300
+      list_has: "echo recent-one"

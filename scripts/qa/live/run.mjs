@@ -246,7 +246,17 @@ const runOne = async (scenario, shell, [cols, rows]) => {
   };
   for (const k of Object.keys(env)) if (env[k] === undefined) delete env[k];
   let raw = "";
-  const p = pty.spawn(binCmd, [...binArgs, "-s", shell], { name: "xterm-256color", cols, rows, cwd, env });
+  // inside a multiplexer: thint starts in its first window, the way it does from a shell config there
+  const inner = [binCmd, ...binArgs, "-s", shell];
+  const quoted = inner.map((a) => `'${a}'`).join(" ");
+  const [cmd, cmdArgs] =
+    scenario.wrapper === "tmux"
+      ? ["tmux", ["-L", `qa-${path.basename(home)}`, "-f", "/dev/null", "new-session", quoted]]
+      : scenario.wrapper === "screen"
+        ? ["screen", ["-q", "-S", `qa-${path.basename(home)}`, ...inner]]
+        : [binCmd, inner.slice(1)];
+  if (scenario.wrapper === "tmux") env.TERM = "xterm-256color";
+  const p = pty.spawn(cmd, cmdArgs, { name: "xterm-256color", cols, rows, cwd, env });
   let exited = null;
   p.onExit((e) => (exited = e));
   p.onData((d) => {
@@ -336,6 +346,10 @@ const runOne = async (scenario, shell, [cols, rows]) => {
           }
         await stable(step.quiet ?? 250);
       }
+      if (step.raw != null) {
+        p.write(step.raw);
+        await stable(step.quiet ?? 250);
+      }
       if (step.resize) {
         const [c, r] = step.resize.split("x").map(Number);
         p.resize(c, r);
@@ -405,6 +419,12 @@ const runOne = async (scenario, shell, [cols, rows]) => {
   } catch (e) {
     failures.push(String(e?.stack ?? e));
   } finally {
+    if (scenario.wrapper === "tmux")
+      try {
+        execFileSync("tmux", ["-L", `qa-${path.basename(home)}`, "kill-server"], { stdio: "ignore" });
+      } catch {
+        // the server is already gone
+      }
     try {
       p.kill();
     } catch {
@@ -449,6 +469,7 @@ const main = async () => {
   const runs = [];
   for (const s of scenarios)
     for (const shell of available) {
+      if (s.wrapper && (isWin || which(s.wrapper) === "")) continue;
       if (s.shells && !s.shells.includes(shell)) continue;
       if (s.skip_shells?.includes(shell)) continue;
       for (const size of sizes) {

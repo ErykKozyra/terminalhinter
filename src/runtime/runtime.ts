@@ -184,6 +184,9 @@ export const getSuggestions = async (cmd: string, cwd: string, shell: Shell, sig
   const suggestionTiming = startTiming();
   try {
     let activeCmd = parseCommand(cmd, shell);
+    // `NODE_ENV=production npm run ` is `npm run ` with a variable set: the variables in front are skipped
+    if (shell !== Shell.Pwsh && shell !== Shell.Powershell && shell !== Shell.Cmd && shell !== Shell.Nushell)
+      while (activeCmd.length > 1 && activeCmd[0].complete && /^[A-Za-z_][A-Za-z0-9_]*=/.test(activeCmd[0].token)) activeCmd = activeCmd.slice(1);
     const rootToken = activeCmd.at(0);
     if (activeCmd.length === 0) {
       return;
