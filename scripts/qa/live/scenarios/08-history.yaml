@@ -22,3 +22,14 @@
     - type: "git "
       wait: 400
       list_not: "does-not-exist"
+
+- name: a command run elsewhere in the repository comes back in a subfolder
+  steps:
+    - type: "git log --oneline -n 2<ENTER>"
+      wait: 600
+    - type: "cd src<ENTER>"
+      wait: 300
+    - type: "git"
+      wait: 400
+      list_has: "git log --oneline -n 2"
+      expect: "ran in this repo"

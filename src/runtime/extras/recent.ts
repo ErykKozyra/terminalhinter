@@ -10,7 +10,7 @@ import path from "node:path";
 
 import { allResourcesPath } from "../../utils/constants.js";
 import { ageWeight } from "../history.js";
-import { looksSecret, memo, relativeAge, run } from "./util.js";
+import { findUp, looksSecret, memo, relativeAge, run } from "./util.js";
 
 type Entry = { command: string; cwd: string; time: number };
 
@@ -75,26 +75,40 @@ const fromAtuin = (cwd: string): Promise<Entry[]> =>
       .map((m) => ({ command: m[2].trim(), cwd, time: Date.parse(m[1].replace(" ", "T") + "Z") || Date.now() }));
   });
 
-type Ranked = { command: string; score: number; last: number; count: number };
+type Ranked = { command: string; score: number; last: number; count: number; here?: boolean };
 
-export const rankCommands = (list: Entry[], cwd: string, prefix: string, now = Date.now()): Ranked[] => {
+// the folder of the git repository around `cwd`, if there is one
+const repoRootOf = (cwd: string): string | undefined => {
+  const marker = findUp(cwd, [".git"]);
+  return marker == null ? undefined : path.dirname(marker);
+};
+
+const inside = (dir: string, root: string) => dir === root || dir.startsWith(root.endsWith(path.sep) ? root : root + path.sep);
+
+// Commands run in this folder count fully; ones run elsewhere in the same repository count a third as much,
+// so `npm run dev` typed in the repo root also comes back in src/.
+export const rankCommands = (list: Entry[], cwd: string, prefix: string, now = Date.now(), repoRoot?: string): Ranked[] => {
   const byCommand = new Map<string, Ranked>();
   for (const e of list) {
-    if (e.cwd !== cwd || !e.command.startsWith(prefix) || looksSecret(e.command)) continue;
-    const r = byCommand.get(e.command) ?? { command: e.command, score: 0, last: 0, count: 0 };
-    r.score += ageWeight(now - e.time);
+    const here = e.cwd === cwd;
+    if (!here && (repoRoot == null || !inside(e.cwd, repoRoot))) continue;
+    if (!e.command.startsWith(prefix) || looksSecret(e.command)) continue;
+    const r = byCommand.get(e.command) ?? { command: e.command, score: 0, last: 0, count: 0, here: false };
+    r.score += ageWeight(now - e.time) * (here ? 1 : 1 / 3);
     r.last = Math.max(r.last, e.time);
     r.count += 1;
+    r.here ||= here;
     byCommand.set(e.command, r);
   }
   return [...byCommand.values()].sort((a, b) => b.score - a.score || b.last - a.last);
 };
 
-// up to `limit` whole commands for the first word being typed, ran in this folder
+// up to `limit` whole commands for the first word being typed, ran in this folder or elsewhere in its repository
 export const recentCommands = async (cwd: string, prefix: string, limit = 3): Promise<Ranked[]> => {
   if (prefix.length === 0) return [];
   const atuin = await fromAtuin(cwd);
-  return rankCommands([...load(), ...atuin], cwd, prefix).slice(0, limit);
+  return rankCommands([...load(), ...atuin], cwd, prefix, Date.now(), repoRootOf(cwd)).slice(0, limit);
 };
 
-export const describeRecent = (r: Ranked, now = Date.now()) => `ran here ${r.count > 1 ? `${r.count}×, last ` : ""}${relativeAge(now - r.last)}`;
+export const describeRecent = (r: Ranked, now = Date.now()) =>
+  `${r.here === false ? "ran in this repo" : "ran here"} ${r.count > 1 ? `${r.count}×, last ` : ""}${relativeAge(now - r.last)}`;
