@@ -908,9 +908,12 @@ export class SuggestionManager {
     // `pnpm i` typed in full is already a command (i is install's short name), so Enter runs it as typed
     const token = this.#suggestBlob?.activeToken;
     const typedShortName = token != null && !token.complete && !token.isPath && suggestion?.allNames.includes(token.token) === true;
-    if (getConfig().enterAcceptsSuggestion && suggestion != null && !suggestion.execute && !typedShortName && this._accept(suggestion)) {
+    const config = getConfig();
+    // enterRuns: Enter takes the entry and runs the line at once, except a folder, which it still walks into
+    const runsNow = config.enterRuns && suggestion != null && !suggestion.execute && suggestion.type !== "folder";
+    if (config.enterAcceptsSuggestion && suggestion != null && !suggestion.execute && !typedShortName && this._accept(suggestion)) {
       log.debug({ msg: "accepted suggestion with enter", name: suggestion.name });
-      return true;
+      if (!runsNow) return true;
     }
     // nothing to accept (or the ↪ entry): run the command
     this.#suggestBlob = undefined;

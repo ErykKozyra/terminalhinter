@@ -24,3 +24,18 @@
   steps:
     - type: "git sta"
       list_has: "status"
+
+- name: Enter takes the entry and runs the line when enterRuns is on
+  config: { enterRuns: true }
+  steps:
+    - type: "git stat"
+    - key: ENTER
+      expect_ran: "git status"
+
+- name: with enterRuns a folder is still walked into
+  config: { enterRuns: true }
+  steps:
+    - type: "cd sr"
+    - key: ENTER
+      expect_line: "cd src/"
+      expect_ran_count: 0

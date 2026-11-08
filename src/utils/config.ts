@@ -51,6 +51,7 @@ type Config = {
   tabBehavior: "accept" | "shell";
   showListOn: "typing" | "tab";
   fixSuggestions: boolean;
+  enterRuns: boolean;
   historyEntries: boolean;
 };
 
@@ -178,6 +179,11 @@ export const configSchema = {
       enum: ["typing", "tab"],
       default: "typing",
     },
+    enterRuns: {
+      type: "boolean",
+      nullable: true,
+      default: false,
+    },
     fixSuggestions: {
       type: "boolean",
       nullable: true,
@@ -226,6 +232,7 @@ let globalConfig: Config = {
   tabBehavior: "accept",
   showListOn: "typing",
   fixSuggestions: true,
+  enterRuns: false,
   historyEntries: true,
 };
 
@@ -275,6 +282,7 @@ export const loadConfig = async (_program?: Command) => {
         tabBehavior: config?.tabBehavior ?? "accept",
         showListOn: config?.showListOn ?? "typing",
         fixSuggestions: config?.fixSuggestions ?? true,
+        enterRuns: config?.enterRuns ?? false,
         historyEntries: config?.historyEntries ?? true,
       };
     }

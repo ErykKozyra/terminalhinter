@@ -23,6 +23,7 @@ argumentHints = "selected"      # hints like [branch]: "selected" (only the sele
 fuzzyMatching = true            # letters in order are enough: chkt finds checkout
 useAliases = true               # suggest your shell aliases
 enterAcceptsSuggestion = true   # false: Enter always runs the command, accept with Tab only
+enterRuns = false               # true: Enter takes the entry and runs the line at once (a folder is still walked into)
 showHints = true                # short tips in the list, e.g. that Shift+Up/Down reorders it
 boxBackground = true            # the list sits on its own background, like a card
 boxBorderStyle = "rounded"      # or "square"
