@@ -59,8 +59,10 @@ const windowsProfile = (shell) => {
 };
 const slow = Number(process.env.QA_SLOW ?? "1"); // multiply every wait on slow machines
 
-// a shell list in a scenario: "pwsh" is PowerShell everywhere, "win:pwsh" only on Windows, "unix:pwsh" only elsewhere
-const inList = (list, shell) => list.includes(shell) || list.includes(`${isWin ? "win" : "unix"}:${shell}`);
+// a shell list in a scenario: "pwsh" is PowerShell everywhere, "win:pwsh" only on Windows, "unix:pwsh" only elsewhere,
+// "mac:pwsh" only on macOS
+const inList = (list, shell) =>
+  list.includes(shell) || list.includes(`${isWin ? "win" : "unix"}:${shell}`) || (process.platform === "darwin" && list.includes(`mac:${shell}`));
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 const keyNames = {
@@ -492,7 +494,7 @@ const runOne = async (scenario, shell, [cols, rows]) => {
       }
     }
   } catch (e) {
-    failures.push(String(e?.stack ?? e));
+    fail("start", String(e?.stack ?? e));
   } finally {
     clearTimeout(cap);
     if (scenario.wrapper === "tmux")
@@ -567,7 +569,7 @@ const debugLog = (home) => {
   try {
     // without the raw bytes going in and out, which fill the log and say little
     if (!file) return undefined;
-    const lines = fs.readFileSync(file, "utf8").split("\n").filter((l) => l && !/^\{"msg":"(parsing data|writing data|reading data|command text)"/.test(l));
+    const lines = fs.readFileSync(file, "utf8").split("\n").filter((l) => l && !/^\{"msg":"(parsing data|writing data|command text)"/.test(l));
     return lines.slice(-150).join("\n").slice(-20000);
   } catch {
     return undefined;

@@ -10,7 +10,7 @@ import { runTemplates } from "./template.js";
 import { Suggestion, SuggestionBlob } from "./model.js";
 import log from "../utils/log.js";
 import { escapePath } from "./utils.js";
-import { addPathSeparator, endsWithPathSeparator, getPathDirname, removePathSeparator, Shell } from "../utils/shell.js";
+import { addPathSeparator, endsWithPathSeparator, getPathDirname, getPathSeparator, removePathSeparator, Shell } from "../utils/shell.js";
 import { getConfig } from "../utils/config.js";
 import { contextOf, frecency } from "./history.js";
 import { orderRank } from "./order.js";
@@ -301,6 +301,14 @@ const generatorSuggestions = async (
             ...(suggestion.insertValue == null && typeof suggestion.name === "string" && /\s/.test(suggestion.name) && !getPathy(suggestion.type)
               ? { insertValue: escapePath(suggestion.name, shell) }
               : {}),
+            // a spec lists folders with a / (ls -p); cmd and PowerShell on Windows write them with a backslash, the
+            // way the folders thint lists itself are written, so a line does not end up as cd src\components/
+            ...(windowsSlash(suggestion, shell)
+              ? {
+                  name: `${(suggestion.name as string).slice(0, -1)}\\`,
+                  insertValue: (suggestion.insertValue ?? (suggestion.name as string)).replace(/\/$/, "\\"),
+                }
+              : {}),
           })),
           filterStrategy,
           generator.getQueryTerm == null ? partialCmd : getGeneratorQueryTerm(generator, activeToken),
@@ -310,6 +318,14 @@ const generatorSuggestions = async (
     )
   ).flat();
 };
+
+const windowsSlash = (suggestion: Fig.Suggestion, shell: Shell): boolean =>
+  process.platform === "win32" &&
+  getPathSeparator(shell) === "\\" &&
+  suggestion.type === "folder" &&
+  typeof suggestion.name === "string" &&
+  suggestion.name.endsWith("/") &&
+  (suggestion.insertValue == null || suggestion.insertValue.endsWith("/"));
 
 const templateSuggestions = async (
   templates: Fig.Template | undefined,
