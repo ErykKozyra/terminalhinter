@@ -228,7 +228,9 @@ export class SuggestionManager {
     // wait for the new prompt: zsh redraws it with a clear-below that would wipe a list drawn earlier
     if (this.#term.getCommandState().promptText == null) return;
     if (!getConfig().fixSuggestions || hasOutput || failure == null || failure.id === this.#shownFailureId) return;
-    this.#shownFailureId = failure.id;
+    // under Windows ConPTY the output can be drawn after the prompt marker: with nothing read yet, look again on the
+    // next change instead of giving up on this failure
+    if (failure.output.trim() !== "" || process.platform !== "win32") this.#shownFailureId = failure.id;
     const ownVersion = ++this.#requestVersion;
     try {
       const runtime = await this._getRuntime();

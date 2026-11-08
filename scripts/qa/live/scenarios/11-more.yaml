@@ -158,3 +158,15 @@
     - type: "ech"
       wait: 300
       list_has: "echo recent-one"
+
+- name: PowerShell predictions from the history do not confuse the list
+  shells: [pwsh, powershell]
+  env: { QA_PREDICTIONS: "1" }
+  files:
+    ../../.local/share/powershell/PSReadLine/ConsoleHost_history.txt: "git status\ncd src\\\n"
+  steps:
+    - type: "git sta"
+      list_has: ["stage", "status"]
+    - key: C-U
+    - type: "cd sr"
+      list_has: "src/"

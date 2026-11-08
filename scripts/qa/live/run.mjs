@@ -126,7 +126,9 @@ const rcFor = (shell, home) => {
       ];
     case "pwsh":
     case "powershell": {
-      const body = `function prompt { '${prompt}' }\nSet-PSReadLineOption -AddToHistoryHandler { param($l) if ($env:QA_LOG) { Add-Content -LiteralPath $env:QA_LOG -Value $l }; return $true }\n`;
+      // no inline predictions from the history (on Windows that history is shared by every run); one scenario turns
+      // them on to check thint reads past them
+      const body = `function prompt { '${prompt}' }\nif ($env:QA_PREDICTIONS -ne '1') { Set-PSReadLineOption -PredictionSource None }\nSet-PSReadLineOption -AddToHistoryHandler { param($l) if ($env:QA_LOG) { Add-Content -LiteralPath $env:QA_LOG -Value $l }; return $true }\n`;
       if (!isWin) return [[".config/powershell/Microsoft.PowerShell_profile.ps1", body]];
       // the profile where PowerShell looks for it, and the same place under the home we give it as USERPROFILE
       const real = windowsProfile(shell);
@@ -492,6 +494,13 @@ const runOne = async (scenario, shell, [cols, rows]) => {
         // already gone
       }
     await waitFor(() => exited != null, 2000);
+    // close our end of the terminal for sure: macOS has about 500 of them in all, and a run that kept one open would
+    // leave the rest of the runs unable to start
+    try {
+      if (!isWin) p.destroy?.();
+    } catch {
+      // already closed
+    }
     if (!keep && failures.length === 0)
       try {
         fs.rmSync(home, { recursive: true, force: true, maxRetries: 5, retryDelay: 200 });
@@ -576,11 +585,19 @@ const main = async () => {
   const worker = async () => {
     while (next < runs.length) {
       const [s, shell, size] = runs[next++];
-      let r = await runOne(s, shell, size);
+      // a run that cannot even start (no terminal left, the shell missing) is a failure of that run, not of all
+      const safeRun = async () => {
+        try {
+          return await runOne(s, shell, size);
+        } catch (e) {
+          return { scenario: s.name, shell, size: `${size[0]}x${size[1]}`, ok: false, timedOut: false, ms: 0, failures: [`could not run: ${e?.stack ?? e}`] };
+        }
+      };
+      let r = await safeRun();
       // one retry for timing: a pass on the second try is reported as flaky, not as passing
       // no second try for a timeout or once a lot is failing anyway: it only doubles the wait
       if (!r.ok && !flag("no-retry") && !r.timedOut && results.filter((x) => !x.ok).length < 40) {
-        const again = await runOne(s, shell, size);
+        const again = await safeRun();
         if (again.ok) r = { ...again, flaky: true, firstFailures: r.failures };
         else r = again;
       }

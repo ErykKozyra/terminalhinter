@@ -80,7 +80,8 @@ jobs:
       - run: npm run build
 
       - name: Live scenarios
-        run: node scripts/qa/live/run.mjs --jobs 3 --out qa-out/live-${{ matrix.os }}.json
+        # Windows starts every shell slowly: two window sizes there and more at a time, to stay within the job's time
+        run: node scripts/qa/live/run.mjs ${{ runner.os == 'Windows' && '--jobs 4 --sizes 80x24,40x10' || '--jobs 3' }} --out qa-out/live-${{ matrix.os }}.json
         continue-on-error: true
         env:
           QA_SLOW: "1.5"

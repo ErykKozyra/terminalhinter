@@ -39,6 +39,7 @@ export class CommandManager {
   #suspended = false;
   #lastRun?: { command: string; marker: IMarker };
   #lastFailure?: Failure;
+  #failureMarker?: IMarker;
   #failureId = 0;
 
   constructor(terminal: Terminal, shell: Shell) {
@@ -178,24 +179,39 @@ export class CommandManager {
     if (run == null || this.#suspended) return;
     if (code === 0 || code === 130 || code === 148 || Number.isNaN(code) || run.marker.isDisposed) {
       this.#lastFailure = undefined;
+      this.#failureMarker?.dispose();
+      this.#failureMarker = undefined;
       run.marker.dispose();
       return;
     }
+    // The output is read when someone asks for it, not now: under Windows ConPTY the markers can arrive before the
+    // text they follow is drawn, so at this point the rows of the output may still be empty.
+    this.#failureMarker?.dispose();
+    this.#failureMarker = run.marker;
+    this.#lastFailure = { id: ++this.#failureId, command: run.command, exitCode: code, output: "", cwd };
+  }
+
+  // the rows between the failed command and the prompt after it
+  private _failureOutput(marker: IMarker): string {
     const buffer = this.#terminal.buffer.active;
-    const end = buffer.baseY + buffer.cursorY;
+    const promptLine = this.#activeCommand.promptStartMarker?.line;
+    const end = promptLine != null && promptLine > marker.line ? promptLine : buffer.baseY + buffer.cursorY;
     const lines: string[] = [];
-    for (let y = Math.max(run.marker.line + 1, end - 200); y < end; y++) {
+    for (let y = Math.max(marker.line + 1, end - 200); y < end; y++) {
       const line = buffer.getLine(y);
       // a line the terminal wrapped belongs to the one above: git's hint stays one command in a narrow window
       if (line?.isWrapped && lines.length > 0) lines[lines.length - 1] += line.translateToString(true);
       else lines.push(line?.translateToString(true) ?? "");
     }
-    run.marker.dispose();
-    this.#lastFailure = { id: ++this.#failureId, command: run.command, exitCode: code, output: lines.slice(-80).join("\n"), cwd };
+    return lines.slice(-80).join("\n");
   }
 
   getLastFailure(): Failure | undefined {
-    return this.#lastFailure;
+    const failure = this.#lastFailure;
+    const marker = this.#failureMarker;
+    if (failure == null) return;
+    if (marker != null && !marker.isDisposed) failure.output = this._failureOutput(marker);
+    return failure;
   }
 
   private _getCommandLines(): IBufferLine[] {
