@@ -5,7 +5,16 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 
-import { composeServices, denoTasks, justRecipes, makeTargets, miseTasks, taskfileTasks } from "../../runtime/extras/tasks.js";
+import {
+  composeFallback,
+  composeGenerator,
+  composeServices,
+  denoTasks,
+  justRecipes,
+  makeTargets,
+  miseTasks,
+  taskfileTasks,
+} from "../../runtime/extras/tasks.js";
 
 // no just, task or mise binaries: the files are read directly, the same on every machine
 const realPath = process.env.PATH;
@@ -201,6 +210,40 @@ describe("docker compose services", () => {
   });
   test.each([["compose.yml"], ["docker-compose.yaml"], ["docker-compose.yml"]])("found as %s", (file) => {
     check(composeServices(project({ [file]: "services:\n  a: {}\n" })), { a: "service" });
+  });
+});
+
+describe("docker is asked for services only when the compose file does not answer", () => {
+  const ctx = (dir: string) => ({ currentWorkingDirectory: dir }) as Fig.GeneratorContext;
+  const cases: [string, Record<string, string>, string[], boolean][] = [
+    ["a compose file here", { "compose.yaml": "services:\n  a: {}\n" }, ["docker", "compose", "up", ""], false],
+    ["a compose file in a parent folder", { "x/compose.yaml": "services:\n  a: {}\n" }, ["docker", "compose", "up", ""], false],
+    ["no compose file", {}, ["docker", "compose", "up", ""], true],
+    ["-f names another file", { "compose.yaml": "services: {}\n" }, ["docker", "compose", "-f", "other.yml", "up", ""], true],
+    ["--file=other.yml", { "compose.yaml": "services: {}\n" }, ["docker", "compose", "--file=other.yml", "up", ""], true],
+    ["--project-directory", { "compose.yaml": "services: {}\n" }, ["docker", "compose", "--project-directory", "../x", "up", ""], true],
+    ["logs -f is --follow, not a file", { "compose.yaml": "services:\n  a: {}\n" }, ["docker", "compose", "logs", "-f", ""], false],
+    ["-p names a project", { "compose.yaml": "services: {}\n" }, ["docker", "compose", "-p", "x", "logs", ""], true],
+  ];
+  test.each(cases)("%s", async (_name, files, tokens, asks) => {
+    let dir = project(files);
+    if (files["x/compose.yaml"] != null) {
+      dir = path.join(dir, "x", "deep");
+      fs.mkdirSync(dir, { recursive: true });
+    }
+    let asked = 0;
+    const wrapped = composeFallback({ script: ["docker"] }, async () => {
+      asked++;
+      return [{ name: "from-docker" }];
+    });
+    const got = await wrapped.custom!(tokens, (async () => ({ stdout: "", stderr: "", status: 0 })) as Fig.ExecuteCommandFunction, ctx(dir));
+    expect(asked).toBe(asks ? 1 : 0);
+    expect(got.map((s) => s.name)).toEqual(asks ? ["from-docker"] : []);
+  });
+  test("our own generator and an already wrapped one stay as they are", () => {
+    expect(composeFallback(composeGenerator, async () => [])).toBe(composeGenerator);
+    const once = composeFallback({ script: ["docker"] }, async () => []);
+    expect(composeFallback(once, async () => [])).toBe(once);
   });
 });
 

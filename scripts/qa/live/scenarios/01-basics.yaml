@@ -58,6 +58,9 @@
       expect_line: "git stat"
 
 - name: Ctrl+Space shows the list again
+  known:
+    shells: [win:pwsh, win:powershell, cmd, win:bash]
+    why: Ctrl+Space does not reach thint through ConPTY in the test terminal; check with thint debug keys on the PC
   steps:
     - type: "git sta"
     - key: ESC

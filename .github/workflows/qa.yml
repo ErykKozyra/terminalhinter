@@ -80,8 +80,24 @@ jobs:
       - run: npm run build
 
       - name: Live scenarios
+        if: runner.os != 'macOS'
         # Windows starts every shell slowly: two window sizes there and more at a time, to stay within the job's time
         run: node scripts/qa/live/run.mjs ${{ runner.os == 'Windows' && '--jobs 4 --sizes 80x24,40x10' || '--jobs 3' }} --out qa-out/live-${{ matrix.os }}.json
+        continue-on-error: true
+        env:
+          QA_SLOW: "1.5"
+          # on Windows a failed run carries the end of thint's own log
+          QA_VERBOSE: ${{ runner.os == 'Windows' && '1' || '0' }}
+
+      - name: Live scenarios (macOS, one process per window size)
+        if: runner.os == 'macOS'
+        # macOS has about 500 terminals for the whole system; a fresh process per size, and the health lines show
+        # whether terminals pile up within one
+        shell: bash
+        run: |
+          for size in 80x24 40x10 200x60; do
+            node scripts/qa/live/run.mjs --jobs 3 --sizes $size --out qa-out/live-${{ matrix.os }}-$size.json || true
+          done
         continue-on-error: true
         env:
           QA_SLOW: "1.5"

@@ -4,7 +4,7 @@
 import path from "node:path";
 import { spawn } from "node:child_process";
 import fsAsync from "node:fs/promises";
-import { homedir } from "node:os";
+import { homedir, tmpdir } from "node:os";
 
 import { CommandToken } from "./parser.js";
 import { getPathSeparator, gitBashPath, Shell } from "../utils/shell.js";
@@ -143,6 +143,25 @@ export const buildExecuteShellCommand =
 
 const isHomedir = (path: string) => path.startsWith("~");
 
+// Git Bash writes paths its own way: /c/Users is C:\Users, /tmp is the user's TEMP and the rest of / is the Git
+// folder (/usr, /etc, /mingw64)
+export const msysToWindows = (token: string, gitRoot: string | undefined, tmp: string): string => {
+  const drive = token.match(/^\/([a-zA-Z])(\/.*)?$/);
+  if (drive) return path.win32.join(`${drive[1].toUpperCase()}:\\`, drive[2] ?? "");
+  if (token === "/tmp" || token.startsWith("/tmp/")) return path.win32.join(tmp, token.slice(4));
+  return gitRoot == null ? token : path.win32.join(gitRoot, token);
+};
+
+const fromGitBash = async (token: string): Promise<string> => {
+  let root: string | undefined;
+  try {
+    root = (await gitBashPath()).replace(/[\\/](usr[\\/])?bin[\\/]bash\.exe$/i, "");
+  } catch {
+    root = undefined;
+  }
+  return msysToWindows(token, root, tmpdir());
+};
+
 export const resolveCwd = async (
   cmdToken: CommandToken | undefined,
   cwd: string,
@@ -161,7 +180,7 @@ export const resolveCwd = async (
   if (!seps.some((s) => pathToken.includes(s))) return { cwd, pathy: false, complete: false };
   const tokenComplete = endsWithSep;
   const trimmedToken = endsWithSep ? pathToken : path.dirname(pathToken);
-  const token = trimmedToken;
+  const token = process.platform === "win32" && shell === Shell.Bash && trimmedToken.startsWith("/") ? await fromGitBash(trimmedToken) : trimmedToken;
   const resolvedCwd = path.isAbsolute(token) ? token : isHomedir(token) ? token.replace("~", homedir()) : path.join(cwd, token);
   try {
     signal?.throwIfAborted();

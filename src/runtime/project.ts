@@ -15,8 +15,18 @@ import { SuggestionIcons } from "./suggestion.js";
 import log from "../utils/log.js";
 import { augmentGit } from "./extras/git.js";
 import { pidGenerator, portGenerator } from "./extras/processes.js";
-import { composeGenerator, composeSubcommands, denoTaskGenerator, justGenerator, makeGenerator, miseGenerator, taskGenerator } from "./extras/tasks.js";
+import {
+  composeFallback,
+  composeGenerator,
+  composeSubcommands,
+  denoTaskGenerator,
+  justGenerator,
+  makeGenerator,
+  miseGenerator,
+  taskGenerator,
+} from "./extras/tasks.js";
 import { versionGenerator } from "./extras/versions.js";
+import { executeGenerator } from "./generator.js";
 
 const findUp = (start: string, names: string[]): string | undefined => {
   let dir = path.resolve(start);
@@ -301,7 +311,15 @@ const augmentMore = (command: string, root: SpecNode) => {
   }
   if (command === "docker" || command === "docker-compose") {
     const compose = command === "docker" ? subOf(root, "compose") : root;
-    for (const name of composeSubcommands) prepend(subOf(compose, name), composeGenerator, "service");
+    for (const name of composeSubcommands) {
+      const node = subOf(compose, name);
+      const first = (Array.isArray(node?.args) ? node?.args.at(0) : node?.args) as Fig.Arg | undefined;
+      if (first?.generators != null) {
+        const list = Array.isArray(first.generators) ? first.generators : [first.generators];
+        first.generators = list.map((g) => composeFallback(g, executeGenerator));
+      }
+      prepend(node, composeGenerator, "service");
+    }
   }
   if (command === "bun") {
     // `bun run` takes a script or a file; the scripts of package.json come before the folders

@@ -34,7 +34,8 @@
       list_has: "npm run build"
 
 - name: mkdir of a nested folder gets -p
-  skip_shells: [cmd]
+  # PowerShell on Windows makes the parents itself, and its rm asks before taking a folder
+  skip_shells: [cmd, win:pwsh, win:powershell]
   steps:
     - type: "mkdir deep/er/folder<ENTER>"
       wait: 600
@@ -51,7 +52,7 @@
       list_has: "cd docs"
 
 - name: rm of a folder gets -r
-  skip_shells: [cmd]
+  skip_shells: [cmd, win:pwsh, win:powershell]
   files:
     old/file.txt: "x\n"
   steps:

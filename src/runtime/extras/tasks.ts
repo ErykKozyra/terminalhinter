@@ -226,6 +226,28 @@ export const denoTaskGenerator: Fig.Generator = { custom: async (_t, _e, c) => d
 export const justGenerator: Fig.Generator = { custom: async (_t, _e, c) => justRecipes(dirOf(c)) };
 export const taskGenerator: Fig.Generator = { custom: async (_t, _e, c) => taskfileTasks(dirOf(c)) };
 export const composeGenerator: Fig.Generator = { custom: async (_t, _e, c) => composeServices(dirOf(c)) };
+
+// The docker-compose spec asks docker itself (`docker compose config --services`). Where docker is slow to answer
+// (Windows with Docker Desktop not running) that held the whole list for up to 5 seconds, for services the compose
+// file already names. Docker is asked only when the line points at another file or project, or no file is found.
+// only the options of compose itself, before the subcommand: `logs -f` is --follow
+const pointsElsewhere = (tokens: string[]) => {
+  const sub = tokens.findIndex((t, i) => i > 0 && composeSubcommands.includes(t));
+  return tokens.slice(0, sub < 0 ? undefined : sub).some((t) => /^(-f|--file|--project-directory|-p|--project-name|--env-file)(=|$)/.test(t));
+};
+const wrapped = new WeakSet<Fig.Generator>();
+export const composeFallback = (
+  generator: Fig.Generator,
+  run: (g: Fig.Generator, tokens: string[], cwd: string) => Promise<Fig.Suggestion[]>,
+): Fig.Generator => {
+  if (generator === composeGenerator || wrapped.has(generator)) return generator;
+  const fallback: Fig.Generator = {
+    custom: async (tokens, _e, c) =>
+      pointsElsewhere(tokens) || process.env.COMPOSE_FILE != null || findUp(dirOf(c), composeFiles) == null ? run(generator, tokens, dirOf(c)) : [],
+  };
+  wrapped.add(fallback);
+  return fallback;
+};
 export const miseGenerator: Fig.Generator = { custom: async (_t, _e, c) => miseTasks(dirOf(c)) };
 
 export const composeSubcommands = [

@@ -50,6 +50,24 @@ export type ISTermPatch = {
   data: string;
 };
 
+// cmd and Git Bash report a folder under TEMP by its short name (C:\Users\RUNNER~1\...), git and PowerShell by the
+// long one: the long name everywhere, or a path from git would not be seen as being inside the current folder
+const longNames = new Map<string, string>();
+const longPathName = (cwd: string): string => {
+  if (!cwd.includes("~")) return cwd;
+  let long = longNames.get(cwd);
+  if (long == null) {
+    try {
+      long = fs.realpathSync.native(cwd);
+    } catch {
+      long = cwd;
+    }
+    if (longNames.size > 200) longNames.clear();
+    longNames.set(cwd, long);
+  }
+  return long;
+};
+
 export class ISTerm implements IPty {
   readonly pid: number;
   cols: number;
@@ -173,7 +191,7 @@ export class ISTerm implements IPty {
     }
     // Make the drive letter uppercase on Windows (see vscode #9448)
     if (os.platform() === "win32" && cwd && cwd[1] === ":") {
-      return cwd[0].toUpperCase() + cwd.substring(1);
+      return longPathName(cwd[0].toUpperCase() + cwd.substring(1));
     }
     return cwd;
   }

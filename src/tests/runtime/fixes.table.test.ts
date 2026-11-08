@@ -41,7 +41,13 @@ const fix = async (command: string, exitCode: number, output: string) =>
 // a mistyped command, as each shell reports it
 const notFound: [string, string, number, string, string][] = [
   ["zsh", "gti status", 127, "zsh: command not found: gti", "git status"],
-  ["ubuntu command-not-found", "gti status", 127, "Command 'gti' not found, did you mean:\n  command 'git' from deb git (1:2.43.0-1ubuntu7.3)\n  command 'gtg' from deb gtg (0.6-5)\nTry: sudo apt install <deb name>", "git status"],
+  [
+    "ubuntu command-not-found",
+    "gti status",
+    127,
+    "Command 'gti' not found, did you mean:\n  command 'git' from deb git (1:2.43.0-1ubuntu7.3)\n  command 'gtg' from deb gtg (0.6-5)\nTry: sudo apt install <deb name>",
+    "git status",
+  ],
   ["bash", "gti status", 127, "bash: gti: command not found", "git status"],
   ["sh/dash", "gti status", 127, "sh: 1: gti: not found", "git status"],
   ["fish", "gti status", 127, "fish: Unknown command: gti\nfish:\ngti status\n^~^", "git status"],

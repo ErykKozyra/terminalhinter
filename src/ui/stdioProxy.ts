@@ -190,7 +190,7 @@ export class StdioProxy {
         input = "\u001b" + input;
       }
     }
-    this.#pendingInput = hold ? (input.match(partialCursorPositionReport)?.[0] ?? "") : "";
+    this.#pendingInput = hold ? input.match(partialCursorPositionReport)?.[0] ?? "" : "";
     const completeInput = this.#pendingInput.length === 0 ? input : input.slice(0, -this.#pendingInput.length);
     // a start that gets no rest in a few milliseconds was a key after all (Alt+P, Alt+])
     if (this.#pendingInput.length > 0)

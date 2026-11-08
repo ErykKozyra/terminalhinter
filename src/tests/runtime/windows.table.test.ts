@@ -3,6 +3,7 @@
 
 import { killCommand } from "../../runtime/extras/fixes.js";
 import { parseNetstat, parseTasklist } from "../../runtime/extras/processes.js";
+import { msysToWindows } from "../../runtime/utils.js";
 
 const netstat = [
   "",
@@ -66,4 +67,24 @@ test.each([
   [1234, undefined, "linux", "kill 1234"],
 ] as const)("stopping pid %i in %s on %s: %s", (pid, shell, platform, expected) => {
   expect(killCommand(pid, shell, platform)).toBe(expected);
+});
+
+const git = "C:\\Program Files\\Git";
+const temp = "C:\\Users\\me\\AppData\\Local\\Temp";
+test.each([
+  ["/c/Users", "C:\\Users"],
+  ["/c/", "C:\\"],
+  ["/d/work/shop/", "D:\\work\\shop\\"],
+  ["/usr", "C:\\Program Files\\Git\\usr"],
+  ["/etc/", "C:\\Program Files\\Git\\etc\\"],
+  ["/", "C:\\Program Files\\Git\\"],
+  ["/tmp", "C:\\Users\\me\\AppData\\Local\\Temp"],
+  ["/tmp/thint-x/", "C:\\Users\\me\\AppData\\Local\\Temp\\thint-x\\"],
+  ["/tmpfiles", "C:\\Program Files\\Git\\tmpfiles"],
+])("Git Bash: %s is %s", (token, windows) => {
+  expect(msysToWindows(token, git, temp)).toBe(windows);
+});
+
+test("Git Bash: without a Git folder the path stays as typed", () => {
+  expect(msysToWindows("/usr", undefined, temp)).toBe("/usr");
 });

@@ -70,7 +70,11 @@
     - key: LEFT
     - type: "t"
       expect_line: "git stat README.md"
+    # Ctrl+E is end of line in the emacs keys of bash, zsh and fish; cmd and PowerShell on Windows take End
     - key: C-E
+      skip_shells: [win:pwsh, win:powershell, cmd]
+    - key: END
+      only_shells: [win:pwsh, win:powershell, cmd]
     - key: ENTER
       expect_ran: "git stat README.md"
 
