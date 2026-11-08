@@ -445,11 +445,19 @@ const runOne = async (scenario, shell, [cols, rows]) => {
       } catch {
         // the server is already gone
       }
-    try {
-      p.kill();
-    } catch {
-      // already gone
+    // Leaving the shell the normal way first: on Windows, node-pty's kill() starts a helper that prints
+    // "AttachConsole failed" when the runner has no console of its own (as in CI), which is only noise.
+    if (exited == null && !timedOut) {
+      p.write("\x15");
+      p.write("exit\r");
+      await waitFor(() => exited != null, 3000);
     }
+    if (exited == null)
+      try {
+        p.kill();
+      } catch {
+        // already gone
+      }
     await waitFor(() => exited != null, 2000);
     if (!keep && failures.length === 0)
       try {
