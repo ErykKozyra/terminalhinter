@@ -92,8 +92,73 @@ jobs:
           path: qa-out/
           if-no-files-found: warn
 
+  perf:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, macos-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 22.21.1
+      - name: zsh on Linux
+        if: runner.os == 'Linux'
+        run: sudo apt-get install -y zsh
+      - run: npm ci
+      - run: npm run build && npm run package
+      - name: Speed and a 20 minute run
+        shell: bash
+        run: |
+          mkdir -p qa-out
+          bin=$(ls pkg/terminalhinter-* | grep -v '\.' | head -1)
+          THINT_BIN="$bin" QA_SOAK_MINUTES=20 QA_OUT=qa-out/perf-${{ matrix.os }}.json npx tsx scripts/qa/perf.ts
+        continue-on-error: true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: qa-perf-${{ matrix.os }}
+          path: qa-out/
+          if-no-files-found: warn
+
+  install:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, macos-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 22.21.1
+      - name: zsh on Linux
+        if: runner.os == 'Linux'
+        run: sudo apt-get install -y zsh
+      - name: Package managers
+        run: |
+          npm i -g pnpm@9 yarn@1 bun@1
+          npm i --prefix "$RUNNER_TEMP/v" verdaccio@6
+      - run: npm ci
+      - run: npm run build && npm run package && npm run package:base
+      - name: Install, update and uninstall
+        shell: bash
+        run: |
+          mkdir -p qa-out
+          QA_VERDACCIO="$RUNNER_TEMP/v/node_modules/.bin/verdaccio" QA_OUT=qa-out/install-${{ matrix.os }}.json npx tsx scripts/qa/install.ts
+        continue-on-error: true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: qa-install-${{ matrix.os }}
+          path: qa-out/
+          if-no-files-found: warn
+
   report:
-    needs: test
+    needs: [test, perf, install]
     if: always()
     runs-on: ubuntu-24.04
     permissions:
