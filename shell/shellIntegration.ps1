@@ -16,7 +16,12 @@ function Global:__IS-Escape-Value([string]$value) {
 }
 
 function Global:Prompt() {
-    $Result = "$([char]0x1b)]6973;PS`a"
+    # the exit code of the command that just ran, so a failed one can be offered a fix at the next prompt
+    $IsOk = $?
+    $IsCode = $Global:LASTEXITCODE
+    $IsStatus = if ($IsOk) { 0 } elseif ($IsCode) { $IsCode } else { 1 }
+    $Result = "$([char]0x1b)]6973;EX;$IsStatus`a"
+    $Result += "$([char]0x1b)]6973;PS`a"
     $OriginalPrompt += $Global:__IsOriginalPrompt.Invoke()
     $Result += $OriginalPrompt
     $Result += "$([char]0x1b)]6973;PE`a"

@@ -10,7 +10,16 @@ import path from "node:path";
 import { closest } from "./util.js";
 import { listeningProcesses } from "./processes.js";
 
-export type Failure = { command: string; exitCode: number; output: string; cwd: string };
+export type Failure = { command: string; exitCode: number; output: string; cwd: string; shell?: string };
+
+// how to stop a process in the shell the command failed in
+export const killCommand = (pid: number, shell: string | undefined, platform = process.platform): string => {
+  if (shell === "cmd") return `taskkill /PID ${pid} /F`;
+  if (shell === "pwsh" || shell === "powershell") return `Stop-Process -Id ${pid}`;
+  // Git Bash turns /PID into a Windows path, a doubled slash keeps it as it is
+  if (platform === "win32") return `taskkill //PID ${pid} //F`;
+  return `kill ${pid}`;
+};
 export type Fix = { command: string; reason: string };
 
 const lines = (output: string) => output.split(/\r?\n/).map((l) => l.replace(/\s+$/, ""));
@@ -119,7 +128,7 @@ const rules: Rule[] = [
     const holder = (await listeningProcesses()).find((l) => l.port === port);
     return holder
       ? [
-          { command: `kill ${holder.pid}`, reason: `port ${port} is held by ${holder.command}` },
+          { command: killCommand(holder.pid, failure.shell), reason: `port ${port} is held by ${holder.command}` },
           { command: failure.command, reason: "then run it again" },
         ]
       : [];

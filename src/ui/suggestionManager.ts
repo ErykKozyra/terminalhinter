@@ -215,7 +215,7 @@ export class SuggestionManager {
     const ownVersion = ++this.#requestVersion;
     try {
       const runtime = await this._getRuntime();
-      const blob = await runtime.getFixes?.(failure);
+      const blob = await runtime.getFixes?.({ ...failure, shell: this.#shell });
       log.debug({ msg: "fixes found", count: blob?.suggestions.length, failure });
       if (blob == null || ownVersion !== this.#requestVersion || this.#term.getCommandState().commandText) return;
       this.#suggestBlob = blob;
@@ -264,12 +264,12 @@ export class SuggestionManager {
     // Only an entry that starts with what you typed is preselected. One found by letters in order (`one` in
     // $OPENBLAS_NUM_THREADS) stays unselected, so Enter runs the line as you typed it; Tab still takes it.
     const top = this.#suggestBlob?.suggestions[0];
-    const typed = token.token.toLowerCase();
-    const starts = (name: string) =>
-      name
-        .toLowerCase()
-        .replace(/^['"$]/, "")
-        .startsWith(typed.replace(/^['"$]/, ""));
+    const want = token.token.toLowerCase().replace(/^['"$]/, "");
+    // the name itself, or a word inside it (feature/login for "login")
+    const starts = (name: string) => {
+      const lower = name.toLowerCase().replace(/^['"$]/, "");
+      return lower.startsWith(want) || (/^[a-z0-9]/.test(want) && lower.split(/[/_.-]/).some((part) => part.startsWith(want)));
+    };
     return top != null && (top.allNames.some(starts) || starts(top.name)) ? 0 : -1;
   }
 

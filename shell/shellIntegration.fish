@@ -20,7 +20,12 @@ if [ "$ISTERM_TESTING" = "1" ]
 	set -Ua fish_features no-query-term
 end
 
+# the exit code of the command that just ran, so a failed one can be offered a fix at the next prompt
+function __is_report_status; printf '\e]6973;EX;%s\a' $argv[1]; end
+
 function fish_prompt;
+    set --local __is_status $status
+    __is_report_status $__is_status
     set --local __user_prompt_lines (is_user_prompt)
     set --local __user_prompt (string join '\n' $__user_prompt_lines)
 	set --local __prompt (string join '' (__is_prompt_start) $__user_prompt (__is_prompt_end))

@@ -176,6 +176,17 @@ const resolveShell = (shell) => {
 
 // thint unpacks its shell files into the home folder once; every run copies this home instead of unpacking again
 const homeTemplate = path.join(base, "home-template");
+// `thint` typed inside a scenario is the one under test, not whatever is installed on this machine
+const shimDir = path.join(base, "bin");
+const makeShim = () => {
+  fs.mkdirSync(shimDir, { recursive: true });
+  if (isWin) fs.writeFileSync(path.join(shimDir, "thint.cmd"), `@"${binCmd}" ${binArgs.map((a) => `"${a}"`).join(" ")} %*\r\n`);
+  else {
+    fs.writeFileSync(path.join(shimDir, "thint"), `#!/bin/sh\nexec ${[binCmd, ...binArgs].map((a) => `'${a}'`).join(" ")} "$@"\n`);
+    fs.chmodSync(path.join(shimDir, "thint"), 0o755);
+  }
+};
+
 const makeHomeTemplate = () => {
   fs.mkdirSync(homeTemplate, { recursive: true });
   execFileSync(binCmd, [...binArgs, "reinit"], {
@@ -216,6 +227,8 @@ const runOne = async (scenario, shell, [cols, rows]) => {
     ...process.env,
     HOME: home,
     USERPROFILE: home,
+    ...(isWin ? { Path: undefined } : {}),
+    PATH: `${shimDir}${path.delimiter}${process.env.PATH ?? process.env.Path ?? ""}`,
     TERM: "xterm-256color",
     COLORTERM: "truecolor",
     LANG: "C.UTF-8",
@@ -425,6 +438,7 @@ const loadScenarios = () => {
 
 const main = async () => {
   makeFixture();
+  makeShim();
   makeHomeTemplate();
   const scenarios = loadScenarios().filter((s) => !only || s.name.includes(only));
   const available = shells.filter((s) => {

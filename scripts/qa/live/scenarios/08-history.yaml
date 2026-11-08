@@ -2,7 +2,7 @@
   steps:
     - type: "git log --oneline -n 3<ENTER>"
       wait: 600
-    - type: "git "
+    - type: "git"
       wait: 400
       list_has: "git log --oneline -n 3"
 

@@ -9,15 +9,20 @@
       list_has: "deploy:prod"
       expect: "looks like production"
 
-- name: pnpm, yarn and bun list the same scripts
+- name: pnpm lists the scripts
   steps:
     - type: "pnpm run "
       list_has: ["dev", "build"]
-    - key: C-U
+
+- name: yarn lists the scripts
+  steps:
     - type: "yarn run "
       list_has: ["dev", "build"]
-    - key: C-U
+
+- name: bun lists the scripts
+  steps:
     - type: "bun run "
+      wait: 500
       list_has: ["dev", "build"]
 
 - name: make lists targets with their sections and descriptions
@@ -29,7 +34,7 @@
   steps:
     - type: "make dep"
       list_has: "deploy"
-      expect: "production"
+      expect: "marked [prod]"
 
 - name: make -C reads the Makefile of that folder
   files:

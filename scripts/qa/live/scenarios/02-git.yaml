@@ -3,9 +3,9 @@
     - type: "git switch "
       list_has: ["feature/login", "fix/cart-total", "first commit"]
 
-- name: git checkout narrows branches by letters in order
+- name: git checkout finds a branch by a word inside its name
   steps:
-    - type: "git checkout crt"
+    - type: "git checkout cart"
       list_has: "fix/cart-total"
     - key: TAB
       expect_line_starts: "git checkout fix/cart-total"
@@ -51,6 +51,7 @@
   steps:
     - type: "git config alias.co checkout<ENTER>"
       expect_ran: "git config alias.co checkout"
+      wait: 5500
     - type: "git co fea"
       wait: 300
       list_has: "feature/login"

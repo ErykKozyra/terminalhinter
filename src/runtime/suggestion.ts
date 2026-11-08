@@ -242,6 +242,16 @@ const matchesName = (name: string, query: string, filterStrategy: FilterStrategy
   const lower = name.toLowerCase();
   if (lower.startsWith(query)) return true;
   if (filterStrategy === "fuzzy" && lower.includes(query)) return true;
+  // a word inside the name counts as a start: "login" finds feature/login, "cart" finds fix/cart-total
+  if (
+    query.length >= 2 &&
+    /^[a-z0-9]/.test(query) &&
+    lower
+      .split(/[/_.-]/)
+      .slice(1)
+      .some((part) => part.startsWith(query))
+  )
+    return true;
   if (!getConfig().fuzzyMatching) return false;
   // leading dashes and the $ of variables are ignored, otherwise "--b" would match every option containing a "b"
   // and "$HO" every variable with an H and an O; the first letter must match and at least three letters are needed,

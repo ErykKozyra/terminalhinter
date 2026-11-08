@@ -1,6 +1,6 @@
 - name: a snippet with fields fills in and runs
   files:
-    ../../.config/terminalhinter/snippets.yaml: "- name: greet\n  description: Say hello\n  command: echo hello {{name}} from {{place=Krakow}}\n"
+    ../../.config/terminalhinter/snippets.yaml: "- name: greet\n  description: Say hello\n  command: echo hello {{name}} from {{place:Krakow}}\n"
   steps:
     - type: "gre"
       list_has: "greet"
