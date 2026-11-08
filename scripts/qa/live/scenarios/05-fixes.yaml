@@ -59,6 +59,7 @@
       list_has: "feature/login"
 
 - name: a port in use offers to stop the process
+  min_cols: 60
   shells: [zsh, bash, fish]
   steps:
     - type: "node -e \"require('http').createServer().listen(48731)\" &<ENTER>"

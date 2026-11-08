@@ -276,7 +276,11 @@ const runOne = async (scenario, shell, [cols, rows]) => {
     const b = term.buffer.active;
     let y = b.baseY + b.cursorY;
     let text = b.getLine(y)?.translateToString(true) ?? "";
-    while (y > 0 && b.getLine(y)?.isWrapped) {
+    // rows above belong to the same line while they are wrapped, or (zsh wraps by moving the cursor itself) while
+    // the prompt has not been reached yet and the row above is full
+    const full = (row) => (b.getLine(row)?.translateToString(false) ?? "").length >= cols && (b.getLine(row)?.translateToString(true) ?? "").length >= cols - 1;
+    for (let up = 0; y > 0 && up < 8; up++) {
+      if (!b.getLine(y)?.isWrapped && (text.includes(prompt.trimEnd()) || !full(y - 1))) break;
       y--;
       text = (b.getLine(y)?.translateToString(true) ?? "") + text;
     }

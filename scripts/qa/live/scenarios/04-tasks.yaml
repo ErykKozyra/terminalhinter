@@ -26,6 +26,7 @@
       list_has: ["dev", "build"]
 
 - name: make lists targets with their sections and descriptions
+  min_cols: 60
   steps:
     - type: "make "
       list_has: ["build", "Work · Build everything", "Release · Ship it"]
@@ -37,6 +38,7 @@
       expect: "marked [prod]"
 
 - name: make -C reads the Makefile of that folder
+  min_cols: 60
   files:
     sub/Makefile: "lint: ## Lint the code\n\techo lint\n"
   steps:

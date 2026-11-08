@@ -1,4 +1,5 @@
 - name: git switch offers local branches with their last commit
+  min_cols: 60
   steps:
     - type: "git switch "
       list_has: ["feature/login", "fix/cart-total", "first commit"]
@@ -21,6 +22,7 @@
       expect: "Switched to branch 'release/1.2'"
 
 - name: git stash show lists stashes by what they hold
+  min_cols: 60
   steps:
     - type: "git stash show "
       list_has: ["stash@{0}", "half done cart"]

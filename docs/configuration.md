@@ -31,7 +31,7 @@ updateCheck = true              # once a day, ask npm whether a new version is o
 tabBehavior = "accept"          # "accept": Tab takes the selected entry; "shell": Tab adds what all entries share, then walks the list
 showListOn = "typing"           # "typing": the list follows you; "tab": it only opens on Tab or Ctrl+Space
 fixSuggestions = true           # after a command fails, an empty line offers a fix (Tab puts it on the line)
-historyEntries = true           # whole commands you ran in this folder show up as you type their first word
+historyEntries = true           # whole commands you ran in this folder (or elsewhere in its repository) show up as you type their first word
 
 # optional, override the theme
 activeSuggestionBackgroundColor = "#2F5FD0"

@@ -39,8 +39,8 @@ Works on macOS and Linux with zsh and bash. Windows and fish are experimental.
   the reflog after `git reset`, and your aliases complete like the command behind them.
 - **Ports:** `kill` starts with the processes listening on a port, with their folder (`:3000 next dev · ~/Dev/shop`).
 - **Package versions:** `npm i react@` lists the tags and the newest releases (pnpm, yarn and bun too).
-- **What you ran here:** typing the first word brings back whole commands you ran in this folder. Lines that look
-  like they hold a password or token are never stored.
+- **What you ran here:** typing the first word brings back whole commands you ran in this folder, and the ones
+  you ran elsewhere in the same repository. Lines that look like they hold a password or token are never stored.
 
 **And it gets out of the way**
 
@@ -79,6 +79,7 @@ On a Mac, Ctrl is the Control key (⌃), not Command.
 | `thint migrate` | Move over from Kiro CLI, Amazon Q or Fig |
 | `thint update` | Install the newest version |
 | `thint doctor` | Check the installation and tell you how to fix it |
+| `thint debug keys` | Record what your terminal sends for the keys thint uses |
 
 ## Coming from Kiro CLI or Fig
 
