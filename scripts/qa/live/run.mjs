@@ -251,12 +251,15 @@ const runOne = async (scenario, shell, [cols, rows]) => {
   };
   for (const k of Object.keys(env)) if (env[k] === undefined) delete env[k];
   let raw = "";
+  // tmux's default half-second escape-time joins Esc and a key typed after it into Alt+key, for any program inside
+  const tmuxConf = path.join(home, ".qa-tmux.conf");
+  fs.writeFileSync(tmuxConf, "set -sg escape-time 10\n");
   // inside a multiplexer: thint starts in its first window, the way it does from a shell config there
   const inner = [binCmd, ...binArgs, "-s", shell];
   const quoted = inner.map((a) => `'${a}'`).join(" ");
   const [cmd, cmdArgs] =
     scenario.wrapper === "tmux"
-      ? ["tmux", ["-L", `qa-${path.basename(home)}`, "-f", "/dev/null", "new-session", quoted]]
+      ? ["tmux", ["-L", `qa-${path.basename(home)}`, "-f", tmuxConf, "new-session", quoted]]
       : scenario.wrapper === "screen"
         ? ["screen", ["-q", "-S", `qa-${path.basename(home)}`, ...inner]]
         : [binCmd, inner.slice(1)];
