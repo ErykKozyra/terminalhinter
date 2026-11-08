@@ -157,6 +157,22 @@ const createShellLaunchers = (binDirectory: string): Map<Shell, string> => {
   return launchers;
 };
 
+// pnpm keeps every version in a folder of its own (.pnpm/<name>@<version>) and leaves the old one on disk after an
+// update, so the binary's own path would keep pointing at the old version. Its global node_modules has a link that
+// always leads to the installed version: going through it, the startup lines find the new binary after an update.
+export const stableBinaryPath = (binary: string): string => {
+  const pnpm = /^(.*)\/\.pnpm\/[^/]+\/node_modules\/@erykkozyra\/(terminalhinter-[a-z0-9]+-[a-z0-9]+)\/([^/]+)$/.exec(binary);
+  if (pnpm == null) return binary;
+  const [, root, platformPackage, file] = pnpm;
+  // ".." after a link goes to the folder holding the link's target, the way the shell and the system resolve it
+  const stable = `${root}/node_modules/@erykkozyra/terminalhinter/../${platformPackage}/${file}`;
+  try {
+    return fs.realpathSync.native(stable) === fs.realpathSync.native(binary) ? stable : binary;
+  } catch {
+    return binary;
+  }
+};
+
 export const createShellConfigs = async (initResourcesDirectory = initResourcesPath) => {
   const launchers = createShellLaunchers(path.join(path.dirname(initResourcesDirectory), "bin"));
   for (const shell of supportedShells) {
@@ -166,7 +182,7 @@ export const createShellConfigs = async (initResourcesDirectory = initResourcesP
     const launcher = launchers.get(shell);
     await fsAsync.writeFile(
       path.join(initResourcesDirectory, shell, shellConfigName),
-      getShellConfig(shell, launcher, launcher != null ? process.execPath : undefined),
+      getShellConfig(shell, launcher, launcher != null ? stableBinaryPath(process.execPath) : undefined),
     );
   }
 };

@@ -98,7 +98,18 @@ export const buildExecuteShellCommand =
     // ("suspended (tty output)") so the tab was left with a plain shell
     const detached = process.platform !== "win32";
     const child = spawn(command, escapedArgs, { cwd, env: { ...process.env, ...env, ISTERM: "1" }, shell: executionShell, signal, detached });
-    const killTimeout = setTimeout(() => child.kill("SIGKILL"), timeout);
+    // the whole process group: killing only the shell leaves what it started (a `sleep` in a spec's script) running
+    // with nobody waiting for it, holding the output pipe open so the result never arrives
+    const killGroup = () => {
+      try {
+        if (detached && child.pid != null) process.kill(-child.pid, "SIGKILL");
+        else child.kill("SIGKILL");
+      } catch {
+        // already gone
+      }
+    };
+    const killTimeout = setTimeout(killGroup, timeout);
+    signal?.addEventListener("abort", killGroup, { once: true });
     let stdout = "";
     let stderr = "";
     child.stdout.on("data", (data) => (stdout += data));
@@ -109,6 +120,7 @@ export const buildExecuteShellCommand =
     return new Promise((resolve) => {
       child.on("close", (code) => {
         clearTimeout(killTimeout);
+        signal?.removeEventListener("abort", killGroup);
         resolve({
           status: code ?? 0,
           stderr,
