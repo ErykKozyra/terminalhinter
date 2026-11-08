@@ -12,7 +12,15 @@ import type { KeyPressEvent } from "./suggestionManager.js";
 const cursorPositionReport = new RegExp("\\u001B\\[\\??\\d+;\\d+R", "g");
 // the start of a report, or of any CSI key sequence, cut off at the end of a chunk
 // eslint-disable-next-line no-control-regex
-const partialCursorPositionReport = new RegExp("\\u001B\\[\\??[\\d;:]*$");
+// the start of an answer cut in two pieces waits for the rest: a cursor report or another CSI answer, or an OSC or
+// DCS string without its terminator yet
+// eslint-disable-next-line no-control-regex
+const partialCursorPositionReport = /\x1b\[[?>=]?[\d;:]*\$?$|\x1b\]\d*(;[^\x07\x1b]*\x1b?)?$|\x1bP[\d>]*([+$|][^\x1b]*\x1b?)?$/;
+// Other answers a terminal sends back when the shell asks (fish 4 asks at every prompt): device attributes, status,
+// mode and keyboard reports, OSC colors, DCS strings. Node's key parser would cut them into "keys" (\x1b[, ?, 1, ;, c),
+// each of which counted as typing; they go to the shell in one piece instead, as a report.
+// eslint-disable-next-line no-control-regex
+const terminalReport = /\x1b\[[?>=][\d;]*c|\x1b\[\d*n|\x1b\[\?[\d;]*\$y|\x1b\[\?\d*u|\x1b\]\d+;[^\x07\x1b]*(?:\x07|\x1b\\)|\x1bP[\d>]*[+$|][^\x1b]*\x1b\\/g;
 // blocks win32 input mode, the kitty keyboard protocol and xterm modifyOtherKeys from upgrading input & breaking node's readline
 // eslint-disable-next-line no-control-regex
 const keyEncodingUpgrade = new RegExp("\\u001B\\[(?:\\?9001([hl])|\\?u|[=><][\\d;]*u|>[\\d;]*m)", "g");
@@ -123,7 +131,13 @@ export class StdioProxy {
     });
   }
 
+  #pendingTimer?: NodeJS.Timeout;
+
   handleInput(data: Buffer | string): void {
+    if (this.#pendingTimer != null) {
+      clearTimeout(this.#pendingTimer);
+      this.#pendingTimer = undefined;
+    }
     const decoded = Buffer.isBuffer(data) ? this.#decoder.write(data) : this.#decoder.end() + data;
     if (!Buffer.isBuffer(data)) this.#decoder = new StringDecoder("utf8");
     this.#routeInput(this.#pendingInput + decoded);
@@ -144,6 +158,8 @@ export class StdioProxy {
 
   dispose(): string {
     this.#flushEscape();
+    if (this.#pendingTimer != null) clearTimeout(this.#pendingTimer);
+    this.#pendingTimer = undefined;
     const remaining = this.#pendingInput + this.#decoder.end();
     this.#pendingInput = "";
     if (remaining.length !== 0) this.#keypressInput.write(remaining);
@@ -164,7 +180,7 @@ export class StdioProxy {
     this.#emit({ sequence: "\u001b", name: "escape", ctrl: false, meta: false, shift: false });
   }
 
-  #routeInput(input: string): void {
+  #routeInput(input: string, hold = true): void {
     if (this.#pendingEscape != null) {
       if (input === "\u001b") this.#flushEscape();
       else {
@@ -174,8 +190,16 @@ export class StdioProxy {
         input = "\u001b" + input;
       }
     }
-    this.#pendingInput = input.match(partialCursorPositionReport)?.[0] ?? "";
+    this.#pendingInput = hold ? (input.match(partialCursorPositionReport)?.[0] ?? "") : "";
     const completeInput = this.#pendingInput.length === 0 ? input : input.slice(0, -this.#pendingInput.length);
+    // a start that gets no rest in a few milliseconds was a key after all (Alt+P, Alt+])
+    if (this.#pendingInput.length > 0)
+      this.#pendingTimer = setTimeout(() => {
+        this.#pendingTimer = undefined;
+        const held = this.#pendingInput;
+        this.#pendingInput = "";
+        this.#routeInput(held, false);
+      }, escapeWait);
     const keypressInput = completeInput.replace(cursorPositionReport, (response) => {
       this.#onCursorPositionReport(response);
       return "";
@@ -188,6 +212,24 @@ export class StdioProxy {
       this.#pendingEscape = setTimeout(() => this.#flushEscape(), escapeWait);
       return;
     }
+    // answers from the terminal, split out before the key parser sees them
+    let rest = "";
+    let last = 0;
+    for (const m of keypressInput.matchAll(terminalReport)) {
+      const at = m.index ?? 0;
+      rest += keypressInput.slice(last, at);
+      if (rest.length > 0) {
+        this.#routeKeys(rest);
+        rest = "";
+      }
+      this.#emit({ sequence: m[0], name: "report", ctrl: false, meta: false, shift: false });
+      last = at + m[0].length;
+    }
+    if (last === 0) this.#routeKeys(keypressInput);
+    else if (last < keypressInput.length) this.#routeKeys(keypressInput.slice(last));
+  }
+
+  #routeKeys(keypressInput: string): void {
     let from = 0;
     for (let at = keypressInput.indexOf("\u001b["); at !== -1; at = keypressInput.indexOf("\u001b[", at + 1)) {
       const csi = csiAt(keypressInput, at);

@@ -15,6 +15,14 @@ import { initializeRuntime } from "../runtime/initialize.js";
 import { hasCustomOrder } from "../runtime/order.js";
 import { Field, fillSnippet, snippetFields } from "../runtime/extras/snippets.js";
 
+// Answers a terminal sends back on stdin: device attributes (CSI ? 62 ; 22 c, CSI > 1 ; 10 ; 0 c), cursor position
+// (CSI 12 ; 5 R), status (CSI 0 n), keyboard flags (CSI ? 1 u), mode reports (CSI ? 2026 ; 2 $ y), focus in and out,
+// and OSC or DCS replies (colors, XTGETTCAP).
+export const isTerminalReport = (sequence: string | undefined): boolean =>
+  sequence != null &&
+  // eslint-disable-next-line no-control-regex
+  (/^\x1b\[[?>=]?[\d;]*(c|R|n|\$y)$/.test(sequence) || /^\x1b\[\?\d*u$/.test(sequence) || /^\x1b\[[IO]$/.test(sequence) || /^\x1b[\]P_][\s\S]*(\x07|\x1b\\)$/.test(sequence));
+
 type SuggestionRuntime = Pick<Awaited<ReturnType<typeof initializeRuntime>>, "getSuggestions"> &
   Partial<
     Pick<
@@ -609,6 +617,9 @@ export class SuggestionManager {
   }
 
   update(keyPress: KeyPress, allowBindings = true): boolean {
+    // the terminal answering a question the shell asked (fish 4 asks at every prompt) is not typing: it goes to the
+    // shell untouched and the list stays as it is, so Tab still takes the fix shown after a failed command
+    if (isTerminalReport(keyPress.sequence)) return false;
     const handled = this._update(keyPress, allowBindings);
     // a key that went to the shell changes the line, so the list on screen no longer belongs to it
     if (!handled && keyPress.name != "return") this.#inputVersion += 1;
