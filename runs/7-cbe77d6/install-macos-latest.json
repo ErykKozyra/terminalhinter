@@ -1,0 +1,432 @@
+{
+  "when": "2026-11-08T22:10:03.063Z",
+  "platform": "darwin-arm64",
+  "version": "1.2.0",
+  "from": "1.1.3",
+  "managers": {
+    "npm": [
+      {
+        "name": "install 1.1.3",
+        "ok": true,
+        "detail": "\nadded 2 packages in 2s\n"
+      },
+      {
+        "name": "thint --version is 1.1.3",
+        "ok": true,
+        "detail": "1.1.3\n"
+      },
+      {
+        "name": "thint init zsh prints the startup line",
+        "ok": true,
+        "detail": "\n\n[[ -f '/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-install-DhXoc6/npm/home/.local/share/terminalhinter/init/zsh/init.zsh' ]] && source '/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-install-DhXoc6/npm/home/.local/share/terminalhinter/init/zsh/init.zsh'\n"
+      },
+      {
+        "name": "a tab opens with 1.1.3",
+        "ok": true,
+        "detail": "QAPROMPT> "
+      },
+      {
+        "name": "the list shows in the 1.1.3 tab",
+        "ok": false,
+        "detail": "QAPROMPT> git st"
+      },
+      {
+        "name": "update to 1.2.0 with npm",
+        "ok": true,
+        "detail": "\nchanged 2 packages in 2s\n"
+      },
+      {
+        "name": "thint --version is 1.2.0",
+        "ok": true,
+        "detail": "1.2.0\n"
+      },
+      {
+        "name": "the tab opened before the update still runs commands",
+        "ok": true,
+        "detail": "QAPROMPT> echo QA_A_$((1+1))\nQA_A_2\nQAPROMPT> "
+      },
+      {
+        "name": "and still shows the list",
+        "ok": true,
+        "detail": "QAPROMPT> echo QA_A_$((1+1))\nQA_A_2\nQAPROMPT> git st\n           ╭───────────────────────────────────────────────────────╮\n           │  ■  stage [pathspec...]  Add file contents to the s…  │\n           │  ■  status  Show the working tree status              │\n           │  ■  stash   Temporarily stores all the modified tra…  │\n           ├───────────────────────────────────────────────────────┤\n           │ Add file contents to the staging area                 │\n           ╰───────────────────────────────────────────────────────╯"
+      },
+      {
+        "name": "a new tab after the update opens",
+        "ok": true,
+        "detail": "terminalhinter is now 1.2.0\nQAPROMPT> "
+      },
+      {
+        "name": "the new tab runs 1.2.0 (says so, and is not the old file)",
+        "ok": true,
+        "detail": "/private/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-install-DhXoc6/npm/prefix/lib/node_modules/@erykkozyra/terminalhinter/node_modules/@erykkozyra/terminalhinter-darwin-arm64/terminalhinter-darwin-arm64 -s zsh\nterminalhinter is now 1.2.0\nQAPROMPT> "
+      },
+      {
+        "name": "the unpacked files are 1.2.0",
+        "ok": true,
+        "detail": "1.2.0"
+      },
+      {
+        "name": "no error or reinit request in the new tab",
+        "ok": true,
+        "detail": "terminalhinter is now 1.2.0\nQAPROMPT> "
+      },
+      {
+        "name": "the list shows in the new tab",
+        "ok": true,
+        "detail": "terminalhinter is now 1.2.0\nQAPROMPT> git st\n           ╭───────────────────────────────────────────────────────╮\n           │  ■  stage [pathspec...]  Add file contents to the s…  │\n           │  ■  status  Show the working tree status              │\n           │  ■  stash   Temporarily stores all the modified tra…  │\n           ├───────────────────────────────────────────────────────┤\n           │ Add file contents to the staging area                 │\n           ╰───────────────────────────────────────────────────────╯"
+      },
+      {
+        "name": "thint update --force reinstalls with npm",
+        "ok": true,
+        "detail": "Updating terminalhinter 1.2.0 to 1.2.0 with npm\n\n\nadded 2 packages in 1s\n\n✓ terminalhinter 1.2.0 is installed. New terminal tabs use it.\n"
+      },
+      {
+        "name": "thint doctor has no failures",
+        "ok": true,
+        "detail": "✓ thint 1.2.0 at /var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-install-DhXoc6/npm/prefix/bin/thint\n! this shell does not run inside terminalhinter\n  fix: open a new terminal tab; if it stays like this, run thint init\n✓ zsh: startup lines are at the top of ~/.zshrc\n"
+      },
+      {
+        "name": "thint uninstall",
+        "ok": true,
+        "detail": "✓ removed the startup lines from /var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-install-DhXoc6/npm/home/.zshrc\n✓ deleted the terminalhinter resources folder (history, bookmarks, your list order)\n• to finish, remove the program: npm uninstall -g @erykkozyra/terminalhinter\n"
+      },
+      {
+        "name": "npm removes the package",
+        "ok": true,
+        "detail": "\nremoved 2 packages in 253ms\n"
+      },
+      {
+        "name": "a new tab after uninstalling is a plain working shell",
+        "ok": true,
+        "detail": "QAPROMPT> echo QA_C_$((2+1))\nQA_C_3\nQAPROMPT> "
+      },
+      {
+        "name": "no terminalhinter files left behind",
+        "ok": true,
+        "detail": ""
+      }
+    ],
+    "pnpm": [
+      {
+        "name": "install 1.1.3",
+        "ok": true,
+        "detail": "Progress: resolved 1, reused 0, downloaded 0, added 0\nPackages: +2\n++\n\n   ╭───────────────────────────────────────────────────────────────────╮\n   │                                                                   │\n   │                Update available! 9.15.9 → 12.18.0.                │\n   │   Changelog: https://github.com/pnpm/pnpm/releases/tag/v12.18.0   │\n   │                 Run \"pnpm self-update\" to update.                 │\n   │                                                                   │\n   ╰───────────────────────────────────────────────────────────────────╯\n\nProgress: resolved 7, reused 0, downloaded 1, added 1\nProgress: resolved 7, reused 0, downloaded 2, added 2, done\n\n/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-install-DhXoc6/pnpm/pnpm/global/5:\n+ @erykkozyra/terminalhinter 1.1.3 (1.2.0 is available)\n\nDone in 6.9s using pnpm v9.15.9\n"
+      },
+      {
+        "name": "thint --version is 1.1.3",
+        "ok": true,
+        "detail": "1.1.3\n"
+      },
+      {
+        "name": "thint init zsh prints the startup line",
+        "ok": true,
+        "detail": "\n\n[[ -f '/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-install-DhXoc6/pnpm/home/.local/share/terminalhinter/init/zsh/init.zsh' ]] && source '/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-install-DhXoc6/pnpm/home/.local/share/terminalhinter/init/zsh/init.zsh'\n"
+      },
+      {
+        "name": "a tab opens with 1.1.3",
+        "ok": true,
+        "detail": "QAPROMPT> "
+      },
+      {
+        "name": "the list shows in the 1.1.3 tab",
+        "ok": true,
+        "detail": "QAPROMPT> git st\n           ╭───────────────────────────────────────────────────────╮\n           │  ■  stage [pathspec...]  Add file contents to the s…  │\n           │  ■  status  Show the working tree status              │\n           │  ■  stash   Temporarily stores all the modified tra…  │\n           ├───────────────────────────────────────────────────────┤\n           │ Add file contents to the staging area                 │\n           ╰───────────────────────────────────────────────────────╯"
+      },
+      {
+        "name": "update to 1.2.0 with pnpm",
+        "ok": false,
+        "detail": " ERR_PNPM_UNEXPECTED_VIRTUAL_STORE  Unexpected virtual store location\n\nThe dependencies at \"/private/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-install-DhXoc6/pnpm/pnpm/global/5/node_modules\" are currently symlinked from the virtual store directory at \"/private/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-install-DhXoc6/pnpm/pnpm/global/5/.pnpm\".\n\npnpm now wants to use the virtual store at \"/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-install-DhXoc6/pnpm/pnpm/global/5/.pnpm\" to link dependencies from the store.\n\nIf you want to use the new virtual store location, reinstall your dependencies with \"pnpm install\".\n\nYou may change the virtual store location by changing the value of the virtual-store-dir config.\n"
+      },
+      {
+        "name": "thint --version is 1.2.0",
+        "ok": false,
+        "detail": "1.1.3\n"
+      },
+      {
+        "name": "the tab opened before the update still runs commands",
+        "ok": true,
+        "detail": "QAPROMPT> echo QA_A_$((1+1))\nQA_A_2\nQAPROMPT> "
+      },
+      {
+        "name": "and still shows the list",
+        "ok": true,
+        "detail": "QAPROMPT> echo QA_A_$((1+1))\nQA_A_2\nQAPROMPT> git st\n           ╭───────────────────────────────────────────────────────╮\n           │  ■  stage [pathspec...]  Add file contents to the s…  │\n           │  ■  status  Show the working tree status              │\n           │  ■  stash   Temporarily stores all the modified tra…  │\n           ├───────────────────────────────────────────────────────┤\n           │ Add file contents to the staging area                 │\n           ╰───────────────────────────────────────────────────────╯"
+      },
+      {
+        "name": "a new tab after the update opens",
+        "ok": true,
+        "detail": "QAPROMPT> "
+      },
+      {
+        "name": "the new tab runs 1.2.0 (says so, and is not the old file)",
+        "ok": false,
+        "detail": "/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-install-DhXoc6/pnpm/home/.local/share/terminalhinter/bin/zsh -s zsh\nQAPROMPT> "
+      },
+      {
+        "name": "the unpacked files are 1.2.0",
+        "ok": false,
+        "detail": "1.1.3"
+      },
+      {
+        "name": "no error or reinit request in the new tab",
+        "ok": true,
+        "detail": "QAPROMPT> "
+      },
+      {
+        "name": "the list shows in the new tab",
+        "ok": true,
+        "detail": "QAPROMPT> git st\n           ╭───────────────────────────────────────────────────────╮\n           │  ■  stage [pathspec...]  Add file contents to the s…  │\n           │  ■  status  Show the working tree status              │\n           │  ■  stash   Temporarily stores all the modified tra…  │\n           ├───────────────────────────────────────────────────────┤\n           │ Add file contents to the staging area                 │\n           ╰───────────────────────────────────────────────────────╯"
+      },
+      {
+        "name": "thint update --force reinstalls with pnpm",
+        "ok": false,
+        "detail": "Updating terminalhinter 1.1.3 to 1.2.0 with pnpm\n\n ERR_PNPM_UNEXPECTED_VIRTUAL_STORE  Unexpected virtual store location\n\nThe dependencies at \"/private/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-install-DhXoc6/pnpm/pnpm/global/5/node_modules\" are currently symlinked from the virtual store directory at \"/private/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-install-DhXoc6/pnpm/pnpm/global/5/.pnpm\".\n\npnpm now wants to use the virtual store at \"/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-install-DhXoc6/pnpm/pnpm/global/5/.pnpm\" to link dependencies from the store.\n\nIf you want to use the new virtual store location, reinstall your dependencies with \"pnpm install\".\n\nYou may change the virtual store location by changing the value of the virtual-store-dir config.\n✗ pnpm could not install the update\n  fix: pnpm add -g @erykkozyra/terminalhinter@latest\n"
+      },
+      {
+        "name": "thint doctor has no failures",
+        "ok": true,
+        "detail": "✓ thint 1.1.3 at /var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-install-DhXoc6/pnpm/pnpm/thint\n! this shell does not run inside terminalhinter\n  fix: open a new terminal tab; if it stays like this, run thint init\n✓ zsh: startup lines are at the top of ~/.zshrc\n"
+      },
+      {
+        "name": "thint uninstall",
+        "ok": true,
+        "detail": "✓ removed the startup lines from /var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-install-DhXoc6/pnpm/home/.zshrc\n✓ deleted the terminalhinter resources folder (history, bookmarks, your list order)\n• to finish, remove the program: npm uninstall -g @erykkozyra/terminalhinter\n"
+      },
+      {
+        "name": "pnpm removes the package",
+        "ok": false,
+        "detail": " ERR_PNPM_UNEXPECTED_VIRTUAL_STORE  Unexpected virtual store location\n\nThe dependencies at \"/private/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-install-DhXoc6/pnpm/pnpm/global/5/node_modules\" are currently symlinked from the virtual store directory at \"/private/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-install-DhXoc6/pnpm/pnpm/global/5/.pnpm\".\n\npnpm now wants to use the virtual store at \"/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-install-DhXoc6/pnpm/pnpm/global/5/.pnpm\" to link dependencies from the store.\n\nIf you want to use the new virtual store location, reinstall your dependencies with \"pnpm install\".\n\nYou may change the virtual store location by changing the value of the virtual-store-dir config.\n"
+      },
+      {
+        "name": "a new tab after uninstalling is a plain working shell",
+        "ok": true,
+        "detail": "QAPROMPT> echo QA_C_$((2+1))\nQA_C_3\nQAPROMPT> "
+      },
+      {
+        "name": "no terminalhinter files left behind",
+        "ok": false,
+        "detail": "/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-install-DhXoc6/pnpm/home/Library/Caches/pnpm/metadata-v1.3/127.0.0.1+5357/@erykkozyra/terminalhinter-darwin-arm64.json\n/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-install-DhXoc6/pnpm/home/Library/Caches/pnpm/metadata-v1.3/127.0.0.1+5357/@erykkozyra/terminalhinter-darwin-x64.json\n/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-install-DhXoc6/pnpm/home/Library/Caches/pnpm/metadata-v1.3/127.0.0.1+5357/@erykkozyra/terminalhinter-linux-arm64.json\n/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-install-DhXoc6/pnpm/home/Library/Caches/pnpm/metadata-v1.3/127.0.0.1+5357/@erykkozyra/terminalhinter-linux-x64.json\n/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-install-DhXoc6/pnpm/home/Library/Caches/pnpm/metadata-v1.3/127.0.0.1+5357/@erykkozyra/terminalhinter-win32-arm64.json\n/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-install-DhXoc6/pnpm/home/Library/Caches/pnpm/metadata-v1.3/127.0.0.1+5357/@erykkozyra/terminalhinter-win32-x64.json\n/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-install-DhXoc6/pnpm/home/Library/Caches/pnpm/metadata-v1.3/127.0.0.1+5357/@erykkozyra/terminalhinter.json\n/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-install-DhXoc6/pnpm/home/Library/Caches/pnpm/metadata-v1.3/127.0.0.1+5357/@erykkozyra/terminalhinter-darwin-arm64.json\n/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-install-DhXoc6/pnpm/home/Library/Caches/pnpm/metadata-v1.3/127.0.0.1+5357/@erykkozyra/terminalhinter-darwin-x64.json\n/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-install-DhXoc6/pnpm/home/Library/Caches/pnpm/metadata-v1.3/127.0.0.1+5357/@erykkozyra/terminalhinter-linux-arm64.json\n/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-install-DhXoc6/pnpm/home/Library/Caches/pnpm/metadata-v1.3/127.0.0.1+5357/@erykkozyra/terminalhinter-linux-x64.json\n/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-install-DhXoc6/pnpm/home"
+      }
+    ],
+    "yarn": [
+      {
+        "name": "install 1.1.3",
+        "ok": true,
+        "detail": "yarn global v1.22.22\n[1/4] Resolving packages...\n[2/4] Fetching packages...\n[3/4] Linking dependencies...\n[4/4] Building fresh packages...\nsuccess Installed \"@erykkozyra/terminalhinter@1.1.3\" with binaries:\n      - thint\n      - terminalhinter\nDone in 4.87s.\n"
+      },
+      {
+        "name": "thint --version is 1.1.3",
+        "ok": true,
+        "detail": "1.1.3\n"
+      },
+      {
+        "name": "thint init zsh prints the startup line",
+        "ok": true,
+        "detail": "\n\n[[ -f '/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-install-DhXoc6/yarn/home/.local/share/terminalhinter/init/zsh/init.zsh' ]] && source '/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-install-DhXoc6/yarn/home/.local/share/terminalhinter/init/zsh/init.zsh'\n"
+      },
+      {
+        "name": "a tab opens with 1.1.3",
+        "ok": true,
+        "detail": "QAPROMPT> "
+      },
+      {
+        "name": "the list shows in the 1.1.3 tab",
+        "ok": true,
+        "detail": "QAPROMPT> git st\n           ╭───────────────────────────────────────────────────────╮\n           │  ■  stage [pathspec...]  Add file contents to the s…  │\n           │  ■  status  Show the working tree status              │\n           │  ■  stash   Temporarily stores all the modified tra…  │\n           ├───────────────────────────────────────────────────────┤\n           │ Add file contents to the staging area                 │\n           ╰───────────────────────────────────────────────────────╯"
+      },
+      {
+        "name": "update to 1.2.0 with yarn",
+        "ok": true,
+        "detail": "yarn global v1.22.22\n[1/4] Resolving packages...\n[2/4] Fetching packages...\n[3/4] Linking dependencies...\n[4/4] Building fresh packages...\nsuccess Installed \"@erykkozyra/terminalhinter@1.2.0\" with binaries:\n      - thint\n      - terminalhinter\nDone in 1.83s.\n"
+      },
+      {
+        "name": "thint --version is 1.2.0",
+        "ok": true,
+        "detail": "1.2.0\n"
+      },
+      {
+        "name": "the tab opened before the update still runs commands",
+        "ok": true,
+        "detail": "QAPROMPT> echo QA_A_$((1+1))\nQA_A_2\nQAPROMPT> "
+      },
+      {
+        "name": "and still shows the list",
+        "ok": true,
+        "detail": "QAPROMPT> echo QA_A_$((1+1))\nQA_A_2\nQAPROMPT> git st\n           ╭───────────────────────────────────────────────────────╮\n           │  ■  stage [pathspec...]  Add file contents to the s…  │\n           │  ■  status  Show the working tree status              │\n           │  ■  stash   Temporarily stores all the modified tra…  │\n           ├───────────────────────────────────────────────────────┤\n           │ Add file contents to the staging area                 │\n           ╰───────────────────────────────────────────────────────╯"
+      },
+      {
+        "name": "a new tab after the update opens",
+        "ok": true,
+        "detail": "terminalhinter is now 1.2.0\nQAPROMPT> "
+      },
+      {
+        "name": "the new tab runs 1.2.0 (says so, and is not the old file)",
+        "ok": true,
+        "detail": "/private/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-install-DhXoc6/yarn/home/.local/share/yarn/global/node_modules/@erykkozyra/terminalhinter-darwin-arm64/terminalhinter-darwin-arm64 -s zsh\nterminalhinter is now 1.2.0\nQAPROMPT> "
+      },
+      {
+        "name": "the unpacked files are 1.2.0",
+        "ok": true,
+        "detail": "1.2.0"
+      },
+      {
+        "name": "no error or reinit request in the new tab",
+        "ok": true,
+        "detail": "terminalhinter is now 1.2.0\nQAPROMPT> "
+      },
+      {
+        "name": "the list shows in the new tab",
+        "ok": true,
+        "detail": "terminalhinter is now 1.2.0\nQAPROMPT> git st\n           ╭───────────────────────────────────────────────────────╮\n           │  ■  stage [pathspec...]  Add file contents to the s…  │\n           │  ■  status  Show the working tree status              │\n           │  ■  stash   Temporarily stores all the modified tra…  │\n           ├───────────────────────────────────────────────────────┤\n           │ Add file contents to the staging area                 │\n           ╰───────────────────────────────────────────────────────╯"
+      },
+      {
+        "name": "thint update --force reinstalls with yarn",
+        "ok": true,
+        "detail": "Updating terminalhinter 1.2.0 to 1.2.0 with yarn\n\nyarn global v1.22.22\n[1/4] Resolving packages...\n[2/4] Fetching packages...\n[3/4] Linking dependencies...\n[4/4] Building fresh packages...\nsuccess Installed \"@erykkozyra/terminalhinter@1.2.0\" with binaries:\n      - thint\n      - terminalhinter\nDone in 0.09s.\n\n✓ terminalhinter 1.2.0 is installed. New terminal tabs use it.\n"
+      },
+      {
+        "name": "thint doctor has no failures",
+        "ok": true,
+        "detail": "✓ thint 1.2.0 at /var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-install-DhXoc6/yarn/prefix/bin/thint\n! this shell does not run inside terminalhinter\n  fix: open a new terminal tab; if it stays like this, run thint init\n✓ zsh: startup lines are at the top of ~/.zshrc\n"
+      },
+      {
+        "name": "thint uninstall",
+        "ok": true,
+        "detail": "✓ removed the startup lines from /var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-install-DhXoc6/yarn/home/.zshrc\n✓ deleted the terminalhinter resources folder (history, bookmarks, your list order)\n• to finish, remove the program: npm uninstall -g @erykkozyra/terminalhinter\n"
+      },
+      {
+        "name": "yarn removes the package",
+        "ok": true,
+        "detail": "yarn global v1.22.22\n[1/2] Removing module @erykkozyra/terminalhinter...\n[2/2] Regenerating lockfile and installing missing dependencies...\nsuccess Uninstalled packages.\nDone in 0.05s.\n"
+      },
+      {
+        "name": "a new tab after uninstalling is a plain working shell",
+        "ok": true,
+        "detail": "QAPROMPT> echo QA_C_$((2+1))\nQA_C_3\nQAPROMPT> "
+      },
+      {
+        "name": "no terminalhinter files left behind",
+        "ok": false,
+        "detail": "/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-install-DhXoc6/yarn/home/Library/Caches/Yarn/v6/npm-@erykkozyra-terminalhinter-1.1.3-11592bdeec5b01c2b39173af67b99773b5fe2094-integrity\n/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-install-DhXoc6/yarn/home/Library/Caches/Yarn/v6/npm-@erykkozyra-terminalhinter-1.2.0-155eec94d615674f3f54167fc1d652675b8f890c-integrity\n/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-install-DhXoc6/yarn/home/Library/Caches/Yarn/v6/npm-@erykkozyra-terminalhinter-darwin-arm64-1.1.3-34f8a3a84665d954fdc51346947c0b46f9390fa9-integrity\n/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-install-DhXoc6/yarn/home/Library/Caches/Yarn/v6/npm-@erykkozyra-terminalhinter-darwin-arm64-1.2.0-4348e9d4d1f129a43e03e81ad50940995208a634-integrity\n/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-install-DhXoc6/yarn/home/Library/Caches/Yarn/v6/npm-@erykkozyra-terminalhinter-darwin-x64-1.1.3-59d47df40e18ae80b16b4be659997849b78d69f2-integrity\n/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-install-DhXoc6/yarn/home/Library/Caches/Yarn/v6/npm-@erykkozyra-terminalhinter-darwin-x64-1.2.0-b6c708bcbe86176b9caaca49bde7214916d8be70-integrity\n/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-install-DhXoc6/yarn/home/Library/Caches/Yarn/v6/npm-@erykkozyra-terminalhinter-linux-arm64-1.1.3-5fa60a6685682acbc9be96dd25307222b77ebacb-integrity\n/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-install-DhXoc6/yarn/home/Library/Caches/Yarn/v6/npm-@erykkozyra-terminalhinter-linux-arm64-1.2.0-f47dfe5bcf4a20aa5499bc9fa4a1a5215238d48e-integrity\n/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-install-DhXoc6/yarn/home/Library/Caches/Yarn/v6/npm-@erykkozyra-terminalhinter-linux-x64-1.1.3-7bafd331e5dc9ce5092dc0fd7ee720d4eb3c1591-integrity\n/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-install-DhXoc6/yarn/home/Library/Caches/Yarn/v6/npm-@erykkozyra-terminalhinter-linux-x64-1.2.0-c752c53f8375c1c75ec"
+      }
+    ],
+    "bun": [
+      {
+        "name": "install 1.1.3",
+        "ok": true,
+        "detail": "bun add v1.4.4 (38afee6c8)\n\ninstalled @erykkozyra/terminalhinter@1.1.3 with binaries:\n - thint\n - terminalhinter\n\n2 packages installed [418.00ms]\nResolving dependencies\nResolved, downloaded and extracted [17]\nSaved lockfile\n"
+      },
+      {
+        "name": "thint --version is 1.1.3",
+        "ok": true,
+        "detail": "1.1.3\n"
+      },
+      {
+        "name": "thint init zsh prints the startup line",
+        "ok": true,
+        "detail": "\n\n[[ -f '/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-install-DhXoc6/bun/home/.local/share/terminalhinter/init/zsh/init.zsh' ]] && source '/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-install-DhXoc6/bun/home/.local/share/terminalhinter/init/zsh/init.zsh'\n"
+      },
+      {
+        "name": "a tab opens with 1.1.3",
+        "ok": true,
+        "detail": "QAPROMPT> "
+      },
+      {
+        "name": "the list shows in the 1.1.3 tab",
+        "ok": true,
+        "detail": "QAPROMPT> git st\n           ╭───────────────────────────────────────────────────────╮\n           │  ■  stage [pathspec...]  Add file contents to the s…  │\n           │  ■  status  Show the working tree status              │\n           │  ■  stash   Temporarily stores all the modified tra…  │\n           ├───────────────────────────────────────────────────────┤\n           │ Add file contents to the staging area                 │\n           ╰───────────────────────────────────────────────────────╯"
+      },
+      {
+        "name": "update to 1.2.0 with bun",
+        "ok": true,
+        "detail": "bun add v1.4.4 (38afee6c8)\n\ninstalled @erykkozyra/terminalhinter@1.2.0 with binaries:\n - thint\n - terminalhinter\n\n2 packages installed [374.00ms]\nResolving dependencies\nResolved, downloaded and extracted [3]\nSaved lockfile\n"
+      },
+      {
+        "name": "thint --version is 1.2.0",
+        "ok": true,
+        "detail": "1.2.0\n"
+      },
+      {
+        "name": "the tab opened before the update still runs commands",
+        "ok": true,
+        "detail": "QAPROMPT> echo QA_A_$((1+1))\nQA_A_2\nQAPROMPT> "
+      },
+      {
+        "name": "and still shows the list",
+        "ok": true,
+        "detail": "QAPROMPT> echo QA_A_$((1+1))\nQA_A_2\nQAPROMPT> git st\n           ╭───────────────────────────────────────────────────────╮\n           │  ■  stage [pathspec...]  Add file contents to the s…  │\n           │  ■  status  Show the working tree status              │\n           │  ■  stash   Temporarily stores all the modified tra…  │\n           ├───────────────────────────────────────────────────────┤\n           │ Add file contents to the staging area                 │\n           ╰───────────────────────────────────────────────────────╯"
+      },
+      {
+        "name": "a new tab after the update opens",
+        "ok": true,
+        "detail": "terminalhinter is now 1.2.0\nQAPROMPT> "
+      },
+      {
+        "name": "the new tab runs 1.2.0 (says so, and is not the old file)",
+        "ok": true,
+        "detail": "/private/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-install-DhXoc6/bun/home/.bun/install/global/node_modules/@erykkozyra/terminalhinter-darwin-arm64/terminalhinter-darwin-arm64 -s zsh\nterminalhinter is now 1.2.0\nQAPROMPT> "
+      },
+      {
+        "name": "the unpacked files are 1.2.0",
+        "ok": true,
+        "detail": "1.2.0"
+      },
+      {
+        "name": "no error or reinit request in the new tab",
+        "ok": true,
+        "detail": "terminalhinter is now 1.2.0\nQAPROMPT> "
+      },
+      {
+        "name": "the list shows in the new tab",
+        "ok": true,
+        "detail": "terminalhinter is now 1.2.0\nQAPROMPT> git st\n           ╭───────────────────────────────────────────────────────╮\n           │  ■  stage [pathspec...]  Add file contents to the s…  │\n           │  ■  status  Show the working tree status              │\n           │  ■  stash   Temporarily stores all the modified tra…  │\n           ├───────────────────────────────────────────────────────┤\n           │ Add file contents to the staging area                 │\n           ╰───────────────────────────────────────────────────────╯"
+      },
+      {
+        "name": "thint update --force reinstalls with bun",
+        "ok": true,
+        "detail": "Updating terminalhinter 1.2.0 to 1.2.0 with bun\n\nbun add v1.4.4 (38afee6c8)\n\ninstalled @erykkozyra/terminalhinter@1.2.0 with binaries:\n - thint\n - terminalhinter\n\n[27.00ms] done\n\n✓ terminalhinter 1.2.0 is installed. New terminal tabs use it.\nSaved lockfile\n"
+      },
+      {
+        "name": "thint doctor has no failures",
+        "ok": true,
+        "detail": "✓ thint 1.2.0 at ~/.bun/bin/thint\n! this shell does not run inside terminalhinter\n  fix: open a new terminal tab; if it stays like this, run thint init\n✓ zsh: startup lines are at the top of ~/.zshrc\n"
+      },
+      {
+        "name": "thint uninstall",
+        "ok": true,
+        "detail": "✓ removed the startup lines from /var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-install-DhXoc6/bun/home/.zshrc\n✓ deleted the terminalhinter resources folder (history, bookmarks, your list order)\n• to finish, remove the program: npm uninstall -g @erykkozyra/terminalhinter\n"
+      },
+      {
+        "name": "bun removes the package",
+        "ok": true,
+        "detail": "bun remove v1.4.4 (38afee6c8)\n\n- @erykkozyra/terminalhinter\n1 package removed [6.00ms]\n"
+      },
+      {
+        "name": "a new tab after uninstalling is a plain working shell",
+        "ok": true,
+        "detail": "QAPROMPT> echo QA_C_$((2+1))\nQA_C_3\nQAPROMPT> "
+      },
+      {
+        "name": "no terminalhinter files left behind",
+        "ok": true,
+        "detail": ""
+      }
+    ]
+  },
+  "other": {
+    "nvm": [
+      {
+        "name": "two Node versions available",
+        "ok": false,
+        "detail": ""
+      }
+    ],
+    "nodes": [
+      {
+        "name": "install for the Node version check",
+        "ok": true,
+        "detail": "\nadded 2 packages in 1s\n"
+      }
+    ]
+  }
+}
