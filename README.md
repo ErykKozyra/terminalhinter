@@ -44,6 +44,8 @@ Works on macOS and Linux with zsh and bash. Windows and fish are experimental.
 
 **And it gets out of the way**
 
+- **Nothing to allow.** It runs inside your terminal: no Accessibility, Screen Recording or Input Monitoring to switch
+  on, no app in the menu bar, no account. Your commands never leave your machine.
 - **Enter walks into folders.** The list stays open with what is inside; the `↪` entry runs the command where you
   are. `cd` also finds folders from anywhere through your bookmarks and zoxide.
 - **It learns what you use**, and Shift+Up / Shift+Down puts the list in your own order.
