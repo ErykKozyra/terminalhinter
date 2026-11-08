@@ -59,7 +59,9 @@ function loadSpecsSet(speclist: string[], versionedSpeclist: string[], specsPath
       }
     });
   });
-  specNames = [...new Set([...Object.keys(specSet).filter((spec) => !spec.startsWith("@") && spec != "-"), ...ownSpecNames])].sort();
+  // a folder of specs without its own (withfig ships `example/git_push` but no `example`) is not a command
+  const commands = Object.keys(specSet).filter((spec) => !spec.startsWith("@") && spec != "-" && typeof specSet[spec] === "string");
+  specNames = [...new Set([...commands, ...ownSpecNames])].sort();
 }
 
 loadSpecsSet(speclist as string[], versionedSpeclist, specResourcesPath);
@@ -75,7 +77,7 @@ const loadSpec = async (cmd: CommandToken[], signal?: AbortSignal): Promise<Fig.
   if (loadedSpecs[rootToken.token]) {
     return loadedSpecs[rootToken.token];
   }
-  if (specSet[rootToken.token]) {
+  if (typeof specSet[rootToken.token] === "string") {
     signal?.throwIfAborted();
     const specPath = specSet[rootToken.token];
     const importPath = path.isAbsolute(specPath) ? pathToFileURL(specPath).href : specPath;
@@ -91,7 +93,7 @@ export const warmSpecs = async (): Promise<void> => {
   const common = ["git", "cd", "ls", "npm", "pnpm", "yarn", "npx", "docker", "brew"];
   const used = topCommands(10);
   for (const name of [...new Set([...used, ...common])]) {
-    if (!specSet[name] || loadedSpecs[name]) continue;
+    if (typeof specSet[name] !== "string" || loadedSpecs[name]) continue;
     try {
       await loadSpec([{ token: name, tokenLength: name.length, complete: true, isOption: false }]);
     } catch (e) {

@@ -130,6 +130,16 @@ describe("package versions", () => {
     expect(list[0].insertValue).toBe("react@latest ");
     expect(list.find((s) => s.name === "18.2.0")?.description).toBe("deprecated");
   });
+  test("the version typed so far picks from all releases, not only the newest", () => {
+    const versions = Object.fromEntries([...Array.from({ length: 40 }, (_, i) => `19.0.${i}`), "16.14.0", "16.13.1"].map((v) => [v, {}]));
+    const list = versionSuggestions("react", { "dist-tags": { latest: "19.0.39" }, versions }, "16");
+    expect(list.map((s) => s.name)).toEqual(["16.14.0", "16.13.1"]);
+    expect(versionSuggestions("react", { "dist-tags": { latest: "1", canary: "2" }, versions: {} }, "ca").map((s) => s.name)).toEqual(["canary"]);
+  });
+  test("every entry ranks above a spec's own generator (60)", () => {
+    const versions = Object.fromEntries(Array.from({ length: 60 }, (_, i) => [`1.0.${i}`, {}]));
+    expect(Math.min(...versionSuggestions("x", { versions }).map((s) => s.priority ?? 0))).toBeGreaterThan(60);
+  });
 });
 
 describe("snippets", () => {
