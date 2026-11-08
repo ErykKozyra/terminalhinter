@@ -66,7 +66,7 @@ const fetchZshAliases = async (): Promise<string | undefined> => {
 // functions from plugin managers and frameworks are their internals, not commands you wrote
 const isOwnFunction = (name: string, source: string) =>
   /^[A-Za-z][\w.-]*$/.test(name) &&
-  source.startsWith(os.homedir() + path.sep) &&
+  (source.startsWith(os.homedir() + path.sep) || source.startsWith(os.homedir() + "/")) &&
   !/oh-my-zsh|\/plugins\/|\/themes\/|powerlevel10k|zinit|antidote|antigen|zplug|znap|\/\.nvm\/|node_modules|\/\.cache\//.test(source);
 
 const parseZshAliases = (stdout: string) => {

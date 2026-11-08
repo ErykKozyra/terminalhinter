@@ -59,7 +59,11 @@ describe("git aliases complete like the command behind them", () => {
 
 describe("reading aliases from git config", () => {
   const repo = fs.mkdtempSync(path.join(os.tmpdir(), "thint-alias-"));
-  const git = (...args: string[]) => execFileSync("git", args, { cwd: repo, env: { ...process.env, GIT_CONFIG_GLOBAL: os.devNull, GIT_CONFIG_NOSYSTEM: "1" } });
+  // an empty file of its own: git on Windows cannot read its config from the null device
+  const emptyConfig = path.join(fs.mkdtempSync(path.join(os.tmpdir(), "thint-gitconfig-")), "config");
+  fs.writeFileSync(emptyConfig, "");
+  const git = (...args: string[]) =>
+    execFileSync("git", args, { cwd: repo, env: { ...process.env, GIT_CONFIG_GLOBAL: emptyConfig, GIT_CONFIG_NOSYSTEM: "1" } });
   // only this repository's aliases, whatever the machine has in its own git config
   const saved = { global: process.env.GIT_CONFIG_GLOBAL, system: process.env.GIT_CONFIG_NOSYSTEM };
   afterAll(() => {
@@ -69,7 +73,7 @@ describe("reading aliases from git config", () => {
     if (saved.system == null) delete process.env.GIT_CONFIG_NOSYSTEM;
   });
   beforeAll(() => {
-    process.env.GIT_CONFIG_GLOBAL = os.devNull;
+    process.env.GIT_CONFIG_GLOBAL = emptyConfig;
     process.env.GIT_CONFIG_NOSYSTEM = "1";
     git("init", "-q");
     git("config", "alias.co", "checkout");

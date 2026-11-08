@@ -5,6 +5,7 @@
 module.exports = {
   // [...]
   extensionsToTreatAsEsm: [".ts"],
+  globalSetup: "<rootDir>/scripts/jest-global-setup.cjs",
   moduleNameMapper: {
     "^(\\.{1,2}/.*)\\.js$": "$1",
   },

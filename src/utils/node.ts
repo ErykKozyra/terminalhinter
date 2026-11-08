@@ -129,6 +129,8 @@ export const checkUnpackedVersion = async (): Promise<boolean> => {
 };
 
 export const unpackResources = async (resourcesPath = allResourcesPath): Promise<void> => {
+  // the test run unpacks once before its files start in parallel (scripts/jest-global-setup.cjs)
+  if (process.env.THINT_RESOURCES_UNPACKED === "1" && resourcesPath === allResourcesPath) return;
   const resources = getResourcePaths(resourcesPath);
   await unpackNativeModules(resources);
   await permissionNativeModules(resources);
