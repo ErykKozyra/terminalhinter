@@ -20,6 +20,7 @@ import config from "./commands/config.js";
 import update from "./commands/update.js";
 import migrate from "./commands/migrate.js";
 import snippets from "./commands/snippets.js";
+import debug from "./commands/debug.js";
 import { action, supportedShells } from "./commands/root.js";
 import { getVersion } from "./utils/version.js";
 
@@ -59,6 +60,7 @@ program.addCommand(doctor);
 program.addCommand(update);
 program.addCommand(migrate);
 program.addCommand(snippets);
+program.addCommand(debug);
 program.addCommand(specs);
 program.addCommand(complete);
 program.addCommand(uninstall);
