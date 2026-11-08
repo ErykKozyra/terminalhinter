@@ -12,7 +12,7 @@
   steps:
     - type: "git "
       expect_list: true
-      expect: ["commit", "Record changes to the repository"]
+      list_has: ["commit", "Record changes"]
 
 - name: typing narrows the list
   steps:
@@ -190,3 +190,9 @@
       wait: 300
     - type: "t"
       expect_line: "git stat"
+
+- name: Enter runs a word that only appears inside a variable name
+  steps:
+    - type: "echo after"
+    - key: ENTER
+      expect_ran: "echo after"

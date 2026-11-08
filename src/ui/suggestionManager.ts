@@ -274,10 +274,10 @@ export class SuggestionManager {
     // $OPENBLAS_NUM_THREADS) stays unselected, so Enter runs the line as you typed it; Tab still takes it.
     const top = this.#suggestBlob?.suggestions[0];
     const want = token.token.toLowerCase().replace(/^['"$]/, "");
-    // the name itself, or a word inside it (feature/login for "login")
+    // the name itself, or a part after a slash (feature/login for "login"), never a word inside $SOME_VARIABLE
     const starts = (name: string) => {
       const lower = name.toLowerCase().replace(/^['"$]/, "");
-      return lower.startsWith(want) || (/^[a-z0-9]/.test(want) && lower.split(/[/_.-]/).some((part) => part.startsWith(want)));
+      return lower.startsWith(want) || (/^[a-z0-9]/.test(want) && lower.split("/").some((part) => part.startsWith(want)));
     };
     return top != null && (top.allNames.some(starts) || starts(top.name)) ? 0 : -1;
   }
