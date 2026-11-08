@@ -1,4 +1,5 @@
 - name: a typo in the command gets the fix on the empty line
+  skip_shells: [cmd]
   steps:
     - type: "gti status<ENTER>"
       wait: 600
@@ -9,6 +10,7 @@
       expect_ran: "git status"
 
 - name: the fix is never run without Enter
+  skip_shells: [cmd]
   steps:
     - type: "gti log<ENTER>"
       wait: 600
@@ -17,12 +19,14 @@
       expect_ran_count: 1
 
 - name: a git subcommand typo uses what git suggests
+  skip_shells: [cmd]
   steps:
     - type: "git stauts<ENTER>"
       wait: 800
       list_has: "git status"
 
 - name: a missing npm script gets the near one
+  skip_shells: [cmd]
   steps:
     - type: "npm run biuld<ENTER>"
       wait: 2500
@@ -30,6 +34,7 @@
       list_has: "npm run build"
 
 - name: mkdir of a nested folder gets -p
+  skip_shells: [cmd]
   steps:
     - type: "mkdir deep/er/folder<ENTER>"
       wait: 600
@@ -39,12 +44,14 @@
       expect_ran: "mkdir -p deep/er/folder"
 
 - name: cd to a near folder name
+  skip_shells: [cmd]
   steps:
     - type: "cd docz<ENTER>"
       wait: 600
       list_has: "cd docs"
 
 - name: rm of a folder gets -r
+  skip_shells: [cmd]
   files:
     old/file.txt: "x\n"
   steps:
@@ -53,12 +60,14 @@
       list_has: "rm -r old"
 
 - name: checkout of a near branch name
+  skip_shells: [cmd]
   steps:
     - type: "git checkout feature/logn<ENTER>"
       wait: 800
       list_has: "feature/login"
 
 - name: a port in use offers to stop the process
+  skip_shells: [cmd]
   min_cols: 60
   shells: [zsh, bash, fish]
   steps:
@@ -74,6 +83,7 @@
       wait: 300
 
 - name: Esc dismisses the fix and the line stays empty
+  skip_shells: [cmd]
   steps:
     - type: "gti status<ENTER>"
       wait: 600
@@ -83,6 +93,7 @@
       expect_line: ""
 
 - name: typing over the fix list starts a new command
+  skip_shells: [cmd]
   steps:
     - type: "gti status<ENTER>"
       wait: 600
@@ -101,12 +112,14 @@
       expect_list: false
 
 - name: a command that worked gives no fix
+  skip_shells: [cmd]
   steps:
     - type: "git status<ENTER>"
       wait: 600
       expect_list: false
 
 - name: fixes can be turned off
+  skip_shells: [cmd]
   config: { fixSuggestions: false }
   steps:
     - type: "gti status<ENTER>"

@@ -37,5 +37,5 @@
   steps:
     - type: "cd sr"
     - key: ENTER
-      expect_line: "cd src/"
+      expect_regex: "qa\\$ cd src[/\\\\]\\s*$"
       expect_ran_count: 0

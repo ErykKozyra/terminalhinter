@@ -153,11 +153,14 @@ export const resolveCwd = async (
   // the parser already removed the quotes and backslash escapes, so the token is the real file name
   const { token: pathToken } = cmdToken;
   const sep = getPathSeparator(shell);
+  // Windows takes both separators, whatever the shell: `ls src/` in cmd is as much a path as `ls src\`
+  const seps = process.platform === "win32" ? [...new Set([sep, "\\", "/"])] : [sep];
+  const endsWithSep = seps.some((s) => pathToken.endsWith(s));
   if (pathToken === "~") return { cwd: homedir(), pathy: true, complete: false };
-  if (pathToken === `~${sep}`) return { cwd: homedir(), pathy: true, complete: true };
-  if (!pathToken.includes(sep)) return { cwd, pathy: false, complete: false };
-  const tokenComplete = pathToken.endsWith(sep);
-  const trimmedToken = pathToken.endsWith(sep) ? pathToken : path.dirname(pathToken);
+  if (seps.some((s) => pathToken === `~${s}`)) return { cwd: homedir(), pathy: true, complete: true };
+  if (!seps.some((s) => pathToken.includes(s))) return { cwd, pathy: false, complete: false };
+  const tokenComplete = endsWithSep;
+  const trimmedToken = endsWithSep ? pathToken : path.dirname(pathToken);
   const token = trimmedToken;
   const resolvedCwd = path.isAbsolute(token) ? token : isHomedir(token) ? token.replace("~", homedir()) : path.join(cwd, token);
   try {

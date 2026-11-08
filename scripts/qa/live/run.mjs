@@ -277,6 +277,7 @@ const runOne = async (scenario, shell, [cols, rows]) => {
   // what the headless terminal answers (cursor position, device attributes) goes back to the program, as a real
   // terminal does: fish waits 10 s for that answer, PowerShell's line editor never draws without it
   term.onData((d) => {
+    if (exited != null) return;
     try {
       p.write(d);
     } catch {
@@ -342,7 +343,9 @@ const runOne = async (scenario, shell, [cols, rows]) => {
     return test();
   };
 
-  // cmd has no Ctrl+U: Esc empties its line (the first Esc only closes the list when it is open)
+  // cmd has no Ctrl+U, nor PowerShell on Windows (its line editor is in Windows mode there): Esc empties the line
+  // (the first Esc only closes the list when it is open)
+  const escClears = shell === "cmd" || (isWin && (shell === "pwsh" || shell === "powershell"));
   const clearCmdLine = async () => {
     p.write("\x1b");
     await sleep(150 * slow);
@@ -363,6 +366,8 @@ const runOne = async (scenario, shell, [cols, rows]) => {
     if (shell !== "cmd") {
       p.write("true\r");
       await stable(300);
+      // the log starts clean once that first command is in it (PowerShell writes it a little later)
+      if (shell !== "bash") await waitFor(() => ran().includes("true"), 3000);
       fs.writeFileSync(log, "");
     }
     let i = 0;
@@ -373,10 +378,12 @@ const runOne = async (scenario, shell, [cols, rows]) => {
       if (step.skip_shells?.includes(shell)) continue;
       if (step.type != null || step.key != null || step.paste != null) {
         const text = fill(step.type ?? (step.key != null ? `<${step.key}>` : step.paste));
-        if (step.paste != null) p.write(step.bracketed === false ? text : `\x1b[200~${text}\x1b[201~`);
+        // a terminal wraps a paste in markers only when the program asked for it (PowerShell does not)
+        const bracketedOn = raw.lastIndexOf("\x1b[?2004h") > raw.lastIndexOf("\x1b[?2004l");
+        if (step.paste != null) p.write(step.bracketed === false || !bracketedOn ? text : `\x1b[200~${text}\x1b[201~`);
         else
           for (const chunk of toChunks(text)) {
-            if (chunk === "\x15" && shell === "cmd") await clearCmdLine();
+            if (chunk === "\x15" && escClears) await clearCmdLine();
             else p.write(chunk);
             await sleep((step.delay ?? 25) * slow);
           }
@@ -432,7 +439,7 @@ const runOne = async (scenario, shell, [cols, rows]) => {
     }
     // the shell still answers, and nothing of the list is left on the screen
     if (!exited && !timedOut && scenario.alive !== false) {
-      if (shell === "cmd") await clearCmdLine();
+      if (escClears) await clearCmdLine();
       else p.write("\x15");
       await stable(200);
       if (listVisible()) {
@@ -470,7 +477,8 @@ const runOne = async (scenario, shell, [cols, rows]) => {
     // Leaving the shell the normal way first: on Windows, node-pty's kill() starts a helper that prints
     // "AttachConsole failed" when the runner has no console of its own (as in CI), which is only noise.
     if (exited == null && !timedOut) {
-      p.write("\x15");
+      if (escClears) await clearCmdLine();
+      else p.write("\x15");
       p.write("exit\r");
       await waitFor(() => exited != null, 3000);
     }
@@ -505,6 +513,18 @@ const loadScenarios = () => {
   }
   return all;
 };
+
+// One run that trips over a closed terminal (a late write after the shell exited) must not end all the others:
+// the error is printed and the runs go on.
+let strayErrors = 0;
+process.on("uncaughtException", (e) => {
+  strayErrors++;
+  process.stderr.write(`\n(stray error, the runs go on) ${e?.stack ?? e}\n`);
+});
+process.on("unhandledRejection", (e) => {
+  strayErrors++;
+  process.stderr.write(`\n(stray rejection, the runs go on) ${e?.stack ?? e}\n`);
+});
 
 const main = async () => {
   makeFixture();
@@ -544,7 +564,8 @@ const main = async () => {
   process.stderr.write(`${scenarios.length} scenarios, ${runs.length} runs, ${jobs} at a time\n`);
   const results = [...broken];
   // written after every run, so a run that is stopped halfway still leaves what it found
-  const save = () => out && fs.writeFileSync(out, JSON.stringify({ platform: process.platform, shells: installed, started: available, results }, null, 2));
+  const save = () =>
+    out && fs.writeFileSync(out, JSON.stringify({ platform: process.platform, shells: installed, started: available, planned: runs.length, strayErrors, results }, null, 2));
   save();
   let next = 0;
   let done = 0;

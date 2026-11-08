@@ -8,7 +8,7 @@
   steps:
     - type: "cd sr"
     - key: ENTER
-      expect_line: "cd src/"
+      expect_regex: "qa\\$ cd src[/\\\\]\\s*$"
       list_has: "components/"
       expect_ran_count: 0
 
@@ -26,7 +26,7 @@
   steps:
     - type: "cd fol"
     - key: TAB
-      expect_regex: "cd (folder\\\\ with\\\\ space/|'folder with space/'|\"folder with space/\")"
+      expect_regex: "cd (folder\\\\ with\\\\ space/|'folder with space/'|\"folder with space[/\\\\]\")"
 
 - name: a folder with a space works after Enter
   shells: [zsh, bash, fish]
@@ -43,7 +43,7 @@
   steps:
     - type: "cd za"
     - key: TAB
-      expect_line_starts: "cd zażółć/"
+      expect_regex: "cd zażółć[/\\\\]"
 
 - name: files are offered for cat with their names
   shells: [zsh, bash, fish]
