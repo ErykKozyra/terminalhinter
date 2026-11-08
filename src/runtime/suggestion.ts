@@ -316,6 +316,7 @@ const generatorSuggestions = async (
   partialCmd: string | undefined,
   cwd: string,
   debounce: boolean,
+  shell: Shell,
   signal?: AbortSignal,
 ): Promise<Suggestion[]> => {
   const generators = generator instanceof Array ? generator : generator ? [generator] : [];
@@ -329,6 +330,10 @@ const generatorSuggestions = async (
           (await getGeneratorSuggestions(generator, tokens, activeToken, cwd, debounce, signal)).map((suggestion) => ({
             ...suggestion,
             priority: suggestion.priority ?? 60,
+            // a value with a space (a process name for killall) goes in quoted, or it would become several words
+            ...(suggestion.insertValue == null && typeof suggestion.name === "string" && /\s/.test(suggestion.name) && !getPathy(suggestion.type)
+              ? { insertValue: escapePath(suggestion.name, shell) }
+              : {}),
           })),
           filterStrategy,
           generator.getQueryTerm == null ? partialCmd : getGeneratorQueryTerm(generator, activeToken),
@@ -397,20 +402,31 @@ function adjustPathSuggestions(
   });
 }
 
+// `git src/` or `ls src/in`: the word being typed is a path, so it is matched against the files and folders in
+// there. Subcommands, options and other values stay only when they really start with what was typed; otherwise
+// `git src/` listed every git subcommand.
+const keepPathMatches = (suggestions: Suggestion[], partialToken: CommandToken | undefined, shell: Shell): Suggestion[] => {
+  const token = partialToken?.token ?? "";
+  if (!partialToken?.isPath || !endsWithPathSeparator(getPathDirname(token, shell), shell)) return suggestions;
+  const typed = token.toLowerCase();
+  return suggestions.filter((s) => getPathy(s.type) || s.allNames.some((n) => n.toLowerCase().startsWith(typed)));
+};
+
 const removeAcceptedSuggestions = (suggestions: Suggestion[], acceptedTokens: CommandToken[]): Suggestion[] => {
   const seen = new Set<string>(acceptedTokens.map((t) => t.token));
   return suggestions.filter((s) => s.allNames.every((n) => !seen.has(n)));
 };
 
+// The first entry of a name keeps its place. thint's own entry wins over a spec's with the same name, wherever it
+// was: withfig's npm spec also lists `react@19.1.1`, and keeping that one dropped it from the version list.
 const removeDuplicateSuggestion = (suggestions: Suggestion[]): Suggestion[] => {
-  const seen = new Set<string>();
-  return suggestions
-    .map((s) => {
-      if (seen.has(s.name)) return null;
-      seen.add(s.name);
-      return s;
-    })
-    .filter((s): s is Suggestion => s != null);
+  const kept = new Map<string, Suggestion>();
+  for (const s of suggestions) {
+    const first = kept.get(s.name);
+    if (first == null) kept.set(s.name, s);
+    else if (first.kind == null && s.kind != null) kept.set(s.name, s);
+  }
+  return [...kept.values()];
 };
 
 const removeHiddenSuggestions = (suggestions: Suggestion[], partialToken: CommandToken | undefined): Suggestion[] => {
@@ -459,7 +475,7 @@ export const getSubcommandDrivenRecommendation = async (
   if (argLength != 0) {
     const activeArg = subcommand.args instanceof Array ? subcommand.args[0] : subcommand.args;
     const debounce = activeArg?.debounce === true;
-    suggestions.push(...(await generatorSuggestions(activeArg?.generators, allTokens, activeArg?.filterStrategy, partialCmd, cwd, debounce, signal)));
+    suggestions.push(...(await generatorSuggestions(activeArg?.generators, allTokens, activeArg?.filterStrategy, partialCmd, cwd, debounce, shell, signal)));
     suggestions.push(...suggestionSuggestions(activeArg?.suggestions, activeArg?.filterStrategy, partialCmd));
     suggestions.push(...(await templateSuggestions(activeArg?.template, activeArg?.filterStrategy, partialCmd, cwd, signal)));
   }
@@ -471,7 +487,7 @@ export const getSubcommandDrivenRecommendation = async (
           removeHomeDirectorySuggestion(
             removeAcceptedSuggestions(
               adjustPathSuggestions(
-                sortSuggestions(suggestions, partialCmd, historyScore(allTokens, cwd), orderRankOf(allTokens)),
+                sortSuggestions(keepPathMatches(suggestions, partialToken, shell), partialCmd, historyScore(allTokens, cwd), orderRankOf(allTokens)),
                 partialToken,
                 lastToken,
                 shell,
@@ -509,7 +525,7 @@ export const getArgDrivenRecommendation = async (
   const allOptions = persistentOptions.concat(subcommand.options ?? []);
   const debounce = activeArg?.debounce === true;
   const suggestions = [
-    ...(await generatorSuggestions(args[0].generators, allTokens, activeArg?.filterStrategy, partialCmd, cwd, debounce, signal)),
+    ...(await generatorSuggestions(args[0].generators, allTokens, activeArg?.filterStrategy, partialCmd, cwd, debounce, shell, signal)),
     ...suggestionSuggestions(args[0].suggestions, activeArg?.filterStrategy, partialCmd),
     ...(await templateSuggestions(args[0].template, activeArg?.filterStrategy, partialCmd, cwd, signal)),
   ];
@@ -526,7 +542,7 @@ export const getArgDrivenRecommendation = async (
           removeHomeDirectorySuggestion(
             removeAcceptedSuggestions(
               adjustPathSuggestions(
-                sortSuggestions(suggestions, partialCmd, historyScore(allTokens, cwd), orderRankOf(allTokens)),
+                sortSuggestions(keepPathMatches(suggestions, partialToken, shell), partialCmd, historyScore(allTokens, cwd), orderRankOf(allTokens)),
                 partialToken,
                 lastToken,
                 shell,

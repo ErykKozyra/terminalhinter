@@ -40,6 +40,12 @@ export const endTiming = (name: string, start: bigint | undefined): void => {
   sampleMemory();
 };
 
+// the numbers so far for one timing, for tools that measure the engine (scripts/qa)
+export const readMetric = (name: string): Metric | undefined => {
+  const metric = metrics.get(name);
+  return metric == null ? undefined : { ...metric };
+};
+
 export const incrementMetric = (name: string, amount = 1): void => {
   if (!enabled) return;
   counters.set(name, (counters.get(name) ?? 0) + amount);

@@ -57,31 +57,43 @@ const compare = (a: string, b: string) => {
   return preA < preB ? -1 : preA > preB ? 1 : 0;
 };
 
-export const versionSuggestions = (name: string, doc: Packument): (Fig.Suggestion & { kind: "version" })[] => {
-  const tags = Object.entries(doc["dist-tags"] ?? {});
+// `typed` is what follows the @: `react@16` lists the newest 16.x releases, not the newest of all that start with 1
+export const versionSuggestions = (name: string, doc: Packument, typed = ""): (Fig.Suggestion & { kind: "version" })[] => {
+  const tags = Object.entries(doc["dist-tags"] ?? {}).filter(([tag]) => tag.startsWith(typed));
   const tagged = new Map<string, string[]>();
   for (const [tag, version] of tags) tagged.set(version, [...(tagged.get(version) ?? []), tag]);
   const out: (Fig.Suggestion & { kind: "version" })[] = tags
     .sort(([a], [b]) => (a === "latest" ? -1 : b === "latest" ? 1 : a.localeCompare(b)))
-    .map(([tag, version], i) => ({ name: tag, insertValue: `${name}@${tag} `, description: `${version}`, priority: 95 - i, icon: "⭐", kind: "version" }));
-  // releases first, newest on top; prereleases after them (their tags are already at the top)
-  const all = Object.entries(doc.versions ?? {}).sort(([a], [b]) => compare(b, a));
+    .map(([tag, version], i) => ({
+      name: tag,
+      insertValue: `${name}@${tag} `,
+      description: `${version}`,
+      priority: 100 - Math.min(i, 9),
+      icon: "⭐",
+      kind: "version",
+    }));
+  // releases first, newest on top; prereleases after them (their tags are already at the top). Every entry ranks
+  // above the 60 a spec's own generator gets, so withfig's version list for npm never comes between them
+  const all = Object.entries(doc.versions ?? {})
+    .filter(([v]) => v.startsWith(typed))
+    .sort(([a], [b]) => compare(b, a));
   const versions = [...all.filter(([v]) => !v.includes("-")).slice(0, 30), ...all.filter(([v]) => v.includes("-")).slice(0, 10)];
   versions.forEach(([version, meta], i) => {
     const notes = [tagged.get(version)?.join(", "), meta.deprecated ? "deprecated" : undefined].filter(Boolean).join(" · ");
-    out.push({ name: version, insertValue: `${name}@${version} `, description: notes || undefined, priority: 80 - Math.min(i, 30), kind: "version" });
+    out.push({ name: version, insertValue: `${name}@${version} `, description: notes || undefined, priority: 90 - Math.min(i, 25), kind: "version" });
   });
   return out;
 };
 
 export const versionGenerator: Fig.Generator = {
-  // the answer depends on the package before the @, so a new package (or no @ any more) asks again
-  trigger: (newToken: string, oldToken: string) => splitSpec(newToken)?.[0] !== splitSpec(oldToken)?.[0],
+  // the answer depends on the package and on the version typed so far; the registry answer itself is remembered
+  // (fetchPackument), so asking again on every key costs nothing
+  trigger: (newToken: string, oldToken: string) => splitSpec(newToken)?.join("@") !== splitSpec(oldToken)?.join("@"),
   getQueryTerm: (token: string) => splitSpec(token)?.[1] ?? token,
   custom: async (tokens) => {
     const spec = splitSpec(tokens.at(-1) ?? "");
     if (spec == null) return [];
     const doc = await fetchPackument(spec[0]);
-    return doc == null ? [] : versionSuggestions(spec[0], doc);
+    return doc == null ? [] : versionSuggestions(spec[0], doc, spec[1]);
   },
 };
