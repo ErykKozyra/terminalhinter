@@ -107,7 +107,9 @@ jobs:
           node-version: 22.21.1
       - name: zsh on Linux
         if: runner.os == 'Linux'
-        run: sudo apt-get install -y zsh
+        run: |
+          sudo apt-get install -y zsh
+          sudo chmod -R 755 /usr/share/zsh && sudo chown -R root:root /usr/share/zsh
       - run: npm ci
       - run: npm run build && npm run package
       - name: Speed and a 20 minute run
@@ -139,7 +141,9 @@ jobs:
           node-version: 22.21.1
       - name: zsh on Linux
         if: runner.os == 'Linux'
-        run: sudo apt-get install -y zsh
+        run: |
+          sudo apt-get install -y zsh
+          sudo chmod -R 755 /usr/share/zsh && sudo chown -R root:root /usr/share/zsh
       - name: Package managers
         run: |
           npm i -g pnpm@9 yarn@1 bun@1
