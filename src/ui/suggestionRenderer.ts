@@ -229,7 +229,9 @@ export class SuggestionRenderer {
 
   #clearPreviousDirection(snapshot: RenderSnapshot): void {
     const previousDirection = snapshot.layout.direction === "above" ? "below" : "above";
-    this.#writeOutput(this.#clearOutput(previousDirection, snapshot));
+    // wipe what was drawn, as it was drawn: a clear worked out now covers only the rows that are left below the line,
+    // fewer than the list had when it went below, and its bottom border would stay on the screen
+    this.#writeOutput(this.#cache.clear ?? this.#clearOutput(previousDirection, snapshot));
     this.#resetCache();
   }
 

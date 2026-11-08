@@ -189,6 +189,7 @@ const makeShim = () => {
 
 const makeHomeTemplate = () => {
   fs.mkdirSync(homeTemplate, { recursive: true });
+  fs.writeFileSync(path.join(homeTemplate, ".gitconfig"), "[user]\n\tname = qa\n\temail = qa@example.com\n[init]\n\tdefaultBranch = main\n");
   execFileSync(binCmd, [...binArgs, "reinit"], {
     stdio: "ignore",
     env: { ...process.env, HOME: homeTemplate, USERPROFILE: homeTemplate, THINT_NO_UPDATE_CHECK: "1" },

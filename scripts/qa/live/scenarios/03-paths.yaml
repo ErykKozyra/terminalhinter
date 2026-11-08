@@ -13,6 +13,7 @@
       expect_ran_count: 0
 
 - name: the run entry runs cd where you are
+  min_cols: 60
   steps:
     - type: "cd sr"
     - key: ENTER

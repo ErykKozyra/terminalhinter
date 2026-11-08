@@ -1,14 +1,17 @@
 - name: Ctrl+G explains every word of a pipe
+  min_cols: 60
   steps:
     - type: "ls -la | grep x<C-G>"
       list_has: ["ls", "-la", "grep", "sends the output into the next command"]
 
 - name: Ctrl+G warns about a destructive line
+  min_cols: 60
   steps:
     - type: "git reset --hard HEAD~1<C-G>"
       expect: "throws away uncommitted changes"
 
 - name: Ctrl+G through sudo and &&
+  min_cols: 60
   steps:
     - type: "sudo rm -rf / && echo done<C-G>"
       expect: ["rm", "deletes a whole tree"]

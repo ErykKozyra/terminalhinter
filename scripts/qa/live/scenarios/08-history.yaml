@@ -24,6 +24,7 @@
       list_not: "does-not-exist"
 
 - name: a command run elsewhere in the repository comes back in a subfolder
+  min_cols: 60
   steps:
     - type: "git log --oneline -n 2<ENTER>"
       wait: 600
