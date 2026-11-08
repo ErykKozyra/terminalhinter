@@ -151,7 +151,7 @@ export const looksSecret = (command: string): boolean =>
   secretShapes.some((shape) => shape.test(command)) ||
   knownTokens.test(command) ||
   // --token x, --password=x, and NAME_TOKEN=x / api_key=x (a whole word, so --tokenizer=gpt2 is not one)
-  /(--?(token|password|passwd|secret|api[-_]?key|auth)[= ]\S)|(\b[A-Z0-9_]*(TOKEN|SECRET|PASSWORD|PASSWD|API_?KEY|PRIVATE_KEY)(_[A-Z0-9]+)*=\S)/i.test(
+  /(--?(token|password|passwd|secret|api[-_]?key|auth)[= ]\S)|(\b[A-Z0-9_]*(TOKEN|SECRET|PASSWORD|PASSWD|API_?KEY|ACCESS_?KEY|PRIVATE_KEY|CREDENTIALS?)(_[A-Z0-9]+)*=\S)/i.test(
     command,
   ) ||
   command.split(/[\s"'=:@]+/).some(randomLooking);

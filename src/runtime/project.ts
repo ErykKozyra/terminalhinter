@@ -237,6 +237,8 @@ const subOf = (node: SpecNode | undefined, ...path: string[]): SpecNode | undefi
   return current;
 };
 
+const raisedScripts = new WeakSet<Fig.Generator>();
+
 // puts a generator first on the first argument of a node (creating that argument when the spec has none)
 const prepend = (node: SpecNode | undefined, generator: Fig.Generator, argName = "value", replace = false) => {
   if (node == null) return;
@@ -300,6 +302,17 @@ const augmentMore = (command: string, root: SpecNode) => {
   if (command === "docker" || command === "docker-compose") {
     const compose = command === "docker" ? subOf(root, "compose") : root;
     for (const name of composeSubcommands) prepend(subOf(compose, name), composeGenerator, "service");
+  }
+  if (command === "bun") {
+    // `bun run` takes a script or a file; the scripts of package.json come before the folders
+    const run = subOf(root, "run");
+    const arg = (Array.isArray(run?.args) ? run?.args.at(0) : run?.args) as Fig.Arg | undefined;
+    for (const generator of arg?.generators == null ? [] : Array.isArray(arg.generators) ? arg.generators : [arg.generators]) {
+      const original = generator.postProcess;
+      if (original == null || raisedScripts.has(generator) || !JSON.stringify(generator.script ?? "").includes("package.json")) continue;
+      raisedScripts.add(generator);
+      generator.postProcess = (out, tokens) => original(out, tokens).map((s) => ({ ...s, priority: Math.max(s.priority ?? 50, 76) }));
+    }
   }
   const installs: Record<string, string[]> = { npm: ["install", "i", "add"], pnpm: ["add", "install", "i"], yarn: ["add"], bun: ["add", "install", "i"] };
   for (const name of installs[command] ?? []) prepend(subOf(root, name), versionGenerator, "package");

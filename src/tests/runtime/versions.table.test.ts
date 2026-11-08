@@ -86,12 +86,15 @@ describe("version suggestions", () => {
 
 const triggers: [string, string, boolean][] = [
   ["react@", "react", true],
-  ["react@1", "react@", false],
-  ["react@18", "react@1", false],
+  // the version typed so far narrows the list, so it is worked out again; the registry answer is remembered
+  ["react@1", "react@", true],
+  ["react@18", "react@1", true],
+  ["react@18", "react@18", false],
   ["vue@", "react@18", true],
   ["react", "react@", true],
   ["@types/node@", "@types/node", true],
-  ["@types/node@2", "@types/node@", false],
+  ["@types/node@2", "@types/node@", true],
+  ["@types/node@2", "@types/node@2", false],
 ];
 
 describe("asking the registry again", () => {
