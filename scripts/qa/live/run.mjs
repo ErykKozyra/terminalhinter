@@ -188,8 +188,11 @@ const homeTemplate = path.join(base, "home-template");
 const shimDir = path.join(base, "bin");
 const makeShim = () => {
   fs.mkdirSync(shimDir, { recursive: true });
-  if (isWin) fs.writeFileSync(path.join(shimDir, "thint.cmd"), `@"${binCmd}" ${binArgs.map((a) => `"${a}"`).join(" ")} %*\r\n`);
-  else {
+  if (isWin) {
+    fs.writeFileSync(path.join(shimDir, "thint.cmd"), `@"${binCmd}" ${binArgs.map((a) => `"${a}"`).join(" ")} %*\r\n`);
+    // Git Bash does not run .cmd files by their bare name
+    fs.writeFileSync(path.join(shimDir, "thint"), `#!/bin/sh\nexec ${[binCmd, ...binArgs].map((a) => `'${a}'`).join(" ")} "$@"\n`);
+  } else {
     fs.writeFileSync(path.join(shimDir, "thint"), `#!/bin/sh\nexec ${[binCmd, ...binArgs].map((a) => `'${a}'`).join(" ")} "$@"\n`);
     fs.chmodSync(path.join(shimDir, "thint"), 0o755);
   }
@@ -258,9 +261,7 @@ const runOne = async (scenario, shell, [cols, rows]) => {
   // tmux's default half-second escape-time joins Esc and a key typed after it into Alt+key, for any program inside
   const tmuxConf = path.join(home, ".qa-tmux.conf");
   fs.writeFileSync(tmuxConf, "set -sg escape-time 10\n");
-  // GNU screen waits 300 ms the same way (maptimeout): Esc and the Enter after it became Alt+Enter, a new line in fish
-  const screenRc = path.join(home, ".qa-screenrc");
-  fs.writeFileSync(screenRc, "maptimeout 10\nstartup_message off\n");
+
   // inside a multiplexer: thint starts in its first window, the way it does from a shell config there
   // QA_VERBOSE=1: thint writes its debug log, and a failed run carries the end of it
   const inner = [binCmd, ...binArgs, "-s", shell, ...(process.env.QA_VERBOSE === "1" ? ["--verbose"] : [])];
@@ -269,7 +270,7 @@ const runOne = async (scenario, shell, [cols, rows]) => {
     scenario.wrapper === "tmux"
       ? ["tmux", ["-L", `qa-${path.basename(home)}`, "-f", tmuxConf, "new-session", quoted]]
       : scenario.wrapper === "screen"
-        ? ["screen", ["-q", "-c", screenRc, "-S", `qa-${path.basename(home)}`, ...inner]]
+        ? ["screen", ["-q", "-S", `qa-${path.basename(home)}`, ...inner]]
         : [binCmd, inner.slice(1)];
   if (scenario.wrapper === "tmux") env.TERM = "xterm-256color";
   const p = pty.spawn(cmd, cmdArgs, { name: "xterm-256color", cols, rows, cwd, env });
@@ -364,9 +365,15 @@ const runOne = async (scenario, shell, [cols, rows]) => {
     await sleep(150 * slow);
   };
   const failures = [];
-  const fail = (step, msg) => failures.push(`step ${step}: ${msg}`);
+  // with QA_VERBOSE the log is taken at the first failure, before the end checks add their own lines
+  let logAtFailure;
+  const fail = (step, msg) => {
+    if (failures.length === 0 && process.env.QA_VERBOSE === "1") logAtFailure = debugLog(home);
+    failures.push(`step ${step}: ${msg}`);
+  };
   // {sep}: the separator thint puts after a folder in this shell (cmd and PowerShell on Windows take a backslash)
-  const vars = { shell, cols, rows, home, proj, sep: isWin && ["pwsh", "powershell", "cmd"].includes(shell) ? "\\" : "/" };
+  // Git Bash takes C:/Users/... as typed; C:\Users\... would lose its backslashes
+  const vars = { shell, cols, rows, home, proj: isWin && shell === "bash" ? proj.replace(/\\/g, "/") : proj, sep: isWin && ["pwsh", "powershell", "cmd"].includes(shell) ? "\\" : "/" };
   const fill = (s) => String(s).replace(/\{(\w+)\}/g, (_, k) => vars[k] ?? `{${k}}`);
   const started = Date.now();
   try {
@@ -462,7 +469,7 @@ const runOne = async (scenario, shell, [cols, rows]) => {
       await stable(200);
       if (listVisible()) {
         p.write("\x1b");
-        await stable(200);
+        await stable(scenario.wrapper === "screen" ? 450 : 200);
       }
       const probe = shell === "fish" ? "echo alive-(math 40+2)" : shell === "cmd" ? "echo alive-42" : shell.includes("sh") && shell !== "pwsh" ? "echo alive-$((40+2))" : 'echo "alive-$(40+2)"';
       for (const ch of probe) {
@@ -472,7 +479,9 @@ const runOne = async (scenario, shell, [cols, rows]) => {
       await stable(200);
       if (listVisible()) {
         p.write("\x1b");
-        await stable(150);
+        // GNU screen joins Esc with a key that follows within 300 ms (maptimeout) into Alt+key, and Alt+Enter is a new
+        // line in fish (a screenrc to shorten it made the old screen of macOS start a plain shell instead)
+        await stable(scenario.wrapper === "screen" ? 450 : 150);
       }
       p.write("\r");
       if (!(await waitFor(() => screenText().includes("alive-42"), 8000))) fail("end", `the shell does not answer; screen:\n${screenText()}`);
@@ -531,7 +540,7 @@ const runOne = async (scenario, shell, [cols, rows]) => {
     failures,
     home: failures.length ? home : undefined,
     raw: failures.length ? raw.slice(-4000) : undefined,
-    log: failures.length && process.env.QA_VERBOSE === "1" ? debugLog(home) : undefined,
+    log: failures.length ? logAtFailure : undefined,
   };
 };
 
@@ -556,7 +565,10 @@ const debugLog = (home) => {
   };
   const file = find(home, 0);
   try {
-    return file ? fs.readFileSync(file, "utf8").slice(-6000) : undefined;
+    // without the raw bytes going in and out, which fill the log and say little
+    if (!file) return undefined;
+    const lines = fs.readFileSync(file, "utf8").split("\n").filter((l) => l && !/^\{"msg":"(parsing data|writing data|reading data|command text)"/.test(l));
+    return lines.slice(-150).join("\n").slice(-20000);
   } catch {
     return undefined;
   }

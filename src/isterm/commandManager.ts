@@ -37,7 +37,8 @@ export class CommandManager {
   #state: CommandState = {};
   #stateVersion = 0;
   #suspended = false;
-  #lastRun?: { command: string; marker: IMarker };
+  #lastRun?: { command: string; marker: IMarker; start?: IMarker; startX?: number };
+  #lastCommand?: string; // the line of the last command run, as the shell finally drew it
   #lastFailure?: Failure;
   #failureMarker?: IMarker;
   #failureId = 0;
@@ -164,7 +165,9 @@ export class CommandManager {
     if (text) {
       this.#lastRun?.marker.dispose();
       const marker = this.#terminal.registerMarker(0);
-      this.#lastRun = marker == null ? undefined : { command: text, marker };
+      const start = this.#activeCommand.promptEndMarker;
+      this.#lastRun = marker == null ? undefined : { command: text, marker, start, startX: this.#activeCommand.promptEndX };
+      this.#lastCommand = text;
     }
     this.#acceptedCommandLines.add(this.#activeCommand.promptEndMarker?.line ?? -1);
     this.#activeCommand = {};
@@ -177,6 +180,8 @@ export class CommandManager {
     const run = this.#lastRun;
     this.#lastRun = undefined;
     if (run == null || this.#suspended) return;
+    run.command = this._finalCommandText(run);
+    this.#lastCommand = run.command;
     if (code === 0 || code === 130 || code === 148 || Number.isNaN(code) || run.marker.isDisposed) {
       this.#lastFailure = undefined;
       this.#failureMarker?.dispose();
@@ -189,6 +194,27 @@ export class CommandManager {
     this.#failureMarker?.dispose();
     this.#failureMarker = run.marker;
     this.#lastFailure = { id: ++this.#failureId, command: run.command, exitCode: code, output: "", cwd };
+  }
+
+  // Windows ConPTY can draw the last letters typed after Enter was already pressed (`git log -n 2` typed fast showed
+  // as `git log -n` at that moment): once the command ended, its rows say what really ran. Only a longer reading of
+  // the same start is taken, so a prompt on the right side of the line never gets into it.
+  private _finalCommandText(run: { command: string; marker: IMarker; start?: IMarker; startX?: number }): string {
+    if (process.platform !== "win32" || run.start == null || run.start.isDisposed || run.marker.isDisposed) return run.command;
+    const buffer = this.#terminal.buffer.active;
+    let text = "";
+    for (let y = run.start.line; y <= run.marker.line && y - run.start.line < 20; y++) {
+      const line = buffer.getLine(y);
+      if (line == null) break;
+      if (y > run.start.line && !line.isWrapped) break;
+      text += line.translateToString(true, y === run.start.line ? run.startX ?? 0 : 0);
+    }
+    text = text.trim();
+    return text.length > run.command.length && text.startsWith(run.command) && !/\s{3,}/.test(text.slice(run.command.length)) ? text : run.command;
+  }
+
+  getLastCommand(): string | undefined {
+    return this.#lastCommand;
   }
 
   // the rows between the failed command and the prompt after it

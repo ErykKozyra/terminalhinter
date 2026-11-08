@@ -1,13 +1,19 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+import os from "node:os";
+
 import { runTemplates } from "./template.js";
 import { buildExecuteShellCommand } from "./utils.js";
 import { endTiming, startTiming } from "../utils/performance.js";
 
 const getGeneratorContext = (cwd: string): Fig.GeneratorContext => {
   return {
-    environmentVariables: Object.fromEntries(Object.entries(process.env).filter((entry): entry is [string, string] => entry[1] != null)),
+    // Windows sets no HOME, and the specs build ~/.ssh/config and the like from it
+    environmentVariables: {
+      HOME: os.homedir(),
+      ...Object.fromEntries(Object.entries(process.env).filter((entry): entry is [string, string] => entry[1] != null)),
+    },
     currentWorkingDirectory: cwd,
     currentProcess: "", // TODO: define current process
     sshPrefix: "", // deprecated, should be empty
@@ -54,7 +60,10 @@ export const executeGenerator = async (generator: Fig.Generator, tokens: string[
   }
 };
 
-export const getGeneratorQueryTerm = (generator: Fig.Generator, token: string): string => {
+export const getGeneratorQueryTerm = (generator: Fig.Generator, rawToken: string): string => {
+  // the specs cut the typed folder off at "/" only; on Windows `cd src\comp` is the same as `cd src/comp`, or the
+  // whole `src\comp` became the search and nothing in src matched it
+  const token = process.platform === "win32" && generator.getQueryTerm != null && generator.getQueryTerm !== "\\" ? rawToken.replace(/\\/g, "/") : rawToken;
   if (typeof generator.getQueryTerm === "function") return generator.getQueryTerm(token);
   if (generator.getQueryTerm == null) return token;
   const delimiterIndex = token.lastIndexOf(generator.getQueryTerm);

@@ -23,7 +23,10 @@ const getExecutionShell = async (): Promise<undefined | string> => {
   }
 };
 
-const bashSpecialCharacters = /[&|<>\s]/g;
+// what Git Bash would read as something else than the letter itself; a backslash too, or C:\Users\me lost its
+// backslashes. ~, $ and globs stay open as before, for the specs that count on them being expanded. (No /g: test()
+// with /g carries on from the last match and answered every other call wrong.)
+const bashSpecialCharacters = /[&|<>\s\\'"`;()!#]/;
 // escape whitespace & special characters in an argument when not quoted
 const shouldEscapeArg = (arg: string) => {
   const hasSpecialCharacter = bashSpecialCharacters.test(arg);
@@ -32,10 +35,11 @@ const shouldEscapeArg = (arg: string) => {
 };
 
 /* based on libuv process.c used by nodejs, only quotes are escaped for shells. if using git bash need to escape whitespace & special characters in an argument */
-const escapeArgs = (shell: string | undefined, args: string[]) => {
+export const escapeArgs = (shell: string | undefined, args: string[]) => {
   // only escape args for git bash
   if (process.platform !== "win32" || shell == undefined) return args;
-  return args.map((arg) => (shouldEscapeArg(arg) ? `"${arg.replaceAll('"', '\\"')}"` : arg));
+  // in single quotes nothing is special, a backslash at the end (src\) included; a quote inside is closed and reopened
+  return args.map((arg) => (shouldEscapeArg(arg) ? `'${arg.replaceAll("'", "'\\''")}'` : arg));
 };
 
 type QuoteChar = `"` | `'` | "`";

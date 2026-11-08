@@ -255,6 +255,10 @@ export class ISTerm implements IPty {
     this.#pty.write(data);
   }
 
+  getLastCommand(): string | undefined {
+    return this.#commandManager.getLastCommand();
+  }
+
   getLastFailure(): Failure | undefined {
     return this.#commandManager.getLastFailure();
   }

@@ -19,9 +19,9 @@
     - key: ENTER
     - key: ENTER
       expect_ran: "cd src{sep}"
-    # PowerShell on Windows cuts a long path to the window, and cmd has no pwd
+    # PowerShell cuts a long path to the window (the temp folders of macOS and Windows are long), and cmd has no pwd
     - type: "pwd<ENTER>"
-      skip_shells: [win:pwsh, win:powershell, cmd]
+      skip_shells: [pwsh, powershell, cmd]
       expect: "/Dev/shop/src"
 
 - name: a folder with a space is escaped on the line

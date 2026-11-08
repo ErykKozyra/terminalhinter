@@ -51,6 +51,8 @@
       list_has: ["web", "db"]
 
 - name: a Makefile picked up after it changes
+  # >> in Windows PowerShell 5.1 appends UTF-16, which make cannot read
+  skip_shells: [win:powershell]
   steps:
     - type: "printf 'fresh: ## New one\\n\\techo f\\n' >> Makefile<ENTER>"
       wait: 300

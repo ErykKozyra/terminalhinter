@@ -97,6 +97,7 @@ export class SuggestionManager {
   #shownFailureId = 0; // the failed command whose fixes were already offered
   #pendingCommand?: { command: string; cwd: string; failureId?: number }; // ran, waiting to see if it failed
   #explainRequested = false; // Ctrl+G asked what the words of the line mean
+  #explainInputVersion = -1; // #inputVersion when Ctrl+G was pressed
   #openedByUser = false; // with showListOn = "tab", the list only appears after Tab or Ctrl+Space
   // filling in the fields of a snippet: the typed text goes into the field, not to the shell
   #fill?: { command: string; fields: Field[]; index: number; values: Record<string, string>; buffer: string; replaceLength: number };
@@ -159,6 +160,10 @@ export class SuggestionManager {
       if (fixes != null) return fixes;
     }
     if (this.#explainRequested && commandText) return this._loadExplanation(commandText, commandKey);
+    // the shell can draw the last letters typed before Ctrl+G after it (Windows ConPTY is slow to echo): with no key
+    // typed since, the line is still the one asked about, so the explanation follows it instead of closing
+    if (this.#suggestBlob?.mode === "explain" && commandText && commandKey !== this.#commandKey && this.#explainInputVersion === this.#inputVersion)
+      return this._loadExplanation(commandText, commandKey);
     if (getConfig().showListOn === "tab" && !this.#openedByUser && commandText) {
       const changed = this.#suggestBlob != null || hadFixes;
       this.#suggestBlob = undefined;
@@ -637,6 +642,7 @@ export class SuggestionManager {
         this.#hideSuggestions = true;
       } else if (this.#term.getCommandState().commandText) {
         this.#explainRequested = true;
+        this.#explainInputVersion = this.#inputVersion;
         this.#hideSuggestions = false;
         this.#commandKey = "";
         this.#refreshRequested = true;
@@ -930,10 +936,13 @@ export class SuggestionManager {
     const pending = this.#pendingCommand;
     if (pending == null) return;
     this.#pendingCommand = undefined;
+    // the line as the shell finally drew it, when that is longer (letters echoed after Enter under Windows ConPTY)
+    const drawn = this.#term.getLastCommand?.();
+    const command = drawn != null && drawn.length > pending.command.length && drawn.startsWith(pending.command) ? drawn : pending.command;
     const failure = this.#term.getLastFailure?.();
-    if (failure != null && failure.id !== pending.failureId && failure.command === pending.command) return;
+    if (failure != null && failure.id !== pending.failureId && failure.command === command) return;
     void this._getRuntime()
-      .then((runtime) => runtime.rememberWholeCommand?.(pending.command, pending.cwd))
+      .then((runtime) => runtime.rememberWholeCommand?.(command, pending.cwd))
       .catch((e) => log.debug({ msg: "could not remember the command", e: (e as Error).message }));
   }
 

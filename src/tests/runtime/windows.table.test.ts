@@ -3,7 +3,8 @@
 
 import { killCommand } from "../../runtime/extras/fixes.js";
 import { parseNetstat, parseTasklist } from "../../runtime/extras/processes.js";
-import { msysToWindows } from "../../runtime/utils.js";
+import { escapeArgs, msysToWindows } from "../../runtime/utils.js";
+import { getGeneratorQueryTerm } from "../../runtime/generator.js";
 
 const netstat = [
   "",
@@ -87,4 +88,50 @@ test.each([
 
 test("Git Bash: without a Git folder the path stays as typed", () => {
   expect(msysToWindows("/usr", undefined, temp)).toBe("/usr");
+});
+
+describe("the search after a folder typed with a backslash", () => {
+  const platform = process.platform;
+  beforeAll(() => Object.defineProperty(process, "platform", { value: "win32" }));
+  afterAll(() => Object.defineProperty(process, "platform", { value: platform }));
+  const bySlash: Fig.Generator = { getQueryTerm: (t: string) => t.slice(t.lastIndexOf("/") + 1) };
+  test.each([
+    [bySlash, "src\\comp", "comp"],
+    [bySlash, "src\\", ""],
+    [bySlash, "a\\b/c", "c"],
+    [{ getQueryTerm: "/" } as Fig.Generator, "src\\comp", "comp"],
+    [{ getQueryTerm: "\\" } as Fig.Generator, "x\\y", "y"],
+    [{} as Fig.Generator, "src\\comp", "src\\comp"],
+  ])("%#: %s", (generator, token, term) => {
+    expect(getGeneratorQueryTerm(generator, token)).toBe(term);
+  });
+});
+
+describe("arguments for a command run through Git Bash", () => {
+  const platform = process.platform;
+  beforeAll(() => Object.defineProperty(process, "platform", { value: "win32" }));
+  afterAll(() => Object.defineProperty(process, "platform", { value: platform }));
+  const bash = "C:\\Program Files\\Git\\bin\\bash.exe";
+  test.each([
+    ["C:\\Users\\me/.ssh/config", "'C:\\Users\\me/.ssh/config'"],
+    ["src\\", "'src\\'"],
+    ["two words", "'two words'"],
+    ["it's", "'it'\\''s'"],
+    ["a;b", "'a;b'"],
+    ["--format=%h", "--format=%h"],
+    ["~/.ssh/config", "~/.ssh/config"],
+    ["*", "*"],
+    ['"already quoted"', '"already quoted"'],
+  ])("%s → %s", (arg, escaped) => {
+    expect(escapeArgs(bash, [arg])).toEqual([escaped]);
+  });
+  test("the same answer every time (a /g regex alternated)", () => {
+    const args = Array.from({ length: 6 }, () => "C:\\x y");
+    expect(escapeArgs(bash, args)).toEqual(args.map(() => "'C:\\x y'"));
+  });
+  test("outside Windows nothing changes", () => {
+    Object.defineProperty(process, "platform", { value: "linux" });
+    expect(escapeArgs(bash, ["C:\\x y"])).toEqual(["C:\\x y"]);
+    Object.defineProperty(process, "platform", { value: "win32" });
+  });
 });
