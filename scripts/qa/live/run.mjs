@@ -260,6 +260,16 @@ const runOne = async (scenario, shell, [cols, rows]) => {
   const p = pty.spawn(cmd, cmdArgs, { name: "xterm-256color", cols, rows, cwd, env });
   let exited = null;
   p.onExit((e) => (exited = e));
+  // no run takes longer than two minutes, whatever hangs
+  let timedOut = false;
+  const cap = setTimeout(() => {
+    timedOut = true;
+    try {
+      p.kill();
+    } catch {
+      // already gone
+    }
+  }, 120_000 * slow);
   p.onData((d) => {
     raw += d;
     term.write(d);
@@ -302,7 +312,7 @@ const runOne = async (scenario, shell, [cols, rows]) => {
     const start = Date.now();
     let seen = raw.length;
     let since = Date.now();
-    while (Date.now() - start < max * slow) {
+    while (Date.now() - start < max * slow && !timedOut) {
       await sleep(40);
       if (raw.length !== seen) {
         seen = raw.length;
@@ -312,7 +322,7 @@ const runOne = async (scenario, shell, [cols, rows]) => {
   };
   const waitFor = async (test, max = 8000) => {
     const start = Date.now();
-    while (Date.now() - start < max * slow) {
+    while (Date.now() - start < max * slow && !timedOut) {
       if (test()) return true;
       await sleep(50);
     }
@@ -390,13 +400,17 @@ const runOne = async (scenario, shell, [cols, rows]) => {
         if (step.expect_ran_count != null && ran().length !== step.expect_ran_count)
           fail(i, `${ran().length} commands ran, expected ${step.expect_ran_count}: ${JSON.stringify(ran())}`);
       }
+      if (timedOut) {
+        fail(i, "the run took over two minutes and was stopped");
+        break;
+      }
       if (exited) {
         fail(i, `thint exited (${JSON.stringify(exited)})`);
         break;
       }
     }
     // the shell still answers, and nothing of the list is left on the screen
-    if (!exited && scenario.alive !== false) {
+    if (!exited && !timedOut && scenario.alive !== false) {
       p.write("\x15");
       await stable(200);
       if (listVisible()) {
@@ -424,6 +438,7 @@ const runOne = async (scenario, shell, [cols, rows]) => {
   } catch (e) {
     failures.push(String(e?.stack ?? e));
   } finally {
+    clearTimeout(cap);
     if (scenario.wrapper === "tmux")
       try {
         execFileSync("tmux", ["-L", `qa-${path.basename(home)}`, "kill-server"], { stdio: "ignore" });
@@ -443,7 +458,7 @@ const runOne = async (scenario, shell, [cols, rows]) => {
         // the shell may still be writing its history; the run folder goes at the end anyway
       }
   }
-  return { scenario: scenario.name, shell, size: `${cols}x${rows}`, ok: failures.length === 0, ms: Date.now() - started, failures, home: failures.length ? home : undefined, raw: failures.length ? raw.slice(-4000) : undefined };
+  return { scenario: scenario.name, shell, size: `${cols}x${rows}`, ok: failures.length === 0, timedOut, ms: Date.now() - started, failures, home: failures.length ? home : undefined, raw: failures.length ? raw.slice(-4000) : undefined };
 };
 
 const loadScenarios = () => {
@@ -466,11 +481,24 @@ const main = async () => {
   makeShim();
   makeHomeTemplate();
   const scenarios = loadScenarios().filter((s) => !only || s.name.includes(only));
-  const available = shells.filter((s) => {
+  const installed = shells.filter((s) => {
     const ok = resolveShell(s) !== "";
     if (!ok) process.stderr.write(`skipping ${s}: not installed\n`);
     return ok;
   });
+  // A shell that does not even start under thint would fail every scenario slowly (20 s each, twice). One quick
+  // start per shell first; a shell that fails it is reported once and its scenarios are not run.
+  const startup = { name: "thint starts and the shell answers", steps: [] };
+  const broken = [];
+  const available = [];
+  for (const shell of installed) {
+    const r = await runOne(startup, shell, [80, 24]);
+    if (r.ok) available.push(shell);
+    else {
+      broken.push({ ...r, scenario: `${startup.name} (the other scenarios of ${shell} were not run)` });
+      process.stderr.write(`✗ ${shell} does not start under thint:\n  ${r.failures.join("\n  ").slice(0, 3000)}\n`);
+    }
+  }
   const runs = [];
   for (const s of scenarios)
     for (const shell of available) {
@@ -484,20 +512,29 @@ const main = async () => {
       }
     }
   process.stderr.write(`${scenarios.length} scenarios, ${runs.length} runs, ${jobs} at a time\n`);
-  const results = [];
+  const results = [...broken];
+  // written after every run, so a run that is stopped halfway still leaves what it found
+  const save = () => out && fs.writeFileSync(out, JSON.stringify({ platform: process.platform, shells: installed, started: available, results }, null, 2));
+  save();
   let next = 0;
+  let done = 0;
+  const startedAt = Date.now();
   const worker = async () => {
     while (next < runs.length) {
       const [s, shell, size] = runs[next++];
       let r = await runOne(s, shell, size);
       // one retry for timing: a pass on the second try is reported as flaky, not as passing
-      if (!r.ok && !flag("no-retry")) {
+      // no second try for a timeout or once a lot is failing anyway: it only doubles the wait
+      if (!r.ok && !flag("no-retry") && !r.timedOut && results.filter((x) => !x.ok).length < 40) {
         const again = await runOne(s, shell, size);
         if (again.ok) r = { ...again, flaky: true, firstFailures: r.failures };
         else r = again;
       }
       results.push(r);
+      save();
+      done++;
       process.stderr.write(`${r.ok ? (r.flaky ? "~" : ".") : "F"}`);
+      if (done % 50 === 0) process.stderr.write(` ${done}/${runs.length} in ${Math.round((Date.now() - startedAt) / 1000)} s\n`);
       if (!r.ok) process.stderr.write(`\n✗ ${r.scenario} [${r.shell} ${r.size}]\n  ${r.failures.join("\n  ").slice(0, 3000)}\n`);
     }
   };
@@ -505,7 +542,7 @@ const main = async () => {
   const failed = results.filter((r) => !r.ok);
   const flaky = results.filter((r) => r.flaky);
   process.stderr.write(`\n${results.length - failed.length}/${results.length} passed, ${flaky.length} flaky\n`);
-  if (out) fs.writeFileSync(out, JSON.stringify({ platform: process.platform, shells: available, results }, null, 2));
+  save();
   if (failed.length === 0 && !keep) fs.rmSync(base, { recursive: true, force: true, maxRetries: 5, retryDelay: 200 });
   else process.stderr.write(`homes of the failed runs are in ${base}\n`);
   process.exit(failed.length ? 1 : 0);
