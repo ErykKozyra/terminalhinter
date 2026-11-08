@@ -504,11 +504,14 @@ const convertToPtyEnv = (shell: Shell, underTest: boolean, login: boolean) => {
 
   switch (shell) {
     case Shell.Cmd: {
+      // cmd cannot run code at its prompt, but its prompt can print the folder: $E is ESC, $P the folder, and ESC \
+      // ends the sequence. Without it the list showed the folders of the drive root wherever you were.
+      const cwd = `$E]${IsTermOscPs};${IstermOscPt.CurrentWorkingDirectory};$P$E\\`;
       if (underTest) {
-        return { ...env, PROMPT: `${IstermPromptStart}$G ${IstermPromptEnd}` };
+        return { ...env, PROMPT: `${IstermPromptStart}$G ${IstermPromptEnd}${cwd}` };
       }
       const prompt = process.env.PROMPT ? process.env.PROMPT : "$P$G";
-      return { ...env, PROMPT: `${IstermPromptStart}${prompt}${IstermPromptEnd}` };
+      return { ...env, PROMPT: `${IstermPromptStart}${prompt}${IstermPromptEnd}${cwd}` };
     }
     case Shell.Zsh: {
       return { ...env, ZDOTDIR: zdotdir, USER_ZDOTDIR: userZdotdir };

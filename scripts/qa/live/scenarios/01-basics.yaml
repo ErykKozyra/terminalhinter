@@ -82,6 +82,7 @@
       expect_line: "git sta"
 
 - name: Ctrl+U empties the line and hides the list
+  skip_shells: [cmd]
   steps:
     - type: "git sta"
       expect_list: true

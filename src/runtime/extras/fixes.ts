@@ -42,9 +42,10 @@ type Rule = (c: Context) => Fix[] | Promise<Fix[]>;
 
 const rules: Rule[] = [
   // zsh: command not found: gti / bash: gti: command not found / sh: 1: gti: not found / fish: Unknown command: gti /
-  // PowerShell: The term 'gti' is not recognized / cmd: 'gti' is not recognized as an internal or external command
+  // PowerShell: The term 'gti' is not recognized / cmd: 'gti' is not recognized as an internal or external command /
+  // Ubuntu's command-not-found: Command 'gti' not found, did you mean: command 'git' from deb git
   ({ failure, words, commands }) => {
-    const notFound = /command not found|: not found|Unknown command/i.test(failure.output);
+    const notFound = /command not found|: not found|Unknown command|command '[^']*' not found/i.test(failure.output);
     const notRecognized = /is not recognized as/i.test(failure.output);
     if (!((failure.exitCode === 127 && notFound) || ((failure.exitCode === 9009 || failure.exitCode === 1) && notRecognized))) return [];
     const match = closest(words[0], commands());

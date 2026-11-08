@@ -63,7 +63,16 @@ __is_escape_value() {
 }
 
 __is_update_cwd() {
-	builtin printf '\e]6973;CWD;%s\a' "$(__is_escape_value "$PWD")"
+	local __is_dir=$PWD
+	# Git Bash and Cygwin: the Windows path (C:\Users\...), since /tmp or /home are mounts that only bash knows
+	if [[ "$OSTYPE" == msys* || "$OSTYPE" == cygwin* ]]; then
+		if [[ "$PWD" != "$__is_cwd_seen" ]]; then
+			__is_cwd_seen=$PWD
+			__is_cwd_win=$(builtin pwd -W 2>/dev/null || cygpath -w "$PWD" 2>/dev/null || builtin printf '%s' "$PWD")
+		fi
+		__is_dir=$__is_cwd_win
+	fi
+	builtin printf '\e]6973;CWD;%s\a' "$(__is_escape_value "$__is_dir")"
 }
 
 if [[ -n "${bash_preexec_imported:-}" ]]; then

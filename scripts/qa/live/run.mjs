@@ -121,17 +121,21 @@ const rcFor = (shell, home) => {
       return [
         [
           ".config/fish/config.fish",
-          `function fish_prompt; printf '${prompt}'; end\nfunction fish_greeting; end\nfunction __qa_log --on-event fish_preexec; printf '%s\\n' "$argv" >> ${JSON.stringify(log)}; end\n`,
+          `set -g fish_autosuggestion_enabled 0\nfunction fish_prompt; printf '${prompt}'; end\nfunction fish_greeting; end\nfunction __qa_log --on-event fish_preexec; printf '%s\\n' "$argv" >> ${JSON.stringify(log)}; end\n`,
         ],
       ];
     case "pwsh":
-    case "powershell":
+    case "powershell": {
+      const body = `function prompt { '${prompt}' }\nSet-PSReadLineOption -AddToHistoryHandler { param($l) if ($env:QA_LOG) { Add-Content -LiteralPath $env:QA_LOG -Value $l }; return $true }\n`;
+      if (!isWin) return [[".config/powershell/Microsoft.PowerShell_profile.ps1", body]];
+      // the profile where PowerShell looks for it, and the same place under the home we give it as USERPROFILE
+      const real = windowsProfile(shell);
+      const user = process.env.USERPROFILE ?? "";
       return [
-        [
-          isWin ? windowsProfile(shell) : ".config/powershell/Microsoft.PowerShell_profile.ps1",
-          `function prompt { '${prompt}' }\nSet-PSReadLineOption -AddToHistoryHandler { param($l) Add-Content -LiteralPath ${JSON.stringify(log)} -Value $l; return $true }\n`,
-        ],
+        [real, body],
+        [user && real.startsWith(user) ? path.join(home, real.slice(user.length)) : null, body],
       ];
+    }
     default:
       return [];
   }
@@ -270,6 +274,15 @@ const runOne = async (scenario, shell, [cols, rows]) => {
       // already gone
     }
   }, 120_000 * slow);
+  // what the headless terminal answers (cursor position, device attributes) goes back to the program, as a real
+  // terminal does: fish waits 10 s for that answer, PowerShell's line editor never draws without it
+  term.onData((d) => {
+    try {
+      p.write(d);
+    } catch {
+      // the program is gone
+    }
+  });
   p.onData((d) => {
     raw += d;
     term.write(d);
@@ -329,6 +342,13 @@ const runOne = async (scenario, shell, [cols, rows]) => {
     return test();
   };
 
+  // cmd has no Ctrl+U: Esc empties its line (the first Esc only closes the list when it is open)
+  const clearCmdLine = async () => {
+    p.write("\x1b");
+    await sleep(150 * slow);
+    p.write("\x1b");
+    await sleep(150 * slow);
+  };
   const failures = [];
   const fail = (step, msg) => failures.push(`step ${step}: ${msg}`);
   const vars = { shell, cols, rows, home, proj };
@@ -356,7 +376,8 @@ const runOne = async (scenario, shell, [cols, rows]) => {
         if (step.paste != null) p.write(step.bracketed === false ? text : `\x1b[200~${text}\x1b[201~`);
         else
           for (const chunk of toChunks(text)) {
-            p.write(chunk);
+            if (chunk === "\x15" && shell === "cmd") await clearCmdLine();
+            else p.write(chunk);
             await sleep((step.delay ?? 25) * slow);
           }
         await stable(step.quiet ?? 250);
@@ -411,7 +432,8 @@ const runOne = async (scenario, shell, [cols, rows]) => {
     }
     // the shell still answers, and nothing of the list is left on the screen
     if (!exited && !timedOut && scenario.alive !== false) {
-      p.write("\x15");
+      if (shell === "cmd") await clearCmdLine();
+      else p.write("\x15");
       await stable(200);
       if (listVisible()) {
         p.write("\x1b");
