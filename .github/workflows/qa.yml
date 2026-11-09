@@ -86,7 +86,9 @@ jobs:
         # --resume: if the runner dies halfway (it did twice on Windows), the next attempt runs only what is left
         shell: bash
         run: |
-          for attempt in 1 2 3; do
+          # node-pty in the runner itself crashes now and then on Windows (a segmentation fault, 1 to 3 times a run):
+          # --resume goes on where it stopped, so enough attempts cost nothing when it does not crash
+          for attempt in 1 2 3 4 5 6 7 8 9 10; do
             node scripts/qa/live/run.mjs ${{ runner.os == 'Windows' && '--jobs 4 --sizes 80x24,40x10' || '--jobs 3' }} --resume --out qa-out/live-${{ matrix.os }}.json && break || true
           done
         continue-on-error: true
