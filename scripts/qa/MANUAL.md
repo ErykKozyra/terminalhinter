@@ -39,6 +39,8 @@ Defender or SmartScreen warnings on the first start.
 
 Open a tab, run `npm i -g @erykkozyra/terminalhinter@latest` in another one, then go back to the first tab and type
 `git st`. The list should still open there. In CI on macOS it did not (on Linux it does), so this needs a real Mac.
+Checked on a Mac on 2026-11-09 (update to 1.2.0): the list opened in the old tab, so what CI showed comes from its
+own runner.
 
 ## 4. Open Windows items (PC)
 
