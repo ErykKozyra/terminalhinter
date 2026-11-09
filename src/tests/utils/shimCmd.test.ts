@@ -9,3 +9,15 @@ test("the cmd.exe npm runs thint.cmd in is told apart from a cmd you work in", (
   expect(isShimCmd("cmd.exe", undefined)).toBe(false);
   expect(isShimCmd("pwsh.exe", "pwsh.exe /c x")).toBe(false);
 });
+
+test("a PowerShell started to run something does not start the list, whatever way the flag is written", async () => {
+  const { getShellConfig, Shell } = await import("../../utils/shell.js");
+  const config = getShellConfig(Shell.Powershell);
+  const pattern = (name: string) => new RegExp(config.match(new RegExp(`\\$${name} = .*?-imatch '([^']+)'`))![1], "i");
+  const command = pattern("__IsCommandFlag");
+  for (const flag of ["/c", "-c", "-Command", "/command", "-com", "-File", "-f", "-EncodedCommand", "-enc", "-ec", "-NonInteractive", "-noni"])
+    expect(command.test(flag)).toBe(true);
+  for (const flag of ["-NoLogo", "-NoProfile", "-ExecutionPolicy", "-ex", "-ep", "-NoExit", "x"]) expect(command.test(flag)).toBe(false);
+  const noExit = pattern("__IsNoExitFlag");
+  expect(["-NoExit", "/noexit", "-noe"].every((f) => noExit.test(f))).toBe(true);
+});

@@ -2,6 +2,7 @@
   { "p": "P0", "what": "Secret lines went into the word history (history.jsonl): 37 of 41 test lines with tokens or passwords", "where": "all", "fixed": true },
   { "p": "P0", "what": "When thint could not start (resources missing, home not writable) the tab closed at once instead of opening a plain shell", "where": "all", "fixed": true },
   { "p": "P0", "what": "PowerShell 7 from the Microsoft Store (also what winget installs) is an app alias in WindowsApps: thint did not find pwsh.exe and closed the tab at once", "where": "Windows PowerShell 7", "fixed": true },
+  { "p": "P1", "what": "With scripts allowed, thint init on Windows hung: find-process starts powershell /c with the profile, and the startup lines took /c for an interactive shell and started a hidden thint", "where": "Windows PowerShell", "fixed": true },
   { "p": "P1", "what": "In fish 4, Tab did not take the fix after a failed command: the terminal's answers to fish's questions counted as typing", "where": "fish", "fixed": true },
   { "p": "P1", "what": "Enter on a word typed in full turned it into an environment variable (echo one became echo $OPENBLAS_NUM_THREADS)", "where": "all", "fixed": true },
   { "p": "P1", "what": "A generator that hangs ignored its time limit and stopped every list update for the session", "where": "all", "fixed": true },

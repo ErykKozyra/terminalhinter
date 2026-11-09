@@ -221,9 +221,24 @@ export const setupZshDotfiles = async () => {
   await fsAsync.cp(path.join(shellResourcesPath, "shellIntegration-login.zsh"), path.join(zdotdir, ".zlogin"), { force: true });
 };
 
-const findProcess = async (pid: number) => {
+type ProcessInfo = { name: string; ppid?: number; cmd?: string };
+
+// On Windows find-process starts `powershell.exe /c` with the profile, and a profile with the terminalhinter lines
+// started thint in that hidden PowerShell: thint init hung for good. Here the profile stays out, and only the one
+// process is asked for, not all of them.
+const findWindowsProcess = async (pid: number): Promise<ProcessInfo | undefined> => {
+  const script = `$p = Get-CimInstance Win32_Process -Filter "ProcessId=${Math.trunc(pid)}"; if ($p) { $p.Name; $p.ParentProcessId; $p.CommandLine }`;
+  const { stdout } = await util.promisify(childProcess.execFile)("powershell.exe", ["-NoLogo", "-NoProfile", "-NonInteractive", "-Command", script], {
+    timeout: 10_000,
+    windowsHide: true,
+  });
+  const [name, ppid, ...cmd] = stdout.split(/\r?\n/);
+  return name?.trim() ? { name: name.trim(), ppid: Number(ppid) || undefined, cmd: cmd.join(" ").trim() || undefined } : undefined;
+};
+
+const findProcess = async (pid: number): Promise<ProcessInfo | undefined> => {
   try {
-    return (await find("pid", pid)).at(0);
+    return process.platform === "win32" ? await findWindowsProcess(pid) : (await find("pid", pid)).at(0);
   } catch (e) {
     log.debug({ msg: `error finding parent process: ${e}` });
   }
@@ -426,8 +441,11 @@ fi`;
 fi`;
     case Shell.Powershell:
     case Shell.Pwsh:
-      return `$__IsCommandFlag = ([Environment]::GetCommandLineArgs() | Where-Object { $_ -imatch '^-c(ommand)?$' }).Count -gt 0
-$__IsNoExitFlag = ([Environment]::GetCommandLineArgs() | Where-Object { $_ -imatch '^-noe(xit)?$' }).Count -gt 0
+      // a PowerShell started to run something (-Command, -File, -EncodedCommand, -NonInteractive, each also with / and
+      // shortened, as PowerShell takes them) is not one to start the list in: powershell /c of another program hung in
+      // a hidden thint
+      return `$__IsCommandFlag = ([Environment]::GetCommandLineArgs() | Where-Object { $_ -imatch '^[-/](c|co|com|comm|comma|comman|command|e|ec|en|enc\\w*|f|fi|fil|file|noni\\w*)$' }).Count -gt 0
+$__IsNoExitFlag = ([Environment]::GetCommandLineArgs() | Where-Object { $_ -imatch '^[-/]noe\\w*$' }).Count -gt 0
 $__IsInteractive = -not $__IsCommandFlag -or ($__IsCommandFlag -and $__IsNoExitFlag)
 if ([string]::IsNullOrEmpty($env:ISTERM) -and [Environment]::UserInteractive -and $__IsInteractive -and [string]::IsNullOrEmpty($env:VSCODE_RESOLVING_ENVIRONMENT)) {
   thint -s ${shell}
