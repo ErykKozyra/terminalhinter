@@ -1,0 +1,1110 @@
+{
+  "platform": "darwin",
+  "shells": [
+    "pwsh"
+  ],
+  "started": [
+    "pwsh"
+  ],
+  "planned": 119,
+  "strayErrors": 0,
+  "health": [
+    {
+      "done": 50,
+      "at": 1794237596486,
+      "terminalsHeldByRunner": 57,
+      "terminalsInSystem": 75,
+      "processesLeft": 4,
+      "sample": [
+        " 4066 97622 S<s+ /Users/runner/hostedtoolcache/node/22.21.1/arm64/bin/node /Users/runner/work/terminalhinter/terminalhinter/build/index.js -s pwsh --verbose",
+        " 4088  4066 S<s+ pwsh -noexit -command try { . \"/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-KuUTP5/home-Brq2Jq/.local/share/terminalhinter/shell/shellIntegration.ps1\" } catch {}",
+        " 4089 97622 S<s+ /Users/runner/hostedtoolcache/node/22.21.1/arm64/bin/node /Users/runner/work/terminalhinter/terminalhinter/build/index.js -s pwsh --verbose",
+        " 4105  4089 R<s+ pwsh -noexit -command try { . \"/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-KuUTP5/home-OcT6m1/.local/share/terminalhinter/shell/shellIntegration.ps1\" } catch {}"
+      ]
+    },
+    {
+      "done": 100,
+      "at": 1794237703615,
+      "terminalsHeldByRunner": 107,
+      "terminalsInSystem": 123,
+      "processesLeft": 2,
+      "sample": [
+        " 8563 97622 S<s+ /Users/runner/hostedtoolcache/node/22.21.1/arm64/bin/node /Users/runner/work/terminalhinter/terminalhinter/build/index.js -s pwsh --verbose",
+        " 8585  8563 S<s+ pwsh -noexit -command try { . \"/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-KuUTP5/home-asmp59/.local/share/terminalhinter/shell/shellIntegration.ps1\" } catch {}"
+      ]
+    }
+  ],
+  "results": [
+    {
+      "scenario": "the list opens after a command and a space",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4546,
+      "failures": []
+    },
+    {
+      "scenario": "typing narrows the list",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4727,
+      "failures": []
+    },
+    {
+      "scenario": "git branch from the list with Tab",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5715,
+      "failures": []
+    },
+    {
+      "scenario": "Tab puts the selected entry on the line",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5127,
+      "failures": []
+    },
+    {
+      "scenario": "Enter on a typed word takes the entry and does not run",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5064,
+      "failures": []
+    },
+    {
+      "scenario": "Enter right after a space runs the command",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5464,
+      "failures": []
+    },
+    {
+      "scenario": "Enter runs a word typed in full that no entry starts with",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4744,
+      "failures": []
+    },
+    {
+      "scenario": "Esc hides the list until the next letter",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5785,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+Space shows the list again",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5403,
+      "failures": []
+    },
+    {
+      "scenario": "Down and Tab pick the second entry",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5294,
+      "failures": []
+    },
+    {
+      "scenario": "Backspace brings back what was there",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4879,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+U empties the line and hides the list",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4866,
+      "failures": []
+    },
+    {
+      "scenario": "a pasted command lands as pasted",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4739,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+C gives a fresh prompt with no list",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6697,
+      "failures": []
+    },
+    {
+      "scenario": "Up on a line with no selection walks the shell history",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6051,
+      "failures": []
+    },
+    {
+      "scenario": "a fast typist loses no letters",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4828,
+      "failures": []
+    },
+    {
+      "scenario": "a long line that wraps keeps every letter",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5733,
+      "failures": []
+    },
+    {
+      "scenario": "Polish letters and emoji go through untouched",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5748,
+      "failures": []
+    },
+    {
+      "scenario": "options of a command show with their descriptions",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4792,
+      "failures": []
+    },
+    {
+      "scenario": "an option already on the line is not offered again",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5351,
+      "failures": []
+    },
+    {
+      "scenario": "a command the specs do not know does not break anything",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6284,
+      "failures": []
+    },
+    {
+      "scenario": "the list follows the line after a resize",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5371,
+      "failures": []
+    },
+    {
+      "scenario": "Enter runs a word that only appears inside a variable name",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5275,
+      "failures": []
+    },
+    {
+      "scenario": "git switch offers local branches with their last commit",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4893,
+      "failures": []
+    },
+    {
+      "scenario": "git checkout finds a branch by a word inside its name",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5280,
+      "failures": []
+    },
+    {
+      "scenario": "a branch picked with Enter runs only after a second Enter",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5868,
+      "failures": []
+    },
+    {
+      "scenario": "git stash show lists stashes by what they hold",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5266,
+      "failures": []
+    },
+    {
+      "scenario": "git stash pop takes the stash from the list",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7060,
+      "failures": []
+    },
+    {
+      "scenario": "git push --force is marked as risky",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5243,
+      "failures": []
+    },
+    {
+      "scenario": "git reset --hard is marked as risky and says why",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5888,
+      "failures": []
+    },
+    {
+      "scenario": "git branch -D is marked as risky",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5237,
+      "failures": []
+    },
+    {
+      "scenario": "git add offers changed files",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4400,
+      "failures": []
+    },
+    {
+      "scenario": "git log options with descriptions",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4551,
+      "failures": []
+    },
+    {
+      "scenario": "git commit -m keeps the quoted message as typed",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7117,
+      "failures": []
+    },
+    {
+      "scenario": "git merge offers branches",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4790,
+      "failures": []
+    },
+    {
+      "scenario": "a git alias completes like the command behind it",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 15024,
+      "failures": []
+    },
+    {
+      "scenario": "outside a repository git still shows subcommands",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4593,
+      "failures": []
+    },
+    {
+      "scenario": "git worktree add and remove",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 9017,
+      "failures": []
+    },
+    {
+      "scenario": "git reflog after a reset",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 10002,
+      "failures": []
+    },
+    {
+      "scenario": "cd lists only folders",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4631,
+      "failures": []
+    },
+    {
+      "scenario": "Enter on a folder walks into it and keeps the list open",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5053,
+      "failures": []
+    },
+    {
+      "scenario": "a folder with a space is escaped on the line",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4708,
+      "failures": []
+    },
+    {
+      "scenario": "the run entry runs cd where you are",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5602,
+      "failures": []
+    },
+    {
+      "scenario": "a folder with Polish letters",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5209,
+      "failures": []
+    },
+    {
+      "scenario": "a path in a subfolder",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4765,
+      "failures": []
+    },
+    {
+      "scenario": "parent folder",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4755,
+      "failures": []
+    },
+    {
+      "scenario": "hidden files after a dot",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4749,
+      "failures": []
+    },
+    {
+      "scenario": "npm run lists the package.json scripts with their commands",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4797,
+      "failures": []
+    },
+    {
+      "scenario": "a production-looking script is marked",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4799,
+      "failures": []
+    },
+    {
+      "scenario": "pnpm lists the scripts",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5267,
+      "failures": []
+    },
+    {
+      "scenario": "yarn lists the scripts",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4644,
+      "failures": []
+    },
+    {
+      "scenario": "bun lists the scripts",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5745,
+      "failures": []
+    },
+    {
+      "scenario": "make lists targets with their sections and descriptions",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4197,
+      "failures": []
+    },
+    {
+      "scenario": "a make target tagged prod is marked",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4923,
+      "failures": []
+    },
+    {
+      "scenario": "make -C reads the Makefile of that folder",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4963,
+      "failures": []
+    },
+    {
+      "scenario": "docker compose lists services",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5588,
+      "failures": []
+    },
+    {
+      "scenario": "a Taskfile without task installed still lists tasks",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4526,
+      "failures": []
+    },
+    {
+      "scenario": "just recipes from the justfile",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4549,
+      "failures": []
+    },
+    {
+      "scenario": "a Makefile picked up after it changes",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 8807,
+      "failures": []
+    },
+    {
+      "scenario": "mise tasks from mise.toml",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5655,
+      "failures": []
+    },
+    {
+      "scenario": "deno tasks from deno.json",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4972,
+      "failures": []
+    },
+    {
+      "scenario": "a typo in the command gets the fix on the empty line",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6927,
+      "failures": []
+    },
+    {
+      "scenario": "the fix is never run without Enter",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6847,
+      "failures": []
+    },
+    {
+      "scenario": "a git subcommand typo uses what git suggests",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6606,
+      "failures": []
+    },
+    {
+      "scenario": "a missing npm script gets the near one",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 9430,
+      "failures": []
+    },
+    {
+      "scenario": "mkdir of a nested folder gets -p",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6679,
+      "failures": []
+    },
+    {
+      "scenario": "cd to a near folder name",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6009,
+      "failures": []
+    },
+    {
+      "scenario": "rm of a folder gets -r",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5650,
+      "failures": []
+    },
+    {
+      "scenario": "checkout of a near branch name",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6685,
+      "failures": []
+    },
+    {
+      "scenario": "Esc dismisses the fix and the line stays empty",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6578,
+      "failures": []
+    },
+    {
+      "scenario": "a command that worked gives no fix",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5510,
+      "failures": []
+    },
+    {
+      "scenario": "typing over the fix list starts a new command",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7433,
+      "failures": []
+    },
+    {
+      "scenario": "fixes can be turned off",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6398,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+G explains every word of a pipe",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4686,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+G warns about a destructive line",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5521,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+G through sudo and &&",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6127,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+G knows combined short flags",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5374,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+G knows an option that takes a value",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5534,
+      "failures": []
+    },
+    {
+      "scenario": "Esc closes the explanation and keeps the line",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5097,
+      "failures": []
+    },
+    {
+      "scenario": "the line runs as typed after an explanation",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5996,
+      "failures": []
+    },
+    {
+      "scenario": "a snippet with fields fills in and runs",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7729,
+      "failures": []
+    },
+    {
+      "scenario": "a field value with spaces is quoted",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7222,
+      "failures": []
+    },
+    {
+      "scenario": "Esc leaves the snippet form without running anything",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6276,
+      "failures": []
+    },
+    {
+      "scenario": "a broken snippets file does not break the list",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4539,
+      "failures": []
+    },
+    {
+      "scenario": "a command run in this folder comes back as a whole",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7413,
+      "failures": []
+    },
+    {
+      "scenario": "a line with a token is never remembered",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 8549,
+      "failures": []
+    },
+    {
+      "scenario": "a failed command is not offered again as a recent one",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 8503,
+      "failures": []
+    },
+    {
+      "scenario": "a command run elsewhere in the repository comes back in a subfolder",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 8646,
+      "failures": []
+    },
+    {
+      "scenario": "tab like a shell completes the shared part",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5158,
+      "failures": []
+    },
+    {
+      "scenario": "the list only on Tab",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5057,
+      "failures": []
+    },
+    {
+      "scenario": "the light theme draws the same list",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4698,
+      "failures": []
+    },
+    {
+      "scenario": "an invalid setting falls back to the defaults",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4682,
+      "failures": []
+    },
+    {
+      "scenario": "Enter takes the entry and runs the line when enterRuns is on",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5080,
+      "failures": []
+    },
+    {
+      "scenario": "with enterRuns a folder is still walked into",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4829,
+      "failures": []
+    },
+    {
+      "scenario": "a broken spec of your own is skipped",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5433,
+      "failures": []
+    },
+    {
+      "scenario": "a spec with a generator that hangs does not block typing",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5708,
+      "failures": []
+    },
+    {
+      "scenario": "the shell works when the config file is broken",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7585,
+      "failures": []
+    },
+    {
+      "scenario": "quick resize back and forth with the list open",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7549,
+      "failures": []
+    },
+    {
+      "scenario": "Shift+Down moves an entry and the order stays",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6867,
+      "failures": []
+    },
+    {
+      "scenario": "git checkout - runs as typed",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5093,
+      "failures": []
+    },
+    {
+      "scenario": "a lone dash runs the previous folder",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6421,
+      "failures": []
+    },
+    {
+      "scenario": "the second command after && gets its own list",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5439,
+      "failures": []
+    },
+    {
+      "scenario": "sudo in front keeps the list of the command",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4347,
+      "failures": []
+    },
+    {
+      "scenario": "an option with an equals sign",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7038,
+      "failures": []
+    },
+    {
+      "scenario": "docker compose logs takes a service",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5220,
+      "failures": []
+    },
+    {
+      "scenario": "editing in the middle of the line",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 11175,
+      "failures": []
+    },
+    {
+      "scenario": "npm install of a version does not block typing without network",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6793,
+      "failures": []
+    },
+    {
+      "scenario": "icons off still shows the entries",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4727,
+      "failures": []
+    },
+    {
+      "scenario": "a long description is cut, not wrapped",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4664,
+      "failures": []
+    },
+    {
+      "scenario": "PowerShell predictions from the history do not confuse the list",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5502,
+      "failures": []
+    },
+    {
+      "scenario": "the first word with recent commands",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6363,
+      "failures": []
+    },
+    {
+      "scenario": "→ on a folder puts it on the line and lists what is inside",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4972,
+      "failures": []
+    },
+    {
+      "scenario": "→ twice walks two levels down",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5787,
+      "failures": []
+    },
+    {
+      "scenario": "Enter on a folder after → goes straight into it",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5757,
+      "failures": []
+    },
+    {
+      "scenario": "Enter right after → runs cd where the walk is",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5364,
+      "failures": []
+    },
+    {
+      "scenario": "← goes back to the line before →",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5501,
+      "failures": []
+    },
+    {
+      "scenario": "← one level up highlights the folder it came from",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6943,
+      "failures": []
+    },
+    {
+      "scenario": "→ works for other commands too",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5194,
+      "failures": []
+    },
+    {
+      "scenario": "a short tip on a highlighted folder tells that → looks inside",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4973,
+      "failures": []
+    }
+  ]
+}
