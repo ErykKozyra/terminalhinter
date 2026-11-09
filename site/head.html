@@ -1,5 +1,5 @@
-<title>terminalhinter: autocomplete dropdown for zsh and bash</title>
-<meta name="description" content="Free, open source terminal autocomplete for zsh and bash, like Fig and Kiro CLI: folders, git branches, npm scripts and 600+ CLIs in a dropdown as you type.">
+<title>terminalhinter: autocomplete dropdown for zsh, bash, fish and PowerShell</title>
+<meta name="description" content="Free, open source terminal autocomplete for zsh, bash, fish and PowerShell on macOS, Linux and Windows, like Fig and Kiro CLI: folders, git branches, npm scripts and 600+ CLIs in a dropdown as you type.">
 <link rel="canonical" href="https://erykkozyra.github.io/terminalhinter/">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <meta name="author" content="Eryk Kozyra">
@@ -12,7 +12,7 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="terminalhinter">
 <meta property="og:title" content="terminalhinter: a dropdown for your terminal">
-<meta property="og:description" content="Open source autocomplete for zsh and bash. Folders, git branches, npm scripts and 600+ CLIs show up as you type. Try the live demo.">
+<meta property="og:description" content="Open source autocomplete for zsh, bash, fish and PowerShell. Folders, git branches, npm scripts and 600+ CLIs show up as you type. Try the live demo.">
 <meta property="og:url" content="https://erykkozyra.github.io/terminalhinter/">
 <meta property="og:image" content="https://erykkozyra.github.io/terminalhinter/og.png">
 <meta property="og:image:width" content="1200">
@@ -21,7 +21,7 @@
 <meta property="og:locale" content="en_US">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="terminalhinter: a dropdown for your terminal">
-<meta name="twitter:description" content="Open source autocomplete for zsh and bash. Folders, git branches, npm scripts and 600+ CLIs show up as you type.">
+<meta name="twitter:description" content="Open source autocomplete for zsh, bash, fish and PowerShell. Folders, git branches, npm scripts and 600+ CLIs show up as you type.">
 <meta name="twitter:image" content="https://erykkozyra.github.io/terminalhinter/og.png">
 <script type="application/ld+json">
 {
@@ -32,7 +32,7 @@
       "@id": "https://erykkozyra.github.io/terminalhinter/#app",
       "name": "terminalhinter",
       "alternateName": "thint",
-      "description": "Free, open source autocomplete dropdown for the terminal. As you type in zsh or bash, it shows folders, git branches, npm scripts and the subcommands and options of more than 600 command line tools, each with a short description.",
+      "description": "Free, open source autocomplete dropdown for the terminal. As you type in zsh, bash, fish or PowerShell, it shows folders, git branches, npm scripts and the subcommands and options of more than 600 command line tools, each with a short description.",
       "applicationCategory": "DeveloperApplication",
       "applicationSubCategory": "Terminal autocomplete",
       "operatingSystem": "macOS, Linux, Windows",
@@ -50,7 +50,10 @@
       "featureList": [
         "Dropdown of folders, files, git branches and npm scripts as you type",
         "Subcommands and options of more than 600 CLIs with descriptions",
-        "Enter walks into folders",
+        "Enter walks into folders, the right arrow looks inside first",
+        "One setup for every shell on the computer, PowerShell and Git Bash on Windows included",
+        "Fixes for the command that just failed",
+        "Ctrl+G explains a command line before you run it",
         "Ranks entries by what you use",
         "Your own order with Shift+Up and Shift+Down",
         "pnpm, yarn and turbo workspace packages",

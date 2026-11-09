@@ -1,6 +1,6 @@
 <title>terminalhinter</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<meta name="description" content="A dropdown for your terminal: folders, git branches, npm scripts and 600+ CLIs as you type. Enter walks into folders, the list learns what you use.">
+<meta name="description" content="A dropdown for your terminal in zsh, bash, fish and PowerShell: folders, git branches, npm scripts and 600+ CLIs as you type. Enter walks into folders, the list learns what you use.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;700;800&family=JetBrains+Mono:ital,wght@0,400;0,700;1,400&family=Caveat:wght@700&display=swap">
@@ -83,8 +83,22 @@ a:focus-visible, button:focus-visible, .term:focus-visible { outline: 2px solid 
   border: 1px solid var(--rule); border-radius: 8px; padding: 7px 11px 7px 9px;
 }
 .top nav a:hover { border-color: var(--muted); }
-.top nav a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.top nav a:focus-visible, .theme:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .top nav svg { width: 17px; height: 17px; flex: none; color: var(--muted); }
+/* light or dark by hand; without a choice the page follows the system */
+.theme {
+  display: inline-flex; align-items: center; justify-content: center; width: 36px; color: var(--ink); cursor: pointer;
+  background: transparent; border: 1px solid var(--rule); border-radius: 8px; padding: 0;
+}
+.theme:hover { border-color: var(--muted); }
+.theme:hover svg { color: var(--accent); }
+.theme svg { width: 17px; height: 17px; color: var(--muted); fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.theme .moon { display: none; }
+:root[data-theme="dark"] .theme .sun, :root:not([data-theme]) .theme .sun { display: block; }
+:root[data-theme="dark"] .theme .moon { display: none; }
+:root[data-theme="light"] .theme .moon { display: block; }
+:root[data-theme="light"] .theme .sun { display: none; }
+@media (prefers-color-scheme: light) { :root:not([data-theme]) .theme .sun { display: none; } :root:not([data-theme]) .theme .moon { display: block; } }
 .top nav a:hover svg { color: var(--accent); }
 @media (max-width: 420px) {
   /* icons alone on narrow phones, the name stays for screen readers */
@@ -92,8 +106,11 @@ a:focus-visible, button:focus-visible, .term:focus-visible { outline: 2px solid 
   .top nav a span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 }
 
-/* hero */
-.hero { padding-block: 40px 28px; display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 28px 56px; align-items: end; }
+/* hero: the headline in the middle, the install commands under it, then where it runs */
+.hero { padding-block: 72px 44px; display: grid; justify-items: center; text-align: center; gap: 22px; }
+.hero h1 { max-width: 12ch; }
+.hero .lede { margin: 0 auto; max-width: 52ch; }
+.hero .cmd { width: min(100%, 520px); text-align: left; }
 h1 {
   font: 800 clamp(44px, 7.4vw, 86px)/0.94 var(--f-display);
   letter-spacing: -0.035em;
@@ -120,6 +137,20 @@ h1 {
   .cmd { grid-template-columns: minmax(0, 1fr); gap: 10px; padding: 14px; }
   .cmd code { font-size: 13px; }
   .copy { justify-self: start; }
+}
+
+/* the shells it runs in, by system, one quiet row under the install commands */
+.groups { display: flex; flex-wrap: wrap; justify-content: center; align-items: stretch; gap: 18px 36px; margin-top: 18px; color: var(--muted); }
+.groups > i { width: 1px; background: var(--rule); }
+.grp { display: grid; gap: 12px; justify-items: center; }
+.grp small { font-size: 13px; }
+.grp > div { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px 22px; }
+.lg { display: inline-flex; align-items: center; gap: 8px; font: 500 15px/1 var(--f-body); color: var(--ink); }
+.lg img { width: 22px; height: 22px; transform: scale(var(--s, 1)); } /* a logo drawn with more room around it gets a little more size */
+@media (max-width: 760px) {
+  .hero { padding-block: 32px 28px; }
+  .groups > i { display: none; }
+  .groups { gap: 22px; }
 }
 
 /* the terminal */
@@ -149,9 +180,10 @@ h1 {
   cursor: text;
   box-shadow: 0 30px 60px -30px rgba(20, 30, 60, 0.45);
 }
-.bar { display: flex; align-items: center; gap: 8px; height: 40px; padding: 0 16px; border-bottom: 1px solid #1C2029; }
+.bar { position: relative; display: flex; align-items: center; gap: 8px; height: 40px; padding: 0 16px; border-bottom: 1px solid #1C2029; }
 .bar span { width: 11px; height: 11px; border-radius: 50%; background: #343A46; }
-.bar b { flex: 1; text-align: center; font-weight: 400; color: var(--t-counter); font-size: 13px; margin-right: 54px; }
+/* the title sits in the middle of the whole bar, whatever the dots take on the left */
+.bar b { position: absolute; inset: 0; display: grid; place-items: center; font-weight: 400; color: var(--t-counter); font-size: 13px; pointer-events: none; }
 .screen { position: absolute; inset: 40px 0 0 0; padding: 14px 20px; }
 .line { white-space: pre; height: 1.6em; }
 .p-arrow { color: var(--p-arrow); font-weight: 700; }
@@ -275,7 +307,7 @@ pre.block {
   pre.block { font-size: 12.5px; padding: 12px 14px; white-space: pre-wrap; overflow-wrap: anywhere; }
   .cmd code span { white-space: pre-wrap; overflow: visible; }
   /* the sticker sits above the terminal and only touches its edge, clear of the title */
-  .tryme { position: relative; top: auto; right: auto; display: flex; width: max-content; margin: 0 4px -12px auto; font-size: 20px; padding: 6px 12px 7px 10px; }
+  .tryme { position: relative; top: auto; right: auto; display: flex; width: max-content; margin: 0 6px 10px auto; font-size: 20px; padding: 6px 12px 7px 10px; }
   .tryme svg { width: 26px; height: 22px; }
   /* code blocks run to the screen edges, which gives the long lines room */
   pre.block {
@@ -298,17 +330,16 @@ footer { margin-top: 80px; border-top: 1px solid var(--rule); padding-block: 28p
 footer p { margin: 0; max-width: 60ch; }
 
 @media (max-width: 820px) {
-  .hero, .keys, .split { grid-template-columns: minmax(0, 1fr); }
-  .hero { padding-block: 24px 20px; }
+  .keys, .split { grid-template-columns: minmax(0, 1fr); }
   .term { font-size: 12.5px; height: 25.6em; }
   .screen { padding: 12px 12px; }
-  .bar b { margin-right: 0; }
 }
 @media (prefers-reduced-motion: reduce) {
   .term:not(.focused) .caret { animation: none; }
 }
 </style>
 
+<script>try { const t = localStorage.getItem("thint-theme"); if (t === "light" || t === "dark") document.documentElement.dataset.theme = t; } catch {}</script>
 <div class="wrap">
   <header class="top">
     <a class="mark" href="#"><i aria-hidden="true"></i>terminalhinter</a>
@@ -317,17 +348,24 @@ footer p { margin: 0; max-width: 60ch; }
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6 2 12l6 6M16 6l6 6-6 6M14 4l-4 16"/></svg><span>GitHub</span></a>
       <a href="https://www.npmjs.com/package/@erykkozyra/terminalhinter" title="Package on npm">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2 3 7v10l9 5 9-5V7l-9-5Z"/><path d="m3 7 9 5 9-5M12 12v10"/></svg><span>npm</span></a>
+      <button type="button" class="theme" id="theme" aria-label="Switch between light and dark">
+        <svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        <svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5Z"/></svg>
+      </button>
     </nav>
   </header>
 
   <div class="hero">
     <h1>A dropdown for your terminal.</h1>
-    <div>
-      <p class="lede">Open source autocomplete for zsh and bash. Folders, git branches, npm scripts and 600+ CLIs show up as you type, each with a short description. <span data-mac="Return">Enter</span> walks into folders, and the list learns what you use.</p>
-      <div class="cmd">
-        <code id="install-cmd"><span>npm i -g @erykkozyra/terminalhinter</span><span>thint init</span></code>
-        <button class="copy" id="copy" type="button" aria-label="Copy the install commands">Copy</button>
-      </div>
+    <p class="lede">Open source autocomplete for zsh, bash, fish and PowerShell, on macOS, Linux and Windows. Folders, git branches, npm scripts and 600+ CLIs show up as you type, and the list learns what you use.</p>
+    <div class="cmd">
+      <code id="install-cmd"><span>npm i -g @erykkozyra/terminalhinter</span><span>thint init</span></code>
+      <button class="copy" id="copy" type="button" aria-label="Copy the install commands">Copy</button>
+    </div>
+    <div class="groups" aria-label="Where it runs">
+      <div class="grp"><small>macOS and Linux</small><div><span class="lg"><img src="shell-zsh.svg" alt="" style="--s:1.3" width="22" height="22">zsh</span><span class="lg"><img src="shell-bash.png" alt="" width="22" height="22">bash</span><span class="lg"><img src="shell-fish.png" alt="" style="--s:1.4" width="22" height="22">fish</span><span class="lg"><img src="shell-powershell.svg" alt="" width="22" height="22">PowerShell</span></div></div>
+      <i aria-hidden="true"></i>
+      <div class="grp"><small>Windows</small><div><span class="lg"><img src="shell-powershell.svg" alt="" width="22" height="22">PowerShell</span><span class="lg"><img src="shell-gitbash.png" alt="" width="22" height="22">Git Bash</span><span class="lg"><img src="shell-windows-terminal.svg" alt="" width="22" height="22">Windows Terminal</span></div></div>
     </div>
   </div>
 
@@ -368,9 +406,9 @@ footer p { margin: 0; max-width: 60ch; }
     </div>
     <div class="keys">
       <div>
-        <div class="combo"><kbd data-mac="return">Enter</kbd></div>
+        <div class="combo"><kbd data-mac="return">Enter</kbd><kbd aria-label="Right"><svg class="ki" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M8.5 3.5 13 8l-4.5 4.5"/></svg></kbd><kbd aria-label="Left"><svg class="ki" viewBox="0 0 16 16" aria-hidden="true"><path d="M13 8H3M7.5 3.5 3 8l4.5 4.5"/></svg></kbd></div>
         <h3>Walk into folders</h3>
-        <p><span data-mac="Return">Enter</span> on a folder opens it and keeps the list open with what is inside. The first entry, <code class="inline">↪</code>, runs the command where you are, so <code class="inline">cd</code> and <span data-mac="a few Returns">a few Enters</span> take you deep into a project. To look before you go, <code class="inline">→</code> on a folder lists what is inside and <code class="inline">←</code> goes back up.</p>
+        <p><span data-mac="Return">Enter</span> on a folder opens it and keeps the list open with what is inside. The first entry, <code class="inline">↪</code>, runs the command where you are, so <code class="inline">cd</code> and <span data-mac="a few Returns">a few Enters</span> take you deep into a project. To look before you go, <code class="inline">→</code> on a folder lists what is inside, <code class="inline">←</code> goes back up, and <span data-mac="Return">Enter</span> after a look goes straight to the folder you picked.</p>
       </div>
       <div>
         <div class="combo"><kbd data-mac="shift" data-icon="shift">Shift</kbd><kbd aria-label="Up"><svg class="ki" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 13V3M3.5 7.5 8 3l4.5 4.5"/></svg></kbd><kbd aria-label="Down"><svg class="ki" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 3v10M3.5 8.5 8 13l4.5-4.5"/></svg></kbd></div>
@@ -470,16 +508,36 @@ footer p { margin: 0; max-width: 60ch; }
   </section>
 
   <section>
+    <h2>Every shell you use, set up at once.</h2>
+    <div class="keys">
+      <div>
+        <h3>One setup for the whole computer</h3>
+        <p><code class="inline">thint init</code> finds the shell you ran it in and offers the others it sees too, so a tab of any of them has the list. On a Mac that can be zsh and fish; on Windows it is PowerShell 7, Windows PowerShell and Git Bash in one go. Each config gets a backup before the startup lines go at its top.</p>
+<pre class="moment"><span class="p">PS&gt;</span> thint init
+  <span class="d">✓</span> Shell pwsh
+  <span class="d">✓</span> Also start terminalhinter in powershell, bash? Yes
+  <span class="d">✓</span> powershell skips scripts. Allow them for you? Yes
+</pre>
+      </div>
+      <div>
+        <h3>Windows without the usual traps</h3>
+        <p>Windows PowerShell comes with scripts turned off, which silently skips the profile. The setup notices and, if you say yes, allows scripts for your user only, the setting PowerShell 7 has from the start. PowerShell from the Microsoft Store works as well as the one from the installer, and if thint ever cannot start, the tab opens a plain shell instead of closing.</p>
+      </div>
+    </div>
+    <p class="after">Any terminal app works: iTerm2, Terminal.app, Ghostty, WezTerm, Kitty, Alacritty, VS Code, Cursor and Windows Terminal, with tmux or screen inside them. cmd has no startup file, so there you start the list with <code class="inline">thint -s cmd</code>.</p>
+  </section>
+
+  <section>
     <h2>Set it up in a minute.</h2>
     <ol class="steps">
       <li>
         <h3>Install it</h3>
-        <p>One binary with its own runtime, so switching Node with nvm never breaks it. macOS and Linux; Windows and fish are experimental.</p>
+        <p>One binary with its own runtime, so switching Node with nvm never breaks it. macOS, Linux and Windows.</p>
         <pre class="snip">npm i -g @erykkozyra/terminalhinter</pre>
       </li>
       <li>
         <h3>Run the setup</h3>
-        <p>Pick your shell, a theme and icons with a live preview. The setup puts its startup lines at the top of your shell config and keeps a backup.</p>
+        <p>Pick a theme and icons with a live preview. The setup finds your shells, puts its startup lines at the top of each config and keeps a backup.</p>
         <pre class="snip">thint init</pre>
       </li>
       <li>
@@ -507,7 +565,7 @@ footer p { margin: 0; max-width: 60ch; }
     <div class="faq">
       <div class="qa">
         <h3>What is terminalhinter?</h3>
-        <p>A free, open source autocomplete dropdown for the terminal. As you type in zsh or bash, it shows folders, git branches, npm scripts and the subcommands and options of more than 600 command line tools, each with a short description.</p>
+        <p>A free, open source autocomplete dropdown for the terminal. As you type in zsh, bash, fish or PowerShell, it shows folders, git branches, npm scripts and the subcommands and options of more than 600 command line tools, each with a short description.</p>
       </div>
       <div class="qa">
         <h3>Is it an alternative to Fig or Kiro CLI?</h3>
@@ -515,7 +573,7 @@ footer p { margin: 0; max-width: 60ch; }
       </div>
       <div class="qa">
         <h3>Which shells and systems does it support?</h3>
-        <p>zsh and bash on macOS and Linux. It works in any terminal app, VS Code, iTerm2, Terminal.app, Ghostty, WezTerm and Kitty included. Windows, fish, PowerShell, nushell and xonsh come from the upstream project and are experimental.</p>
+        <p>zsh, bash, fish and PowerShell 7 on macOS and Linux; PowerShell 7, Windows PowerShell and Git Bash on Windows, and cmd when you start it by hand. It works in any terminal app, VS Code, iTerm2, Terminal.app, Ghostty, WezTerm, Kitty and Windows Terminal included. zsh and bash have been around the longest; nushell and xonsh come from the upstream project and are not tested.</p>
       </div>
       <div class="qa">
         <h3>Does it need Accessibility or any other permission?</h3>
@@ -537,7 +595,7 @@ footer p { margin: 0; max-width: 60ch; }
   </section>
 
   <footer>
-    <p>terminalhinter is open source under the MIT License, a fork of <a href="https://github.com/microsoft/inshellisense">microsoft/inshellisense</a>, with command specs from <a href="https://github.com/withfig/autocomplete">withfig/autocomplete</a>. Not affiliated with Microsoft, Amazon or Fig.</p>
+    <p>terminalhinter is open source under the MIT License, a fork of <a href="https://github.com/microsoft/inshellisense">microsoft/inshellisense</a>, with command specs from <a href="https://github.com/withfig/autocomplete">withfig/autocomplete</a>. Not affiliated with Microsoft, Amazon or Fig. The shell and terminal logos belong to their projects.</p>
     <p><a href="https://github.com/ErykKozyra/terminalhinter">GitHub</a> &nbsp; <a href="https://www.npmjs.com/package/@erykkozyra/terminalhinter">npm</a> &nbsp; <a href="https://github.com/ErykKozyra">Eryk Kozyra</a></p>
   </footer>
 </div>
@@ -613,6 +671,8 @@ footer p { margin: 0; max-width: 60ch; }
   let reordered = false;
   let hidden = false;
   let scroll = 0;
+  let walk = [];                // → into folders: the line before each step, and the folder, for ←
+  let walkedOnce = false;
   const order = {};             // context -> names, set with Shift+Up/Down
   const MAX_ROWS = 6;
 
@@ -766,7 +826,8 @@ footer p { margin: 0; max-width: 60ch; }
     });
     const counter = items.length > MAX_ROWS ? `${sel >= 0 ? sel + 1 + "/" : ""}${items.length}` : "";
     let hint = "";
-    if (navigated && !reordered && sel >= 0 && !items[sel].run && items[sel].kind !== "folder" && items[sel].kind !== "file" && !footer) hint = "shift+↑↓ reorder";
+    if (navigated && sel >= 0 && !items[sel].run && items[sel].kind === "folder" && !walkedOnce && !footer) hint = "→ look inside";
+    else if (navigated && !reordered && sel >= 0 && !items[sel].run && items[sel].kind !== "folder" && items[sel].kind !== "file" && !footer) hint = "shift+↑↓ reorder";
     const box = document.createElement("div");
     box.className = "list";
     box.style.left = `calc(${startCol * charW}px + ${getComputedStyle(screen).paddingLeft})`;
@@ -841,6 +902,22 @@ footer p { margin: 0; max-width: 60ch; }
       }
       return;
     }
+    // → on a highlighted folder looks inside it, ← goes back to the line before
+    if (e.key === "ArrowRight" && visible && sel >= 0 && items[sel].kind === "folder") {
+      e.preventDefault();
+      walk.push({ before: line, name: items[sel].name }); walkedOnce = true;
+      accept(items[sel]);
+      return;
+    }
+    if (e.key === "ArrowLeft" && walk.length) {
+      e.preventDefault();
+      const last = walk.pop();
+      line = last.before; hidden = false; refresh(true);
+      const at = current.items.findIndex((i) => i.name === last.name);
+      if (at >= 0) { sel = at; navigated = true; if (sel >= scroll + MAX_ROWS) scroll = sel - MAX_ROWS + 1; draw(); }
+      return;
+    }
+    if (e.key === "ArrowRight" || e.key === "ArrowLeft") { e.preventDefault(); return; }
     if (e.key === " " && e.ctrlKey) { e.preventDefault(); hidden = !hidden; if (!hidden) refresh(true); else draw(); return; }
     if (e.key === "Escape") { e.preventDefault(); hidden = true; draw(); return; }
     if (e.key === "ArrowDown") {
@@ -856,6 +933,7 @@ footer p { margin: 0; max-width: 60ch; }
     }
     if (e.key === "Tab") {
       e.preventDefault();
+      walk = [];
       if (visible) { const it = items[Math.max(sel, 0)]; if (it.run) { if (items[1]) accept(items[1]); } else accept(it); }
       return;
     }
@@ -864,14 +942,18 @@ footer p { margin: 0; max-width: 60ch; }
       if (visible && sel >= 0) {
         const it = items[sel];
         const typed = tokens().typing;
+        // after a walk Enter goes straight into the highlighted folder
+        if (walk.length && it.kind === "folder") { walk = []; accept(it); run(); return; }
         if (!it.run && !(it.name === typed || it.name === typed + "/")) { accept(it); return; }
       }
+      walk = [];
       run();
       return;
     }
-    if (e.key === "Backspace") { e.preventDefault(); line = line.slice(0, -1); hidden = false; refresh(true); return; }
+    if (e.key === "Backspace") { e.preventDefault(); walk = []; line = line.slice(0, -1); hidden = false; refresh(true); return; }
     if (e.key.length === 1 && !e.ctrlKey && !e.metaKey) {
       e.preventDefault();
+      walk = [];
       if (line.length < 60) line += e.key;
       if (e.key !== " " || line.trim()) hidden = false;
       refresh(true);
@@ -931,6 +1013,15 @@ footer p { margin: 0; max-width: 60ch; }
   const platform = (navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform || navigator.userAgent;
   setOs(savedOs || (/mac|iphone|ipad/i.test(platform) ? "mac" : "pc"), false);
 
+  // the sun shows on a dark page (to go light), the moon on a light one; the choice is kept for the next visit
+  const themeButton = document.getElementById("theme");
+  const darkNow = () => document.documentElement.dataset.theme ? document.documentElement.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+  themeButton.addEventListener("click", () => {
+    const next = darkNow() ? "light" : "dark";
+    document.documentElement.dataset.theme = next;
+    try { localStorage.setItem("thint-theme", next); } catch {}
+  });
+
   const copy = document.getElementById("copy");
   copy.addEventListener("click", () => {
     const text = "npm i -g @erykkozyra/terminalhinter && thint init";
@@ -953,12 +1044,12 @@ footer p { margin: 0; max-width: 60ch; }
   press(() => key2("Enter"), 1000);
   press(() => key2("Enter"), 1400);
   type("cd ");
-  for (let i = 0; i < 4; i++) press(() => key2("ArrowDown"), i === 0 ? 900 : 450);
-  press(() => key2("Enter"), 1000);
   press(() => key2("ArrowDown"), 900);
-  press(() => key2("ArrowDown"), 450);
-  press(() => key2("Enter"), 1000);
-  press(() => key2("Enter"), 1500);
+  press(() => key2("ArrowRight"), 1100);
+  press(() => key2("ArrowDown"), 1100);
+  press(() => key2("ArrowRight"), 900);
+  press(() => key2("ArrowLeft"), 1300);
+  press(() => key2("Enter"), 1100);
   type("p ");
   press(() => key2("ArrowDown"), 700);
   press(() => key2("ArrowDown"), 700);
