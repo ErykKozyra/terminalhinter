@@ -57,6 +57,15 @@ const windowsProfile = (shell) => {
     }).trim();
   return windowsProfiles[shell];
 };
+// PowerShell on Windows reads its profile from the real Documents folder whatever HOME says, so the runs write their
+// own profile there: fine on a throwaway CI machine, a lost profile on your own PC
+if (isWin && !process.env.CI && !flag("overwrite-my-powershell-profile")) {
+  process.stderr.write(
+    "On Windows the runs overwrite your PowerShell profile ($PROFILE). They are meant for CI.\n" +
+      "To run them here anyway, back the profile up and add --overwrite-my-powershell-profile\n",
+  );
+  process.exit(2);
+}
 const slow = Number(process.env.QA_SLOW ?? "1"); // multiply every wait on slow machines
 
 // a shell list in a scenario: "pwsh" is PowerShell everywhere, "win:pwsh" only on Windows, "unix:pwsh" only elsewhere,
