@@ -50,5 +50,6 @@
   { "p": "P3", "what": "cmd in a 40x10 window: one typed letter did not show once (git push --forc)", "where": "Windows cmd", "fixed": false, "note": "not seen on a real PC (Windows Terminal, 2026-11-09): CI terminal only" },
   { "p": "P3", "what": "Git Bash: a quick resize with the list open lost a letter of what Tab put on the line (git stae)", "where": "Windows Git Bash", "fixed": false, "note": "not seen on a real PC (Windows Terminal, 2026-11-09): CI terminal only" },
   { "p": "P3", "what": "A git alias added a moment ago completes only after 5 seconds", "where": "all", "fixed": false },
-  { "p": "P3", "what": "Arguments after -- are still read as options (ls -- -file)", "where": "all", "fixed": false }
+  { "p": "P3", "what": "Arguments after -- are still read as options (ls -- -file)", "where": "all", "fixed": false },
+  { "p": "P3", "what": "When a Git for Windows tool behind a suggestion fails to start (cygheap read copy failed, Win32 error 299), its error text lands on the line being typed", "where": "Windows", "fixed": false, "note": "seen 4 times in QA run 16 on the GitHub runner, never on a real PC; the list itself was right. Look at giving those processes no console" }
 ]
