@@ -10,7 +10,9 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 
-import { getShellSourceCommand, Shell } from "./shell.js";
+import which from "which";
+
+import { getShellSourceCommand, gitBashPath, Shell } from "./shell.js";
 
 export const beginMark = "# >>> terminalhinter >>>";
 export const endMark = "# <<< terminalhinter <<<";
@@ -66,6 +68,33 @@ export const profileFile = (shell: Shell, home = os.homedir()): string | undefin
     case Shell.Powershell:
       return powershellProfile(shell);
   }
+};
+
+// The other shells on this computer that can start terminalhinter too. On Windows: both PowerShells (Windows Terminal
+// opens Windows PowerShell 5.1 unless told otherwise) and Git Bash. Elsewhere: a shell that is installed and already
+// has its config, so nobody gets a .bashrc for a bash they never open.
+export const otherShells = async (chosen: Shell): Promise<Shell[]> => {
+  const found: Shell[] = [];
+  for (const shell of blockShells) {
+    if (shell === chosen) continue;
+    if (shell === Shell.Pwsh || shell === Shell.Powershell) {
+      const file = profileFile(shell);
+      if (file != null && (process.platform === "win32" || fs.existsSync(file))) found.push(shell);
+    } else if (process.platform === "win32") {
+      if (
+        shell === Shell.Bash &&
+        (await gitBashPath().then(
+          () => true,
+          () => false,
+        ))
+      )
+        found.push(shell);
+    } else {
+      const file = profileFile(shell);
+      if (file != null && fs.existsSync(file) && which.sync(shell, { nothrow: true }) != null) found.push(shell);
+    }
+  }
+  return found;
 };
 
 // the folder holding the thint binary, when it runs as one (not through node)

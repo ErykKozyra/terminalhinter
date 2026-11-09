@@ -14,14 +14,16 @@ npm i -g @erykkozyra/terminalhinter
 thint init
 ```
 
-`thint init` asks for your shell, a theme and icons, with a live preview. Then open a new terminal tab and type
-`git ` or `cd `.
+`thint init` asks for your shell, a theme and icons, with a live preview, and offers to set up the other shells it
+finds too (on Windows: PowerShell 7, Windows PowerShell and Git Bash). Then open a new terminal tab and type `git ` or
+`cd `.
 
 Works on macOS and Linux with zsh and bash. Windows and fish are experimental.
 
-On Windows, `thint init` puts the startup lines into your PowerShell profile. Windows PowerShell 5.1 comes with
-scripts turned off, so neither `thint` nor the profile runs there until you allow them for your user once:
-`Set-ExecutionPolicy -Scope CurrentUser RemoteSigned` (or run `thint.cmd init` and say Yes when it asks).
+On Windows, Windows PowerShell 5.1 comes with scripts turned off, so it would skip the startup lines in its profile.
+`thint init` sees that and offers to allow them for your user (`Set-ExecutionPolicy -Scope CurrentUser RemoteSigned`).
+If `thint` itself will not start there for the same reason, run `thint.cmd init`. cmd has no startup file: start the
+list there with `thint -s cmd`.
 
 ## What it does
 

@@ -11,7 +11,15 @@ import chalk from "chalk";
 import { getConfig, loadConfig, overrideConfig } from "../utils/config.js";
 import { writeSetting } from "../utils/configWriter.js";
 import { getShellSourceCommand, inferShell, initSupportedShells, Shell } from "../utils/shell.js";
-import { allowPowershellScripts, allowScriptsCommand, blockShells, installStartupBlock, powershellBlocksScripts, profileFile } from "../utils/startupBlock.js";
+import {
+  allowPowershellScripts,
+  allowScriptsCommand,
+  blockShells,
+  installStartupBlock,
+  otherShells,
+  powershellBlocksScripts,
+  profileFile,
+} from "../utils/startupBlock.js";
 import { renderPreview } from "./preview.js";
 import { PromptCancelled, select } from "./prompt.js";
 import { ThemeName, themeNames, themes } from "./theme.js";
@@ -78,12 +86,27 @@ export const runWizard = async () => {
         ],
       }));
 
-    // with scripts off PowerShell skips its profile: the startup lines would be there and never run
-    const blocked = editProfile ? powershellBlocksScripts(shell) : undefined;
-    const allowScripts =
-      blocked != null &&
+    // the other shells here get the lines too, so a tab of any of them has the list without running init there
+    const others = editProfile ? await otherShells(shell) : [];
+    const withOthers =
+      others.length > 0 &&
       (await select({
-        title: `${shell} does not run scripts (execution policy ${blocked}), so it would skip the startup lines. Allow scripts for your user?`,
+        title: `Also start terminalhinter in ${others.join(", ")}?`,
+        choices: [
+          { label: "Yes", value: true, hint: "their configs get a backup too" },
+          { label: "No", value: false, hint: `only ${shell}` },
+        ],
+      }));
+    const targets = editProfile ? [shell, ...(withOthers ? others : [])] : [];
+
+    // with scripts off PowerShell skips its profile: the startup lines would be there and never run
+    const blocked = targets.map((s) => ({ shell: s, policy: powershellBlocksScripts(s) })).filter((b) => b.policy != null);
+    const allowScripts =
+      blocked.length > 0 &&
+      (await select({
+        title: `${blocked.map((b) => `${b.shell} (${b.policy})`).join(", ")} ${
+          blocked.length === 1 ? "does" : "do"
+        } not run scripts, so the startup lines would be skipped. Allow scripts for your user?`,
         choices: [
           { label: "Yes", value: true, hint: allowScriptsCommand },
           { label: "No", value: false, hint: "I will do it myself" },
@@ -94,11 +117,14 @@ export const runWizard = async () => {
     writeSetting("iconStyle", iconStyle, configFile);
     out(`\n${chalk.green("✓")} saved theme and icons in ${tildify(configFile)}\n`);
     if (editProfile) {
-      const { file: written, backup } = installStartupBlock(shell);
-      out(`${chalk.green("✓")} startup lines are at the top of ${tildify(written)}${backup ? chalk.dim(` (backup: ${tildify(backup)})`) : ""}\n`);
-      if (blocked != null) {
-        if (allowScripts && allowPowershellScripts(shell)) out(`${chalk.green("✓")} ${shell} runs scripts now (RemoteSigned, for your user only)\n`);
-        else out(`${chalk.yellow("!")} ${shell} still skips the startup lines. To start terminalhinter there, run in ${shell}:\n\n  ${allowScriptsCommand}\n`);
+      for (const target of targets) {
+        const { file: written, backup } = installStartupBlock(target);
+        out(`${chalk.green("✓")} ${target}: startup lines are at the top of ${tildify(written)}${backup ? chalk.dim(` (backup: ${tildify(backup)})`) : ""}\n`);
+      }
+      for (const { shell: target } of blocked) {
+        if (allowScripts && allowPowershellScripts(target)) out(`${chalk.green("✓")} ${target} runs scripts now (RemoteSigned, for your user only)\n`);
+        else
+          out(`${chalk.yellow("!")} ${target} still skips the startup lines. To start terminalhinter there, run in ${target}:\n\n  ${allowScriptsCommand}\n`);
       }
     } else {
       out(`\nAdd this as the first line of ${file != null ? tildify(file) : `your ${shell} config`}:\n\n  ${getShellSourceCommand(shell).trim()}\n`);
