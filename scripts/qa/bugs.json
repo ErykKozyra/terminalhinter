@@ -1,314 +1,53 @@
 [
-  {
-    "p": "P0",
-    "what": "Secret lines went into the word history (history.jsonl): 37 of 41 test lines with tokens or passwords",
-    "where": "all",
-    "fixed": true
-  },
-  {
-    "p": "P0",
-    "what": "When thint could not start (resources missing, home not writable) the tab closed at once instead of opening a plain shell",
-    "where": "all",
-    "fixed": true
-  },
-  {
-    "p": "P0",
-    "what": "PowerShell 7 from the Microsoft Store (also what winget installs) is an app alias in WindowsApps: thint did not find pwsh.exe and closed the tab at once",
-    "where": "Windows PowerShell 7",
-    "fixed": true
-  },
-  {
-    "p": "P1",
-    "what": "In fish 4, Tab did not take the fix after a failed command: the terminal's answers to fish's questions counted as typing",
-    "where": "fish",
-    "fixed": true
-  },
-  {
-    "p": "P1",
-    "what": "Enter on a word typed in full turned it into an environment variable (echo one became echo $OPENBLAS_NUM_THREADS)",
-    "where": "all",
-    "fixed": true
-  },
-  {
-    "p": "P1",
-    "what": "A generator that hangs ignored its time limit and stopped every list update for the session",
-    "where": "all",
-    "fixed": true
-  },
-  {
-    "p": "P1",
-    "what": "An arrow key cut in two (over ssh) closed the list and left [A typed on the line",
-    "where": "all",
-    "fixed": true
-  },
-  {
-    "p": "P1",
-    "what": "The line was split at |, && and ; even inside quotes, breaking the list and Ctrl+G",
-    "where": "all",
-    "fixed": true
-  },
-  {
-    "p": "P1",
-    "what": "npm i react@16 showed no 16.x versions, and typing key by key gave a different list than pasting",
-    "where": "all",
-    "fixed": true
-  },
-  {
-    "p": "P1",
-    "what": "pnpm: after an update, new tabs kept starting the old version",
-    "where": "pnpm",
-    "fixed": true
-  },
-  {
-    "p": "P1",
-    "what": "cmd: the list showed the folders of the drive root wherever you were",
-    "where": "Windows cmd",
-    "fixed": true
-  },
-  {
-    "p": "P1",
-    "what": "Git Bash: git branches, npm scripts and paths were empty when the folder was under /tmp or another bash mount",
-    "where": "Windows Git Bash",
-    "fixed": true
-  },
-  {
-    "p": "P1",
-    "what": "cmd and PowerShell on Windows: after cd src\\ (what Enter on a folder puts on the line) the list of src was empty",
-    "where": "Windows cmd, PowerShell",
-    "fixed": true
-  },
-  {
-    "p": "P1",
-    "what": "Windows: a path given to a command the specs run through Git Bash lost its backslashes, so ssh hosts from ~/.ssh/config and other file-based lists were empty",
-    "where": "Windows",
-    "fixed": true
-  },
-  {
-    "p": "P1",
-    "what": "Enter on an absolute path (cd /us, cd /usr/sh) ran cd with what was typed instead of taking the folder; only Tab worked. Came in after 1.1.3, reported by a user",
-    "where": "all",
-    "fixed": true
-  },
-  {
-    "p": "P1",
-    "what": "thint init did not put the startup lines into the PowerShell profile (it only printed them) and did not see which shell it ran in on Windows",
-    "where": "Windows PowerShell",
-    "fixed": true
-  },
-  {
-    "p": "P2",
-    "what": "A piece of the list border stayed on the screen in a small window after Enter, or when the list moved above the line",
-    "where": "all",
-    "fixed": true
-  },
-  {
-    "p": "P2",
-    "what": "Kitty keyboard protocol, modifyOtherKeys and win32-input-mode keys became junk: Esc, Ctrl+G and Ctrl+Space did nothing",
-    "where": "Kitty, WezTerm, Windows Terminal",
-    "fixed": true
-  },
-  {
-    "p": "P2",
-    "what": "A newline inside a paste counted as running a command",
-    "where": "all",
-    "fixed": true
-  },
-  {
-    "p": "P2",
-    "what": "No fix after a typo in fish, PowerShell, cmd or with Ubuntu's command-not-found",
-    "where": "fish, PowerShell, cmd, Ubuntu",
-    "fixed": true
-  },
-  {
-    "p": "P2",
-    "what": "No exit code from fish and PowerShell, so no fixes there at all",
-    "where": "fish, PowerShell",
-    "fixed": true
-  },
-  {
-    "p": "P2",
-    "what": "kill had no ports on Windows",
-    "where": "Windows",
-    "fixed": true
-  },
-  {
-    "p": "P2",
-    "what": "Normal commands dropped from history as if they were secrets (long file names, --tokenizer=gpt2)",
-    "where": "all",
-    "fixed": true
-  },
-  {
-    "p": "P2",
-    "what": "Ctrl+G said unknown option for tar -xzvf, ps aux, kubectl --context",
-    "where": "all",
-    "fixed": true
-  },
-  {
-    "p": "P2",
-    "what": "Values wrongly marked as production: non-prod, HEAD, README, POST, PATH",
-    "where": "all",
-    "fixed": true
-  },
-  {
-    "p": "P2",
-    "what": "git src/ and ls src/ listed every subcommand next to the files",
-    "where": "all",
-    "fixed": true
-  },
-  {
-    "p": "P2",
-    "what": "A value with a space was inserted without quotes (killall npm exec tsx)",
-    "where": "all",
-    "fixed": true
-  },
-  {
-    "p": "P2",
-    "what": "bun run listed folders before the package.json scripts",
-    "where": "bun",
-    "fixed": true
-  },
-  {
-    "p": "P2",
-    "what": "NODE_ENV=production npm run gave no list",
-    "where": "zsh, bash, fish",
-    "fixed": true
-  },
-  {
-    "p": "P2",
-    "what": "ls src/ in cmd and PowerShell was not taken as a path (only src\\ was)",
-    "where": "Windows",
-    "fixed": true
-  },
-  {
-    "p": "P2",
-    "what": "Numbers in a YAML spec made that command throw",
-    "where": "all",
-    "fixed": true
-  },
-  {
-    "p": "P2",
-    "what": "docker compose up/logs waited for docker itself (up to 5 s on Windows) before listing the services of the compose file",
-    "where": "all, mostly Windows",
-    "fixed": true
-  },
-  {
-    "p": "P2",
-    "what": "Git Bash: /usr, /etc and /c/... were looked up on the drive root (ls /us offered Users/)",
-    "where": "Windows Git Bash",
-    "fixed": true
-  },
-  {
-    "p": "P2",
-    "what": "cmd and Git Bash gave the folder by its short name (RUNNER~1), so paths from git were not seen as close by and showed in full",
-    "where": "Windows cmd, Git Bash",
-    "fixed": true
-  },
-  {
-    "p": "P2",
-    "what": "Windows has no HOME, so specs that read ~/.ssh/config and similar looked in undefined/",
-    "where": "Windows",
-    "fixed": true
-  },
-  {
-    "p": "P2",
-    "what": "Ctrl+G right after typing closed again when the shell drew the last letters after it (Windows ConPTY)",
-    "where": "Windows",
-    "fixed": true
-  },
-  {
-    "p": "P2",
-    "what": "A command typed fast and run at once went into the history without its last letters (Windows ConPTY echoes late)",
-    "where": "Windows",
-    "fixed": true
-  },
-  {
-    "p": "P2",
-    "what": "Windows PowerShell 5.1 in a narrow window: no fix for a typo, its error was broken across rows in the middle of words",
-    "where": "Windows PowerShell 5.1",
-    "fixed": true
-  },
-  {
-    "p": "P2",
-    "what": "The fix after a failed cd at the root had two slashes (cd //usr/), and a near name won over a folder that starts with what was typed (cd /usr/sh offered src, not share)",
-    "where": "all",
-    "fixed": true
-  },
-  {
-    "p": "P2",
-    "what": "A new tab started 260 ms later than the shell alone (60% was compiling the bundle)",
-    "where": "all",
-    "fixed": true
-  },
-  {
-    "p": "P2",
-    "what": "Node 24 and newer printed a DeprecationWarning (a command and its arguments given apart under a shell) on the line being typed",
-    "where": "Windows, built from source on Node 24+",
-    "fixed": true
-  },
-  {
-    "p": "P2",
-    "what": "After an update with a tab open, that tab lost the list on macOS",
-    "where": "macOS",
-    "fixed": false,
-    "note": "seen in CI only, check on the Mac"
-  },
-  {
-    "p": "P2",
-    "what": "cmd and Windows PowerShell 5.1 in a 40x10 window: Polish letters and an emoji near the right edge leave a piece of the list border",
-    "where": "Windows cmd, PowerShell 5.1",
-    "fixed": false,
-    "note": "check on the PC"
-  },
-  {
-    "p": "P3",
-    "what": "A build straight from the repo showed __VERSION__ as its version",
-    "where": "from source",
-    "fixed": true
-  },
-  {
-    "p": "P3",
-    "what": "pnpm users on 1.1.3 need thint reinit once after updating",
-    "where": "pnpm",
-    "fixed": false,
-    "note": "for the release notes"
-  },
-  {
-    "p": "P3",
-    "what": "bash-preexec skips the first command of a session for your own preexec hooks",
-    "where": "bash",
-    "fixed": false
-  },
-  {
-    "p": "P3",
-    "what": "Ctrl+Space after Esc does not bring the list back in cmd and Git Bash under ConPTY",
-    "where": "Windows",
-    "fixed": false,
-    "note": "check on the PC"
-  },
-  {
-    "p": "P3",
-    "what": "cmd in a 40x10 window: one typed letter did not show once (git push --forc)",
-    "where": "Windows cmd",
-    "fixed": false,
-    "note": "seen in CI twice, check on the PC"
-  },
-  {
-    "p": "P3",
-    "what": "Git Bash: a quick resize with the list open lost a letter of what Tab put on the line (git stae)",
-    "where": "Windows Git Bash",
-    "fixed": false,
-    "note": "seen in CI twice, check on the PC"
-  },
-  {
-    "p": "P3",
-    "what": "A git alias added a moment ago completes only after 5 seconds",
-    "where": "all",
-    "fixed": false
-  },
-  {
-    "p": "P3",
-    "what": "Arguments after -- are still read as options (ls -- -file)",
-    "where": "all",
-    "fixed": false
-  }
+  { "p": "P0", "what": "Secret lines went into the word history (history.jsonl): 37 of 41 test lines with tokens or passwords", "where": "all", "fixed": true },
+  { "p": "P0", "what": "When thint could not start (resources missing, home not writable) the tab closed at once instead of opening a plain shell", "where": "all", "fixed": true },
+  { "p": "P0", "what": "PowerShell 7 from the Microsoft Store (also what winget installs) is an app alias in WindowsApps: thint did not find pwsh.exe and closed the tab at once", "where": "Windows PowerShell 7", "fixed": true },
+  { "p": "P1", "what": "In fish 4, Tab did not take the fix after a failed command: the terminal's answers to fish's questions counted as typing", "where": "fish", "fixed": true },
+  { "p": "P1", "what": "Enter on a word typed in full turned it into an environment variable (echo one became echo $OPENBLAS_NUM_THREADS)", "where": "all", "fixed": true },
+  { "p": "P1", "what": "A generator that hangs ignored its time limit and stopped every list update for the session", "where": "all", "fixed": true },
+  { "p": "P1", "what": "An arrow key cut in two (over ssh) closed the list and left [A typed on the line", "where": "all", "fixed": true },
+  { "p": "P1", "what": "The line was split at |, && and ; even inside quotes, breaking the list and Ctrl+G", "where": "all", "fixed": true },
+  { "p": "P1", "what": "npm i react@16 showed no 16.x versions, and typing key by key gave a different list than pasting", "where": "all", "fixed": true },
+  { "p": "P1", "what": "pnpm: after an update, new tabs kept starting the old version", "where": "pnpm", "fixed": true },
+  { "p": "P1", "what": "cmd: the list showed the folders of the drive root wherever you were", "where": "Windows cmd", "fixed": true },
+  { "p": "P1", "what": "Git Bash: git branches, npm scripts and paths were empty when the folder was under /tmp or another bash mount", "where": "Windows Git Bash", "fixed": true },
+  { "p": "P1", "what": "cmd and PowerShell on Windows: after cd src\\ (what Enter on a folder puts on the line) the list of src was empty", "where": "Windows cmd, PowerShell", "fixed": true },
+  { "p": "P1", "what": "Windows: a path given to a command the specs run through Git Bash lost its backslashes, so ssh hosts from ~/.ssh/config and other file-based lists were empty", "where": "Windows", "fixed": true },
+  { "p": "P1", "what": "Enter on an absolute path (cd /us, cd /usr/sh) ran cd with what was typed instead of taking the folder; only Tab worked. Came in after 1.1.3, reported by a user", "where": "all", "fixed": true },
+  { "p": "P1", "what": "thint init did not put the startup lines into the PowerShell profile (it only printed them) and did not see which shell it ran in on Windows", "where": "Windows PowerShell", "fixed": true },
+  { "p": "P2", "what": "A piece of the list border stayed on the screen in a small window after Enter, or when the list moved above the line", "where": "all", "fixed": true },
+  { "p": "P2", "what": "Kitty keyboard protocol, modifyOtherKeys and win32-input-mode keys became junk: Esc, Ctrl+G and Ctrl+Space did nothing", "where": "Kitty, WezTerm, Windows Terminal", "fixed": true },
+  { "p": "P2", "what": "A newline inside a paste counted as running a command", "where": "all", "fixed": true },
+  { "p": "P2", "what": "No fix after a typo in fish, PowerShell, cmd or with Ubuntu's command-not-found", "where": "fish, PowerShell, cmd, Ubuntu", "fixed": true },
+  { "p": "P2", "what": "No exit code from fish and PowerShell, so no fixes there at all", "where": "fish, PowerShell", "fixed": true },
+  { "p": "P2", "what": "kill had no ports on Windows", "where": "Windows", "fixed": true },
+  { "p": "P2", "what": "Normal commands dropped from history as if they were secrets (long file names, --tokenizer=gpt2)", "where": "all", "fixed": true },
+  { "p": "P2", "what": "Ctrl+G said unknown option for tar -xzvf, ps aux, kubectl --context", "where": "all", "fixed": true },
+  { "p": "P2", "what": "Values wrongly marked as production: non-prod, HEAD, README, POST, PATH", "where": "all", "fixed": true },
+  { "p": "P2", "what": "git src/ and ls src/ listed every subcommand next to the files", "where": "all", "fixed": true },
+  { "p": "P2", "what": "A value with a space was inserted without quotes (killall npm exec tsx)", "where": "all", "fixed": true },
+  { "p": "P2", "what": "bun run listed folders before the package.json scripts", "where": "bun", "fixed": true },
+  { "p": "P2", "what": "NODE_ENV=production npm run gave no list", "where": "zsh, bash, fish", "fixed": true },
+  { "p": "P2", "what": "ls src/ in cmd and PowerShell was not taken as a path (only src\\ was)", "where": "Windows", "fixed": true },
+  { "p": "P2", "what": "Numbers in a YAML spec made that command throw", "where": "all", "fixed": true },
+  { "p": "P2", "what": "docker compose up/logs waited for docker itself (up to 5 s on Windows) before listing the services of the compose file", "where": "all, mostly Windows", "fixed": true },
+  { "p": "P2", "what": "Git Bash: /usr, /etc and /c/... were looked up on the drive root (ls /us offered Users/)", "where": "Windows Git Bash", "fixed": true },
+  { "p": "P2", "what": "cmd and Git Bash gave the folder by its short name (RUNNER~1), so paths from git were not seen as close by and showed in full", "where": "Windows cmd, Git Bash", "fixed": true },
+  { "p": "P2", "what": "Windows has no HOME, so specs that read ~/.ssh/config and similar looked in undefined/", "where": "Windows", "fixed": true },
+  { "p": "P2", "what": "Ctrl+G right after typing closed again when the shell drew the last letters after it (Windows ConPTY)", "where": "Windows", "fixed": true },
+  { "p": "P2", "what": "A command typed fast and run at once went into the history without its last letters (Windows ConPTY echoes late)", "where": "Windows", "fixed": true },
+  { "p": "P2", "what": "Windows PowerShell 5.1 in a narrow window: no fix for a typo, its error was broken across rows in the middle of words", "where": "Windows PowerShell 5.1", "fixed": true },
+  { "p": "P2", "what": "The fix after a failed cd at the root had two slashes (cd //usr/), and a near name won over a folder that starts with what was typed (cd /usr/sh offered src, not share)", "where": "all", "fixed": true },
+  { "p": "P2", "what": "A new tab started 260 ms later than the shell alone (60% was compiling the bundle)", "where": "all", "fixed": true },
+  { "p": "P2", "what": "Node 24 and newer printed a DeprecationWarning (a command and its arguments given apart under a shell) on the line being typed", "where": "Windows, built from source on Node 24+", "fixed": true },
+  { "p": "P2", "what": "After an update with a tab open, that tab lost the list on macOS", "where": "macOS", "fixed": false, "note": "seen in CI only, check on the Mac" },
+  { "p": "P2", "what": "cmd and Windows PowerShell 5.1 in a 40x10 window: Polish letters and an emoji near the right edge leave a piece of the list border", "where": "Windows cmd, PowerShell 5.1", "fixed": false, "note": "check on the PC" },
+  { "p": "P3", "what": "A build straight from the repo showed __VERSION__ as its version", "where": "from source", "fixed": true },
+  { "p": "P3", "what": "pnpm users on 1.1.3 need thint reinit once after updating", "where": "pnpm", "fixed": false, "note": "for the release notes" },
+  { "p": "P3", "what": "bash-preexec skips the first command of a session for your own preexec hooks", "where": "bash", "fixed": false },
+  { "p": "P3", "what": "Ctrl+Space after Esc does not bring the list back in cmd and Git Bash under ConPTY", "where": "Windows", "fixed": false, "note": "check on the PC" },
+  { "p": "P3", "what": "cmd in a 40x10 window: one typed letter did not show once (git push --forc)", "where": "Windows cmd", "fixed": false, "note": "seen in CI twice, check on the PC" },
+  { "p": "P3", "what": "Git Bash: a quick resize with the list open lost a letter of what Tab put on the line (git stae)", "where": "Windows Git Bash", "fixed": false, "note": "seen in CI twice, check on the PC" },
+  { "p": "P3", "what": "A git alias added a moment ago completes only after 5 seconds", "where": "all", "fixed": false },
+  { "p": "P3", "what": "Arguments after -- are still read as options (ls -- -file)", "where": "all", "fixed": false }
 ]
