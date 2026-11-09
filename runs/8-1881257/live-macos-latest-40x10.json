@@ -1,0 +1,4185 @@
+{
+  "platform": "darwin",
+  "shells": [
+    "zsh",
+    "bash",
+    "fish",
+    "pwsh"
+  ],
+  "started": [
+    "zsh",
+    "bash",
+    "fish",
+    "pwsh"
+  ],
+  "planned": 450,
+  "strayErrors": 0,
+  "health": [
+    {
+      "done": 50,
+      "at": 1794180742015,
+      "terminalsHeldByRunner": 60,
+      "terminalsInSystem": 78,
+      "processesLeft": 6,
+      "sample": [
+        "86010 79197 S<s+ /Users/runner/hostedtoolcache/node/22.21.1/arm64/bin/node /Users/runner/work/terminalhinter/terminalhinter/build/index.js -s pwsh --verbose",
+        "85904 79197 S<s+ /Users/runner/hostedtoolcache/node/22.21.1/arm64/bin/node /Users/runner/work/terminalhinter/terminalhinter/build/index.js -s fish --verbose",
+        "85922 85904 S<s+ fish --init-command . /var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-3vsu92/home-2NvyH2/.local/share/terminalhinter/shell/shellIntegration.fish",
+        "85929     1 S<+  /bin/sh -c \\012                c=$(cat)\\012                ( printf %s \"$c\" | \"$@\" ) >/dev/null 2>&1 &\\012             -- /opt/homebrew/bin/python3 -B - --manpath --directory=/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-3vsu92/home-2NvyH2/.cache/fish/generated_completions --cleanup-in /var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-3vsu92/home-2NvyH2/.local/share/fish/generated_completions",
+        "85931 85929 R<+  /opt/homebrew/Cellar/python@3.15/3.15.2/Frameworks/Python.framework/Versions/3.15/Resources/Python.app/Contents/MacOS/Python -B - --manpath --directory=/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-3vsu92/home-2NvyH2/.cache/fish/generated_completions --cleanup-in /var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-3vsu92/home-2NvyH2/.local/share/fish/generated_completions",
+        "86011 86010 R<s+ pwsh -noexit -command try { . \"/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-3vsu92/home-UYDP9c/.local/share/terminalhinter/shell/shellIntegration.ps1\" } catch {}"
+      ]
+    },
+    {
+      "done": 100,
+      "at": 1794180830896,
+      "terminalsHeldByRunner": 110,
+      "terminalsInSystem": 128,
+      "processesLeft": 3,
+      "sample": [
+        "90602 79197 S<s+ /Users/runner/hostedtoolcache/node/22.21.1/arm64/bin/node /Users/runner/work/terminalhinter/terminalhinter/build/index.js -s pwsh --verbose",
+        "90711 79197 S<s+ /Users/runner/hostedtoolcache/node/22.21.1/arm64/bin/node /Users/runner/work/terminalhinter/terminalhinter/build/index.js -s zsh --verbose",
+        "90603 90602 S<s+ pwsh -noexit -command try { . \"/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-3vsu92/home-5Q8lf7/.local/share/terminalhinter/shell/shellIntegration.ps1\" } catch {}"
+      ]
+    },
+    {
+      "done": 150,
+      "at": 1794180937213,
+      "terminalsHeldByRunner": 160,
+      "terminalsInSystem": 178,
+      "processesLeft": 6,
+      "sample": [
+        " 2246 79197 S<s+ /Users/runner/hostedtoolcache/node/22.21.1/arm64/bin/node /Users/runner/work/terminalhinter/terminalhinter/build/index.js -s fish --verbose",
+        " 1280 79197 S<s+ /Users/runner/hostedtoolcache/node/22.21.1/arm64/bin/node /Users/runner/work/terminalhinter/terminalhinter/build/index.js -s bash --verbose",
+        " 1311  1280 S<s+ bash --init-file /var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-3vsu92/home-GDKhRA/.local/share/terminalhinter/shell/shellIntegration.bash",
+        " 2247  2246 S<s+ fish --init-command . /var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-3vsu92/home-dnCdNB/.local/share/terminalhinter/shell/shellIntegration.fish",
+        " 2254     1 S<+  /bin/sh -c \\012                c=$(cat)\\012                ( printf %s \"$c\" | \"$@\" ) >/dev/null 2>&1 &\\012             -- /opt/homebrew/bin/python3 -B - --manpath --directory=/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-3vsu92/home-dnCdNB/.cache/fish/generated_completions --cleanup-in /var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-3vsu92/home-dnCdNB/.local/share/fish/generated_completions",
+        " 2256  2254 R<+  /opt/homebrew/Cellar/python@3.15/3.15.2/Frameworks/Python.framework/Versions/3.15/Resources/Python.app/Contents/MacOS/Python -B - --manpath --directory=/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-3vsu92/home-dnCdNB/.cache/fish/generated_completions --cleanup-in /var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-3vsu92/home-dnCdNB/.local/share/fish/generated_completions"
+      ]
+    },
+    {
+      "done": 200,
+      "at": 1794181023797,
+      "terminalsHeldByRunner": 210,
+      "terminalsInSystem": 228,
+      "processesLeft": 3,
+      "sample": [
+        " 7975 79197 S<s+ /Users/runner/hostedtoolcache/node/22.21.1/arm64/bin/node /Users/runner/work/terminalhinter/terminalhinter/build/index.js -s bash --verbose",
+        " 7923 79197 S<s+ /Users/runner/hostedtoolcache/node/22.21.1/arm64/bin/node /Users/runner/work/terminalhinter/terminalhinter/build/index.js -s zsh --verbose",
+        " 7999  7975 S<s+ bash --init-file /var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-3vsu92/home-B7XkNO/.local/share/terminalhinter/shell/shellIntegration.bash"
+      ]
+    },
+    {
+      "done": 250,
+      "at": 1794181105603,
+      "terminalsHeldByRunner": 260,
+      "terminalsInSystem": 278,
+      "processesLeft": 4,
+      "sample": [
+        "12540 79197 S<s+ /Users/runner/hostedtoolcache/node/22.21.1/arm64/bin/node /Users/runner/work/terminalhinter/terminalhinter/build/index.js -s fish --verbose",
+        "12819 79197 S<s+ /Users/runner/hostedtoolcache/node/22.21.1/arm64/bin/node /Users/runner/work/terminalhinter/terminalhinter/build/index.js -s pwsh --verbose",
+        "12543 12540 S<s+ fish --init-command . /var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-3vsu92/home-40jc4J/.local/share/terminalhinter/shell/shellIntegration.fish",
+        "12826 12819 S<s+ pwsh -noexit -command try { . \"/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-3vsu92/home-ud05zf/.local/share/terminalhinter/shell/shellIntegration.ps1\" } catch {}"
+      ]
+    },
+    {
+      "done": 300,
+      "at": 1794181211704,
+      "terminalsHeldByRunner": 310,
+      "terminalsInSystem": 328,
+      "processesLeft": 6,
+      "sample": [
+        "18361 79197 S<s+ /Users/runner/hostedtoolcache/node/22.21.1/arm64/bin/node /Users/runner/work/terminalhinter/terminalhinter/build/index.js -s bash --verbose",
+        "18387 18361 S<s+ bash --init-file /var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-3vsu92/home-x3YoT4/.local/share/terminalhinter/shell/shellIntegration.bash",
+        "18402 79197 S<s+ /Users/runner/hostedtoolcache/node/22.21.1/arm64/bin/node /Users/runner/work/terminalhinter/terminalhinter/build/index.js -s fish --verbose",
+        "18410 18402 S<s+ fish --init-command . /var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-3vsu92/home-e8B37S/.local/share/terminalhinter/shell/shellIntegration.fish",
+        "18417     1 S<+  /bin/sh -c \\012                c=$(cat)\\012                ( printf %s \"$c\" | \"$@\" ) >/dev/null 2>&1 &\\012             -- /opt/homebrew/bin/python3 -B - --manpath --directory=/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-3vsu92/home-e8B37S/.cache/fish/generated_completions --cleanup-in /var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-3vsu92/home-e8B37S/.local/share/fish/generated_completions",
+        "18419 18417 R<+  /opt/homebrew/Cellar/python@3.15/3.15.2/Frameworks/Python.framework/Versions/3.15/Resources/Python.app/Contents/MacOS/Python -B - --manpath --directory=/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-3vsu92/home-e8B37S/.cache/fish/generated_completions --cleanup-in /var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-3vsu92/home-e8B37S/.local/share/fish/generated_completions"
+      ]
+    },
+    {
+      "done": 350,
+      "at": 1794181313996,
+      "terminalsHeldByRunner": 360,
+      "terminalsInSystem": 378,
+      "processesLeft": 3,
+      "sample": [
+        "23629 79197 S<s+ /Users/runner/hostedtoolcache/node/22.21.1/arm64/bin/node /Users/runner/work/terminalhinter/terminalhinter/build/index.js -s pwsh --verbose",
+        "23652 79197 S<s+ /Users/runner/hostedtoolcache/node/22.21.1/arm64/bin/node /Users/runner/work/terminalhinter/terminalhinter/build/index.js -s zsh --verbose",
+        "23636 23629 S<s+ pwsh -noexit -command try { . \"/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-3vsu92/home-Wcg94m/.local/share/terminalhinter/shell/shellIntegration.ps1\" } catch {}"
+      ]
+    },
+    {
+      "done": 400,
+      "at": 1794181410274,
+      "terminalsHeldByRunner": 410,
+      "terminalsInSystem": 428,
+      "processesLeft": 3,
+      "sample": [
+        "29997 79197 S<s+ /Users/runner/hostedtoolcache/node/22.21.1/arm64/bin/node /Users/runner/work/terminalhinter/terminalhinter/build/index.js -s zsh --verbose",
+        "30061 79197 S<s+ /Users/runner/hostedtoolcache/node/22.21.1/arm64/bin/node /Users/runner/work/terminalhinter/terminalhinter/build/index.js -s bash --verbose",
+        "30113 30061 S<s+ bash --init-file /var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-3vsu92/home-2txd0L/.local/share/terminalhinter/shell/shellIntegration.bash"
+      ]
+    },
+    {
+      "done": 450,
+      "at": 1794181506860,
+      "terminalsHeldByRunner": 454,
+      "terminalsInSystem": 470,
+      "processesLeft": 0,
+      "sample": []
+    }
+  ],
+  "results": [
+    {
+      "scenario": "git branch from the list with Tab",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5102,
+      "failures": []
+    },
+    {
+      "scenario": "git branch from the list with Tab",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5254,
+      "failures": []
+    },
+    {
+      "scenario": "git branch from the list with Tab",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5608,
+      "failures": []
+    },
+    {
+      "scenario": "the list opens after a command and a space",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3783,
+      "failures": []
+    },
+    {
+      "scenario": "the list opens after a command and a space",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3697,
+      "failures": []
+    },
+    {
+      "scenario": "git branch from the list with Tab",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6108,
+      "failures": []
+    },
+    {
+      "scenario": "the list opens after a command and a space",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4271,
+      "failures": []
+    },
+    {
+      "scenario": "the list opens after a command and a space",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4271,
+      "failures": []
+    },
+    {
+      "scenario": "typing narrows the list",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4197,
+      "failures": []
+    },
+    {
+      "scenario": "typing narrows the list",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4205,
+      "failures": []
+    },
+    {
+      "scenario": "typing narrows the list",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4245,
+      "failures": []
+    },
+    {
+      "scenario": "typing narrows the list",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4357,
+      "failures": []
+    },
+    {
+      "scenario": "Tab puts the selected entry on the line",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4185,
+      "failures": []
+    },
+    {
+      "scenario": "Tab puts the selected entry on the line",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4942,
+      "failures": []
+    },
+    {
+      "scenario": "Tab puts the selected entry on the line",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4874,
+      "failures": []
+    },
+    {
+      "scenario": "Enter on a typed word takes the entry and does not run",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4510,
+      "failures": []
+    },
+    {
+      "scenario": "Tab puts the selected entry on the line",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5261,
+      "failures": []
+    },
+    {
+      "scenario": "Enter on a typed word takes the entry and does not run",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4457,
+      "failures": []
+    },
+    {
+      "scenario": "Enter on a typed word takes the entry and does not run",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4852,
+      "failures": []
+    },
+    {
+      "scenario": "Enter on a typed word takes the entry and does not run",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4914,
+      "failures": []
+    },
+    {
+      "scenario": "Enter right after a space runs the command",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4879,
+      "failures": []
+    },
+    {
+      "scenario": "Enter right after a space runs the command",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4633,
+      "failures": []
+    },
+    {
+      "scenario": "Enter right after a space runs the command",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4616,
+      "failures": []
+    },
+    {
+      "scenario": "Enter right after a space runs the command",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5221,
+      "failures": []
+    },
+    {
+      "scenario": "Enter runs a word typed in full that no entry starts with",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4512,
+      "failures": []
+    },
+    {
+      "scenario": "Enter runs a word typed in full that no entry starts with",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4391,
+      "failures": []
+    },
+    {
+      "scenario": "Enter runs a word typed in full that no entry starts with",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4725,
+      "failures": []
+    },
+    {
+      "scenario": "Esc hides the list until the next letter",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4664,
+      "failures": []
+    },
+    {
+      "scenario": "Enter runs a word typed in full that no entry starts with",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5395,
+      "failures": []
+    },
+    {
+      "scenario": "Esc hides the list until the next letter",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4789,
+      "failures": []
+    },
+    {
+      "scenario": "Esc hides the list until the next letter",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5152,
+      "failures": []
+    },
+    {
+      "scenario": "Esc hides the list until the next letter",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5232,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+Space shows the list again",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4671,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+Space shows the list again",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5045,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+Space shows the list again",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5046,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+Space shows the list again",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5524,
+      "failures": []
+    },
+    {
+      "scenario": "Down and Tab pick the second entry",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4755,
+      "failures": []
+    },
+    {
+      "scenario": "Down and Tab pick the second entry",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4796,
+      "failures": []
+    },
+    {
+      "scenario": "Down and Tab pick the second entry",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5088,
+      "failures": []
+    },
+    {
+      "scenario": "Backspace brings back what was there",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4171,
+      "failures": []
+    },
+    {
+      "scenario": "Down and Tab pick the second entry",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5212,
+      "failures": []
+    },
+    {
+      "scenario": "Backspace brings back what was there",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4383,
+      "failures": []
+    },
+    {
+      "scenario": "Backspace brings back what was there",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4865,
+      "failures": []
+    },
+    {
+      "scenario": "Backspace brings back what was there",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4723,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+U empties the line and hides the list",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4325,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+U empties the line and hides the list",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4535,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+U empties the line and hides the list",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4550,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+U empties the line and hides the list",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4971,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+C gives a fresh prompt with no list",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5539,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+C gives a fresh prompt with no list",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5950,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+C gives a fresh prompt with no list",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5932,
+      "failures": []
+    },
+    {
+      "scenario": "Up on a line with no selection walks the shell history",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4855,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+C gives a fresh prompt with no list",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6559,
+      "failures": []
+    },
+    {
+      "scenario": "Up on a line with no selection walks the shell history",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5109,
+      "failures": []
+    },
+    {
+      "scenario": "Up on a line with no selection walks the shell history",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5152,
+      "failures": []
+    },
+    {
+      "scenario": "Up on a line with no selection walks the shell history",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5180,
+      "failures": []
+    },
+    {
+      "scenario": "a pasted command lands as pasted",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4231,
+      "failures": []
+    },
+    {
+      "scenario": "a pasted command lands as pasted",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4197,
+      "failures": []
+    },
+    {
+      "scenario": "a pasted command lands as pasted",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4503,
+      "failures": []
+    },
+    {
+      "scenario": "a pasted command lands as pasted",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4530,
+      "failures": []
+    },
+    {
+      "scenario": "a fast typist loses no letters",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4218,
+      "failures": []
+    },
+    {
+      "scenario": "a fast typist loses no letters",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4454,
+      "failures": []
+    },
+    {
+      "scenario": "a fast typist loses no letters",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4526,
+      "failures": []
+    },
+    {
+      "scenario": "a fast typist loses no letters",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5003,
+      "failures": []
+    },
+    {
+      "scenario": "a long line that wraps keeps every letter",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5323,
+      "failures": []
+    },
+    {
+      "scenario": "a long line that wraps keeps every letter",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5181,
+      "failures": []
+    },
+    {
+      "scenario": "a long line that wraps keeps every letter",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5799,
+      "failures": []
+    },
+    {
+      "scenario": "Polish letters and emoji go through untouched",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5039,
+      "failures": []
+    },
+    {
+      "scenario": "a long line that wraps keeps every letter",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5819,
+      "failures": []
+    },
+    {
+      "scenario": "Polish letters and emoji go through untouched",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4927,
+      "failures": []
+    },
+    {
+      "scenario": "Polish letters and emoji go through untouched",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5328,
+      "failures": []
+    },
+    {
+      "scenario": "Polish letters and emoji go through untouched",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5744,
+      "failures": []
+    },
+    {
+      "scenario": "options of a command show with their descriptions",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4212,
+      "failures": []
+    },
+    {
+      "scenario": "options of a command show with their descriptions",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3991,
+      "failures": []
+    },
+    {
+      "scenario": "options of a command show with their descriptions",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4874,
+      "failures": []
+    },
+    {
+      "scenario": "options of a command show with their descriptions",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4876,
+      "failures": []
+    },
+    {
+      "scenario": "an option already on the line is not offered again",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4787,
+      "failures": []
+    },
+    {
+      "scenario": "an option already on the line is not offered again",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4427,
+      "failures": []
+    },
+    {
+      "scenario": "an option already on the line is not offered again",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4931,
+      "failures": []
+    },
+    {
+      "scenario": "an option already on the line is not offered again",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5315,
+      "failures": []
+    },
+    {
+      "scenario": "a command the specs do not know does not break anything",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5351,
+      "failures": []
+    },
+    {
+      "scenario": "a command the specs do not know does not break anything",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5297,
+      "failures": []
+    },
+    {
+      "scenario": "a command the specs do not know does not break anything",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5342,
+      "failures": []
+    },
+    {
+      "scenario": "a command the specs do not know does not break anything",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6283,
+      "failures": []
+    },
+    {
+      "scenario": "the list follows the line after a resize",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5272,
+      "failures": []
+    },
+    {
+      "scenario": "the list follows the line after a resize",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4889,
+      "failures": []
+    },
+    {
+      "scenario": "the list follows the line after a resize",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5026,
+      "failures": []
+    },
+    {
+      "scenario": "the list follows the line after a resize",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5584,
+      "failures": []
+    },
+    {
+      "scenario": "a full-screen program and back",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5960,
+      "failures": []
+    },
+    {
+      "scenario": "a full-screen program and back",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5844,
+      "failures": []
+    },
+    {
+      "scenario": "a full-screen program and back",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6178,
+      "failures": []
+    },
+    {
+      "scenario": "lots of output while typing the next command",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4773,
+      "failures": []
+    },
+    {
+      "scenario": "lots of output while typing the next command",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4817,
+      "failures": []
+    },
+    {
+      "scenario": "lots of output while typing the next command",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5311,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+L clears the screen and the list comes back on the new line",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5235,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+L clears the screen and the list comes back on the new line",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5091,
+      "failures": []
+    },
+    {
+      "scenario": "Enter runs a word that only appears inside a variable name",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4351,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+L clears the screen and the list comes back on the new line",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5855,
+      "failures": []
+    },
+    {
+      "scenario": "Enter runs a word that only appears inside a variable name",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4559,
+      "failures": []
+    },
+    {
+      "scenario": "Enter runs a word that only appears inside a variable name",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4946,
+      "failures": []
+    },
+    {
+      "scenario": "Enter runs a word that only appears inside a variable name",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5261,
+      "failures": []
+    },
+    {
+      "scenario": "git checkout finds a branch by a word inside its name",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4692,
+      "failures": []
+    },
+    {
+      "scenario": "git checkout finds a branch by a word inside its name",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4787,
+      "failures": []
+    },
+    {
+      "scenario": "git checkout finds a branch by a word inside its name",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5681,
+      "failures": []
+    },
+    {
+      "scenario": "git checkout finds a branch by a word inside its name",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6192,
+      "failures": []
+    },
+    {
+      "scenario": "a branch picked with Enter runs only after a second Enter",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5685,
+      "failures": []
+    },
+    {
+      "scenario": "a branch picked with Enter runs only after a second Enter",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4837,
+      "failures": []
+    },
+    {
+      "scenario": "a branch picked with Enter runs only after a second Enter",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5563,
+      "failures": []
+    },
+    {
+      "scenario": "a branch picked with Enter runs only after a second Enter",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5742,
+      "failures": []
+    },
+    {
+      "scenario": "git stash pop takes the stash from the list",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5110,
+      "failures": []
+    },
+    {
+      "scenario": "git stash pop takes the stash from the list",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4837,
+      "failures": []
+    },
+    {
+      "scenario": "git stash pop takes the stash from the list",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5109,
+      "failures": []
+    },
+    {
+      "scenario": "git stash pop takes the stash from the list",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5744,
+      "failures": []
+    },
+    {
+      "scenario": "git reset --hard is marked as risky and says why",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4784,
+      "failures": []
+    },
+    {
+      "scenario": "git reset --hard is marked as risky and says why",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4381,
+      "failures": []
+    },
+    {
+      "scenario": "git reset --hard is marked as risky and says why",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4537,
+      "failures": []
+    },
+    {
+      "scenario": "git reset --hard is marked as risky and says why",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5035,
+      "failures": []
+    },
+    {
+      "scenario": "git push --force is marked as risky",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4525,
+      "failures": []
+    },
+    {
+      "scenario": "git push --force is marked as risky",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4141,
+      "failures": []
+    },
+    {
+      "scenario": "git push --force is marked as risky",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4585,
+      "failures": []
+    },
+    {
+      "scenario": "git push --force is marked as risky",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4682,
+      "failures": []
+    },
+    {
+      "scenario": "git branch -D is marked as risky",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4243,
+      "failures": []
+    },
+    {
+      "scenario": "git branch -D is marked as risky",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4325,
+      "failures": []
+    },
+    {
+      "scenario": "git branch -D is marked as risky",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4241,
+      "failures": []
+    },
+    {
+      "scenario": "git branch -D is marked as risky",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4727,
+      "failures": []
+    },
+    {
+      "scenario": "a git alias completes like the command behind it",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 14714,
+      "failures": []
+    },
+    {
+      "scenario": "a git alias completes like the command behind it",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 14316,
+      "failures": []
+    },
+    {
+      "scenario": "a git alias completes like the command behind it",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 14790,
+      "failures": []
+    },
+    {
+      "scenario": "git add offers changed files",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4062,
+      "failures": []
+    },
+    {
+      "scenario": "git add offers changed files",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3959,
+      "failures": []
+    },
+    {
+      "scenario": "git add offers changed files",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4320,
+      "failures": []
+    },
+    {
+      "scenario": "git add offers changed files",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4450,
+      "failures": []
+    },
+    {
+      "scenario": "git log options with descriptions",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4082,
+      "failures": []
+    },
+    {
+      "scenario": "a git alias completes like the command behind it",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 15590,
+      "failures": []
+    },
+    {
+      "scenario": "git log options with descriptions",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4052,
+      "failures": []
+    },
+    {
+      "scenario": "git log options with descriptions",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4479,
+      "failures": []
+    },
+    {
+      "scenario": "git log options with descriptions",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4579,
+      "failures": []
+    },
+    {
+      "scenario": "git commit -m keeps the quoted message as typed",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6330,
+      "failures": []
+    },
+    {
+      "scenario": "git commit -m keeps the quoted message as typed",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6254,
+      "failures": []
+    },
+    {
+      "scenario": "git commit -m keeps the quoted message as typed",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6587,
+      "failures": []
+    },
+    {
+      "scenario": "git merge offers branches",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4730,
+      "failures": []
+    },
+    {
+      "scenario": "git commit -m keeps the quoted message as typed",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7829,
+      "failures": []
+    },
+    {
+      "scenario": "git merge offers branches",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4603,
+      "failures": []
+    },
+    {
+      "scenario": "git merge offers branches",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4552,
+      "failures": []
+    },
+    {
+      "scenario": "git merge offers branches",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4549,
+      "failures": []
+    },
+    {
+      "scenario": "git worktree add and remove",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 8038,
+      "failures": []
+    },
+    {
+      "scenario": "git worktree add and remove",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7983,
+      "failures": []
+    },
+    {
+      "scenario": "git worktree add and remove",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 8076,
+      "failures": []
+    },
+    {
+      "scenario": "git worktree add and remove",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 8832,
+      "failures": []
+    },
+    {
+      "scenario": "git reflog after a reset",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 8727,
+      "failures": []
+    },
+    {
+      "scenario": "git reflog after a reset",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 8693,
+      "failures": []
+    },
+    {
+      "scenario": "outside a repository git still shows subcommands",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3689,
+      "failures": []
+    },
+    {
+      "scenario": "git reflog after a reset",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 9683,
+      "failures": []
+    },
+    {
+      "scenario": "outside a repository git still shows subcommands",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3889,
+      "failures": []
+    },
+    {
+      "scenario": "git reflog after a reset",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 9688,
+      "failures": []
+    },
+    {
+      "scenario": "outside a repository git still shows subcommands",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4404,
+      "failures": []
+    },
+    {
+      "scenario": "outside a repository git still shows subcommands",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4742,
+      "failures": []
+    },
+    {
+      "scenario": "cd lists only folders",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3760,
+      "failures": []
+    },
+    {
+      "scenario": "cd lists only folders",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3540,
+      "failures": []
+    },
+    {
+      "scenario": "cd lists only folders",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4295,
+      "failures": []
+    },
+    {
+      "scenario": "cd lists only folders",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4244,
+      "failures": []
+    },
+    {
+      "scenario": "Enter on a folder walks into it and keeps the list open",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4241,
+      "failures": []
+    },
+    {
+      "scenario": "Enter on a folder walks into it and keeps the list open",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4419,
+      "failures": []
+    },
+    {
+      "scenario": "Enter on a folder walks into it and keeps the list open",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4395,
+      "failures": []
+    },
+    {
+      "scenario": "Enter on a folder walks into it and keeps the list open",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4847,
+      "failures": []
+    },
+    {
+      "scenario": "a folder with a space is escaped on the line",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4241,
+      "failures": []
+    },
+    {
+      "scenario": "a folder with a space is escaped on the line",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4323,
+      "failures": []
+    },
+    {
+      "scenario": "a folder with a space is escaped on the line",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4613,
+      "failures": []
+    },
+    {
+      "scenario": "a folder with a space is escaped on the line",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4691,
+      "failures": []
+    },
+    {
+      "scenario": "a folder with a space works after Enter",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6127,
+      "failures": []
+    },
+    {
+      "scenario": "a folder with a space works after Enter",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6310,
+      "failures": []
+    },
+    {
+      "scenario": "a folder with Polish letters",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3960,
+      "failures": []
+    },
+    {
+      "scenario": "a folder with a space works after Enter",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6280,
+      "failures": []
+    },
+    {
+      "scenario": "a folder with Polish letters",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4336,
+      "failures": []
+    },
+    {
+      "scenario": "a folder with Polish letters",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4661,
+      "failures": []
+    },
+    {
+      "scenario": "a folder with Polish letters",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4606,
+      "failures": []
+    },
+    {
+      "scenario": "files are offered for cat with their names",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4214,
+      "failures": []
+    },
+    {
+      "scenario": "files are offered for cat with their names",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4263,
+      "failures": []
+    },
+    {
+      "scenario": "files are offered for cat with their names",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4849,
+      "failures": []
+    },
+    {
+      "scenario": "a path in a subfolder",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4179,
+      "failures": []
+    },
+    {
+      "scenario": "a path in a subfolder",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3800,
+      "failures": []
+    },
+    {
+      "scenario": "a path in a subfolder",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4073,
+      "failures": []
+    },
+    {
+      "scenario": "a path in a subfolder",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4611,
+      "failures": []
+    },
+    {
+      "scenario": "parent folder",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4184,
+      "failures": []
+    },
+    {
+      "scenario": "parent folder",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3824,
+      "failures": []
+    },
+    {
+      "scenario": "parent folder",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4234,
+      "failures": []
+    },
+    {
+      "scenario": "home with a tilde",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3867,
+      "failures": []
+    },
+    {
+      "scenario": "parent folder",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5059,
+      "failures": []
+    },
+    {
+      "scenario": "home with a tilde",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3911,
+      "failures": []
+    },
+    {
+      "scenario": "hidden files after a dot",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3545,
+      "failures": []
+    },
+    {
+      "scenario": "home with a tilde",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4254,
+      "failures": []
+    },
+    {
+      "scenario": "hidden files after a dot",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3769,
+      "failures": []
+    },
+    {
+      "scenario": "hidden files after a dot",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4151,
+      "failures": []
+    },
+    {
+      "scenario": "hidden files after a dot",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4102,
+      "failures": []
+    },
+    {
+      "scenario": "an absolute path",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3818,
+      "failures": []
+    },
+    {
+      "scenario": "an absolute path",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4036,
+      "failures": []
+    },
+    {
+      "scenario": "an absolute path",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4133,
+      "failures": []
+    },
+    {
+      "scenario": "a bookmarked folder is offered by cd from anywhere",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 12248,
+      "failures": []
+    },
+    {
+      "scenario": "a bookmarked folder is offered by cd from anywhere",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 12161,
+      "failures": []
+    },
+    {
+      "scenario": "a bookmarked folder is offered by cd from anywhere",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 12681,
+      "failures": []
+    },
+    {
+      "scenario": "npm run lists the package.json scripts with their commands",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4363,
+      "failures": []
+    },
+    {
+      "scenario": "npm run lists the package.json scripts with their commands",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3848,
+      "failures": []
+    },
+    {
+      "scenario": "npm run lists the package.json scripts with their commands",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4096,
+      "failures": []
+    },
+    {
+      "scenario": "npm run lists the package.json scripts with their commands",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4399,
+      "failures": []
+    },
+    {
+      "scenario": "a production-looking script is marked",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4389,
+      "failures": []
+    },
+    {
+      "scenario": "a production-looking script is marked",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4059,
+      "failures": []
+    },
+    {
+      "scenario": "a production-looking script is marked",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4638,
+      "failures": []
+    },
+    {
+      "scenario": "pnpm lists the scripts",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3704,
+      "failures": []
+    },
+    {
+      "scenario": "a production-looking script is marked",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5067,
+      "failures": []
+    },
+    {
+      "scenario": "pnpm lists the scripts",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4265,
+      "failures": []
+    },
+    {
+      "scenario": "pnpm lists the scripts",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4615,
+      "failures": []
+    },
+    {
+      "scenario": "pnpm lists the scripts",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4465,
+      "failures": []
+    },
+    {
+      "scenario": "yarn lists the scripts",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3806,
+      "failures": []
+    },
+    {
+      "scenario": "yarn lists the scripts",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4203,
+      "failures": []
+    },
+    {
+      "scenario": "yarn lists the scripts",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4278,
+      "failures": []
+    },
+    {
+      "scenario": "yarn lists the scripts",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4993,
+      "failures": []
+    },
+    {
+      "scenario": "bun lists the scripts",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4632,
+      "failures": []
+    },
+    {
+      "scenario": "bun lists the scripts",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4649,
+      "failures": []
+    },
+    {
+      "scenario": "bun lists the scripts",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4872,
+      "failures": []
+    },
+    {
+      "scenario": "a make target tagged prod is marked",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4051,
+      "failures": []
+    },
+    {
+      "scenario": "bun lists the scripts",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5404,
+      "failures": []
+    },
+    {
+      "scenario": "a make target tagged prod is marked",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3917,
+      "failures": []
+    },
+    {
+      "scenario": "a make target tagged prod is marked",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4274,
+      "failures": []
+    },
+    {
+      "scenario": "a make target tagged prod is marked",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4809,
+      "failures": []
+    },
+    {
+      "scenario": "docker compose lists services",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4725,
+      "failures": []
+    },
+    {
+      "scenario": "docker compose lists services",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4454,
+      "failures": []
+    },
+    {
+      "scenario": "docker compose lists services",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4822,
+      "failures": []
+    },
+    {
+      "scenario": "docker compose lists services",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4929,
+      "failures": []
+    },
+    {
+      "scenario": "a Makefile picked up after it changes",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7349,
+      "failures": []
+    },
+    {
+      "scenario": "a Makefile picked up after it changes",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6943,
+      "failures": []
+    },
+    {
+      "scenario": "a Makefile picked up after it changes",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7256,
+      "failures": []
+    },
+    {
+      "scenario": "a Taskfile without task installed still lists tasks",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3869,
+      "failures": []
+    },
+    {
+      "scenario": "a Taskfile without task installed still lists tasks",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3540,
+      "failures": []
+    },
+    {
+      "scenario": "a Makefile picked up after it changes",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7960,
+      "failures": []
+    },
+    {
+      "scenario": "a Taskfile without task installed still lists tasks",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4249,
+      "failures": []
+    },
+    {
+      "scenario": "a Taskfile without task installed still lists tasks",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4303,
+      "failures": []
+    },
+    {
+      "scenario": "just recipes from the justfile",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3862,
+      "failures": []
+    },
+    {
+      "scenario": "just recipes from the justfile",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3988,
+      "failures": []
+    },
+    {
+      "scenario": "just recipes from the justfile",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4266,
+      "failures": []
+    },
+    {
+      "scenario": "just recipes from the justfile",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4364,
+      "failures": []
+    },
+    {
+      "scenario": "mise tasks from mise.toml",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4381,
+      "failures": []
+    },
+    {
+      "scenario": "mise tasks from mise.toml",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4103,
+      "failures": []
+    },
+    {
+      "scenario": "mise tasks from mise.toml",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4716,
+      "failures": []
+    },
+    {
+      "scenario": "mise tasks from mise.toml",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4680,
+      "failures": []
+    },
+    {
+      "scenario": "deno tasks from deno.json",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4085,
+      "failures": []
+    },
+    {
+      "scenario": "deno tasks from deno.json",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3959,
+      "failures": []
+    },
+    {
+      "scenario": "deno tasks from deno.json",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4263,
+      "failures": []
+    },
+    {
+      "scenario": "deno tasks from deno.json",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4808,
+      "failures": []
+    },
+    {
+      "scenario": "a typo in the command gets the fix on the empty line",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5508,
+      "failures": []
+    },
+    {
+      "scenario": "a typo in the command gets the fix on the empty line",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5520,
+      "failures": []
+    },
+    {
+      "scenario": "a typo in the command gets the fix on the empty line",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5947,
+      "failures": []
+    },
+    {
+      "scenario": "a typo in the command gets the fix on the empty line",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6728,
+      "failures": []
+    },
+    {
+      "scenario": "the fix is never run without Enter",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6241,
+      "failures": []
+    },
+    {
+      "scenario": "the fix is never run without Enter",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5902,
+      "failures": []
+    },
+    {
+      "scenario": "the fix is never run without Enter",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6236,
+      "failures": []
+    },
+    {
+      "scenario": "a git subcommand typo uses what git suggests",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5333,
+      "failures": []
+    },
+    {
+      "scenario": "the fix is never run without Enter",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7073,
+      "failures": []
+    },
+    {
+      "scenario": "a git subcommand typo uses what git suggests",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5431,
+      "failures": []
+    },
+    {
+      "scenario": "a git subcommand typo uses what git suggests",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6108,
+      "failures": []
+    },
+    {
+      "scenario": "a git subcommand typo uses what git suggests",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6645,
+      "failures": []
+    },
+    {
+      "scenario": "a missing npm script gets the near one",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 8688,
+      "failures": []
+    },
+    {
+      "scenario": "a missing npm script gets the near one",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 8179,
+      "failures": []
+    },
+    {
+      "scenario": "a missing npm script gets the near one",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 8511,
+      "failures": []
+    },
+    {
+      "scenario": "mkdir of a nested folder gets -p",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6048,
+      "failures": []
+    },
+    {
+      "scenario": "a missing npm script gets the near one",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 9332,
+      "failures": []
+    },
+    {
+      "scenario": "mkdir of a nested folder gets -p",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6544,
+      "failures": []
+    },
+    {
+      "scenario": "mkdir of a nested folder gets -p",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6614,
+      "failures": []
+    },
+    {
+      "scenario": "cd to a near folder name",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5251,
+      "failures": []
+    },
+    {
+      "scenario": "mkdir of a nested folder gets -p",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7390,
+      "failures": []
+    },
+    {
+      "scenario": "cd to a near folder name",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5220,
+      "failures": []
+    },
+    {
+      "scenario": "cd to a near folder name",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5250,
+      "failures": []
+    },
+    {
+      "scenario": "cd to a near folder name",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5822,
+      "failures": []
+    },
+    {
+      "scenario": "rm of a folder gets -r",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5178,
+      "failures": []
+    },
+    {
+      "scenario": "rm of a folder gets -r",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5134,
+      "failures": []
+    },
+    {
+      "scenario": "rm of a folder gets -r",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5556,
+      "failures": []
+    },
+    {
+      "scenario": "rm of a folder gets -r",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5866,
+      "failures": []
+    },
+    {
+      "scenario": "checkout of a near branch name",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6335,
+      "failures": []
+    },
+    {
+      "scenario": "checkout of a near branch name",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6323,
+      "failures": []
+    },
+    {
+      "scenario": "checkout of a near branch name",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6581,
+      "failures": []
+    },
+    {
+      "scenario": "checkout of a near branch name",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7167,
+      "failures": []
+    },
+    {
+      "scenario": "Esc dismisses the fix and the line stays empty",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5292,
+      "failures": []
+    },
+    {
+      "scenario": "Esc dismisses the fix and the line stays empty",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5413,
+      "failures": []
+    },
+    {
+      "scenario": "Esc dismisses the fix and the line stays empty",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5735,
+      "failures": []
+    },
+    {
+      "scenario": "Esc dismisses the fix and the line stays empty",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6293,
+      "failures": []
+    },
+    {
+      "scenario": "typing over the fix list starts a new command",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6275,
+      "failures": []
+    },
+    {
+      "scenario": "typing over the fix list starts a new command",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5984,
+      "failures": []
+    },
+    {
+      "scenario": "typing over the fix list starts a new command",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6367,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+C on a long command gives no fix",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6074,
+      "failures": []
+    },
+    {
+      "scenario": "typing over the fix list starts a new command",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7787,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+C on a long command gives no fix",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6407,
+      "failures": []
+    },
+    {
+      "scenario": "a command that worked gives no fix",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4630,
+      "failures": []
+    },
+    {
+      "scenario": "a command that worked gives no fix",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4706,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+C on a long command gives no fix",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6711,
+      "failures": []
+    },
+    {
+      "scenario": "a command that worked gives no fix",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5434,
+      "failures": []
+    },
+    {
+      "scenario": "fixes can be turned off",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5065,
+      "failures": []
+    },
+    {
+      "scenario": "a command that worked gives no fix",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5838,
+      "failures": []
+    },
+    {
+      "scenario": "fixes can be turned off",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5302,
+      "failures": []
+    },
+    {
+      "scenario": "fixes can be turned off",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5665,
+      "failures": []
+    },
+    {
+      "scenario": "fixes can be turned off",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5714,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+G knows combined short flags",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4970,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+G knows combined short flags",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5077,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+G knows combined short flags",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5078,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+G knows combined short flags",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5444,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+G knows an option that takes a value",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5025,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+G knows an option that takes a value",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4993,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+G knows an option that takes a value",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5490,
+      "failures": []
+    },
+    {
+      "scenario": "Esc closes the explanation and keeps the line",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4105,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+G knows an option that takes a value",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5719,
+      "failures": []
+    },
+    {
+      "scenario": "Esc closes the explanation and keeps the line",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4372,
+      "failures": []
+    },
+    {
+      "scenario": "Esc closes the explanation and keeps the line",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4433,
+      "failures": []
+    },
+    {
+      "scenario": "Esc closes the explanation and keeps the line",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5061,
+      "failures": []
+    },
+    {
+      "scenario": "the line runs as typed after an explanation",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5466,
+      "failures": []
+    },
+    {
+      "scenario": "the line runs as typed after an explanation",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5328,
+      "failures": []
+    },
+    {
+      "scenario": "the line runs as typed after an explanation",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5639,
+      "failures": []
+    },
+    {
+      "scenario": "the line runs as typed after an explanation",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6012,
+      "failures": []
+    },
+    {
+      "scenario": "a snippet with fields fills in and runs",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7502,
+      "failures": []
+    },
+    {
+      "scenario": "a snippet with fields fills in and runs",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7481,
+      "failures": []
+    },
+    {
+      "scenario": "a snippet with fields fills in and runs",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7628,
+      "failures": []
+    },
+    {
+      "scenario": "a snippet with fields fills in and runs",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 8046,
+      "failures": []
+    },
+    {
+      "scenario": "a field value with spaces is quoted",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6615,
+      "failures": []
+    },
+    {
+      "scenario": "a field value with spaces is quoted",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6557,
+      "failures": []
+    },
+    {
+      "scenario": "a field value with spaces is quoted",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6561,
+      "failures": []
+    },
+    {
+      "scenario": "a field value with spaces is quoted",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7156,
+      "failures": []
+    },
+    {
+      "scenario": "Esc leaves the snippet form without running anything",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5830,
+      "failures": []
+    },
+    {
+      "scenario": "Esc leaves the snippet form without running anything",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5346,
+      "failures": []
+    },
+    {
+      "scenario": "Esc leaves the snippet form without running anything",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6070,
+      "failures": []
+    },
+    {
+      "scenario": "a broken snippets file does not break the list",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3815,
+      "failures": []
+    },
+    {
+      "scenario": "Esc leaves the snippet form without running anything",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6600,
+      "failures": []
+    },
+    {
+      "scenario": "a broken snippets file does not break the list",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4038,
+      "failures": []
+    },
+    {
+      "scenario": "a broken snippets file does not break the list",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4387,
+      "failures": []
+    },
+    {
+      "scenario": "a broken snippets file does not break the list",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4723,
+      "failures": []
+    },
+    {
+      "scenario": "a command run in this folder comes back as a whole",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6575,
+      "failures": []
+    },
+    {
+      "scenario": "a command run in this folder comes back as a whole",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6332,
+      "failures": []
+    },
+    {
+      "scenario": "a command run in this folder comes back as a whole",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6774,
+      "failures": []
+    },
+    {
+      "scenario": "a command run in this folder comes back as a whole",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7271,
+      "failures": []
+    },
+    {
+      "scenario": "a line with a token is never remembered",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7795,
+      "failures": []
+    },
+    {
+      "scenario": "a line with a token is never remembered",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7471,
+      "failures": []
+    },
+    {
+      "scenario": "a line with a token is never remembered",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 8029,
+      "failures": []
+    },
+    {
+      "scenario": "a line with a token is never remembered",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 8561,
+      "failures": []
+    },
+    {
+      "scenario": "a failed command is not offered again as a recent one",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7503,
+      "failures": []
+    },
+    {
+      "scenario": "a failed command is not offered again as a recent one",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7414,
+      "failures": []
+    },
+    {
+      "scenario": "a failed command is not offered again as a recent one",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 8289,
+      "failures": []
+    },
+    {
+      "scenario": "a failed command is not offered again as a recent one",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 8380,
+      "failures": []
+    },
+    {
+      "scenario": "tab like a shell completes the shared part",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4618,
+      "failures": []
+    },
+    {
+      "scenario": "tab like a shell completes the shared part",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4326,
+      "failures": []
+    },
+    {
+      "scenario": "tab like a shell completes the shared part",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4859,
+      "failures": []
+    },
+    {
+      "scenario": "tab like a shell completes the shared part",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5305,
+      "failures": []
+    },
+    {
+      "scenario": "the list only on Tab",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4549,
+      "failures": []
+    },
+    {
+      "scenario": "the list only on Tab",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4447,
+      "failures": []
+    },
+    {
+      "scenario": "the list only on Tab",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4834,
+      "failures": []
+    },
+    {
+      "scenario": "the light theme draws the same list",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3714,
+      "failures": []
+    },
+    {
+      "scenario": "the list only on Tab",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5116,
+      "failures": []
+    },
+    {
+      "scenario": "the light theme draws the same list",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4126,
+      "failures": []
+    },
+    {
+      "scenario": "the light theme draws the same list",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4421,
+      "failures": []
+    },
+    {
+      "scenario": "the light theme draws the same list",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4252,
+      "failures": []
+    },
+    {
+      "scenario": "an invalid setting falls back to the defaults",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4344,
+      "failures": []
+    },
+    {
+      "scenario": "an invalid setting falls back to the defaults",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3983,
+      "failures": []
+    },
+    {
+      "scenario": "an invalid setting falls back to the defaults",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4021,
+      "failures": []
+    },
+    {
+      "scenario": "an invalid setting falls back to the defaults",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5035,
+      "failures": []
+    },
+    {
+      "scenario": "Enter takes the entry and runs the line when enterRuns is on",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4315,
+      "failures": []
+    },
+    {
+      "scenario": "Enter takes the entry and runs the line when enterRuns is on",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4372,
+      "failures": []
+    },
+    {
+      "scenario": "Enter takes the entry and runs the line when enterRuns is on",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4715,
+      "failures": []
+    },
+    {
+      "scenario": "with enterRuns a folder is still walked into",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4308,
+      "failures": []
+    },
+    {
+      "scenario": "Enter takes the entry and runs the line when enterRuns is on",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5769,
+      "failures": []
+    },
+    {
+      "scenario": "with enterRuns a folder is still walked into",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4412,
+      "failures": []
+    },
+    {
+      "scenario": "with enterRuns a folder is still walked into",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4671,
+      "failures": []
+    },
+    {
+      "scenario": "with enterRuns a folder is still walked into",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4754,
+      "failures": []
+    },
+    {
+      "scenario": "a broken spec of your own is skipped",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5222,
+      "failures": []
+    },
+    {
+      "scenario": "a broken spec of your own is skipped",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4879,
+      "failures": []
+    },
+    {
+      "scenario": "a broken spec of your own is skipped",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5618,
+      "failures": []
+    },
+    {
+      "scenario": "a broken spec of your own is skipped",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5736,
+      "failures": []
+    },
+    {
+      "scenario": "a spec with a generator that hangs does not block typing",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5345,
+      "failures": []
+    },
+    {
+      "scenario": "a spec with a generator that hangs does not block typing",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5128,
+      "failures": []
+    },
+    {
+      "scenario": "a spec with a generator that hangs does not block typing",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5279,
+      "failures": []
+    },
+    {
+      "scenario": "a spec with a generator that hangs does not block typing",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6087,
+      "failures": []
+    },
+    {
+      "scenario": "the shell works when the config file is broken",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6948,
+      "failures": []
+    },
+    {
+      "scenario": "the shell works when the config file is broken",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6791,
+      "failures": []
+    },
+    {
+      "scenario": "the shell works when the config file is broken",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7269,
+      "failures": []
+    },
+    {
+      "scenario": "the shell works when the config file is broken",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7451,
+      "failures": []
+    },
+    {
+      "scenario": "thint inside thint does not start a second one",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6354,
+      "failures": []
+    },
+    {
+      "scenario": "thint inside thint does not start a second one",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6014,
+      "failures": []
+    },
+    {
+      "scenario": "quick resize back and forth with the list open",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6895,
+      "failures": []
+    },
+    {
+      "scenario": "quick resize back and forth with the list open",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7051,
+      "failures": []
+    },
+    {
+      "scenario": "quick resize back and forth with the list open",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7190,
+      "failures": []
+    },
+    {
+      "scenario": "a command that prints without a newline at the end",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5501,
+      "failures": []
+    },
+    {
+      "scenario": "quick resize back and forth with the list open",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7825,
+      "failures": []
+    },
+    {
+      "scenario": "a command that prints without a newline at the end",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5668,
+      "failures": []
+    },
+    {
+      "scenario": "a command that prints without a newline at the end",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6021,
+      "failures": []
+    },
+    {
+      "scenario": "Shift+Down moves an entry and the order stays",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6528,
+      "failures": []
+    },
+    {
+      "scenario": "Shift+Down moves an entry and the order stays",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6148,
+      "failures": []
+    },
+    {
+      "scenario": "Shift+Down moves an entry and the order stays",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6535,
+      "failures": []
+    },
+    {
+      "scenario": "a lone dash runs the previous folder",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5093,
+      "failures": []
+    },
+    {
+      "scenario": "Shift+Down moves an entry and the order stays",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7070,
+      "failures": []
+    },
+    {
+      "scenario": "a lone dash runs the previous folder",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5397,
+      "failures": []
+    },
+    {
+      "scenario": "a lone dash runs the previous folder",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5747,
+      "failures": []
+    },
+    {
+      "scenario": "a lone dash runs the previous folder",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6028,
+      "failures": []
+    },
+    {
+      "scenario": "git checkout - runs as typed",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4615,
+      "failures": []
+    },
+    {
+      "scenario": "git checkout - runs as typed",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4280,
+      "failures": []
+    },
+    {
+      "scenario": "git checkout - runs as typed",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4682,
+      "failures": []
+    },
+    {
+      "scenario": "git checkout - runs as typed",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5446,
+      "failures": []
+    },
+    {
+      "scenario": "the second command after && gets its own list",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4886,
+      "failures": []
+    },
+    {
+      "scenario": "the second command after && gets its own list",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4566,
+      "failures": []
+    },
+    {
+      "scenario": "the second command after && gets its own list",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4818,
+      "failures": []
+    },
+    {
+      "scenario": "the command after a pipe gets its own list",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4466,
+      "failures": []
+    },
+    {
+      "scenario": "the second command after && gets its own list",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5676,
+      "failures": []
+    },
+    {
+      "scenario": "the command after a pipe gets its own list",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4511,
+      "failures": []
+    },
+    {
+      "scenario": "sudo in front keeps the list of the command",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4231,
+      "failures": []
+    },
+    {
+      "scenario": "the command after a pipe gets its own list",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4977,
+      "failures": []
+    },
+    {
+      "scenario": "sudo in front keeps the list of the command",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4139,
+      "failures": []
+    },
+    {
+      "scenario": "sudo in front keeps the list of the command",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4525,
+      "failures": []
+    },
+    {
+      "scenario": "sudo in front keeps the list of the command",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5057,
+      "failures": []
+    },
+    {
+      "scenario": "a variable in front keeps the list of the command",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5093,
+      "failures": []
+    },
+    {
+      "scenario": "a variable in front keeps the list of the command",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4781,
+      "failures": []
+    },
+    {
+      "scenario": "an option with an equals sign",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6052,
+      "failures": []
+    },
+    {
+      "scenario": "an option with an equals sign",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5953,
+      "failures": []
+    },
+    {
+      "scenario": "an option with an equals sign",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6674,
+      "failures": []
+    },
+    {
+      "scenario": "an option with an equals sign",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7073,
+      "failures": []
+    },
+    {
+      "scenario": "editing in the middle of the line",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 10617,
+      "failures": []
+    },
+    {
+      "scenario": "editing in the middle of the line",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 10288,
+      "failures": []
+    },
+    {
+      "scenario": "editing in the middle of the line",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 10712,
+      "failures": []
+    },
+    {
+      "scenario": "ssh hosts from the ssh config, a capital one is marked",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4169,
+      "failures": []
+    },
+    {
+      "scenario": "ssh hosts from the ssh config, a capital one is marked",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4049,
+      "failures": []
+    },
+    {
+      "scenario": "ssh hosts from the ssh config, a capital one is marked",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4408,
+      "failures": []
+    },
+    {
+      "scenario": "editing in the middle of the line",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 11796,
+      "failures": []
+    },
+    {
+      "scenario": "environment variables after a dollar",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4034,
+      "failures": []
+    },
+    {
+      "scenario": "environment variables after a dollar",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4050,
+      "failures": []
+    },
+    {
+      "scenario": "environment variables after a dollar",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4193,
+      "failures": []
+    },
+    {
+      "scenario": "docker compose logs takes a service",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4602,
+      "failures": []
+    },
+    {
+      "scenario": "docker compose logs takes a service",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4647,
+      "failures": []
+    },
+    {
+      "scenario": "docker compose logs takes a service",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5286,
+      "failures": []
+    },
+    {
+      "scenario": "docker compose logs takes a service",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5383,
+      "failures": []
+    },
+    {
+      "scenario": "npm install of a version does not block typing without network",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6011,
+      "failures": []
+    },
+    {
+      "scenario": "npm install of a version does not block typing without network",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5883,
+      "failures": []
+    },
+    {
+      "scenario": "npm install of a version does not block typing without network",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5860,
+      "failures": []
+    },
+    {
+      "scenario": "npm install of a version does not block typing without network",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6370,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+R history search still belongs to the shell",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7409,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+R history search still belongs to the shell",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7160,
+      "failures": []
+    },
+    {
+      "scenario": "icons off still shows the entries",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4473,
+      "failures": []
+    },
+    {
+      "scenario": "icons off still shows the entries",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4162,
+      "failures": []
+    },
+    {
+      "scenario": "icons off still shows the entries",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4354,
+      "failures": []
+    },
+    {
+      "scenario": "icons off still shows the entries",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5057,
+      "failures": []
+    },
+    {
+      "scenario": "a long description is cut, not wrapped",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4435,
+      "failures": []
+    },
+    {
+      "scenario": "a long description is cut, not wrapped",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4016,
+      "failures": []
+    },
+    {
+      "scenario": "a long description is cut, not wrapped",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4817,
+      "failures": []
+    },
+    {
+      "scenario": "a long description is cut, not wrapped",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4861,
+      "failures": []
+    },
+    {
+      "scenario": "the first word with recent commands",
+      "shell": "zsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6153,
+      "failures": []
+    },
+    {
+      "scenario": "the first word with recent commands",
+      "shell": "bash",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6218,
+      "failures": []
+    },
+    {
+      "scenario": "the first word with recent commands",
+      "shell": "fish",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6560,
+      "failures": []
+    },
+    {
+      "scenario": "the first word with recent commands",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6130,
+      "failures": []
+    },
+    {
+      "scenario": "PowerShell predictions from the history do not confuse the list",
+      "shell": "pwsh",
+      "size": "40x10",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5592,
+      "failures": []
+    }
+  ]
+}

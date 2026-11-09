@@ -1,0 +1,563 @@
+{
+  "when": "2026-11-08T23:13:24.853Z",
+  "platform": "darwin-arm64",
+  "cpus": 3,
+  "bin": "/Users/runner/work/terminalhinter/terminalhinter/pkg/terminalhinter-darwin-arm64",
+  "version": "1.2.0",
+  "budget": {
+    "p50": 15,
+    "p99": 50,
+    "tabExtra": 150,
+    "memoryGrowth": 0.2
+  },
+  "shells": {
+    "zsh": {
+      "path": "/bin/zsh",
+      "tabStart": {
+        "loadavg": 11.83,
+        "plain": {
+          "prompt": {
+            "n": 20,
+            "p50": 28.1,
+            "p95": 37.5,
+            "p99": 102.3,
+            "max": 102.3,
+            "mean": 31.8
+          },
+          "ready": {
+            "n": 20,
+            "p50": 30,
+            "p95": 43.2,
+            "p99": 411.6,
+            "max": 411.6,
+            "mean": 49.9
+          },
+          "typeaheadRuns": 1
+        },
+        "thint": {
+          "prompt": {
+            "n": 20,
+            "p50": 144.2,
+            "p95": 156,
+            "p99": 325.9,
+            "max": 325.9,
+            "mean": 152.2
+          },
+          "ready": {
+            "n": 20,
+            "p50": 152.5,
+            "p95": 163.6,
+            "p99": 667,
+            "max": 667,
+            "mean": 177.5
+          },
+          "typeaheadRuns": 1
+        },
+        "extraPromptMedian": 116.1,
+        "extraPromptP95": 118.5,
+        "extraReadyMedian": 122.5
+      },
+      "keys": {
+        "loadavg": [
+          10.78,
+          12.63
+        ],
+        "keys": 508,
+        "lines": 48,
+        "linesWithList": 48,
+        "echo": {
+          "n": 508,
+          "p50": 3.7,
+          "p95": 6.6,
+          "p99": 19,
+          "max": 27.2,
+          "mean": 3.8
+        },
+        "settle": {
+          "n": 508,
+          "p50": 3.5,
+          "p95": 20.6,
+          "p99": 47.5,
+          "max": 110.2,
+          "mean": 6.2
+        },
+        "slowest": [
+          {
+            "typed": "kill ",
+            "ms": 110.2,
+            "load": 13.48
+          },
+          {
+            "typed": "git ",
+            "ms": 68.6,
+            "load": 14.35
+          },
+          {
+            "typed": "kill ",
+            "ms": 65.1,
+            "load": 11.82
+          },
+          {
+            "typed": "kill ",
+            "ms": 50.3,
+            "load": 12.19
+          },
+          {
+            "typed": "git ",
+            "ms": 49.9,
+            "load": 12.56
+          },
+          {
+            "typed": "docker compose ",
+            "ms": 47.5,
+            "load": 12.19
+          },
+          {
+            "typed": "kill ",
+            "ms": 42.8,
+            "load": 11.98
+          },
+          {
+            "typed": "git ",
+            "ms": 41.4,
+            "load": 11.82
+          },
+          {
+            "typed": "kill ",
+            "ms": 35.8,
+            "load": 14.35
+          },
+          {
+            "typed": "git ",
+            "ms": 34.1,
+            "load": 12.19
+          }
+        ],
+        "thintTimings": {
+          "runtime.runGenerator": {
+            "count": 194,
+            "avg": 10.84,
+            "max": 98.9
+          },
+          "runtime.getSuggestions": {
+            "count": 546,
+            "avg": 2.62,
+            "max": 107.1
+          },
+          "pty.parseData": {
+            "count": 606,
+            "avg": 2.33,
+            "max": 20
+          },
+          "ui.render": {
+            "count": 1204,
+            "avg": 0.77,
+            "max": 17
+          },
+          "ui.ptyData": {
+            "count": 606,
+            "avg": 0.74,
+            "max": 17
+          },
+          "pty.getPatch": {
+            "count": 2047,
+            "avg": 0.19,
+            "max": 16.5
+          },
+          "startup.beforeRender": {
+            "count": 1,
+            "avg": 89.7,
+            "max": 89.7
+          },
+          "commandManager.termSync": {
+            "count": 606,
+            "avg": 0.04,
+            "max": 2
+          }
+        }
+      },
+      "blocked": {
+        "slow generator (sleep 3)": {
+          "loadavg": 12.63,
+          "echo": {
+            "n": 8,
+            "p50": 4.4,
+            "p95": 5.1,
+            "p99": 5.1,
+            "max": 5.1,
+            "mean": 4.1
+          },
+          "alive": true
+        },
+        "hanging generator": {
+          "loadavg": 12.34,
+          "echo": {
+            "n": 8,
+            "p50": 3.5,
+            "p95": 4.6,
+            "p99": 4.6,
+            "max": 4.6,
+            "mean": 3.7
+          },
+          "alive": true
+        },
+        "versions with no network": {
+          "loadavg": 12.34,
+          "echo": {
+            "n": 8,
+            "p50": 4,
+            "p95": 5.3,
+            "p99": 5.3,
+            "max": 5.3,
+            "mean": 4.2
+          },
+          "alive": true
+        },
+        "slow generator values arrive": true
+      },
+      "soak": {
+        "minutes": 20,
+        "keys": 16065,
+        "shellAlive": true,
+        "rssStartMb": 72.7,
+        "rssAfterWarmupMb": 118.9,
+        "rssEndMb": 125.1,
+        "growthAfterWarmup": 0.052,
+        "slopeMbPerHour": 27.9,
+        "samples": [
+          {
+            "minute": 0,
+            "rssMb": 72.7,
+            "loadavg": 12.71,
+            "keys": 0
+          },
+          {
+            "minute": 1,
+            "rssMb": 111.3,
+            "loadavg": 5.22,
+            "keys": 807
+          },
+          {
+            "minute": 2,
+            "rssMb": 92.4,
+            "loadavg": 2.82,
+            "keys": 1634
+          },
+          {
+            "minute": 3,
+            "rssMb": 101.4,
+            "loadavg": 2.03,
+            "keys": 2415
+          },
+          {
+            "minute": 4,
+            "rssMb": 116,
+            "loadavg": 1.88,
+            "keys": 3222
+          },
+          {
+            "minute": 5,
+            "rssMb": 94.8,
+            "loadavg": 1.06,
+            "keys": 4018
+          },
+          {
+            "minute": 6,
+            "rssMb": 104.5,
+            "loadavg": 1.1,
+            "keys": 4830
+          },
+          {
+            "minute": 7,
+            "rssMb": 118.9,
+            "loadavg": 1.13,
+            "keys": 5629
+          },
+          {
+            "minute": 8,
+            "rssMb": 119.8,
+            "loadavg": 0.85,
+            "keys": 6428
+          },
+          {
+            "minute": 9,
+            "rssMb": 122.2,
+            "loadavg": 1.91,
+            "keys": 7245
+          },
+          {
+            "minute": 10,
+            "rssMb": 122.5,
+            "loadavg": 1.52,
+            "keys": 8044
+          },
+          {
+            "minute": 11,
+            "rssMb": 123.1,
+            "loadavg": 1.42,
+            "keys": 8848
+          },
+          {
+            "minute": 12,
+            "rssMb": 124.5,
+            "loadavg": 1.24,
+            "keys": 9648
+          },
+          {
+            "minute": 13,
+            "rssMb": 124.7,
+            "loadavg": 1.05,
+            "keys": 10454
+          },
+          {
+            "minute": 14,
+            "rssMb": 124.8,
+            "loadavg": 1.13,
+            "keys": 11258
+          },
+          {
+            "minute": 15,
+            "rssMb": 124.8,
+            "loadavg": 1.24,
+            "keys": 12058
+          },
+          {
+            "minute": 16,
+            "rssMb": 124.9,
+            "loadavg": 1.14,
+            "keys": 12869
+          },
+          {
+            "minute": 17,
+            "rssMb": 125,
+            "loadavg": 1.07,
+            "keys": 13656
+          },
+          {
+            "minute": 18,
+            "rssMb": 125,
+            "loadavg": 1.03,
+            "keys": 14457
+          },
+          {
+            "minute": 19,
+            "rssMb": 125.1,
+            "loadavg": 0.98,
+            "keys": 15263
+          },
+          {
+            "minute": 20,
+            "rssMb": 125.1,
+            "loadavg": 1.16,
+            "keys": 16065
+          }
+        ]
+      }
+    },
+    "bash": {
+      "path": "/bin/bash",
+      "tabStart": {
+        "loadavg": 1.07,
+        "plain": {
+          "prompt": {
+            "n": 20,
+            "p50": 31,
+            "p95": 36.6,
+            "p99": 61.7,
+            "max": 61.7,
+            "mean": 31.8
+          },
+          "ready": {
+            "n": 20,
+            "p50": 33.5,
+            "p95": 43,
+            "p99": 377.6,
+            "max": 377.6,
+            "mean": 50.8
+          },
+          "typeaheadRuns": 1
+        },
+        "thint": {
+          "prompt": {
+            "n": 20,
+            "p50": 113.7,
+            "p95": 131.7,
+            "p99": 132.6,
+            "max": 132.6,
+            "mean": 117.8
+          },
+          "ready": {
+            "n": 20,
+            "p50": 121.5,
+            "p95": 139.9,
+            "p99": 464.3,
+            "max": 464.3,
+            "mean": 141.7
+          },
+          "typeaheadRuns": 1
+        },
+        "extraPromptMedian": 82.7,
+        "extraPromptP95": 95.1,
+        "extraReadyMedian": 88
+      },
+      "keys": {
+        "loadavg": [
+          1.05,
+          1.09
+        ],
+        "keys": 508,
+        "lines": 48,
+        "linesWithList": 48,
+        "echo": {
+          "n": 508,
+          "p50": 6.2,
+          "p95": 8.5,
+          "p99": 9.3,
+          "max": 10.6,
+          "mean": 6.2
+        },
+        "settle": {
+          "n": 508,
+          "p50": 8.4,
+          "p95": 28.8,
+          "p99": 68.7,
+          "max": 80.7,
+          "mean": 10.6
+        },
+        "slowest": [
+          {
+            "typed": "kill ",
+            "ms": 80.7,
+            "load": 1.19
+          },
+          {
+            "typed": "kill ",
+            "ms": 74.7,
+            "load": 1.04
+          },
+          {
+            "typed": "kill ",
+            "ms": 72.8,
+            "load": 0.98
+          },
+          {
+            "typed": "git ",
+            "ms": 71.9,
+            "load": 1.18
+          },
+          {
+            "typed": "git checkout ",
+            "ms": 69,
+            "load": 1.13
+          },
+          {
+            "typed": "git ",
+            "ms": 68.7,
+            "load": 1.04
+          },
+          {
+            "typed": "git ",
+            "ms": 64.7,
+            "load": 1.15
+          },
+          {
+            "typed": "git stas",
+            "ms": 59.6,
+            "load": 0.95
+          },
+          {
+            "typed": "kill ",
+            "ms": 57.6,
+            "load": 1.1
+          },
+          {
+            "typed": "git stash apply ",
+            "ms": 56.8,
+            "load": 0.95
+          }
+        ],
+        "thintTimings": {
+          "runtime.runGenerator": {
+            "count": 194,
+            "avg": 18.11,
+            "max": 67.3
+          },
+          "pty.parseData": {
+            "count": 613,
+            "avg": 4.15,
+            "max": 13.7
+          },
+          "ui.render": {
+            "count": 1211,
+            "avg": 1.96,
+            "max": 12.5
+          },
+          "runtime.getSuggestions": {
+            "count": 546,
+            "avg": 3.73,
+            "max": 72.8
+          },
+          "ui.ptyData": {
+            "count": 613,
+            "avg": 2.15,
+            "max": 12.6
+          },
+          "pty.getPatch": {
+            "count": 2047,
+            "avg": 0.52,
+            "max": 4.9
+          },
+          "commandManager.termSync": {
+            "count": 613,
+            "avg": 0.11,
+            "max": 0.6
+          },
+          "startup.beforeRender": {
+            "count": 1,
+            "avg": 10.99,
+            "max": 11
+          }
+        }
+      },
+      "blocked": {
+        "slow generator (sleep 3)": {
+          "loadavg": 1.09,
+          "echo": {
+            "n": 8,
+            "p50": 5.1,
+            "p95": 6.1,
+            "p99": 6.1,
+            "max": 6.1,
+            "mean": 5.1
+          },
+          "alive": true
+        },
+        "hanging generator": {
+          "loadavg": 1.09,
+          "echo": {
+            "n": 8,
+            "p50": 4.9,
+            "p95": 5.9,
+            "p99": 5.9,
+            "max": 5.9,
+            "mean": 4.6
+          },
+          "alive": true
+        },
+        "versions with no network": {
+          "loadavg": 1.16,
+          "echo": {
+            "n": 8,
+            "p50": 4.4,
+            "p95": 7.6,
+            "p99": 7.6,
+            "max": 7.6,
+            "mean": 5.2
+          },
+          "alive": true
+        },
+        "slow generator values arrive": true
+      }
+    }
+  }
+}
