@@ -21,26 +21,37 @@ export const blockShells = [Shell.Zsh, Shell.Bash, Shell.Fish, Shell.Pwsh, ...(p
 // PowerShell is not installed. Asked once per run, it takes a moment to start.
 const powershellProfiles = new Map<Shell, string | undefined>();
 const powershellProfile = (shell: Shell): string | undefined => {
-  if (!powershellProfiles.has(shell)) {
-    let file: string | undefined;
-    try {
-      file =
-        execFileSync(
-          shell === Shell.Pwsh ? "pwsh" : "powershell",
-          ["-NoLogo", "-NoProfile", "-NonInteractive", "-Command", "$PROFILE.CurrentUserCurrentHost"],
-          {
-            encoding: "utf8",
-            timeout: 15_000,
-            windowsHide: true,
-            stdio: ["ignore", "pipe", "ignore"],
-          },
-        ).trim() || undefined;
-    } catch {
-      file = undefined;
-    }
-    powershellProfiles.set(shell, file);
-  }
+  if (!powershellProfiles.has(shell)) powershellProfiles.set(shell, runPowershell(shell, "$PROFILE.CurrentUserCurrentHost") || undefined);
   return powershellProfiles.get(shell);
+};
+
+const powershellExe = (shell: Shell) => (shell === Shell.Pwsh ? "pwsh" : "powershell");
+const runPowershell = (shell: Shell, command: string): string | undefined => {
+  try {
+    return execFileSync(powershellExe(shell), ["-NoLogo", "-NoProfile", "-NonInteractive", "-Command", command], {
+      encoding: "utf8",
+      timeout: 15_000,
+      windowsHide: true,
+      stdio: ["ignore", "pipe", "ignore"],
+    }).trim();
+  } catch {
+    return undefined;
+  }
+};
+
+// Windows PowerShell 5.1 comes with scripts turned off (Restricted): it then skips the profile, so the startup lines
+// never run, and npm's thint.ps1 does not start either. AllSigned skips them too, they are not signed.
+export const powershellBlocksScripts = (shell: Shell): string | undefined => {
+  if (process.platform !== "win32" || (shell !== Shell.Pwsh && shell !== Shell.Powershell)) return;
+  const policy = runPowershell(shell, "Get-ExecutionPolicy");
+  return policy === "Restricted" || policy === "AllSigned" ? policy : undefined;
+};
+export const allowScriptsCommand = "Set-ExecutionPolicy -Scope CurrentUser RemoteSigned";
+// RemoteSigned for this user only (what PowerShell 7 has from the start): scripts made on this computer run, ones from
+// the internet need a signature. True when scripts run now; a policy set by the company wins over it.
+export const allowPowershellScripts = (shell: Shell): boolean => {
+  runPowershell(shell, `${allowScriptsCommand} -Force`);
+  return powershellBlocksScripts(shell) == null;
 };
 
 export const profileFile = (shell: Shell, home = os.homedir()): string | undefined => {

@@ -19,6 +19,10 @@ thint init
 
 Works on macOS and Linux with zsh and bash. Windows and fish are experimental.
 
+On Windows, `thint init` puts the startup lines into your PowerShell profile. Windows PowerShell 5.1 comes with
+scripts turned off, so neither `thint` nor the profile runs there until you allow them for your user once:
+`Set-ExecutionPolicy -Scope CurrentUser RemoteSigned` (or run `thint.cmd init` and say Yes when it asks).
+
 ## What it does
 
 **When something goes wrong**
