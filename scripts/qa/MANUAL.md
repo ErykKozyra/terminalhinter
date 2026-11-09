@@ -42,7 +42,9 @@ Open a tab, run `npm i -g @erykkozyra/terminalhinter@latest` in another one, the
 
 ## 4. Open Windows items (PC)
 
-What CI on Windows could not settle (run 11). Check each in Windows Terminal at about 40 × 10:
+What CI on Windows could not settle (run 11). Checked on a PC on 2026-11-09: all four fine in Windows Terminal, so
+what CI showed there comes from its own terminal. Check again after changes to drawing or key handling on Windows.
+In Windows Terminal at about 40 × 10:
 
 1. `thint debug keys` in PowerShell 7, cmd and Git Bash: does Ctrl+Space arrive? Then Esc and Ctrl+Space: does the
    list come back?

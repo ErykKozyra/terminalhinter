@@ -193,8 +193,40 @@ jobs:
           if-no-files-found: warn
           retention-days: 7
 
+  # thint ships with its own Node 22, but a build from source runs on whatever Node is there: the newest one warns
+  # about things the old one did not (a warning there lands on the line being typed)
+  node-latest:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 26.13.0
+      - name: zsh and bash
+        run: |
+          sudo apt-get install -y zsh
+          sudo chmod -R 755 /usr/share/zsh && sudo chown -R root:root /usr/share/zsh
+      - run: npm ci
+      - name: Unit tests
+        run: |
+          mkdir -p qa-out
+          npm test -- --json --outputFile=qa-out/unit-ubuntu-node26.json
+        continue-on-error: true
+      - run: npm run build
+      - name: Live scenarios
+        run: node scripts/qa/live/run.mjs --jobs 3 --shells zsh,bash --sizes 80x24 --out qa-out/live-ubuntu-node26.json
+        continue-on-error: true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: qa-node26
+          path: qa-out/
+          if-no-files-found: warn
+          retention-days: 7
+
   report:
-    needs: [test, perf, install]
+    needs: [test, perf, install, node-latest]
     if: always()
     runs-on: ubuntu-24.04
     permissions:
