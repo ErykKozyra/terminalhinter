@@ -101,7 +101,11 @@ export const buildExecuteShellCommand =
     // the alias list) would otherwise take over the terminal, and terminalhinter, no longer in front, got stopped
     // ("suspended (tty output)") so the tab was left with a plain shell
     const detached = process.platform !== "win32";
-    const child = spawn(command, escapedArgs, { cwd, env: { ...process.env, ...env, ISTERM: "1" }, shell: executionShell, signal, detached });
+    // under a shell the command and its arguments are one line: Node joins them with spaces itself, and since Node 24
+    // it warns about getting them apart, a warning that lands on the terminal
+    const line = executionShell != null ? [command, ...escapedArgs].join(" ") : command;
+    const options = { cwd, env: { ...process.env, ...env, ISTERM: "1" }, shell: executionShell, signal, detached };
+    const child = executionShell != null ? spawn(line, options) : spawn(command, escapedArgs, options);
     let stdout = "";
     let stderr = "";
     child.stdout.on("data", (data) => (stdout += data));

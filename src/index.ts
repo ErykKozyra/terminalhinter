@@ -23,6 +23,12 @@ import snippets from "./commands/snippets.js";
 import debug from "./commands/debug.js";
 import { action, supportedShells } from "./commands/root.js";
 import { getVersion } from "./utils/version.js";
+import log from "./utils/log.js";
+
+// thint draws on the terminal it runs in: a warning of Node (a deprecation in a newer Node than the one it was built
+// with) printed there lands in the middle of the line being typed. It goes to the log instead.
+process.removeAllListeners("warning");
+process.on("warning", (warning) => log.debug({ msg: "node warning", name: warning.name, warning: warning.message }));
 
 // `thint theme --list | head` closes the pipe early; that is not an error
 process.stdout.on("error", (e: NodeJS.ErrnoException) => {

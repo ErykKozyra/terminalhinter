@@ -1,7 +1,7 @@
 // Copyright (c) 2026 Eryk Kozyra.
 // Licensed under the MIT License.
 
-import { spawnSync } from "node:child_process";
+import { spawnSync, type SpawnSyncOptions } from "node:child_process";
 import path from "node:path";
 import chalk from "chalk";
 import { Command } from "commander";
@@ -40,7 +40,11 @@ const action = async (options: { force?: boolean }) => {
   const env = { ...process.env };
   if (install.binFolder != null) env.PATH = install.binFolder + path.delimiter + (env.PATH ?? "");
   const windows = process.platform === "win32";
-  const installed = spawnSync(install.command, install.args, { stdio: "inherit", env, shell: windows });
+  // npm and pnpm are .cmd files on Windows, which only start under a shell; there the line goes whole, Node 24 warns
+  // about a command and its arguments given apart with a shell
+  const run = (command: string, args: string[], options: SpawnSyncOptions) =>
+    windows ? spawnSync([command, ...args].join(" "), { ...options, shell: true }) : spawnSync(command, args, options);
+  const installed = run(install.command, install.args, { stdio: "inherit", env });
   if (installed.error != null || installed.status !== 0) {
     const denied = installed.status === 243 || /EACCES/.test(String(installed.error ?? ""));
     fail(
@@ -50,10 +54,10 @@ const action = async (options: { force?: boolean }) => {
   }
 
   // the new thint unpacks its files and links the startup launcher to itself
-  const reinit = spawnSync("thint", ["reinit"], { stdio: "ignore", env, shell: windows });
+  const reinit = run("thint", ["reinit"], { stdio: "ignore", env });
   if (reinit.error != null || reinit.status !== 0) fail("the update is installed, but its files are not unpacked yet", "thint reinit");
 
-  const version = spawnSync("thint", ["--version"], { env, encoding: "utf8", shell: windows }).stdout?.trim();
+  const version = run("thint", ["--version"], { env, encoding: "utf8" }).stdout?.toString().trim();
   process.stdout.write("\n" + chalk.green("✓") + ` terminalhinter ${version || latest} is installed. New terminal tabs use it.\n`);
 };
 
