@@ -18,7 +18,7 @@
     "LICENSE"
   ],
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && node scripts/stamp-version.mjs",
     "package": "tsx ./scripts/pkg.ts",
     "package:base": "tsx ./scripts/pkg-base.ts",
     "dev": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --import=tsx src/index.ts -V",
