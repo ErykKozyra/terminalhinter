@@ -1,0 +1,1306 @@
+{
+  "platform": "darwin",
+  "shells": [
+    "zsh"
+  ],
+  "started": [
+    "zsh"
+  ],
+  "planned": 141,
+  "strayErrors": 0,
+  "health": [
+    {
+      "done": 50,
+      "at": 1794224884485,
+      "terminalsHeldByRunner": 57,
+      "terminalsInSystem": 75,
+      "processesLeft": 2,
+      "sample": [
+        "67335 59782 S<s+ /Users/runner/hostedtoolcache/node/22.21.1/arm64/bin/node /Users/runner/work/terminalhinter/terminalhinter/build/index.js -s zsh --verbose",
+        "67373 59782 S<s+ /Users/runner/hostedtoolcache/node/22.21.1/arm64/bin/node /Users/runner/work/terminalhinter/terminalhinter/build/index.js -s zsh --verbose"
+      ]
+    },
+    {
+      "done": 100,
+      "at": 1794224988817,
+      "terminalsHeldByRunner": 107,
+      "terminalsInSystem": 125,
+      "processesLeft": 2,
+      "sample": [
+        "72918 59782 S<s+ /Users/runner/hostedtoolcache/node/22.21.1/arm64/bin/node /Users/runner/work/terminalhinter/terminalhinter/build/index.js -s zsh --verbose",
+        "73291 59782 S<s+ /Users/runner/hostedtoolcache/node/22.21.1/arm64/bin/node /Users/runner/work/terminalhinter/terminalhinter/build/index.js -s zsh --verbose"
+      ]
+    }
+  ],
+  "results": [
+    {
+      "scenario": "the list opens after a command and a space",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3872,
+      "failures": []
+    },
+    {
+      "scenario": "typing narrows the list",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3980,
+      "failures": []
+    },
+    {
+      "scenario": "git branch from the list with Tab",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6389,
+      "failures": []
+    },
+    {
+      "scenario": "Tab puts the selected entry on the line",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4916,
+      "failures": []
+    },
+    {
+      "scenario": "Enter on a typed word takes the entry and does not run",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4975,
+      "failures": []
+    },
+    {
+      "scenario": "Enter right after a space runs the command",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5338,
+      "failures": []
+    },
+    {
+      "scenario": "Enter runs a word typed in full that no entry starts with",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4891,
+      "failures": []
+    },
+    {
+      "scenario": "Esc hides the list until the next letter",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5574,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+Space shows the list again",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5520,
+      "failures": []
+    },
+    {
+      "scenario": "Down and Tab pick the second entry",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5530,
+      "failures": []
+    },
+    {
+      "scenario": "Backspace brings back what was there",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4818,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+U empties the line and hides the list",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4624,
+      "failures": []
+    },
+    {
+      "scenario": "Up on a line with no selection walks the shell history",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4706,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+C gives a fresh prompt with no list",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6262,
+      "failures": []
+    },
+    {
+      "scenario": "a pasted command lands as pasted",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4785,
+      "failures": []
+    },
+    {
+      "scenario": "a fast typist loses no letters",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4907,
+      "failures": []
+    },
+    {
+      "scenario": "Polish letters and emoji go through untouched",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4956,
+      "failures": []
+    },
+    {
+      "scenario": "a long line that wraps keeps every letter",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6060,
+      "failures": []
+    },
+    {
+      "scenario": "options of a command show with their descriptions",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4954,
+      "failures": []
+    },
+    {
+      "scenario": "an option already on the line is not offered again",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4982,
+      "failures": []
+    },
+    {
+      "scenario": "a command the specs do not know does not break anything",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5640,
+      "failures": []
+    },
+    {
+      "scenario": "the list follows the line after a resize",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5803,
+      "failures": []
+    },
+    {
+      "scenario": "lots of output while typing the next command",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4961,
+      "failures": []
+    },
+    {
+      "scenario": "a full-screen program and back",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6614,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+L clears the screen and the list comes back on the new line",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5735,
+      "failures": []
+    },
+    {
+      "scenario": "git switch offers local branches with their last commit",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4417,
+      "failures": []
+    },
+    {
+      "scenario": "Enter runs a word that only appears inside a variable name",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5402,
+      "failures": []
+    },
+    {
+      "scenario": "git checkout finds a branch by a word inside its name",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5071,
+      "failures": []
+    },
+    {
+      "scenario": "git stash show lists stashes by what they hold",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4096,
+      "failures": []
+    },
+    {
+      "scenario": "a branch picked with Enter runs only after a second Enter",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5526,
+      "failures": []
+    },
+    {
+      "scenario": "git reset --hard is marked as risky and says why",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4170,
+      "failures": []
+    },
+    {
+      "scenario": "git stash pop takes the stash from the list",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5803,
+      "failures": []
+    },
+    {
+      "scenario": "git push --force is marked as risky",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4875,
+      "failures": []
+    },
+    {
+      "scenario": "git branch -D is marked as risky",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4535,
+      "failures": []
+    },
+    {
+      "scenario": "git add offers changed files",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3961,
+      "failures": []
+    },
+    {
+      "scenario": "git log options with descriptions",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4034,
+      "failures": []
+    },
+    {
+      "scenario": "git commit -m keeps the quoted message as typed",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6407,
+      "failures": []
+    },
+    {
+      "scenario": "git merge offers branches",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4024,
+      "failures": []
+    },
+    {
+      "scenario": "a git alias completes like the command behind it",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 14807,
+      "failures": []
+    },
+    {
+      "scenario": "outside a repository git still shows subcommands",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3725,
+      "failures": []
+    },
+    {
+      "scenario": "git worktree add and remove",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 8309,
+      "failures": []
+    },
+    {
+      "scenario": "git reflog after a reset",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 9129,
+      "failures": []
+    },
+    {
+      "scenario": "cd lists only folders",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4175,
+      "failures": []
+    },
+    {
+      "scenario": "Enter on a folder walks into it and keeps the list open",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4311,
+      "failures": []
+    },
+    {
+      "scenario": "the run entry runs cd where you are",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5328,
+      "failures": []
+    },
+    {
+      "scenario": "a folder with a space is escaped on the line",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4374,
+      "failures": []
+    },
+    {
+      "scenario": "a folder with a space works after Enter",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6193,
+      "failures": []
+    },
+    {
+      "scenario": "a folder with Polish letters",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4370,
+      "failures": []
+    },
+    {
+      "scenario": "files are offered for cat with their names",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5063,
+      "failures": []
+    },
+    {
+      "scenario": "a path in a subfolder",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4395,
+      "failures": []
+    },
+    {
+      "scenario": "parent folder",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4583,
+      "failures": []
+    },
+    {
+      "scenario": "home with a tilde",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4828,
+      "failures": []
+    },
+    {
+      "scenario": "hidden files after a dot",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4089,
+      "failures": []
+    },
+    {
+      "scenario": "an absolute path",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4004,
+      "failures": []
+    },
+    {
+      "scenario": "Enter on an absolute path takes the folder",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4539,
+      "failures": []
+    },
+    {
+      "scenario": "Enter deeper in an absolute path takes the folder",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4460,
+      "failures": []
+    },
+    {
+      "scenario": "npm run lists the package.json scripts with their commands",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4044,
+      "failures": []
+    },
+    {
+      "scenario": "a production-looking script is marked",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4018,
+      "failures": []
+    },
+    {
+      "scenario": "pnpm lists the scripts",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4051,
+      "failures": []
+    },
+    {
+      "scenario": "yarn lists the scripts",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4141,
+      "failures": []
+    },
+    {
+      "scenario": "a bookmarked folder is offered by cd from anywhere",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 13473,
+      "failures": []
+    },
+    {
+      "scenario": "bun lists the scripts",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4889,
+      "failures": []
+    },
+    {
+      "scenario": "make lists targets with their sections and descriptions",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4322,
+      "failures": []
+    },
+    {
+      "scenario": "a make target tagged prod is marked",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4318,
+      "failures": []
+    },
+    {
+      "scenario": "make -C reads the Makefile of that folder",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3895,
+      "failures": []
+    },
+    {
+      "scenario": "docker compose lists services",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4540,
+      "failures": []
+    },
+    {
+      "scenario": "a Taskfile without task installed still lists tasks",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3965,
+      "failures": []
+    },
+    {
+      "scenario": "a Makefile picked up after it changes",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7264,
+      "failures": []
+    },
+    {
+      "scenario": "just recipes from the justfile",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4391,
+      "failures": []
+    },
+    {
+      "scenario": "mise tasks from mise.toml",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4919,
+      "failures": []
+    },
+    {
+      "scenario": "deno tasks from deno.json",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4406,
+      "failures": []
+    },
+    {
+      "scenario": "a typo in the command gets the fix on the empty line",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6058,
+      "failures": []
+    },
+    {
+      "scenario": "the fix is never run without Enter",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6327,
+      "failures": []
+    },
+    {
+      "scenario": "a git subcommand typo uses what git suggests",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6335,
+      "failures": []
+    },
+    {
+      "scenario": "a missing npm script gets the near one",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 8927,
+      "failures": []
+    },
+    {
+      "scenario": "mkdir of a nested folder gets -p",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6553,
+      "failures": []
+    },
+    {
+      "scenario": "cd to a near folder name",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5472,
+      "failures": []
+    },
+    {
+      "scenario": "rm of a folder gets -r",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5462,
+      "failures": []
+    },
+    {
+      "scenario": "checkout of a near branch name",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6627,
+      "failures": []
+    },
+    {
+      "scenario": "Esc dismisses the fix and the line stays empty",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5378,
+      "failures": []
+    },
+    {
+      "scenario": "typing over the fix list starts a new command",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6137,
+      "failures": []
+    },
+    {
+      "scenario": "a port in use offers to stop the process",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 16366,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+C on a long command gives no fix",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6240,
+      "failures": []
+    },
+    {
+      "scenario": "a command that worked gives no fix",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5399,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+G explains every word of a pipe",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4113,
+      "failures": []
+    },
+    {
+      "scenario": "fixes can be turned off",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6169,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+G warns about a destructive line",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5309,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+G through sudo and &&",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5923,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+G knows combined short flags",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5853,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+G knows an option that takes a value",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6229,
+      "failures": []
+    },
+    {
+      "scenario": "Esc closes the explanation and keeps the line",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4756,
+      "failures": []
+    },
+    {
+      "scenario": "the line runs as typed after an explanation",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5749,
+      "failures": []
+    },
+    {
+      "scenario": "a snippet with fields fills in and runs",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7671,
+      "failures": []
+    },
+    {
+      "scenario": "a field value with spaces is quoted",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7011,
+      "failures": []
+    },
+    {
+      "scenario": "Esc leaves the snippet form without running anything",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6014,
+      "failures": []
+    },
+    {
+      "scenario": "a broken snippets file does not break the list",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4579,
+      "failures": []
+    },
+    {
+      "scenario": "a command run in this folder comes back as a whole",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7126,
+      "failures": []
+    },
+    {
+      "scenario": "a line with a token is never remembered",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 8135,
+      "failures": []
+    },
+    {
+      "scenario": "a failed command is not offered again as a recent one",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 8237,
+      "failures": []
+    },
+    {
+      "scenario": "tab like a shell completes the shared part",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4652,
+      "failures": []
+    },
+    {
+      "scenario": "a command run elsewhere in the repository comes back in a subfolder",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 8639,
+      "failures": []
+    },
+    {
+      "scenario": "the list only on Tab",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5070,
+      "failures": []
+    },
+    {
+      "scenario": "the light theme draws the same list",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4601,
+      "failures": []
+    },
+    {
+      "scenario": "an invalid setting falls back to the defaults",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4578,
+      "failures": []
+    },
+    {
+      "scenario": "Enter takes the entry and runs the line when enterRuns is on",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5220,
+      "failures": []
+    },
+    {
+      "scenario": "with enterRuns a folder is still walked into",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4956,
+      "failures": []
+    },
+    {
+      "scenario": "a broken spec of your own is skipped",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4971,
+      "failures": []
+    },
+    {
+      "scenario": "a spec with a generator that hangs does not block typing",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4929,
+      "failures": []
+    },
+    {
+      "scenario": "the shell works when the config file is broken",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7137,
+      "failures": []
+    },
+    {
+      "scenario": "thint inside thint does not start a second one",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6167,
+      "failures": []
+    },
+    {
+      "scenario": "quick resize back and forth with the list open",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7194,
+      "failures": []
+    },
+    {
+      "scenario": "a command that prints without a newline at the end",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5781,
+      "failures": []
+    },
+    {
+      "scenario": "Shift+Down moves an entry and the order stays",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6649,
+      "failures": []
+    },
+    {
+      "scenario": "a lone dash runs the previous folder",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5121,
+      "failures": []
+    },
+    {
+      "scenario": "git checkout - runs as typed",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5209,
+      "failures": []
+    },
+    {
+      "scenario": "the command after a pipe gets its own list",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4544,
+      "failures": []
+    },
+    {
+      "scenario": "the second command after && gets its own list",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5490,
+      "failures": []
+    },
+    {
+      "scenario": "sudo in front keeps the list of the command",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4681,
+      "failures": []
+    },
+    {
+      "scenario": "a variable in front keeps the list of the command",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5114,
+      "failures": []
+    },
+    {
+      "scenario": "an option with an equals sign",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6468,
+      "failures": []
+    },
+    {
+      "scenario": "ssh hosts from the ssh config, a capital one is marked",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4508,
+      "failures": []
+    },
+    {
+      "scenario": "environment variables after a dollar",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4123,
+      "failures": []
+    },
+    {
+      "scenario": "docker compose logs takes a service",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4519,
+      "failures": []
+    },
+    {
+      "scenario": "editing in the middle of the line",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 11767,
+      "failures": []
+    },
+    {
+      "scenario": "npm install of a version does not block typing without network",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6061,
+      "failures": []
+    },
+    {
+      "scenario": "GNU screen around thint",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5361,
+      "failures": []
+    },
+    {
+      "scenario": "icons off still shows the entries",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4210,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+R history search still belongs to the shell",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7877,
+      "failures": []
+    },
+    {
+      "scenario": "a long description is cut, not wrapped",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4632,
+      "failures": []
+    },
+    {
+      "scenario": "→ on a folder puts it on the line and lists what is inside",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4480,
+      "failures": []
+    },
+    {
+      "scenario": "the first word with recent commands",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6489,
+      "failures": []
+    },
+    {
+      "scenario": "→ twice walks two levels down",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5771,
+      "failures": []
+    },
+    {
+      "scenario": "Enter on a folder after → goes straight into it",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5671,
+      "failures": []
+    },
+    {
+      "scenario": "Enter right after → runs cd where the walk is",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4704,
+      "failures": []
+    },
+    {
+      "scenario": "← goes back to the line before →",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4800,
+      "failures": []
+    },
+    {
+      "scenario": "without a walk ← moves the cursor as always",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4792,
+      "failures": []
+    },
+    {
+      "scenario": "← one level up highlights the folder it came from",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6253,
+      "failures": []
+    },
+    {
+      "scenario": "typing after → ends the walk, so ← moves the cursor again",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5845,
+      "failures": []
+    },
+    {
+      "scenario": "→ works for other commands too",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4458,
+      "failures": []
+    },
+    {
+      "scenario": "folderArrows off leaves → to the shell",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4422,
+      "failures": []
+    },
+    {
+      "scenario": "a short tip on a highlighted folder tells that → looks inside",
+      "shell": "zsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4060,
+      "failures": []
+    }
+  ]
+}

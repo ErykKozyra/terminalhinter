@@ -1,0 +1,1310 @@
+{
+  "platform": "darwin",
+  "shells": [
+    "bash"
+  ],
+  "started": [
+    "bash"
+  ],
+  "planned": 141,
+  "strayErrors": 0,
+  "health": [
+    {
+      "done": 50,
+      "at": 1794225166172,
+      "terminalsHeldByRunner": 57,
+      "terminalsInSystem": 75,
+      "processesLeft": 4,
+      "sample": [
+        "87047 78228 S<s+ /Users/runner/hostedtoolcache/node/22.21.1/arm64/bin/node /Users/runner/work/terminalhinter/terminalhinter/build/index.js -s bash --verbose",
+        "86985 78228 S<s+ /Users/runner/hostedtoolcache/node/22.21.1/arm64/bin/node /Users/runner/work/terminalhinter/terminalhinter/build/index.js -s bash --verbose",
+        "87013 86985 S<s+ bash --init-file /var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-HScztR/home-JW2BKS/.local/share/terminalhinter/shell/shellIntegration.bash",
+        "87071 87047 S<s+ bash --init-file /var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-HScztR/home-AOJ6dZ/.local/share/terminalhinter/shell/shellIntegration.bash"
+      ]
+    },
+    {
+      "done": 100,
+      "at": 1794225274392,
+      "terminalsHeldByRunner": 107,
+      "terminalsInSystem": 125,
+      "processesLeft": 4,
+      "sample": [
+        "93760 78228 S<s+ /Users/runner/hostedtoolcache/node/22.21.1/arm64/bin/node /Users/runner/work/terminalhinter/terminalhinter/build/index.js -s bash --verbose",
+        "94020 78228 S<s+ /Users/runner/hostedtoolcache/node/22.21.1/arm64/bin/node /Users/runner/work/terminalhinter/terminalhinter/build/index.js -s bash --verbose",
+        "93786 93760 S<s+ bash --init-file /var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-HScztR/home-cqvnxx/.local/share/terminalhinter/shell/shellIntegration.bash",
+        "94046 94020 S<s+ bash --init-file /var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-HScztR/home-Wpfsij/.local/share/terminalhinter/shell/shellIntegration.bash"
+      ]
+    }
+  ],
+  "results": [
+    {
+      "scenario": "the list opens after a command and a space",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3984,
+      "failures": []
+    },
+    {
+      "scenario": "typing narrows the list",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3913,
+      "failures": []
+    },
+    {
+      "scenario": "git branch from the list with Tab",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6452,
+      "failures": []
+    },
+    {
+      "scenario": "Tab puts the selected entry on the line",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4727,
+      "failures": []
+    },
+    {
+      "scenario": "Enter on a typed word takes the entry and does not run",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4644,
+      "failures": []
+    },
+    {
+      "scenario": "Enter right after a space runs the command",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5418,
+      "failures": []
+    },
+    {
+      "scenario": "Enter runs a word typed in full that no entry starts with",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5149,
+      "failures": []
+    },
+    {
+      "scenario": "Esc hides the list until the next letter",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4963,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+Space shows the list again",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4808,
+      "failures": []
+    },
+    {
+      "scenario": "Down and Tab pick the second entry",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4876,
+      "failures": []
+    },
+    {
+      "scenario": "Backspace brings back what was there",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4808,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+U empties the line and hides the list",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4515,
+      "failures": []
+    },
+    {
+      "scenario": "Up on a line with no selection walks the shell history",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4675,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+C gives a fresh prompt with no list",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6147,
+      "failures": []
+    },
+    {
+      "scenario": "a pasted command lands as pasted",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4572,
+      "failures": []
+    },
+    {
+      "scenario": "a fast typist loses no letters",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4713,
+      "failures": []
+    },
+    {
+      "scenario": "a long line that wraps keeps every letter",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5298,
+      "failures": []
+    },
+    {
+      "scenario": "Polish letters and emoji go through untouched",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5245,
+      "failures": []
+    },
+    {
+      "scenario": "options of a command show with their descriptions",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4578,
+      "failures": []
+    },
+    {
+      "scenario": "an option already on the line is not offered again",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4823,
+      "failures": []
+    },
+    {
+      "scenario": "a command the specs do not know does not break anything",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5361,
+      "failures": []
+    },
+    {
+      "scenario": "the list follows the line after a resize",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5472,
+      "failures": []
+    },
+    {
+      "scenario": "lots of output while typing the next command",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5007,
+      "failures": []
+    },
+    {
+      "scenario": "a full-screen program and back",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6597,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+L clears the screen and the list comes back on the new line",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5877,
+      "failures": []
+    },
+    {
+      "scenario": "git switch offers local branches with their last commit",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4023,
+      "failures": []
+    },
+    {
+      "scenario": "Enter runs a word that only appears inside a variable name",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5299,
+      "failures": []
+    },
+    {
+      "scenario": "git checkout finds a branch by a word inside its name",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4960,
+      "failures": []
+    },
+    {
+      "scenario": "git stash show lists stashes by what they hold",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4427,
+      "failures": []
+    },
+    {
+      "scenario": "a branch picked with Enter runs only after a second Enter",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5373,
+      "failures": []
+    },
+    {
+      "scenario": "git stash pop takes the stash from the list",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5267,
+      "failures": []
+    },
+    {
+      "scenario": "git reset --hard is marked as risky and says why",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4348,
+      "failures": []
+    },
+    {
+      "scenario": "git push --force is marked as risky",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4349,
+      "failures": []
+    },
+    {
+      "scenario": "git branch -D is marked as risky",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4255,
+      "failures": []
+    },
+    {
+      "scenario": "git add offers changed files",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3709,
+      "failures": []
+    },
+    {
+      "scenario": "git log options with descriptions",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4199,
+      "failures": []
+    },
+    {
+      "scenario": "git commit -m keeps the quoted message as typed",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6123,
+      "failures": []
+    },
+    {
+      "scenario": "git merge offers branches",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3965,
+      "failures": []
+    },
+    {
+      "scenario": "a git alias completes like the command behind it",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 14420,
+      "failures": []
+    },
+    {
+      "scenario": "outside a repository git still shows subcommands",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3738,
+      "failures": []
+    },
+    {
+      "scenario": "git worktree add and remove",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 8373,
+      "failures": []
+    },
+    {
+      "scenario": "git reflog after a reset",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 9130,
+      "failures": []
+    },
+    {
+      "scenario": "cd lists only folders",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3662,
+      "failures": []
+    },
+    {
+      "scenario": "Enter on a folder walks into it and keeps the list open",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4133,
+      "failures": []
+    },
+    {
+      "scenario": "a folder with a space is escaped on the line",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4270,
+      "failures": []
+    },
+    {
+      "scenario": "the run entry runs cd where you are",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6080,
+      "failures": []
+    },
+    {
+      "scenario": "a folder with a space works after Enter",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6423,
+      "failures": []
+    },
+    {
+      "scenario": "a folder with Polish letters",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4467,
+      "failures": []
+    },
+    {
+      "scenario": "files are offered for cat with their names",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4629,
+      "failures": []
+    },
+    {
+      "scenario": "a path in a subfolder",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4205,
+      "failures": []
+    },
+    {
+      "scenario": "parent folder",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4599,
+      "failures": []
+    },
+    {
+      "scenario": "home with a tilde",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4778,
+      "failures": []
+    },
+    {
+      "scenario": "hidden files after a dot",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4056,
+      "failures": []
+    },
+    {
+      "scenario": "an absolute path",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4404,
+      "failures": []
+    },
+    {
+      "scenario": "Enter on an absolute path takes the folder",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4724,
+      "failures": []
+    },
+    {
+      "scenario": "Enter deeper in an absolute path takes the folder",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4900,
+      "failures": []
+    },
+    {
+      "scenario": "npm run lists the package.json scripts with their commands",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4022,
+      "failures": []
+    },
+    {
+      "scenario": "a production-looking script is marked",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4103,
+      "failures": []
+    },
+    {
+      "scenario": "pnpm lists the scripts",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4133,
+      "failures": []
+    },
+    {
+      "scenario": "yarn lists the scripts",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4139,
+      "failures": []
+    },
+    {
+      "scenario": "a bookmarked folder is offered by cd from anywhere",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 14091,
+      "failures": []
+    },
+    {
+      "scenario": "bun lists the scripts",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6096,
+      "failures": []
+    },
+    {
+      "scenario": "make lists targets with their sections and descriptions",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3788,
+      "failures": []
+    },
+    {
+      "scenario": "a make target tagged prod is marked",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4426,
+      "failures": []
+    },
+    {
+      "scenario": "make -C reads the Makefile of that folder",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4583,
+      "failures": []
+    },
+    {
+      "scenario": "docker compose lists services",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4604,
+      "failures": []
+    },
+    {
+      "scenario": "a Taskfile without task installed still lists tasks",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4107,
+      "failures": []
+    },
+    {
+      "scenario": "just recipes from the justfile",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3956,
+      "failures": []
+    },
+    {
+      "scenario": "a Makefile picked up after it changes",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 8147,
+      "failures": []
+    },
+    {
+      "scenario": "mise tasks from mise.toml",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4711,
+      "failures": []
+    },
+    {
+      "scenario": "deno tasks from deno.json",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4903,
+      "failures": []
+    },
+    {
+      "scenario": "a typo in the command gets the fix on the empty line",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7077,
+      "failures": []
+    },
+    {
+      "scenario": "the fix is never run without Enter",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6382,
+      "failures": []
+    },
+    {
+      "scenario": "a git subcommand typo uses what git suggests",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6948,
+      "failures": []
+    },
+    {
+      "scenario": "a missing npm script gets the near one",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 9385,
+      "failures": []
+    },
+    {
+      "scenario": "mkdir of a nested folder gets -p",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7514,
+      "failures": []
+    },
+    {
+      "scenario": "cd to a near folder name",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6799,
+      "failures": []
+    },
+    {
+      "scenario": "rm of a folder gets -r",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5671,
+      "failures": []
+    },
+    {
+      "scenario": "checkout of a near branch name",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7277,
+      "failures": []
+    },
+    {
+      "scenario": "Esc dismisses the fix and the line stays empty",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6456,
+      "failures": []
+    },
+    {
+      "scenario": "typing over the fix list starts a new command",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6805,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+C on a long command gives no fix",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6105,
+      "failures": []
+    },
+    {
+      "scenario": "a port in use offers to stop the process",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 18027,
+      "failures": []
+    },
+    {
+      "scenario": "a command that worked gives no fix",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5344,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+G explains every word of a pipe",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4249,
+      "failures": []
+    },
+    {
+      "scenario": "fixes can be turned off",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6295,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+G warns about a destructive line",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5126,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+G through sudo and &&",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5019,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+G knows combined short flags",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5092,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+G knows an option that takes a value",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5729,
+      "failures": []
+    },
+    {
+      "scenario": "Esc closes the explanation and keeps the line",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5005,
+      "failures": []
+    },
+    {
+      "scenario": "the line runs as typed after an explanation",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5298,
+      "failures": []
+    },
+    {
+      "scenario": "a snippet with fields fills in and runs",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7940,
+      "failures": []
+    },
+    {
+      "scenario": "a field value with spaces is quoted",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7199,
+      "failures": []
+    },
+    {
+      "scenario": "Esc leaves the snippet form without running anything",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6322,
+      "failures": []
+    },
+    {
+      "scenario": "a broken snippets file does not break the list",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4209,
+      "failures": []
+    },
+    {
+      "scenario": "a command run in this folder comes back as a whole",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6384,
+      "failures": []
+    },
+    {
+      "scenario": "a line with a token is never remembered",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7910,
+      "failures": []
+    },
+    {
+      "scenario": "a failed command is not offered again as a recent one",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7912,
+      "failures": []
+    },
+    {
+      "scenario": "tab like a shell completes the shared part",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4119,
+      "failures": []
+    },
+    {
+      "scenario": "a command run elsewhere in the repository comes back in a subfolder",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 8508,
+      "failures": []
+    },
+    {
+      "scenario": "the list only on Tab",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4946,
+      "failures": []
+    },
+    {
+      "scenario": "the light theme draws the same list",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4381,
+      "failures": []
+    },
+    {
+      "scenario": "an invalid setting falls back to the defaults",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4334,
+      "failures": []
+    },
+    {
+      "scenario": "Enter takes the entry and runs the line when enterRuns is on",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4822,
+      "failures": []
+    },
+    {
+      "scenario": "with enterRuns a folder is still walked into",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4430,
+      "failures": []
+    },
+    {
+      "scenario": "a broken spec of your own is skipped",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5656,
+      "failures": []
+    },
+    {
+      "scenario": "a spec with a generator that hangs does not block typing",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5816,
+      "failures": []
+    },
+    {
+      "scenario": "the shell works when the config file is broken",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7883,
+      "failures": []
+    },
+    {
+      "scenario": "thint inside thint does not start a second one",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6320,
+      "failures": []
+    },
+    {
+      "scenario": "quick resize back and forth with the list open",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7362,
+      "failures": []
+    },
+    {
+      "scenario": "a command that prints without a newline at the end",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6260,
+      "failures": []
+    },
+    {
+      "scenario": "Shift+Down moves an entry and the order stays",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7358,
+      "failures": []
+    },
+    {
+      "scenario": "a lone dash runs the previous folder",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5466,
+      "failures": []
+    },
+    {
+      "scenario": "git checkout - runs as typed",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4894,
+      "failures": []
+    },
+    {
+      "scenario": "the second command after && gets its own list",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4776,
+      "failures": []
+    },
+    {
+      "scenario": "the command after a pipe gets its own list",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4720,
+      "failures": []
+    },
+    {
+      "scenario": "sudo in front keeps the list of the command",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4308,
+      "failures": []
+    },
+    {
+      "scenario": "a variable in front keeps the list of the command",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5183,
+      "failures": []
+    },
+    {
+      "scenario": "an option with an equals sign",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6870,
+      "failures": []
+    },
+    {
+      "scenario": "ssh hosts from the ssh config, a capital one is marked",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4278,
+      "failures": []
+    },
+    {
+      "scenario": "environment variables after a dollar",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3794,
+      "failures": []
+    },
+    {
+      "scenario": "editing in the middle of the line",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 11786,
+      "failures": []
+    },
+    {
+      "scenario": "docker compose logs takes a service",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5267,
+      "failures": []
+    },
+    {
+      "scenario": "npm install of a version does not block typing without network",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5460,
+      "failures": []
+    },
+    {
+      "scenario": "GNU screen around thint",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5389,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+R history search still belongs to the shell",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7499,
+      "failures": []
+    },
+    {
+      "scenario": "icons off still shows the entries",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4797,
+      "failures": []
+    },
+    {
+      "scenario": "a long description is cut, not wrapped",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4829,
+      "failures": []
+    },
+    {
+      "scenario": "→ on a folder puts it on the line and lists what is inside",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4622,
+      "failures": []
+    },
+    {
+      "scenario": "the first word with recent commands",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6577,
+      "failures": []
+    },
+    {
+      "scenario": "→ twice walks two levels down",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6058,
+      "failures": []
+    },
+    {
+      "scenario": "Enter right after → runs cd where the walk is",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5267,
+      "failures": []
+    },
+    {
+      "scenario": "Enter on a folder after → goes straight into it",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6369,
+      "failures": []
+    },
+    {
+      "scenario": "← goes back to the line before →",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5129,
+      "failures": []
+    },
+    {
+      "scenario": "without a walk ← moves the cursor as always",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4786,
+      "failures": []
+    },
+    {
+      "scenario": "← one level up highlights the folder it came from",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7478,
+      "failures": []
+    },
+    {
+      "scenario": "typing after → ends the walk, so ← moves the cursor again",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6468,
+      "failures": []
+    },
+    {
+      "scenario": "→ works for other commands too",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5115,
+      "failures": []
+    },
+    {
+      "scenario": "folderArrows off leaves → to the shell",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4678,
+      "failures": []
+    },
+    {
+      "scenario": "a short tip on a highlighted folder tells that → looks inside",
+      "shell": "bash",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4281,
+      "failures": []
+    }
+  ]
+}

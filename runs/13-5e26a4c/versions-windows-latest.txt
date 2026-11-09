@@ -1,0 +1,5 @@
+os: windows-latest
+v22.21.1
+bash: GNU bash, version 5.3.15(2)-release (x86_64-pc-cygwin)
+pwsh: 7.6.9
+powershell: 5.1.26100.33648
