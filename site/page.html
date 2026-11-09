@@ -337,6 +337,61 @@ footer p { margin: 0; max-width: 60ch; }
 @media (prefers-reduced-motion: reduce) {
   .term:not(.focused) .caret { animation: none; }
 }
+
+/* under the install commands: what it does not ask for */
+.perm { list-style: none; display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 22px; margin: -6px 0 0; padding: 0; color: var(--muted); font-size: 15px; }
+.perm li { display: inline-flex; align-items: center; gap: 7px; }
+.perm svg { width: 15px; height: 15px; flex: none; fill: none; stroke: var(--p-arrow); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+
+/* the showcase: a list of features on the left, one terminal that plays the picked one on the right */
+.show-grid { display: grid; grid-template-columns: minmax(0, 300px) minmax(0, 1fr); gap: 28px; align-items: start; }
+.show-tabs { display: grid; gap: 4px; }
+.show-tabs button {
+  display: grid; gap: 3px; text-align: left; cursor: pointer; color: var(--ink);
+  background: transparent; border: 1px solid transparent; border-radius: 10px; padding: 11px 14px;
+  font: 400 15px/1.35 var(--f-body);
+}
+.show-tabs button b { font-weight: 700; font-size: 16px; }
+.show-tabs button span { color: var(--muted); font-size: 14px; }
+.show-tabs button:hover { border-color: var(--rule); }
+.show-tabs button[aria-selected="true"] { background: var(--key-bg); border-color: var(--key-edge); box-shadow: inset 3px 0 0 var(--accent); }
+.show-tabs button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.show-term .term { height: 22.4em; }
+.show-term .screen { overflow: hidden; }
+.show-term .line { height: auto; min-height: 1.6em; white-space: pre-wrap; overflow-wrap: anywhere; }
+.o-err { color: #F2777A; }
+.o-ok { color: #3BC28A; }
+.o-b { color: #F2F4F8; font-weight: 700; }
+.o-dim { color: var(--t-dim); }
+.o-acc { color: #8BB4FF; font-weight: 700; }
+.o-warn { color: var(--t-match); }
+.row .sq i.risk { background: var(--k-run); }
+.foot.red { color: #F2777A; font-style: normal; }
+.foot.warn { color: var(--t-match); font-style: normal; }
+
+/* what to press next, under the terminal; the key is a button too, for touch screens */
+.show-ask { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; min-height: 44px; padding-top: 12px; color: var(--muted); font-size: 15px; }
+.show-ask .press { font: 500 14px/1 var(--f-mono); color: var(--ink); background: var(--key-bg); border: 1px solid var(--key-edge); border-bottom-width: 2px; border-radius: 7px; padding: 7px 11px; cursor: pointer; position: relative; overflow: hidden; }
+.show-ask .press:hover { border-color: var(--accent); }
+.show-ask .press.hit { background: var(--accent); color: #fff; border-color: var(--accent); }
+/* the bar under the key fills while the demo waits, then it presses the key itself */
+.show-ask .press i { position: absolute; left: 0; bottom: 0; height: 2px; width: 100%; background: var(--accent); transform-origin: left; transform: scaleX(0); }
+.show-ask .press i.run { transition: transform var(--wait, 2.6s) linear; transform: scaleX(1); }
+.show-ask .again { font: 500 14px/1 var(--f-body); color: var(--ink); background: transparent; border: 1px solid var(--rule); border-radius: 999px; padding: 8px 13px; cursor: pointer; }
+.show-ask .again:hover { border-color: var(--muted); }
+
+@media (max-width: 860px) {
+  /* on a phone the features become a row of chips above the terminal */
+  .show-grid { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+  .show-tabs { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; }
+  .show-tabs::-webkit-scrollbar { display: none; }
+  .show-tabs button { flex: none; border: 1px solid var(--rule); border-radius: 999px; padding: 8px 13px; }
+  .show-tabs button b { font-size: 14px; font-weight: 500; }
+  .show-tabs button span { display: none; }
+  .show-tabs button[aria-selected="true"] { box-shadow: none; border-color: var(--accent); color: var(--accent); }
+  .show-term .term { height: 24em; }
+}
+
 </style>
 
 <script>try { const t = localStorage.getItem("thint-theme"); if (t === "light" || t === "dark") document.documentElement.dataset.theme = t; } catch {}</script>
@@ -362,6 +417,12 @@ footer p { margin: 0; max-width: 60ch; }
       <code id="install-cmd"><span>npm i -g @erykkozyra/terminalhinter</span><span>thint init</span></code>
       <button class="copy" id="copy" type="button" aria-label="Copy the install commands">Copy</button>
     </div>
+    <ul class="perm" aria-label="What it does not ask for">
+      <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m3 8.5 3.2 3L13 4.5"/></svg>No Accessibility permission</li>
+      <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m3 8.5 3.2 3L13 4.5"/></svg>No app in the menu bar</li>
+      <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m3 8.5 3.2 3L13 4.5"/></svg>No account</li>
+      <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m3 8.5 3.2 3L13 4.5"/></svg>No telemetry</li>
+    </ul>
     <div class="groups" aria-label="Where it runs">
       <div class="grp"><small>macOS and Linux</small><div><span class="lg"><img src="shell-zsh.svg" alt="" style="--s:1.3" width="22" height="22">zsh</span><span class="lg"><img src="shell-bash.png" alt="" width="22" height="22">bash</span><span class="lg"><img src="shell-fish.png" alt="" style="--s:1.4" width="22" height="22">fish</span><span class="lg"><img src="shell-powershell.svg" alt="" width="22" height="22">PowerShell</span></div></div>
       <i aria-hidden="true"></i>
@@ -395,6 +456,28 @@ footer p { margin: 0; max-width: 60ch; }
       <span><i style="background:var(--k-alias)"></i>your alias</span>
     </div>
   </div>
+
+  <section class="show" id="show">
+    <h2>See the parts that set it apart.</h2>
+    <p class="lede-small">Pick one and it plays. Where you would press a key it waits a moment: press it yourself, or tap the key under the terminal.</p>
+    <div class="show-grid" id="show-tabs-layout">
+      <div class="show-tabs" role="tablist" aria-label="Features">
+        <button type="button" role="tab" data-scene="fix" aria-selected="true"><b>The fix for a failed command</b><span>A typo or a missing upstream, Tab takes the fix</span></button>
+        <button type="button" role="tab" data-scene="risk" aria-selected="false"><b>Red before you force-push</b><span>And Ctrl+G explains the whole line</span></button>
+        <button type="button" role="tab" data-scene="versions" aria-selected="false"><b>Package versions</b><span>Tags and releases after <code class="inline">react@</code></span></button>
+        <button type="button" role="tab" data-scene="ports" aria-selected="false"><b>A port that is taken</b><span>Which process holds it, and in which folder</span></button>
+        <button type="button" role="tab" data-scene="migrate" aria-selected="false"><b>Coming from Kiro CLI or Fig</b><span>One command takes their lines out</span></button>
+        <button type="button" role="tab" data-scene="setup" aria-selected="false"><b>Every shell in one setup</b><span>With a backup of each config</span></button>
+      </div>
+      <div class="show-term">
+        <div class="term" id="show-term" tabindex="0" role="application" aria-label="A demo that plays the picked feature. Press the key it asks for.">
+          <div class="bar" aria-hidden="true"><span></span><span></span><span></span><b>zsh</b></div>
+          <div class="screen"></div>
+        </div>
+        <div class="show-ask" id="show-ask" aria-live="polite"></div>
+      </div>
+    </div>
+  </section>
 
   <section>
     <div class="sec-head">
@@ -483,10 +566,6 @@ footer p { margin: 0; max-width: 60ch; }
       <div>
         <h3>Workspaces and folders</h3>
         <p><code class="inline">pnpm --filter</code> and <code class="inline">yarn workspace</code> list your packages, and <code class="inline">cd</code> finds folders from anywhere through your bookmarks and zoxide.</p>
-      </div>
-      <div>
-        <h3>Nothing to allow</h3>
-        <p>It runs inside your terminal, so there is no Accessibility, Screen Recording or Input Monitoring to switch on, no app in the menu bar and no account. Install it and open a new tab.</p>
       </div>
     </div>
     <div class="split">
@@ -581,7 +660,7 @@ footer p { margin: 0; max-width: 60ch; }
       </div>
       <div class="qa">
         <h3>Does it send my commands anywhere?</h3>
-        <p>No. What you pick and the order you set stay in a folder on your machine. Once a day it asks npm which version is the newest; <code class="inline">thint config set updateCheck false</code> turns that off.</p>
+        <p>No. There is no telemetry and no account. What you type, the commands it remembers, what you pick and the order you set stay in a folder on your machine. It goes online only to look up packages: once a day it asks npm which thint version is the newest (<code class="inline">thint config set updateCheck false</code> turns that off), and when you type a package name or <code class="inline">react@</code> it asks the npm registry and the npms.io package search for matches, sending only that word.</p>
       </div>
       <div class="qa">
         <h3>How is it related to inshellisense?</h3>
@@ -1071,3 +1150,312 @@ footer p { margin: 0; max-width: 60ch; }
   document.fonts && document.fonts.ready.then(() => { measure(); draw(); });
 })();
 </script>
+<script>
+(() => {
+  // ---- the features, each a short scene: typing, what the shell prints, the list, and keys to press ------------
+  const section = document.getElementById("show");
+  if (!section) return;
+  const mac = () => (document.querySelector('[data-os][aria-pressed="true"]') || {}).dataset?.os === "mac";
+  const KEY = {
+    Enter: () => (mac() ? "return" : "Enter"),
+    Tab: () => (mac() ? "tab" : "Tab"),
+    Down: () => "↓",
+    CtrlG: () => (mac() ? "Control+G" : "Ctrl+G"),
+  };
+  const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  const fit = (s, w) => (w <= 0 ? "" : s.length <= w ? s : s.slice(0, Math.max(w - 1, 0)) + "…");
+  // output lines: a string, or [class, text]
+  const err = (t) => ["o-err", t], ok = (t) => ["o-ok", t], b = (t) => ["o-b", t], dim = (t) => ["o-dim", t], acc = (t) => ["o-acc", t];
+
+  const zsh = { shell: "zsh", prompt: (wide) => [["p-arrow", "➜  "], ["p-dir", "shop"], ["", " "], ...(wide ? [["p-git", "git:("], ["p-branch", "feature/login"], ["p-git", ")"], ["", " "]] : [])] };
+  const pwsh = { shell: "PowerShell", prompt: () => [["", "PS C:\\Users\\you> "]] };
+
+  const SCENES = {
+    fix: {
+      title: "The fix for a failed command", blurb: "A typo or a missing upstream: the empty line after the error offers the fix, Tab takes it.",
+      ...zsh,
+      steps: () => [
+        ["type", "gti status"], ["key", "Enter", "to run it"],
+        ["run", err("zsh: command not found: gti")],
+        ["list", { at: 0, sel: 0, items: [{ name: "git status", desc: '"gti" is not a command, git is', kind: "fix" }] }],
+        ["key", "Tab", "to take the fix"], ["line", "git status"],
+        ["key", "Enter", "to run it"], ["run", "On branch feature/login", "nothing to commit, working tree clean"],
+        ["pause", 500], ["type", "git push"], ["key", "Enter", "to run it"],
+        ["run", err("fatal: The current branch feature/login has no upstream branch.")],
+        ["list", { at: 0, sel: 0, items: [{ name: "git push --set-upstream origin feature/login", desc: "the command git suggests", kind: "fix" }] }],
+        ["key", "Tab", "to take the fix"], ["line", "git push --set-upstream origin feature/login"], ["pause", 900],
+      ],
+    },
+    risk: {
+      title: "Red before you force-push", blurb: "Entries that delete or overwrite are red and say why. Ctrl+G explains every word of the line.",
+      ...zsh,
+      steps: () => [
+        ["type", "git push --f"],
+        ["list", { at: 9, sel: 0, foot: ["red", "overwrites the remote branch, other people's commits can be lost"], items: [
+          { name: "--force", desc: "Force updates", kind: "risk" },
+          { name: "--force-with-lease", desc: "Force updates if nobody pushed", kind: "risk" },
+          { name: "--follow-tags", desc: "Push missing annotated tags", kind: "option" },
+        ] }],
+        ["key", "Tab", "to take it anyway"], ["line", "git push --force "], ["type", "origin main"],
+        ["key", "CtrlG", "to see what each word does"],
+        ["list", { at: 0, sel: -1, explain: true, foot: ["warn", "⚠ --force: overwrites the remote branch, other people's commits can be lost"], items: [
+          { name: "git", desc: "The stupid content tracker", kind: "command" },
+          { name: "push", desc: "Update remote refs along with associated objects", kind: "command" },
+          { name: "--force", desc: "Force updates", kind: "risk" },
+          { name: "origin", desc: "remote", kind: "value" },
+          { name: "main", desc: "branch", kind: "value" },
+        ] }],
+        ["pause", 2600],
+      ],
+    },
+    versions: {
+      title: "Package versions", blurb: "After react@ the list has the tags and the newest releases, straight from npm. Typing 18 narrows it to 18.x.",
+      ...zsh,
+      steps: () => [
+        ["type", "npm i react@"], ["pause", 250],
+        ["list", { at: 6, sel: 0, count: 43, items: [
+          { name: "latest", desc: "19.2.0", kind: "tag" },
+          { name: "canary", desc: "19.3.0-canary-5ac3c9d7", kind: "tag" },
+          { name: "next", desc: "19.3.0-canary-5ac3c9d7", kind: "tag" },
+          { name: "19.2.0", desc: "latest", kind: "value" },
+          { name: "19.1.1", kind: "value" },
+          { name: "19.1.0", kind: "value" },
+        ] }],
+        ["pause", 900], ["type", "18"],
+        ["list", { at: 6, sel: 0, items: [
+          { name: "18.3.1", kind: "value" }, { name: "18.3.0", kind: "value" }, { name: "18.2.0", kind: "value" },
+          { name: "18.1.0", kind: "value" }, { name: "18.0.0", kind: "value" },
+        ] }],
+        ["key", "Tab", "to put it on the line"], ["line", "npm i react@18.3.1 "],
+        ["key", "Enter", "to run it"], ["run", "", "changed 1 package in 2s"], ["pause", 900],
+      ],
+    },
+    ports: {
+      title: "A port that is taken", blurb: "When a port is busy the fix names the process. kill lists what listens, with its folder.",
+      ...zsh,
+      steps: () => [
+        ["type", "pnpm dev"], ["key", "Enter", "to run it"],
+        ["run", dim("> next dev"), err("Error: listen EADDRINUSE: address already in use :::3000")],
+        ["list", { at: 0, sel: 0, items: [{ name: "kill 48213", desc: "port 3000 is held by next dev", kind: "fix" }] }],
+        ["key", "Tab", "to take the fix"], ["line", "kill 48213"], ["key", "Enter", "to run it"], ["run"],
+        ["pause", 400], ["type", "kill "],
+        ["list", { at: 5, sel: -1, items: [
+          { name: "51877", desc: ":5173 vite · ~/Dev/blog", kind: "value" },
+          { name: "612", desc: ":5432 postgres · /opt/homebrew/var", kind: "value" },
+        ] }],
+        ["pause", 2600],
+      ],
+    },
+    migrate: {
+      title: "Coming from Kiro CLI or Fig", blurb: "thint migrate finds their startup lines in your shell files and takes them out, with a copy of each file.",
+      ...zsh,
+      steps: () => [
+        ["type", "thint migrate"], ["key", "Enter", "to run it"],
+        ["run", b("~/.zshrc: 2 lines to take out"),
+          dim('  - [[ -f "…/kiro-cli/shell/zshrc.pre.zsh" ]] && builtin source …'),
+          dim('  - [[ -f "…/kiro-cli/shell/zshrc.post.zsh" ]] && builtin source …'), "",
+          "Take these lines out? A copy of each file is kept next to it. [Y/n]"],
+        ["noprompt"], ["key", "Enter", "for yes"],
+        ["out", ok("✓ ~/.zshrc (copy in ~/.zshrc.before-thint-migrate)"), "", "Open a new terminal tab to start with terminalhinter only."],
+        ["prompt"], ["pause", 2200],
+      ],
+    },
+    setup: {
+      title: "Every shell in one setup", blurb: "thint init finds the shells you have and sets them all up, with a backup of each config.",
+      get shell() { return mac() ? "zsh" : "PowerShell"; },
+      prompt: (wide) => (mac() ? zsh : pwsh).prompt(wide),
+      steps: () => {
+        const w = !mac();
+        const shell = w ? "pwsh" : "zsh";
+        const file = w ? "~\\Documents\\PowerShell\\Microsoft.PowerShell_profile.ps1" : "~/.zshrc";
+        const others = w ? "powershell, bash" : "fish, bash";
+        const ask = (q, yes, no) => [["out", b(`? ${q}`), acc(`› Yes  ${yes}`), dim(`  No   ${no}`)], ["key", "Enter", "for yes"], ["pop", 3], ["out", [["o-dim", `✔ ${q} `], ["o-ok", "Yes"]]]];
+        return [
+          ["type", "thint init"], ["key", "Enter", "to run it"],
+          ["run", b("terminalhinter setup"), dim("Esc to quit, nothing is written until the end"), "", `✔ Shell  ${shell}  (this shell)`, "✔ Theme  thint"],
+          ["noprompt"], ["pause", 500],
+          ...ask(`Put the startup lines at the top of ${file}?`, "a backup of the file is kept", "just show me the line"),
+          ...ask(`Also start terminalhinter in ${others}?`, "their configs get a backup too", `only ${shell}`),
+          ...(w ? ask("powershell (Restricted) does not run scripts, so the startup lines would be skipped. Allow scripts for your user?", "Set-ExecutionPolicy -Scope CurrentUser RemoteSigned", "I will do it myself") : []),
+          ["out", "", ...(w
+            ? [ok("✓ pwsh, powershell and bash have the startup lines"), ok("✓ powershell runs scripts now (RemoteSigned, for your user only)")]
+            : [ok("✓ zsh: startup lines are at the top of ~/.zshrc"), ok("✓ fish: startup lines are at the top of ~/.config/fish/config.fish"), ok("✓ bash: startup lines are at the top of ~/.bashrc")]),
+            "", "Done. Open a new terminal tab."],
+          ["prompt"], ["pause", 2400],
+        ];
+      },
+    },
+  };
+  const ORDER = ["fix", "risk", "versions", "ports", "migrate", "setup"];
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const KIND = { fix: "--k-value", risk: "--k-run", option: "--k-option", command: "--k-command", value: "--k-value", tag: "--k-alias" };
+
+  // ---- one terminal that plays a scene ---------------------------------------------------------------------------
+  class Player {
+    constructor(term, opts) {
+      this.term = term; this.screen = term.querySelector(".screen"); this.title = term.querySelector(".bar b");
+      this.opts = opts; this.run = 0; this.charW = 9; this.cols = 80;
+    }
+    measure() {
+      const probe = document.createElement("span");
+      probe.textContent = "0".repeat(50);
+      probe.style.cssText = "position:absolute;visibility:hidden;white-space:pre";
+      this.screen.appendChild(probe);
+      this.charW = probe.getBoundingClientRect().width / 50 || 9;
+      probe.remove();
+      const pad = parseFloat(getComputedStyle(this.screen).paddingLeft) || 0;
+      this.cols = Math.floor((this.screen.clientWidth - 2 * pad) / this.charW);
+    }
+    play(id) {
+      const run = ++this.run;
+      this.scene = SCENES[id]; this.id = id;
+      this.history = []; this.line = ""; this.list = null; this.promptOn = true; this.waiting = null;
+      this.steps = this.scene.steps(); this.i = 0;
+      if (this.title) this.title.textContent = this.scene.shell;
+      this.measure(); this.draw();
+      this.opts.onAsk?.(null);
+      this.later(run, () => this.step(run), reduce ? 0 : 450);
+    }
+    stop() { this.run++; clearTimeout(this.timer); }
+    later(run, fn, ms) { clearTimeout(this.timer); this.timer = setTimeout(() => { if (run === this.run) fn(); }, ms); }
+    promptHtml() { return this.scene.prompt(this.cols >= 64).map(([c, t]) => (c ? `<span class="${c}">${esc(t)}</span>` : esc(t))).join(""); }
+    promptLen() { return this.scene.prompt(this.cols >= 64).map((p) => p[1]).join("").length; }
+    step(run) {
+      if (run !== this.run) return;
+      const s = this.steps[this.i++];
+      if (!s) { this.opts.onEnd?.(this); return; }
+      const [t, ...a] = s;
+      const go = (ms = 0) => this.later(run, () => this.step(run), reduce ? 0 : ms);
+      if (t === "type") {
+        const text = a[0]; let k = 0; this.list = null;
+        const tick = () => { if (run !== this.run) return; this.line += text[k++]; this.draw(); if (k < text.length) this.later(run, tick, 55 + Math.random() * 60); else go(350); };
+        if (reduce) { this.line += text; this.draw(); go(); } else tick();
+      } else if (t === "key") {
+        this.waiting = { key: a[0], run };
+        this.opts.onAsk?.({ key: a[0], say: a[1], auto: this.opts.auto(), wait: this.opts.wait }, (pressed) => this.press(pressed));
+        if (this.opts.auto()) this.later(run, () => this.press(a[0], true), this.opts.wait);
+        else clearTimeout(this.timer);
+      } else if (t === "run") {
+        this.history.push({ html: this.promptHtml() + esc(this.line) }); this.line = ""; this.list = null;
+        for (const o of a) this.history.push(this.out(o));
+        this.draw(); go(500);
+      } else if (t === "out") { for (const o of a) this.history.push(this.out(o)); this.draw(); go(450); }
+      else if (t === "pop") { this.history.splice(-a[0]); this.draw(); go(); }
+      else if (t === "list") { this.list = a[0]; this.draw(); go(700); }
+      else if (t === "line") { this.line = a[0]; this.list = null; this.draw(); go(500); }
+      else if (t === "noprompt") { this.promptOn = false; this.draw(); go(); }
+      else if (t === "prompt") { this.promptOn = true; this.draw(); go(300); }
+      else if (t === "pause") go(a[0]);
+    }
+    press(key, auto) {
+      const w = this.waiting;
+      if (!w || w.key !== key || w.run !== this.run) return false;
+      this.waiting = null;
+      this.opts.onPress?.(key, auto);
+      this.later(this.run, () => this.step(w.run), auto ? 260 : 120);
+      return true;
+    }
+    out(o) {
+      // a line is text, [class, text], or a list of [class, text] parts
+      const part = (x) => `<span class="${x[0]}">${esc(x[1])}</span>`;
+      if (typeof o === "string") return { html: esc(o), out: true };
+      return { html: Array.isArray(o[0]) ? o.map(part).join("") : part(o), out: true };
+    }
+    draw() {
+      // the newest lines stay in view: older ones go off the top, like a real terminal scrolling
+      for (let from = 0; ; from++) {
+        let html = this.history.slice(from).map((h) => `<div class="line${h.out ? " out" : ""}">${h.html || " "}</div>`).join("");
+        if (this.promptOn) html += `<div class="line" data-p>${this.promptHtml()}${esc(this.line)}<span class="caret"></span></div>`;
+        this.screen.innerHTML = html;
+        const box = this.list && this.promptOn ? this.drawList() : null;
+        const bottom = box ? box.offsetTop + box.offsetHeight : this.screen.scrollHeight;
+        if (bottom <= this.screen.clientHeight || from >= this.history.length) break;
+      }
+    }
+    drawList() {
+      const L = this.list, rows = L.items.slice(0, 6);
+      const p = this.screen.querySelector("[data-p]");
+      const nameCol = Math.max(...rows.map((i) => i.name.length));
+      const descCol = Math.max(0, ...rows.map((i) => (i.desc || "").length));
+      let width = Math.min(Math.max(4 + nameCol + (descCol ? 2 + descCol : 0) + 3, 30), this.cols);
+      const anchor = Math.max(this.promptLen() + L.at - 3, 0);
+      const startCol = Math.max(Math.min(anchor, this.cols - width), 0);
+      const text = width - 7;
+      const col = Math.min(nameCol, text);
+      const rowsHtml = rows.map((it, k) => {
+        const isSel = k === L.sel;
+        const shown = fit(it.name, Math.max(col, Math.min(it.name.length, text)));
+        const dw = text - Math.max(col, shown.length) - 2;
+        const d = it.desc && dw >= 5 ? fit(it.desc, dw) : "";
+        const color = isSel && it.kind !== "risk" ? "#fff" : `var(${KIND[it.kind] || "--k-value"})`;
+        return `<div class="row${isSel ? " sel" : ""}"><span class="sq"><i style="background:${color}"></i></span><span class="name">${esc(shown)}</span>${d ? `<span class="desc">${" ".repeat(Math.max(col, shown.length) - shown.length + 2)}${esc(d)}</span>` : ""}</div>`;
+      }).join("");
+      const box = document.createElement("div");
+      box.className = "list" + (L.explain ? " explain" : "");
+      const pad = getComputedStyle(this.screen);
+      box.style.left = `calc(${startCol * this.charW}px + ${pad.paddingLeft})`;
+      box.style.top = `${p.offsetTop + p.offsetHeight}px`;
+      box.style.width = `${width * this.charW}px`;
+      const count = L.count ? `<span class="edge-count">${L.sel >= 0 ? L.sel + 1 + "/" : ""}${L.count}</span>` : "";
+      box.innerHTML = count + rowsHtml + (L.foot ? `<div class="foot ${L.foot[0]}">${esc(L.foot[1])}</div>` : "");
+      this.screen.appendChild(box);
+      return box;
+    }
+  }
+
+  const keyOf = (e) => (e.key === "Enter" ? "Enter" : e.key === "Tab" ? "Tab" : e.key === "ArrowDown" ? "Down" : (e.key === "g" || e.key === "G") && e.ctrlKey ? "CtrlG" : null);
+
+  // ---- the list of features and one terminal ----------------------------------------------------------------
+  {
+    const term = document.getElementById("show-term");
+    const ask = document.getElementById("show-ask");
+    const tabs = [...section.querySelectorAll("[data-scene]")];
+    let touched = false;      // once you press a key or pick a feature, the demo waits for you and stops moving on
+    let carousel = true;
+    const WAIT = 2600;
+    const player = new Player(term, {
+      auto: () => !touched,
+      wait: WAIT,
+      onAsk: (q, press) => {
+        if (!q) { ask.innerHTML = ""; return; }
+        ask.innerHTML = `<span>Press</span><button type="button" class="press">${esc(KEY[q.key]())}<i></i></button><span>${esc(q.say)}</span>`;
+        const btn = ask.querySelector(".press");
+        btn.addEventListener("click", () => { touched = true; carousel = false; press(q.key); term.focus({ preventScroll: true }); });
+        if (q.auto && !reduce) { const bar = btn.querySelector("i"); ask.style.setProperty("--wait", `${q.wait}ms`); requestAnimationFrame(() => requestAnimationFrame(() => bar.classList.add("run"))); }
+      },
+      onPress: () => { const btn = ask.querySelector(".press"); if (btn) btn.classList.add("hit"); setTimeout(() => { if (ask.contains(btn)) ask.innerHTML = ""; }, 320); },
+      onEnd: () => {
+        const at = ORDER.indexOf(player.id);
+        const next = ORDER[(at + 1) % ORDER.length];
+        ask.innerHTML = `<button type="button" class="again">Play again</button><span>or pick another one</span>`;
+        ask.querySelector(".again").addEventListener("click", () => { touched = true; carousel = false; pick(player.id); });
+        if (carousel && !reduce) player.later(player.run, () => pick(next, true), 1800);
+      },
+    });
+    function pick(id, byCarousel) {
+      tabs.forEach((t) => t.setAttribute("aria-selected", String(t.dataset.scene === id)));
+      player.play(id);
+      if (!byCarousel) { carousel = false; }
+    }
+    tabs.forEach((t) => t.addEventListener("click", () => pick(t.dataset.scene)));
+    term.addEventListener("keydown", (e) => {
+      const k = keyOf(e);
+      if (!k) return;
+      e.preventDefault();
+      touched = true; carousel = false;
+      if (!player.press(k)) {
+        const btn = ask.querySelector(".press");
+        if (btn) { btn.animate([{ transform: "translateX(0)" }, { transform: "translateX(-3px)" }, { transform: "translateX(3px)" }, { transform: "translateX(0)" }], { duration: 180 }); }
+      }
+    });
+    term.addEventListener("click", () => term.focus({ preventScroll: true }));
+    // it starts when it comes into view, so the first scene is not over before anyone looks
+    let started = false;
+    const io = new IntersectionObserver((es) => { if (!started && es.some((e) => e.isIntersecting)) { started = true; pick("fix", true); io.disconnect(); } }, { threshold: 0.4 });
+    io.observe(term);
+    addEventListener("resize", () => { player.measure(); player.draw(); });
+    document.querySelectorAll("[data-os]").forEach((bt) => bt.addEventListener("click", () => { if (player.id === "setup") pick("setup"); }));
+  }
+})();
+</script>
+

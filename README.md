@@ -67,7 +67,7 @@ cmd has no startup file to put the lines in, so there you start the list with `t
 **And it gets out of the way**
 
 - **Nothing to allow.** It runs inside your terminal: no Accessibility, Screen Recording or Input Monitoring to switch
-  on, no app in the menu bar, no account. Your commands never leave your machine.
+  on, no app in the menu bar, no account, no telemetry. Your commands stay on your machine.
 - **Enter walks into folders.** The list stays open with what is inside; the `↪` entry runs the command where you
   are. `cd` also finds folders from anywhere through your bookmarks and zoxide.
 - **→ looks inside a folder before you commit to it.** It puts the folder on the line and lists what is inside; ←
@@ -245,8 +245,9 @@ Start a tab by hand with logging on, for example `thint -s zsh -V`, do what goes
 | What it learned, logs, its own files | `~/.local/share/terminalhinter` (`~/.terminalhinter` on Windows and older installs) |
 | Startup lines | the top of `~/.zshrc`, `~/.bashrc`, `config.fish` or your PowerShell `$PROFILE`, between `# >>> terminalhinter >>>` and `# <<< terminalhinter <<<` |
 
-Nothing leaves your machine. Once a day thint asks npm for the newest version number; `updateCheck = false` turns that
-off.
+There is no telemetry. What you type and what thint learns stay in these folders. It goes online only to look up
+packages: once a day it asks npm for its own newest version number (`updateCheck = false` turns that off), and when you
+type a package name or `react@` it asks the npm registry and the npms.io package search for matches, sending only that word.
 
 ## Credits
 
