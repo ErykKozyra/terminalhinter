@@ -205,7 +205,8 @@ thint failed and left you a plain shell instead of closing the tab. The message 
 thint's files again, which fixes most of these.
 
 **After updating with pnpm, new tabs still start the old version.**
-Run `thint reinit` once. This hits updates from 1.1.3 and older.
+Run `thint reinit` once. This hits only updates from 1.1.3 and older made with `pnpm add -g` by hand; `thint update`
+does it for you.
 
 **Ctrl+Space does nothing, or switches the keyboard layout.**
 macOS uses Control+Space to switch input sources when you have more than one: turn that shortcut off in System
