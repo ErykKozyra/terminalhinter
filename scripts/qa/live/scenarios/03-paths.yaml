@@ -82,6 +82,23 @@
     - type: "ls /us"
       list_has: "usr/"
 
+# reported by a user: Enter on an absolute path ran cd instead of taking the folder (only Tab worked)
+- name: Enter on an absolute path takes the folder
+  shells: [zsh, bash, fish]
+  steps:
+    - type: "cd /us"
+    - key: ENTER
+      expect_regex: "qa\\$ cd /usr/\\s*$"
+      expect_ran_count: 0
+
+- name: Enter deeper in an absolute path takes the folder
+  shells: [zsh, bash, fish]
+  steps:
+    - type: "cd /usr/sh"
+    - key: ENTER
+      expect_regex: "qa\\$ cd /usr/share/\\s*$"
+      expect_ran_count: 0
+
 - name: a bookmarked folder is offered by cd from anywhere
   shells: [zsh, bash, fish]
   steps:

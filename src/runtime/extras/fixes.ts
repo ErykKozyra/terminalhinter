@@ -122,9 +122,14 @@ const rules: Rule[] = [
     } catch {
       return [];
     }
-    const match = closest(path.basename(target), dirs, 2);
+    const typed = path.basename(target);
+    // a folder that starts with what was typed wins over one a letter or two away (`cd /usr/sh` is share, not src)
+    const started = typed.length >= 2 ? dirs.filter((d) => d.toLowerCase().startsWith(typed.toLowerCase())).sort((a, b) => a.length - b.length)[0] : undefined;
+    const match = started ?? closest(typed, dirs, 2);
     const dir = path.dirname(target);
-    return match ? [{ command: `cd ${dir === "." ? "" : dir + "/"}${match}/`, reason: `no folder "${path.basename(target)}", there is ${match}` }] : [];
+    // `cd /us` has the root as its folder, which already ends in a slash
+    const lead = dir === "." ? "" : /[/\\]$/.test(dir) ? dir : dir + "/";
+    return match ? [{ command: `cd ${lead}${match}/`, reason: `no folder "${typed}", there is ${match}` }] : [];
   },
   // EADDRINUSE / address already in use :3000 → kill what holds the port
   async ({ failure }) => {

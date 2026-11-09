@@ -9,7 +9,7 @@ import { findFixes, portInUse } from "../../runtime/extras/fixes.js";
 
 const dir = fs.mkdtempSync(path.join(os.tmpdir(), "thint-fixes-"));
 fs.writeFileSync(path.join(dir, "package.json"), JSON.stringify({ scripts: { build: "tsc", dev: "vite", test: "jest", lint: "eslint .", "dev:web": "x" } }));
-for (const d of ["src", "packages", "Documents", "node_modules"]) fs.mkdirSync(path.join(dir, d));
+for (const d of ["src", "packages", "Documents", "node_modules", "shared"]) fs.mkdirSync(path.join(dir, d));
 fs.mkdirSync(path.join(dir, "packages", "web"));
 afterAll(() => fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 200 }));
 
@@ -216,11 +216,16 @@ const fileCases: [string, string, number, string, string][] = [
   ["cd with a trailing slash", "cd scr/", 1, "cd: no such file or directory: scr/", "cd src/"],
   ["cd nested", "cd packages/wbe", 1, "cd: no such file or directory: packages/wbe", "cd packages/web/"],
   ["cd case", "cd documents", 1, "cd: no such file or directory: documents", "cd Documents/"],
+  ["cd a folder that starts with it wins over a near one", "cd sh", 1, "cd: no such file or directory: sh", "cd shared/"],
 ];
 
 describe("files and folders", () => {
   test.each(fileCases)("%s", async (_name, command, code, output, expected) => {
     expect((await fix(command, code, output))[0]).toBe(expected);
+  });
+  // the root already ends in a slash: `cd /us` becomes cd /usr/, never cd //usr/
+  (process.platform === "win32" ? test.skip : test)("cd at the root keeps one slash", async () => {
+    expect((await fix("cd /us", 1, "cd: no such file or directory: /us"))[0]).toBe("cd /usr/");
   });
 });
 

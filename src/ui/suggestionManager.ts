@@ -281,7 +281,9 @@ export class SuggestionManager {
     // Only an entry that starts with what you typed is preselected. One found by letters in order (`one` in
     // $OPENBLAS_NUM_THREADS) stays unselected, so Enter runs the line as you typed it; Tab still takes it.
     const top = this.#suggestBlob?.suggestions[0];
-    const want = token.token.toLowerCase().replace(/^['"$]/, "");
+    // in a path only the part after the last slash is matched (`/us` is typed, the entry is `usr/`)
+    const want = (token.isPath ? this._partialText() : token.token).toLowerCase().replace(/^['"$]/, "");
+    if (token.isPath && want.length === 0) return 0;
     // the name itself, or a part after a slash (feature/login for "login"), never a word inside $SOME_VARIABLE
     const starts = (name: string) => {
       const lower = name.toLowerCase().replace(/^['"$]/, "");
