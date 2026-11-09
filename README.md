@@ -15,15 +15,31 @@ thint init
 ```
 
 `thint init` asks for your shell, a theme and icons, with a live preview, and offers to set up the other shells it
-finds too (on Windows: PowerShell 7, Windows PowerShell and Git Bash). Then open a new terminal tab and type `git ` or
-`cd `.
+finds in the same go. Then open a new terminal tab and type `git ` or `cd `.
 
-Works on macOS and Linux with zsh and bash. Windows and fish are experimental.
+### Where it runs
 
-On Windows, Windows PowerShell 5.1 comes with scripts turned off, so it would skip the startup lines in its profile.
-`thint init` sees that and offers to allow them for your user (`Set-ExecutionPolicy -Scope CurrentUser RemoteSigned`).
-If `thint` itself will not start there for the same reason, run `thint.cmd init`. cmd has no startup file: start the
-list there with `thint -s cmd`.
+| System | Shells |
+| --- | --- |
+| macOS, Linux | zsh, bash, fish, PowerShell 7 |
+| Windows | PowerShell 7, Windows PowerShell 5.1, Git Bash; cmd started by hand (`thint -s cmd`) |
+
+Any terminal app works: iTerm2, Terminal.app, Ghostty, WezTerm, Kitty, Alacritty, VS Code, Cursor, Windows Terminal,
+and tmux or screen inside them. zsh and bash on macOS and Linux have been around the longest; fish and Windows are
+newer, so if something looks off there, [open an issue](https://github.com/ErykKozyra/terminalhinter/issues).
+nushell and xonsh come from the upstream project and are not tested.
+
+### On Windows
+
+Run `npm i -g @erykkozyra/terminalhinter` and `thint init` in PowerShell 7 or Windows PowerShell. The setup puts
+the startup lines into the profile of both PowerShells and into `~/.bashrc` for Git Bash.
+
+Windows PowerShell 5.1 comes with scripts turned off, so it would skip its profile and the list never starts there.
+`thint init` sees that and offers to allow scripts for your user only
+(`Set-ExecutionPolicy -Scope CurrentUser RemoteSigned`, what PowerShell 7 has from the start). If `thint` or `npm`
+themselves will not start in Windows PowerShell for the same reason, use `thint.cmd init` and `npm.cmd`.
+
+cmd has no startup file to put the lines in, so there you start the list with `thint -s cmd`.
 
 ## What it does
 
@@ -118,6 +134,18 @@ options:
 
 `thint specs check` points out mistakes. A broken file is skipped and the rest keep working.
 
+## Snippets
+
+Commands you type often, with fields to fill in, go in `~/.config/terminalhinter/snippets.yaml` (`thint snippets new`
+starts the file):
+
+```yaml
+- name: release
+  command: 'git tag v{{version}} && git push --tags'
+```
+
+Type the name, fill the fields, and the finished command lands on the line.
+
 ## Looks best in VS Code with
 
 ```json
@@ -128,14 +156,14 @@ options:
 
 `minimumContrastRatio: 1` stops VS Code from changing the colors of the list. Any monospace font works.
 
-<details>
-<summary><b>Updating, nvm, installing from source, uninstalling</b></summary>
+## Updating and uninstalling
 
-**Updating.** `thint update`. A new tab tells you once when a new version is out; `thint config set updateCheck false` turns that off. An update with `npm i -g` works too: the next new tab picks it up by itself.
+**Updating.** `thint update`. A new tab tells you once when a new version is out; `thint config set updateCheck false`
+turns that off. An update with `npm i -g @erykkozyra/terminalhinter@latest` works too: the next new tab picks it up.
 
-**nvm.** thint carries its own runtime, so switching Node never breaks the list in open tabs. The `thint`
-command itself belongs to the Node version you installed it with, like any global npm package. After you
-switch the default version, run `npm i -g` again, or install from source.
+**nvm.** thint carries its own runtime, so switching Node never breaks the list in open tabs. The `thint` command
+itself belongs to the Node version you installed it with, like any global npm package: after you switch the default
+version, run `npm i -g` again, or install from source.
 
 **From source** (needs Node 18+ and git, only for the build):
 
@@ -147,9 +175,6 @@ cd terminalhinter
 
 This puts a single binary in `~/.local/bin/thint` that does not depend on Node at all.
 
-**Startup lines.** `thint init` puts them at the very top of your shell config and keeps a backup. thint starts
-a fresh shell inside itself, so anything above those lines would load twice.
-
 **Uninstalling.**
 
 ```bash
@@ -157,9 +182,70 @@ thint uninstall
 npm rm -g @erykkozyra/terminalhinter
 ```
 
-`thint uninstall` takes the startup lines out of your shell config and removes thint's files.
+`thint uninstall` takes the startup lines out of every shell config and removes thint's files. `thint init --remove`
+only takes the startup lines out.
 
-</details>
+## Troubleshooting
+
+Start with `thint doctor`. It checks the install, the startup lines of each shell and your config, and says how to
+fix what it finds.
+
+**A new tab has no list.**
+The startup lines are missing or something stops them. Run `thint init` again; it replaces old lines instead of
+adding a second copy. `thint -c` tells you whether the current shell runs inside terminalhinter.
+
+**Windows PowerShell: "running scripts is disabled on this system".**
+Scripts are off in Windows PowerShell 5.1 by default, which stops both `thint` (npm's `thint.ps1`) and the profile.
+Run `thint.cmd init` and say Yes when it asks to allow scripts, or run
+`Set-ExecutionPolicy -Scope CurrentUser RemoteSigned` yourself. A policy set by your company wins over it; then use
+PowerShell 7 or Git Bash.
+
+**The tab opens with "thint could not start".**
+thint failed and left you a plain shell instead of closing the tab. The message says why; `thint reinit` unpacks
+thint's files again, which fixes most of these.
+
+**After updating with pnpm, new tabs still start the old version.**
+Run `thint reinit` once. This hits updates from 1.1.3 and older.
+
+**Ctrl+Space does nothing, or switches the keyboard layout.**
+macOS uses Control+Space to switch input sources when you have more than one: turn that shortcut off in System
+Settings › Keyboard › Keyboard Shortcuts › Input Sources. In another terminal, `thint debug keys` records what it
+sends; attach the file to an issue.
+
+**→ accepts the gray suggestion of my shell instead of looking into the folder.**
+zsh-autosuggestions, fish and PowerShell show their own gray guess after the cursor. thint only takes → on a
+highlighted folder at the end of the line; to leave → to your shell always, run `thint config set folderArrows false`.
+
+**Enter runs the command instead of taking the entry.**
+Right after a space nothing is selected, so Enter runs what you typed. Press ↓ or Tab to take an entry.
+`thint config set enterRuns true` makes Enter take the entry and run the line at once.
+
+**The colors of the list look washed out in VS Code.**
+Set `"terminal.integrated.minimumContrastRatio": 1`; VS Code otherwise changes the colors it draws.
+
+**New tabs open slowly, or something in my config runs twice.**
+thint starts a fresh shell inside itself, so anything above the startup lines loads twice. `thint doctor` counts those
+lines; `thint init` moves the startup lines back to the top.
+
+**Old Kiro CLI, Amazon Q or Fig lines are still in my shell config.**
+`thint migrate` takes them out and keeps a copy of each file.
+
+**Something else.**
+Start a tab by hand with logging on, for example `thint -s zsh -V`, do what goes wrong, and attach
+`~/.local/share/terminalhinter/log/terminalhinter.log` (on Windows `~\.terminalhinter\log\terminalhinter.log`) to
+[an issue](https://github.com/ErykKozyra/terminalhinter/issues), with the output of `thint doctor`.
+
+## Where things are kept
+
+| What | Where |
+| --- | --- |
+| Settings | `~/.terminalhinterrc` or `~/.config/terminalhinter/rc.toml` ([all settings](docs/configuration.md)) |
+| Your specs and snippets | `~/.config/terminalhinter/specs/`, `~/.config/terminalhinter/snippets.yaml` |
+| What it learned, logs, its own files | `~/.local/share/terminalhinter` (`~/.terminalhinter` on Windows and older installs) |
+| Startup lines | the top of `~/.zshrc`, `~/.bashrc`, `config.fish` or your PowerShell `$PROFILE`, between `# >>> terminalhinter >>>` and `# <<< terminalhinter <<<` |
+
+Nothing leaves your machine. Once a day thint asks npm for the newest version number; `updateCheck = false` turns that
+off.
 
 ## Credits
 
