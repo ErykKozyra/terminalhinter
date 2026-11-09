@@ -34,7 +34,9 @@ export const runWizard = async () => {
   try {
     // the shell thint init runs in; Windows has no $SHELL, there it is the parent process (pwsh, powershell)
     const detected = (await inferShell()) ?? (path.basename(process.env.SHELL ?? "") as Shell);
-    const shells = [...initSupportedShells].sort((a, b) => Number(b === detected) - Number(a === detected));
+    // on Windows the PowerShells come first when the shell is not known; zsh, fish and the rest live under WSL there
+    const rank = (s: Shell) => (s === detected ? 2 : process.platform === "win32" && (s === Shell.Pwsh || s === Shell.Powershell) ? 1 : 0);
+    const shells = [...initSupportedShells].sort((a, b) => rank(b) - rank(a));
     const shell = await select({
       title: "Shell",
       choices: shells.map((s) => ({ label: s, value: s, hint: s === detected ? "this shell" : undefined })),

@@ -221,12 +221,23 @@ export const setupZshDotfiles = async () => {
   await fsAsync.cp(path.join(shellResourcesPath, "shellIntegration-login.zsh"), path.join(zdotdir, ".zlogin"), { force: true });
 };
 
-const findParentProcess = async () => {
+const findProcess = async (pid: number) => {
   try {
-    return (await find("pid", process.ppid)).at(0);
+    return (await find("pid", pid)).at(0);
   } catch (e) {
     log.debug({ msg: `error finding parent process: ${e}` });
   }
+};
+
+// npm starts thint on Windows through thint.cmd, so from PowerShell the parent is a cmd.exe /c that only runs that
+// file: the shell the person typed in is the one above it. A cmd you work in has no /c.
+export const isShimCmd = (name: string | undefined, commandLine: string | undefined): boolean =>
+  /^cmd(\.exe)?$/i.test(name ?? "") && /\s\/[cC]\s/.test(` ${commandLine ?? ""} `);
+
+const findParentProcess = async () => {
+  const parent = await findProcess(process.ppid);
+  if (process.platform === "win32" && parent?.ppid != null && isShimCmd(parent.name, parent.cmd)) return (await findProcess(parent.ppid)) ?? parent;
+  return parent;
 };
 
 export const inferShell = async () => {
