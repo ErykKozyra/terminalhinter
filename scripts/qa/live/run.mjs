@@ -132,7 +132,7 @@ const rcFor = (shell, home) => {
     case "powershell": {
       // no inline predictions from the history (on Windows that history is shared by every run); one scenario turns
       // them on to check thint reads past them
-      const body = `function prompt { '${prompt}' }\nif ($env:QA_PREDICTIONS -ne '1') { Set-PSReadLineOption -PredictionSource None }\nSet-PSReadLineOption -AddToHistoryHandler { param($l) if ($env:QA_LOG) { Add-Content -LiteralPath $env:QA_LOG -Value $l -Encoding UTF8 }; return $true }\n`;
+      const body = `function prompt { '${prompt}' }\nif ($env:QA_PREDICTIONS -ne '1') { try { Set-PSReadLineOption -PredictionSource None -ErrorAction Stop } catch {} }\nSet-PSReadLineOption -AddToHistoryHandler { param($l) if ($env:QA_LOG) { Add-Content -LiteralPath $env:QA_LOG -Value $l -Encoding UTF8 }; return $true }\n`;
       if (!isWin) return [[".config/powershell/Microsoft.PowerShell_profile.ps1", body]];
       // the profile where PowerShell looks for it, and the same place under the home we give it as USERPROFILE
       const real = windowsProfile(shell);
@@ -268,11 +268,17 @@ const runOne = async (scenario, shell, [cols, rows]) => {
   // QA_VERBOSE=1: thint writes its debug log, and a failed run carries the end of it
   const inner = [binCmd, ...binArgs, "-s", shell, ...(process.env.QA_VERBOSE === "1" ? ["--verbose"] : [])];
   const quoted = inner.map((a) => `'${a}'`).join(" ");
-  // the old screen of macOS reads options after the command too (thint's -s zsh became screen's own shell option):
-  // it gets one script with no arguments
+  // the old screen of macOS reads options after the command too (thint's -s zsh became screen's own shell option),
+  // and it is setuid, so it starts its window with the real HOME: it gets one script with no arguments, which sets
+  // the environment of the run again
   const screenStart = () => {
     const file = path.join(home, ".qa-screen-start.sh");
-    fs.writeFileSync(file, `#!/bin/sh\nexec ${quoted}\n`);
+    const q = (v) => `'${String(v).replace(/'/g, "'\\''")}'`;
+    const exports = Object.entries(env)
+      .filter(([k]) => /^[A-Za-z_][A-Za-z0-9_]*$/.test(k))
+      .map(([k, v]) => (v == null ? `unset ${k}` : `export ${k}=${q(v)}`))
+      .join("\n");
+    fs.writeFileSync(file, `#!/bin/sh\n${exports}\nexec ${quoted}\n`);
     fs.chmodSync(file, 0o755);
     return file;
   };
