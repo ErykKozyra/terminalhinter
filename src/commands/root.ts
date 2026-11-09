@@ -80,10 +80,10 @@ export const action = (program: Command) => async (options: RootCommandOptions) 
 
   const shell = (options.shell ?? inferredShell) as Shell | undefined;
   if (shell == null) {
-    program.error(`Unable to identify shell, use the -s/--shell option to provide your shell`, { exitCode: 1 });
+    program.error(`Unable to identify shell, use the -s/--shell option to provide your shell`, { exitCode: startupFailedExitCode });
   }
   if (!shells.map((s) => s.valueOf()).includes(shell)) {
-    program.error(`Unsupported shell: '${shell}', supported shells: ${supportedShells}`, { exitCode: 1 });
+    program.error(`Unsupported shell: '${shell}', supported shells: ${supportedShells}`, { exitCode: startupFailedExitCode });
   }
 
   try {

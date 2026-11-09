@@ -10,7 +10,7 @@ import { Unicode11Addon } from "@xterm/addon-unicode11";
 
 import pty from "node-pty";
 import type { IPty, IEvent } from "node-pty";
-import { Shell, userZdotdir, zdotdir } from "../utils/shell.js";
+import { Shell, startupFailedExitCode, userZdotdir, zdotdir } from "../utils/shell.js";
 import { IsTermOscPs, IstermOscPt, IstermPromptStart, IstermPromptEnd } from "../utils/ansi.js";
 import xterm from "@xterm/headless";
 import type { IBuffer, IBufferCell } from "@xterm/xterm";
@@ -449,11 +449,31 @@ export class ISTerm implements IPty {
 }
 
 export const spawn = async (program: Command, options: ISTermOptions): Promise<ISTerm> => {
-  const { shellTarget, shellArgs } = await convertToPtyTarget(options.shell, options.underTest, options.login);
+  const target = await convertToPtyTarget(options.shell, options.underTest, options.login);
+  let shellTarget = target.shellTarget;
   if (!(await shellExists(shellTarget))) {
-    program.error(`shell not found on PATH: ${shellTarget}`, { exitCode: 1 });
+    const alias = os.platform() === "win32" ? findAppAlias(shellTarget) : undefined;
+    // the startup lines keep the tab open on this exit code and start the shell without the list
+    if (alias == null) program.error(`shell not found on PATH: ${shellTarget}`, { exitCode: startupFailedExitCode });
+    shellTarget = alias;
   }
-  return new ISTerm({ ...options, shellTarget, shellArgs });
+  return new ISTerm({ ...options, shellTarget, shellArgs: target.shellArgs });
+};
+
+// PowerShell from the Microsoft Store (also what winget can install) is an app alias in WindowsApps on the PATH: a
+// link that stat() cannot read, so which does not see it, while starting it works. lstat() sees it.
+export const findAppAlias = (file: string, searchPath = process.env.PATH ?? process.env.Path ?? ""): string | undefined => {
+  if (path.isAbsolute(file)) return;
+  for (const dir of searchPath.split(path.delimiter)) {
+    if (dir.trim() === "") continue;
+    const candidate = path.join(dir, file);
+    try {
+      fs.lstatSync(candidate);
+      return candidate;
+    } catch {
+      // not in this folder
+    }
+  }
 };
 
 const shellExists = async (shellTarget: string): Promise<boolean> => {
