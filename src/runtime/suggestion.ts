@@ -301,14 +301,6 @@ const generatorSuggestions = async (
             ...(suggestion.insertValue == null && typeof suggestion.name === "string" && /\s/.test(suggestion.name) && !getPathy(suggestion.type)
               ? { insertValue: escapePath(suggestion.name, shell) }
               : {}),
-            // a spec lists folders with a / (ls -p); cmd and PowerShell on Windows write them with a backslash, the
-            // way the folders thint lists itself are written, so a line does not end up as cd src\components/
-            ...(windowsSlash(suggestion, shell)
-              ? {
-                  name: `${(suggestion.name as string).slice(0, -1)}\\`,
-                  insertValue: (suggestion.insertValue ?? (suggestion.name as string)).replace(/\/$/, "\\"),
-                }
-              : {}),
           })),
           filterStrategy,
           generator.getQueryTerm == null ? partialCmd : getGeneratorQueryTerm(generator, activeToken),
@@ -318,15 +310,6 @@ const generatorSuggestions = async (
     )
   ).flat();
 };
-
-export const windowsSlash = (suggestion: Fig.Suggestion, shell: Shell): boolean =>
-  process.platform === "win32" &&
-  (shell === Shell.Pwsh || shell === Shell.Powershell || shell === Shell.Cmd) &&
-  (suggestion.type === "folder" || suggestion.type == null) &&
-  typeof suggestion.name === "string" &&
-  // one folder name and its slash (the cd spec gives no type): not a URL or a path that goes on
-  /^[^/\\:]+\/$/.test(suggestion.name) &&
-  (suggestion.insertValue == null || suggestion.insertValue.endsWith("/"));
 
 const templateSuggestions = async (
   templates: Fig.Template | undefined,

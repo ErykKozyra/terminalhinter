@@ -359,8 +359,11 @@ export class SuggestionManager {
     return badge(ICON_COLORS.value, "#");
   }
 
+  // a folder is shown with the separator it goes on the line with: a backslash in cmd and PowerShell on Windows
   private _displayName(suggestion: Suggestion): string {
-    return suggestion.type === "folder" ? `${suggestion.name}/` : suggestion.name;
+    if (suggestion.type !== "folder") return suggestion.name;
+    const backslash = process.platform === "win32" && (this.#shell === Shell.Pwsh || this.#shell === Shell.Powershell || this.#shell === Shell.Cmd);
+    return `${suggestion.name}${backslash ? "\\" : "/"}`;
   }
 
   // name and argument hints, the first column of a row

@@ -21,7 +21,7 @@ beforeAll(async () => {
   process.env.THINT_HISTORY_FILE = path.join(dir, "history.jsonl");
   for (const name of ["alpha", "beta", "gamma"]) fs.mkdirSync(path.join(dir, name));
 });
-afterAll(() => fs.rmSync(dir, { recursive: true, force: true }));
+afterAll(() => fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 200 }));
 beforeEach(() => resetHistory());
 
 test("recent use weighs more than old use", () => {

@@ -1,7 +1,7 @@
 - name: cd lists only folders
   steps:
     - type: "cd "
-      list_has: ["docs/", "src/"]
+      list_has: ["docs{sep}", "src{sep}"]
       list_not: ["README.md", "package.json"]
 
 - name: Enter on a folder walks into it and keeps the list open
@@ -58,12 +58,12 @@
 - name: a path in a subfolder
   steps:
     - type: "ls src/"
-      list_has: ["components/", "index.ts"]
+      list_has: ["components{sep}", "index.ts"]
 
 - name: parent folder
   steps:
     - type: "ls ../"
-      list_has: "shop/"
+      list_has: "shop{sep}"
 
 - name: home with a tilde
   shells: [zsh, bash, fish]
@@ -74,7 +74,7 @@
 - name: hidden files after a dot
   steps:
     - type: "ls ."
-      list_has: ".git/"
+      list_has: ".git{sep}"
 
 - name: an absolute path
   shells: [zsh, bash, fish]

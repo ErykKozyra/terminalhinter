@@ -32,7 +32,7 @@ beforeAll(async () => {
   write("npmws/libs/core/package.json", '{ "name": "core" }');
   write("old-turbo/turbo.json", '{ "pipeline": { "build": {} } }');
 });
-afterAll(() => fs.rmSync(root, { recursive: true, force: true }));
+afterAll(() => fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 200 }));
 
 test("finds pnpm workspace packages from any folder inside the repo", async () => {
   const packages = await workspacePackages(path.join(root, "mono", "apps", "web"));

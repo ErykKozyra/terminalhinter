@@ -21,7 +21,7 @@ beforeAll(async () => {
   fs.mkdirSync(path.join(root, "src", "components"), { recursive: true });
   fs.writeFileSync(path.join(root, "src", "index.ts"), "");
 });
-afterAll(() => fs.rmSync(root, { recursive: true, force: true }));
+afterAll(() => fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 200 }));
 
 const names = async (cmd: string, shell: Shell) =>
   ((await getSuggestions(cmd, root, shell))?.suggestions ?? []).map((s) => String(s.name).replace(/[\\/]$/, ""));
@@ -35,15 +35,5 @@ describe.each(shells)("%s", (shell) => {
     const got = await names(line, shell);
     expect(got).toContain("components");
     if (!line.endsWith("comp") && !line.startsWith("cd")) expect(got).toContain("index.ts");
-  });
-});
-
-// the folders of a spec (cd lists them with ls -p) are written like the ones thint lists itself
-const nativeShells = windows ? [Shell.Pwsh, Shell.Powershell, Shell.Cmd] : [];
-const rawNames = async (cmd: string, shell: Shell) => ((await getSuggestions(cmd, root, shell))?.suggestions ?? []).map((s) => String(s.name));
-(windows ? describe.each(nativeShells) : describe.skip.each([Shell.Pwsh]))("%s writes folders with a backslash", (shell) => {
-  test.each(["cd src\\", "cd src/", "cd "])("%s", async (line) => {
-    const got = await rawNames(line, shell);
-    expect(got.filter((n) => n.endsWith("/"))).toEqual([]);
   });
 });

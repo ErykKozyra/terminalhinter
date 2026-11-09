@@ -16,7 +16,7 @@ import { augmentGit } from "../../runtime/extras/git.js";
 import { closest, looksSecret } from "../../runtime/extras/util.js";
 
 const dir = fs.mkdtempSync(path.join(os.tmpdir(), "thint-extras-"));
-afterAll(() => fs.rmSync(dir, { recursive: true, force: true }));
+afterAll(() => fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 200 }));
 
 const noBranches = async () => [];
 

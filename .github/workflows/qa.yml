@@ -83,7 +83,12 @@ jobs:
       - name: Live scenarios
         if: runner.os != 'macOS'
         # Windows starts every shell slowly: two window sizes there and more at a time, to stay within the job's time
-        run: node scripts/qa/live/run.mjs ${{ runner.os == 'Windows' && '--jobs 4 --sizes 80x24,40x10' || '--jobs 3' }} --out qa-out/live-${{ matrix.os }}.json
+        # --resume: if the runner dies halfway (it did twice on Windows), the next attempt runs only what is left
+        shell: bash
+        run: |
+          for attempt in 1 2 3; do
+            node scripts/qa/live/run.mjs ${{ runner.os == 'Windows' && '--jobs 4 --sizes 80x24,40x10' || '--jobs 3' }} --resume --out qa-out/live-${{ matrix.os }}.json && break || true
+          done
         continue-on-error: true
         env:
           QA_SLOW: "1.5"
@@ -97,7 +102,9 @@ jobs:
         shell: bash
         run: |
           for size in 80x24 40x10 200x60; do
-            node scripts/qa/live/run.mjs --jobs 3 --sizes $size --out qa-out/live-${{ matrix.os }}-$size.json || true
+            for attempt in 1 2; do
+              node scripts/qa/live/run.mjs --jobs 3 --sizes $size --resume --out qa-out/live-${{ matrix.os }}-$size.json && break || true
+            done
           done
         continue-on-error: true
         env:

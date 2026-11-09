@@ -20,7 +20,7 @@ beforeAll(async () => {
   process.env.THINT_HISTORY_FILE = path.join(root, "history.jsonl");
   fs.writeFileSync(path.join(root, "package.json"), JSON.stringify({ name: "x", scripts: { lint: "next lint", build: "next build", dev: "next dev" } }));
 });
-afterAll(() => fs.rmSync(root, { recursive: true, force: true }));
+afterAll(() => fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 200 }));
 beforeEach(() => {
   resetHistory();
   reloadOrder();

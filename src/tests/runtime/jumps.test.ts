@@ -26,7 +26,7 @@ beforeAll(async () => {
   fs.mkdirSync(far, { recursive: true });
   fs.mkdirSync(path.join(root, "projects", "shop"), { recursive: true });
 });
-afterAll(() => fs.rmSync(root, { recursive: true, force: true }));
+afterAll(() => fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 200 }));
 beforeEach(async () => {
   resetHistory();
   await writeBookmarks([]);

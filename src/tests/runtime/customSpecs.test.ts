@@ -37,7 +37,7 @@ options:
   fs.writeFileSync(path.join(dir, "broken.yaml"), "name: [unclosed\n");
   await loadLocalSpecsSet();
 });
-afterAll(() => fs.rmSync(dir, { recursive: true, force: true }));
+afterAll(() => fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 200 }));
 
 const names = async (cmd: string) => (await getSuggestions(cmd, dir, Shell.Zsh))?.suggestions.map((s) => s.name) ?? [];
 

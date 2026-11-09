@@ -173,4 +173,4 @@
       list_has: ["stage", "status"]
     - key: C-U
     - type: "cd sr"
-      list_has: "src/"
+      list_has: "src{sep}"

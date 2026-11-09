@@ -60,7 +60,7 @@ describeShells("$program startup lines", ({ shell, program, rc }) => {
     fs.writeFileSync(path.join(home, rc), `${getShellConfig(shell, launcher)}\necho rest-of-the-config\n`);
   };
 
-  afterAll(() => fs.rmSync(home, { recursive: true, force: true }));
+  afterAll(() => fs.rmSync(home, { recursive: true, force: true, maxRetries: 10, retryDelay: 200 }));
 
   test("thint that could not start leaves a working shell", async () => {
     setup(startupFailedExitCode);

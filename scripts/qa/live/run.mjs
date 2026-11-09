@@ -675,11 +675,30 @@ const main = async () => {
         runs.push([s, shell, size]);
       }
     }
-  process.stderr.write(`${scenarios.length} scenarios, ${runs.length} runs, ${jobs} at a time\n`);
-  const results = [...broken];
+  // --resume: the runs already in the out file (a runner that died halfway) are kept and not run again
+  const keyOf = (name, shell, size) => `${name}\u0000${shell}\u0000${size}`;
+  let previous = [];
+  if (flag("resume") && out && fs.existsSync(out))
+    try {
+      previous = JSON.parse(fs.readFileSync(out, "utf8")).results ?? [];
+    } catch {
+      previous = [];
+    }
+  const doneKeys = new Set(previous.map((r) => keyOf(r.scenario, r.shell, r.size)));
+  const todo = runs.filter(([s, shell, size]) => !doneKeys.has(keyOf(s.name, shell, `${size[0]}x${size[1]}`)));
+  const planned = runs.length;
+  runs.length = 0;
+  runs.push(...todo);
+  process.stderr.write(`${scenarios.length} scenarios, ${planned} runs${previous.length ? `, ${runs.length} left after the last attempt` : ""}, ${jobs} at a time\n`);
+  const results = [...previous.filter((r) => !r.scenario.startsWith(startup.name)), ...broken];
+  // what is running right now, printed if the process ends without getting to the summary (a crash in node-pty)
+  const running = new Set();
+  process.on("exit", (code) => {
+    if (running.size) process.stderr.write(`\nexit ${code} while running: ${[...running].join("; ")}\n`);
+  });
   // written after every run, so a run that is stopped halfway still leaves what it found
   const save = () =>
-    out && fs.writeFileSync(out, JSON.stringify({ platform: process.platform, shells: installed, started: available, planned: runs.length, strayErrors, health: healthLog, results }, null, 2));
+    out && fs.writeFileSync(out, JSON.stringify({ platform: process.platform, shells: installed, started: available, planned, strayErrors, health: healthLog, results }, null, 2));
   save();
   let next = 0;
   let done = 0;
@@ -695,6 +714,8 @@ const main = async () => {
           return { scenario: s.name, shell, size: `${size[0]}x${size[1]}`, ok: false, timedOut: false, ms: 0, failures: [`could not run: ${e?.stack ?? e}`] };
         }
       };
+      const label = `${s.name} [${shell} ${size[0]}x${size[1]}]`;
+      running.add(label);
       let r = await safeRun();
       // one retry for timing: a pass on the second try is reported as flaky, not as passing
       // no second try for a timeout or once a lot is failing anyway: it only doubles the wait
@@ -705,6 +726,7 @@ const main = async () => {
       }
       // a failure written down in the scenario as known (known: {shells: [...], why: ...}) is counted apart
       if (!r.ok && s.known && inList(s.known.shells ?? [], shell)) r = { ...r, known: s.known.why ?? true };
+      running.delete(label);
       results.push(r);
       save();
       done++;

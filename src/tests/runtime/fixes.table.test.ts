@@ -11,7 +11,7 @@ const dir = fs.mkdtempSync(path.join(os.tmpdir(), "thint-fixes-"));
 fs.writeFileSync(path.join(dir, "package.json"), JSON.stringify({ scripts: { build: "tsc", dev: "vite", test: "jest", lint: "eslint .", "dev:web": "x" } }));
 for (const d of ["src", "packages", "Documents", "node_modules"]) fs.mkdirSync(path.join(dir, d));
 fs.mkdirSync(path.join(dir, "packages", "web"));
-afterAll(() => fs.rmSync(dir, { recursive: true, force: true }));
+afterAll(() => fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 200 }));
 
 const commands = [
   "git",

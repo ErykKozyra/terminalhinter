@@ -22,7 +22,7 @@ beforeAll(() => (process.env.PATH = ""));
 afterAll(() => (process.env.PATH = realPath));
 
 const root = fs.mkdtempSync(path.join(os.tmpdir(), "thint-tasks-"));
-afterAll(() => fs.rmSync(root, { recursive: true, force: true }));
+afterAll(() => fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 200 }));
 let n = 0;
 const project = (files: Record<string, string>): string => {
   const dir = path.join(root, `p${n++}`);

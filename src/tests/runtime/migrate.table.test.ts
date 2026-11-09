@@ -121,7 +121,7 @@ describe("taking out their lines", () => {
 
 describe("planning and applying", () => {
   const home = fs.mkdtempSync(path.join(os.tmpdir(), "thint-mig-"));
-  afterAll(() => fs.rmSync(home, { recursive: true, force: true }));
+  afterAll(() => fs.rmSync(home, { recursive: true, force: true, maxRetries: 10, retryDelay: 200 }));
   const write = (name: string, lines: string[]) => {
     const file = path.join(home, name);
     fs.mkdirSync(path.dirname(file), { recursive: true });

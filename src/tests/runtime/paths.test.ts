@@ -17,7 +17,7 @@ beforeAll(async () => {
   fs.mkdirSync(path.join(root, "my dir", "sub folder"), { recursive: true });
   fs.mkdirSync(path.join(root, "other"));
 });
-afterAll(() => fs.rmSync(root, { recursive: true, force: true }));
+afterAll(() => fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 200 }));
 
 const suggest = (cmd: string) => getSuggestions(cmd, root, Shell.Zsh);
 const names = async (cmd: string) => (await suggest(cmd))?.suggestions.map((s) => s.name) ?? [];

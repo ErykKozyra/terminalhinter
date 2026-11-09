@@ -81,7 +81,7 @@ describe("reading aliases from git config", () => {
     git("config", "alias.wip", "!git add -A && git commit -m 'wip'");
     git("config", "alias.dash-name", "status");
   });
-  afterAll(() => fs.rmSync(repo, { recursive: true, force: true }));
+  afterAll(() => fs.rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 200 }));
   const expected: [string, string][] = [
     ["co", "checkout"],
     ["lg", "log --oneline --graph --decorate"],

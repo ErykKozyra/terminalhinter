@@ -11,7 +11,7 @@ import { Shell } from "../../utils/shell.js";
 
 let dir: string;
 beforeAll(() => (dir = fs.mkdtempSync(path.join(os.tmpdir(), "thint-doctor-"))));
-afterAll(() => fs.rmSync(dir, { recursive: true, force: true }));
+afterAll(() => fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 200 }));
 
 const block = `${beginMark}\nsource x\n${endMark}\n`;
 
