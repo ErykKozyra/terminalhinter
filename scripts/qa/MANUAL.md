@@ -40,6 +40,18 @@ Defender or SmartScreen warnings on the first start.
 Open a tab, run `npm i -g @erykkozyra/terminalhinter@latest` in another one, then go back to the first tab and type
 `git st`. The list should still open there. In CI on macOS it did not (on Linux it does), so this needs a real Mac.
 
-## 4. Write down
+## 4. Open Windows items (PC)
+
+What CI on Windows could not settle (run 11). Check each in Windows Terminal at about 40 × 10:
+
+1. `thint debug keys` in PowerShell 7, cmd and Git Bash: does Ctrl+Space arrive? Then Esc and Ctrl+Space: does the
+   list come back?
+2. cmd and Windows PowerShell 5.1: type `echo ąęł 🚀` so it reaches the right edge, then Enter. No piece of the
+   border should stay behind.
+3. cmd: type `git push --force` fast. Every letter should be on the line.
+4. Git Bash: type `git sta`, Tab, then drag the window size back and forth. The line should say `git stage` or
+   `git status` in full.
+
+## 5. Write down
 
 For anything that looks wrong: the app, the shell, the window size, a screenshot, and the step number.
