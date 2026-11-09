@@ -10,7 +10,7 @@ import { runTemplates } from "./template.js";
 import { Suggestion, SuggestionBlob } from "./model.js";
 import log from "../utils/log.js";
 import { escapePath } from "./utils.js";
-import { addPathSeparator, endsWithPathSeparator, getPathDirname, getPathSeparator, removePathSeparator, Shell } from "../utils/shell.js";
+import { addPathSeparator, endsWithPathSeparator, getPathDirname, removePathSeparator, Shell } from "../utils/shell.js";
 import { getConfig } from "../utils/config.js";
 import { contextOf, frecency } from "./history.js";
 import { orderRank } from "./order.js";
@@ -319,12 +319,13 @@ const generatorSuggestions = async (
   ).flat();
 };
 
-const windowsSlash = (suggestion: Fig.Suggestion, shell: Shell): boolean =>
+export const windowsSlash = (suggestion: Fig.Suggestion, shell: Shell): boolean =>
   process.platform === "win32" &&
-  getPathSeparator(shell) === "\\" &&
-  suggestion.type === "folder" &&
+  (shell === Shell.Pwsh || shell === Shell.Powershell || shell === Shell.Cmd) &&
+  (suggestion.type === "folder" || suggestion.type == null) &&
   typeof suggestion.name === "string" &&
-  suggestion.name.endsWith("/") &&
+  // one folder name and its slash (the cd spec gives no type): not a URL or a path that goes on
+  /^[^/\\:]+\/$/.test(suggestion.name) &&
   (suggestion.insertValue == null || suggestion.insertValue.endsWith("/"));
 
 const templateSuggestions = async (

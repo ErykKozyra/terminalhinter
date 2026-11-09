@@ -5,6 +5,8 @@ import { killCommand } from "../../runtime/extras/fixes.js";
 import { parseNetstat, parseTasklist } from "../../runtime/extras/processes.js";
 import { escapeArgs, msysToWindows } from "../../runtime/utils.js";
 import { getGeneratorQueryTerm } from "../../runtime/generator.js";
+import { windowsSlash } from "../../runtime/suggestion.js";
+import { Shell } from "../../utils/shell.js";
 
 const netstat = [
   "",
@@ -133,5 +135,24 @@ describe("arguments for a command run through Git Bash", () => {
     Object.defineProperty(process, "platform", { value: "linux" });
     expect(escapeArgs(bash, ["C:\\x y"])).toEqual(["C:\\x y"]);
     Object.defineProperty(process, "platform", { value: "win32" });
+  });
+});
+
+describe("a folder from a spec gets a backslash in cmd and PowerShell", () => {
+  const platform = process.platform;
+  beforeAll(() => Object.defineProperty(process, "platform", { value: "win32" }));
+  afterAll(() => Object.defineProperty(process, "platform", { value: platform }));
+  test.each([
+    [{ name: "components/" }, Shell.Pwsh, true],
+    [{ name: "components/", type: "folder" }, Shell.Cmd, true],
+    [{ name: "../" }, Shell.Powershell, true],
+    [{ name: "components/" }, Shell.Bash, false],
+    [{ name: "https://" }, Shell.Pwsh, false],
+    [{ name: "src/components/" }, Shell.Pwsh, false],
+    [{ name: "main.ts", type: "file" }, Shell.Pwsh, false],
+    [{ name: "dir/", type: "file" }, Shell.Pwsh, false],
+    [{ name: "dir/", insertValue: "dir/ " }, Shell.Pwsh, false],
+  ] as [Fig.Suggestion, Shell, boolean][])("%j in %s: %s", (suggestion, shell, slash) => {
+    expect(windowsSlash(suggestion, shell)).toBe(slash);
   });
 });

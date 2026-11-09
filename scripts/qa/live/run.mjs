@@ -268,11 +268,19 @@ const runOne = async (scenario, shell, [cols, rows]) => {
   // QA_VERBOSE=1: thint writes its debug log, and a failed run carries the end of it
   const inner = [binCmd, ...binArgs, "-s", shell, ...(process.env.QA_VERBOSE === "1" ? ["--verbose"] : [])];
   const quoted = inner.map((a) => `'${a}'`).join(" ");
+  // the old screen of macOS reads options after the command too (thint's -s zsh became screen's own shell option):
+  // it gets one script with no arguments
+  const screenStart = () => {
+    const file = path.join(home, ".qa-screen-start.sh");
+    fs.writeFileSync(file, `#!/bin/sh\nexec ${quoted}\n`);
+    fs.chmodSync(file, 0o755);
+    return file;
+  };
   const [cmd, cmdArgs] =
     scenario.wrapper === "tmux"
       ? ["tmux", ["-L", `qa-${path.basename(home)}`, "-f", tmuxConf, "new-session", quoted]]
       : scenario.wrapper === "screen"
-        ? ["screen", ["-q", "-S", `qa-${path.basename(home)}`, ...inner]]
+        ? ["screen", ["-q", "-S", `qa-${path.basename(home)}`, screenStart()]]
         : [binCmd, inner.slice(1)];
   if (scenario.wrapper === "tmux") env.TERM = "xterm-256color";
   const p = pty.spawn(cmd, cmdArgs, { name: "xterm-256color", cols, rows, cwd, env });
