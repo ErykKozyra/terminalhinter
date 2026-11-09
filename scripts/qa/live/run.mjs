@@ -154,7 +154,7 @@ const fixtureTemplate = path.join(base, "fixture");
 const git = (cwd, ...a) => execFileSync("git", a, { cwd, stdio: "ignore", env: { ...process.env, GIT_AUTHOR_NAME: "qa", GIT_AUTHOR_EMAIL: "qa@example.com", GIT_COMMITTER_NAME: "qa", GIT_COMMITTER_EMAIL: "qa@example.com" } });
 const makeFixture = () => {
   const proj = path.join(fixtureTemplate, "shop");
-  fs.mkdirSync(path.join(proj, "src", "components"), { recursive: true });
+  fs.mkdirSync(path.join(proj, "src", "components", "ui"), { recursive: true });
   fs.mkdirSync(path.join(proj, "docs"), { recursive: true });
   fs.mkdirSync(path.join(proj, "folder with space"), { recursive: true });
   fs.mkdirSync(path.join(proj, "zażółć"), { recursive: true });

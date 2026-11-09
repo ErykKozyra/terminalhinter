@@ -51,6 +51,7 @@ type Config = {
   showListOn: "typing" | "tab";
   fixSuggestions: boolean;
   enterRuns: boolean;
+  folderArrows: boolean;
   historyEntries: boolean;
 };
 
@@ -178,6 +179,11 @@ export const configSchema = {
       nullable: true,
       default: false,
     },
+    folderArrows: {
+      type: "boolean",
+      nullable: true,
+      default: true,
+    },
     fixSuggestions: {
       type: "boolean",
       nullable: true,
@@ -226,6 +232,7 @@ let globalConfig: Config = {
   showListOn: "typing",
   fixSuggestions: true,
   enterRuns: false,
+  folderArrows: true,
   historyEntries: true,
 };
 
@@ -280,6 +287,7 @@ export const loadConfig = async (_program?: Command) => {
         showListOn: config?.showListOn ?? "typing",
         fixSuggestions: config?.fixSuggestions ?? true,
         enterRuns: config?.enterRuns ?? false,
+        folderArrows: config?.folderArrows ?? true,
         historyEntries: config?.historyEntries ?? true,
       };
     }

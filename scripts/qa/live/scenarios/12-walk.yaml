@@ -1,0 +1,103 @@
+# Walking through folders with → and ← before Enter (asked for by a user): → puts the highlighted folder on the line
+# and lists what is inside, ← takes it back off, Enter after a walk goes straight to the highlighted folder.
+
+- name: → on a folder puts it on the line and lists what is inside
+  steps:
+    - type: "cd sr"
+    - key: RIGHT
+      expect_regex: "qa\\$ cd src[/\\\\]\\s*$"
+      list_has: "components{sep}"
+      expect_ran_count: 0
+
+- name: → twice walks two levels down
+  steps:
+    - type: "cd sr"
+    - key: RIGHT
+      list_has: "components{sep}"
+    - key: DOWN
+    - key: RIGHT
+      expect_regex: "qa\\$ cd src[/\\\\]components[/\\\\]\\s*$"
+      list_has: "ui{sep}"
+      expect_ran_count: 0
+
+- name: Enter on a folder after → goes straight into it
+  steps:
+    - type: "cd sr"
+    - key: RIGHT
+      list_has: "components{sep}"
+    - key: DOWN
+    - key: ENTER
+      expect_ran: "cd src{sep}components{sep}"
+
+- name: Enter right after → runs cd where the walk is
+  steps:
+    - type: "cd sr"
+    - key: RIGHT
+      list_has: "components{sep}"
+    - key: ENTER
+      expect_ran: "cd src{sep}"
+
+- name: ← goes back to the line before →
+  steps:
+    - type: "cd sr"
+    - key: RIGHT
+      list_has: "components{sep}"
+    - key: LEFT
+      expect_regex: "qa\\$ cd sr\\s*$"
+      expect_ran_count: 0
+
+- name: ← one level up highlights the folder it came from
+  steps:
+    - type: "cd sr"
+    - key: RIGHT
+      list_has: "components{sep}"
+    - key: DOWN
+    - key: RIGHT
+      list_has: "ui{sep}"
+    - key: LEFT
+      expect_regex: "qa\\$ cd src[/\\\\]\\s*$"
+      list_has: "components{sep}"
+    # components is highlighted again, so Enter goes into it rather than running cd src/
+    - key: ENTER
+      expect_ran: "cd src{sep}components{sep}"
+
+- name: without a walk ← moves the cursor as always
+  shells: [zsh, bash, fish]
+  steps:
+    - type: "cd sr"
+    - key: LEFT
+    - type: "x"
+      expect_line_starts: "cd sxr"
+
+- name: typing after → ends the walk, so ← moves the cursor again
+  shells: [zsh, bash, fish]
+  steps:
+    - type: "cd sr"
+    - key: RIGHT
+      list_has: "components{sep}"
+    - type: "co"
+    - key: LEFT
+    - type: "x"
+      expect_line_starts: "cd src/cxo"
+
+- name: → works for other commands too
+  steps:
+    - type: "ls sr"
+    - key: RIGHT
+      expect_regex: "qa\\$ ls src[/\\\\]\\s*$"
+      list_has: ["components{sep}", "index.ts"]
+
+- name: folderArrows off leaves → to the shell
+  shells: [zsh, bash]
+  config: { folderArrows: false }
+  steps:
+    - type: "cd sr"
+    - key: RIGHT
+      expect_regex: "qa\\$ cd sr\\s*$"
+
+- name: a short tip on a highlighted folder tells that → looks inside
+  min_cols: 60
+  steps:
+    - type: "cd "
+    - key: DOWN
+      expect: "→ look inside"

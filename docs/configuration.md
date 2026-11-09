@@ -24,6 +24,7 @@ fuzzyMatching = true            # letters in order are enough: chkt finds checko
 useAliases = true               # suggest your shell aliases
 enterAcceptsSuggestion = true   # false: Enter always runs the command, accept with Tab only
 enterRuns = false               # true: Enter takes the entry and runs the line at once (a folder is still walked into)
+folderArrows = true             # → on a highlighted folder looks inside it, ← goes back up; false leaves both to the shell
 showHints = true                # short tips in the list, e.g. that Shift+Up/Down reorders it
 boxBackground = true            # the list sits on its own background, like a card
 boxBorderStyle = "rounded"      # or "square"

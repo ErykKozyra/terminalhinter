@@ -48,6 +48,8 @@ Works on macOS and Linux with zsh and bash. Windows and fish are experimental.
   on, no app in the menu bar, no account. Your commands never leave your machine.
 - **Enter walks into folders.** The list stays open with what is inside; the `↪` entry runs the command where you
   are. `cd` also finds folders from anywhere through your bookmarks and zoxide.
+- **→ looks inside a folder before you commit to it.** It puts the folder on the line and lists what is inside; ←
+  goes back up. Enter after a walk goes straight to the highlighted folder.
 - **It learns what you use**, and Shift+Up / Shift+Down puts the list in your own order.
 - **Letters in order are enough.** `chkt` finds `checkout`.
 - **Right after a space nothing is selected**, so Enter just runs the command. A word you typed in full that no
@@ -59,6 +61,7 @@ Works on macOS and Linux with zsh and bash. Windows and fish are experimental.
 | Key | What it does |
 | --- | --- |
 | Enter | Accept, walk into a folder, or run the command on `↪` |
+| → ← | On a highlighted folder at the end of the line: look inside it, go back up |
 | Tab | Accept the selected entry |
 | ↑ ↓ | Move the selection; ↑ with nothing selected goes to your shell history |
 | Shift+↑ ↓ | Move the selected entry in the list |

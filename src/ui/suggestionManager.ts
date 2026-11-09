@@ -38,6 +38,7 @@ type SuggestionRuntime = Pick<Awaited<ReturnType<typeof initializeRuntime>>, "ge
 const getMaxSuggestions = () => getConfig().maxSuggestions ?? 6;
 const minBoxWidth = 36;
 const reorderHint = "shift+↑↓ reorder";
+const folderHint = "→ look inside";
 const maxBoxWidth = 76;
 const maxNameColumn = 36;
 const maxArgsWidth = 18;
@@ -98,6 +99,9 @@ export class SuggestionManager {
   #pendingCommand?: { command: string; cwd: string; failureId?: number }; // ran, waiting to see if it failed
   #explainRequested = false; // Ctrl+G asked what the words of the line mean
   #explainInputVersion = -1; // #inputVersion when Ctrl+G was pressed
+  #walk: { before: string; name: string }[] = []; // folders opened with → so far: the line before each, for ←
+  #reselect?: string; // after ←, the folder to highlight again once the list of its parent is back
+  #walkedOnce = false; // → was used in this session, so its hint is no longer needed
   #openedByUser = false; // with showListOn = "tab", the list only appears after Tab or Ctrl+Space
   // filling in the fields of a snippet: the typed text goes into the field, not to the shell
   #fill?: { command: string; fields: Field[]; index: number; values: Record<string, string>; buffer: string; replaceLength: number };
@@ -270,6 +274,15 @@ export class SuggestionManager {
     this.#scrollTop = 0;
     this.#navigated = false;
     this.#activeSuggestionIdx = this._baseline();
+    // ← came back from a folder: that folder is highlighted again, like in a file manager
+    if (this.#reselect != null) {
+      const idx = this._items().findIndex((s) => s.name === this.#reselect);
+      if (idx >= 0) {
+        this.#activeSuggestionIdx = idx;
+        this.#navigated = true;
+        this.#reselect = undefined;
+      }
+    }
   }
 
   private _baseline(): number {
@@ -539,9 +552,8 @@ export class SuggestionManager {
     const maxWidth = Math.min(maxBoxWidth, cols);
     if (maxWidth < 12) return [];
     // the reorder hint may widen the box a little so it fits next to the start of the description
-    const hintWidth = this._wantsReorderHint(active)
-      ? wcswidth(counter ? `${reorderHint} · ${counter}` : reorderHint) + Math.min(wcswidth(footerText), 16) + 5
-      : 0;
+    const wantedHint = this._wantedHint(active);
+    const hintWidth = wantedHint ? wcswidth(counter ? `${wantedHint} · ${counter}` : wantedHint) + Math.min(wcswidth(footerText), 16) + 5 : 0;
     // the snippet form shows the whole command under its fields, so it gets room for it
     const formWidth = this.#suggestBlob.mode === "fill" ? 64 : 0;
     const width = Math.max(Math.min(Math.max(widest + 2, minBoxWidth, hintWidth, formWidth), maxWidth), Math.min(minBoxWidth, maxWidth));
@@ -631,6 +643,11 @@ export class SuggestionManager {
     const { name, shift, ctrl } = keyPress;
 
     if (this.#fill != null) return this._updateFill(keyPress);
+    // anything typed ends a walk with the arrows: ← moves the cursor again and Enter works as usual
+    if (!["right", "left", "up", "down", "return"].includes(name ?? "")) {
+      this.#walk = [];
+      this.#reselect = undefined;
+    }
 
     // Ctrl+J (a bare line feed) runs the line in zsh, bash and fish, as typed
     if (name == "enter" && keyPress.sequence === "\n" && !ctrl && (this.#shell == Shell.Zsh || this.#shell == Shell.Bash || this.#shell == Shell.Fish)) {
@@ -759,6 +776,8 @@ export class SuggestionManager {
       const idx = Math.max(this.#activeSuggestionIdx, 0);
       const suggestion = items.at(idx)?.execute ? items.at(idx + 1) : items.at(idx);
       if (!this._accept(suggestion)) return false;
+    } else if ((name == "right" || name == "left") && !shift && !ctrl && !keyPress.meta && this.#suggestBlob.mode == null && getConfig().folderArrows) {
+      if (!this._walkFolders(name, items)) return false;
     } else if (name == "c" && ctrl) {
       this.#term.clearCommand();
       return false;
@@ -877,16 +896,22 @@ export class SuggestionManager {
     return true;
   }
 
-  private _wantsReorderHint(active: Suggestion | undefined): boolean {
-    if (!getConfig().showHints || !this.#navigated || this.#reordered || hasCustomOrder() || this.#suggestBlob?.mode != null) return false;
-    return active != null && !active.execute && active.type !== "folder" && active.type !== "file";
+  // while you walk the list, one short tip: on a folder that → looks inside (until you used it once), on anything
+  // else that the order can be changed (until you did it once)
+  private _wantedHint(active: Suggestion | undefined): string {
+    const config = getConfig();
+    if (!config.showHints || !this.#navigated || this.#suggestBlob?.mode != null || active == null || active.execute) return "";
+    if (active.type === "folder") return config.folderArrows && !this.#walkedOnce ? folderHint : "";
+    if (active.type === "file" || this.#reordered || hasCustomOrder()) return "";
+    return reorderHint;
   }
 
   private _reorderHint(active: Suggestion | undefined, footerText: string, counter: string, innerWidth: number): string {
-    if (!this._wantsReorderHint(active)) return "";
+    const hint = this._wantedHint(active);
+    if (!hint) return "";
     // only when enough of the description stays readable next to it
-    const room = innerWidth - 2 - 1 - wcswidth(counter ? `${reorderHint} · ${counter}` : reorderHint);
-    return room >= Math.min(wcswidth(footerText), 16) ? reorderHint : "";
+    const room = innerWidth - 2 - 1 - wcswidth(counter ? `${hint} · ${counter}` : hint);
+    return room >= Math.min(wcswidth(footerText), 16) ? hint : "";
   }
 
   private _move(direction: -1 | 1) {
@@ -916,6 +941,34 @@ export class SuggestionManager {
     return currentKey !== this.#commandKey || this.#inputVersion !== this.#blobInputVersion;
   }
 
+  // → on a highlighted folder puts it on the line and lists what is inside; ← goes back to the line before it. Only at
+  // the end of the line: anywhere else, and with no folder highlighted, the arrows move the cursor as always.
+  private _walkFolders(direction: "right" | "left", items: Suggestion[]): boolean {
+    const { commandText, cursorTerminated } = this.#term.getCommandState();
+    if (!commandText || cursorTerminated === false) return false;
+    const walking = this.#walk.length > 0;
+    // the list is still catching up with the last step: wait for it rather than move the cursor mid-walk
+    if (this._isStale()) return walking;
+    if (direction == "right") {
+      const suggestion = this.#activeSuggestionIdx >= 0 ? items.at(this.#activeSuggestionIdx) : undefined;
+      if (suggestion == null || suggestion.execute || suggestion.type !== "folder") return walking;
+      if (!this._accept(suggestion)) return walking;
+      this.#walk.push({ before: commandText, name: suggestion.name });
+      this.#walkedOnce = true;
+      return true;
+    }
+    const last = this.#walk.at(-1);
+    if (last == null) return false;
+    if (!commandText.startsWith(last.before) || commandText.length <= last.before.length) {
+      this.#walk = [];
+      return false;
+    }
+    this.#walk.pop();
+    this.#reselect = last.name;
+    this.#term.write("\u007F".repeat([...commandText.slice(last.before.length)].length));
+    return true;
+  }
+
   private _handleEnter(items: Suggestion[]): boolean {
     const suggestion = this.#activeSuggestionIdx >= 0 ? items.at(this.#activeSuggestionIdx) : undefined;
     // `pnpm i` typed in full is already a command (i is install's short name), so Enter runs it as typed
@@ -923,7 +976,11 @@ export class SuggestionManager {
     const typedShortName = token != null && !token.complete && !token.isPath && suggestion?.allNames.includes(token.token) === true;
     const config = getConfig();
     // enterRuns: Enter takes the entry and runs the line at once, except a folder, which it still walks into
-    const runsNow = config.enterRuns && suggestion != null && !suggestion.execute && suggestion.type !== "folder";
+    // after walking in with →, Enter on a folder goes straight there
+    const walked = this.#walk.length > 0;
+    this.#walk = [];
+    this.#reselect = undefined;
+    const runsNow = suggestion != null && !suggestion.execute && (suggestion.type === "folder" ? walked : config.enterRuns);
     if (config.enterAcceptsSuggestion && suggestion != null && !suggestion.execute && !typedShortName && this._accept(suggestion)) {
       log.debug({ msg: "accepted suggestion with enter", name: suggestion.name });
       if (!runsNow) return true;
