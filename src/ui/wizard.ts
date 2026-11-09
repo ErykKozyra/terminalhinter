@@ -10,7 +10,7 @@ import chalk from "chalk";
 
 import { getConfig, loadConfig, overrideConfig } from "../utils/config.js";
 import { writeSetting } from "../utils/configWriter.js";
-import { getShellSourceCommand, initSupportedShells, Shell } from "../utils/shell.js";
+import { getShellSourceCommand, inferShell, initSupportedShells, Shell } from "../utils/shell.js";
 import { blockShells, installStartupBlock, profileFile } from "../utils/startupBlock.js";
 import { renderPreview } from "./preview.js";
 import { PromptCancelled, select } from "./prompt.js";
@@ -32,11 +32,12 @@ export const runWizard = async () => {
   out(`\n${chalk.bold("terminalhinter setup")} ${chalk.dim("· Esc to quit, nothing is written until the end")}\n\n`);
 
   try {
-    const detected = path.basename(process.env.SHELL ?? "") as Shell;
+    // the shell thint init runs in; Windows has no $SHELL, there it is the parent process (pwsh, powershell)
+    const detected = (await inferShell()) ?? (path.basename(process.env.SHELL ?? "") as Shell);
     const shells = [...initSupportedShells].sort((a, b) => Number(b === detected) - Number(a === detected));
     const shell = await select({
       title: "Shell",
-      choices: shells.map((s) => ({ label: s, value: s, hint: s === detected ? "your login shell" : undefined })),
+      choices: shells.map((s) => ({ label: s, value: s, hint: s === detected ? "this shell" : undefined })),
     });
 
     const startTheme = getConfig().theme as ThemeName;
@@ -82,7 +83,7 @@ export const runWizard = async () => {
       const { file: written, backup } = installStartupBlock(shell);
       out(`${chalk.green("✓")} startup lines are at the top of ${tildify(written)}${backup ? chalk.dim(` (backup: ${tildify(backup)})`) : ""}\n`);
     } else {
-      out(`\nAdd this as the first line of your ${shell} config:\n\n  ${getShellSourceCommand(shell).trim()}\n`);
+      out(`\nAdd this as the first line of ${file != null ? tildify(file) : `your ${shell} config`}:\n\n  ${getShellSourceCommand(shell).trim()}\n`);
     }
     out(`\nDone. Open a new terminal tab.\n`);
     out(
@@ -92,6 +93,7 @@ export const runWizard = async () => {
         `  ${chalk.cyan("Enter")}            accept; on a folder walk into it; on ↪ run the command`,
         `  ${chalk.cyan("↑ ↓")}              move the selection`,
         `  ${chalk.cyan("Shift+↑ ↓")}        move the selected entry; the list keeps your order`,
+        `  ${chalk.cyan("→ ←")}              on a folder: look inside it / go back up`,
         `  ${chalk.cyan("Esc / Ctrl+Space")} close the list / open it again`,
         "",
       ].join("\n"),
