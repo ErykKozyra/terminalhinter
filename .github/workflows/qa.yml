@@ -95,15 +95,18 @@ jobs:
           # on Windows a failed run carries the end of thint's own log
           QA_VERBOSE: ${{ runner.os == 'Windows' && '1' || '0' }}
 
-      - name: Live scenarios (macOS, one process per window size)
+      - name: Live scenarios (macOS, one process per window size and shell)
         if: runner.os == 'macOS'
-        # macOS has about 500 terminals for the whole system; a fresh process per size, and the health lines show
-        # whether terminals pile up within one
+        # macOS has about 500 terminals for the whole system, and node-pty there keeps one open in the runner for
+        # every run until the runner ends: one process per window size and shell stays far under that (run 12 ran
+        # out at about 500 runs in one process)
         shell: bash
         run: |
           for size in 80x24 40x10 200x60; do
-            for attempt in 1 2; do
-              node scripts/qa/live/run.mjs --jobs 3 --sizes $size --resume --out qa-out/live-${{ matrix.os }}-$size.json && break || true
+            for shell in zsh bash fish pwsh; do
+              for attempt in 1 2; do
+                node scripts/qa/live/run.mjs --jobs 3 --sizes $size --shells $shell --resume --out qa-out/live-${{ matrix.os }}-$size.$shell.json && break || true
+              done
             done
           done
         continue-on-error: true

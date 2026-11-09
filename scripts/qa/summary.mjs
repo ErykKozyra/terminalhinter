@@ -13,8 +13,8 @@ const files = fs.readdirSync(dir);
 const summary = { live: {}, unit: {}, failures: [] };
 
 for (const file of files.filter((f) => f.startsWith("live-") && f.endsWith(".json"))) {
-  // macOS runs one file per window size (live-macos-latest-80x24.json): they add up under one system
-  const os = file.slice(5, -5).replace(/-\d+x\d+$/, "");
+  // macOS runs one file per window size and shell (live-macos-latest-80x24.zsh.json): they add up under one system
+  const os = file.slice(5, -5).replace(/-\d+x\d+(\.\w+)?$/, "");
   const data = JSON.parse(fs.readFileSync(path.join(dir, file), "utf8"));
   const cells = summary.live[os]?.cells ?? {};
   for (const r of data.results) {
@@ -26,7 +26,7 @@ for (const file of files.filter((f) => f.startsWith("live-") && f.endsWith(".jso
     else cells[key].passed++;
     if (!r.ok) summary.failures.push({ os, shell: r.shell, size: r.size, scenario: r.scenario, known: r.known, failures: r.failures.map((f) => f.slice(0, 1500)) });
   }
-  summary.live[os] = { shells: data.shells, cells };
+  summary.live[os] = { shells: [...new Set([...(summary.live[os]?.shells ?? []), ...(data.shells ?? [])])], cells };
 }
 
 for (const file of files.filter((f) => f.startsWith("unit-") && f.endsWith(".json"))) {
