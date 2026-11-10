@@ -70,3 +70,32 @@ test.each([
 test.each(["\u001b[A", "\u001b[1;2B", "\u001b[Z", "\t", "a", "\u001b[13;2u", "\u001b[200~"])("a key is never a report: %j", (sequence) => {
   expect(isTerminalReport(sequence)).toBe(false);
 });
+
+// termenv (ollama, gh, glow) asks for the background color and then for the cursor position as a marker; the terminal
+// answers in that order. If the cursor answer reached the program first, it took the color as not supported, turned
+// echo back on, and the late color answer was printed and typed into the next prompt.
+const color = "\u001b]11;rgb:1e1e/1e1e/1e1e\u0007";
+const cursor = "\u001b[12;1R";
+test.each([
+  ["one chunk", [color + cursor]],
+  ["two chunks", [color, cursor]],
+  ["cut inside the color", [color.slice(0, 9), color.slice(9) + cursor]],
+] as const)("a color answer and a cursor answer keep their order: %s", async (_label, chunks) => {
+  const order: string[] = [];
+  const proxy = new StdioProxy({ onCursorPositionReport: (data) => order.push(data) });
+  proxy.onKeypress((_value, key) => order.push(key.sequence));
+  for (const chunk of chunks) proxy.handleInput(Buffer.from(chunk));
+  await sleep(escapeWait + 10);
+  proxy.dispose();
+  expect(order).toEqual([color, cursor]);
+});
+
+test("a cursor answer followed by Esc: the answer goes on, Esc is still the Esc key", async () => {
+  const order: string[] = [];
+  const proxy = new StdioProxy({ onCursorPositionReport: (data) => order.push(data) });
+  proxy.onKeypress((_value, key) => order.push(`${key.name}:${key.sequence}`));
+  proxy.handleInput(Buffer.from(cursor + "\u001b"));
+  await sleep(escapeWait + 10);
+  proxy.dispose();
+  expect(order).toEqual([cursor, "escape:\u001b"]);
+});

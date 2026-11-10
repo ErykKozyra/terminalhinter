@@ -21,6 +21,11 @@ const partialCursorPositionReport = /\x1b\[[?>=]?[\d;:]*\$?$|\x1b\]\d*(;[^\x07\x
 // each of which counted as typing; they go to the shell in one piece instead, as a report.
 // eslint-disable-next-line no-control-regex
 const terminalReport = /\x1b\[[?>=][\d;]*c|\x1b\[\d*n|\x1b\[\?[\d;]*\$y|\x1b\[\?\d*u|\x1b\]\d+;[^\x07\x1b]*(?:\x07|\x1b\\)|\x1bP[\d>]*[+$|][^\x1b]*\x1b\\/g;
+// Every answer, the cursor reports included, in the order the terminal sent them. Programs on termenv (ollama, gh,
+// glow) ask for the background color and then for the cursor position as a marker: an answer passed on out of order
+// made them give up on the color, and its late answer was typed into the next prompt.
+const anyTerminalReport = new RegExp(`${cursorPositionReport.source}|${terminalReport.source}`, "g");
+const isCursorPositionReport = (s: string): boolean => new RegExp(`^${cursorPositionReport.source}$`).test(s);
 // blocks win32 input mode, the kitty keyboard protocol and xterm modifyOtherKeys from upgrading input & breaking node's readline
 // eslint-disable-next-line no-control-regex
 const keyEncodingUpgrade = new RegExp("\\u001B\\[(?:\\?9001([hl])|\\?u|[=><][\\d;]*u|>[\\d;]*m)", "g");
@@ -200,33 +205,26 @@ export class StdioProxy {
         this.#pendingInput = "";
         this.#routeInput(held, false);
       }, escapeWait);
-    const keypressInput = completeInput.replace(cursorPositionReport, (response) => {
-      this.#onCursorPositionReport(response);
-      return "";
-    });
+    // answers from the terminal, split out before the key parser sees them, in the order they came
+    const answers = [...completeInput.matchAll(anyTerminalReport)];
     // A lone Esc is the Esc key. Given to readline it would wait half a second for more bytes and read a key typed
     // in that time as Alt+key (Esc then `k` became Alt+K and the k was lost); Alt+key arrives in one piece anyway.
     // It waits a few milliseconds in case it is the start of a key cut in two (an arrow over ssh), which would
     // otherwise close the list and leave "[A" typed on the line.
-    if (keypressInput === "\u001b") {
+    if (answers.every((m) => isCursorPositionReport(m[0])) && completeInput.replace(anyTerminalReport, "") === "\u001b") {
+      for (const m of answers) this.#onCursorPositionReport(m[0]);
       this.#pendingEscape = setTimeout(() => this.#flushEscape(), escapeWait);
       return;
     }
-    // answers from the terminal, split out before the key parser sees them
-    let rest = "";
     let last = 0;
-    for (const m of keypressInput.matchAll(terminalReport)) {
+    for (const m of answers) {
       const at = m.index ?? 0;
-      rest += keypressInput.slice(last, at);
-      if (rest.length > 0) {
-        this.#routeKeys(rest);
-        rest = "";
-      }
-      this.#emit({ sequence: m[0], name: "report", ctrl: false, meta: false, shift: false });
+      if (at > last) this.#routeKeys(completeInput.slice(last, at));
+      if (isCursorPositionReport(m[0])) this.#onCursorPositionReport(m[0]);
+      else this.#emit({ sequence: m[0], name: "report", ctrl: false, meta: false, shift: false });
       last = at + m[0].length;
     }
-    if (last === 0) this.#routeKeys(keypressInput);
-    else if (last < keypressInput.length) this.#routeKeys(keypressInput.slice(last));
+    if (last < completeInput.length) this.#routeKeys(completeInput.slice(last));
   }
 
   #routeKeys(keypressInput: string): void {
