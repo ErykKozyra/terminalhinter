@@ -495,6 +495,8 @@ section { scroll-margin-top: 84px; }
 .bcard.playing { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent), 0 24px 50px -30px rgba(47, 95, 208, 0.55); }
 .bcard .term::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 3px; z-index: 5; background: var(--sticker); transform-origin: left; transform: scaleX(var(--done, 0)); transition: transform var(--dur, 0s) linear; }
 .bcard .term { cursor: pointer; }
+/* a cursor blinks only in the card that plays: six of them blinking in still cards is restless to look at */
+.bcard:not(.playing) .term .caret { animation: none; }
 .bcard.wide { grid-template-rows: none; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); align-items: center; gap: 36px; padding-top: 0; }
 .bcard.wide .term { margin-top: 26px; }
 .dock { position: fixed; left: 50%; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); transform: translate(-50%, 140%); z-index: 30; display: flex; align-items: center; gap: 12px; background: #12151B; color: #E6EAF2; border: 1px solid #333B49; border-radius: 14px; padding: 8px 8px 8px 18px; box-shadow: 0 24px 60px -18px rgba(0, 0, 0, 0.6); transition: transform 0.35s cubic-bezier(.2,.8,.2,1); max-width: calc(100vw - 24px); }
