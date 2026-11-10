@@ -291,4 +291,6 @@ A fork of [microsoft/inshellisense](https://github.com/microsoft/inshellisense),
 [withfig/autocomplete](https://github.com/withfig/autocomplete). Most of the hard work lives there. Not
 affiliated with Microsoft, Amazon or Fig.
 
+Made by Eryk Kozyra. News and new features on X: [@erykkozyradev](https://x.com/erykkozyradev).
+
 [MIT License](LICENSE)
