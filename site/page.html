@@ -490,6 +490,11 @@ section { scroll-margin-top: 84px; }
 .bcard h3 { font: 800 24px/1.12 var(--f-display); letter-spacing: -0.02em; margin: 0 0 8px; text-wrap: balance; }
 .bcard p { margin: 0; color: var(--muted); font-size: 16px; max-width: 52ch; }
 .bcard .term { height: 17.6em; font-size: 13px; border-radius: 12px 12px 0 0; border-bottom: 0; box-shadow: none; }
+/* one card plays at a time: it gets the accent edge, and a line along the bottom of its terminal shows how far it is */
+.bcard { cursor: pointer; transition: border-color 0.25s ease, box-shadow 0.25s ease; }
+.bcard.playing { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent), 0 24px 50px -30px rgba(47, 95, 208, 0.55); }
+.bcard .term::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 3px; z-index: 5; background: var(--sticker); transform-origin: left; transform: scaleX(var(--done, 0)); transition: transform var(--dur, 0s) linear; }
+.bcard .term { cursor: pointer; }
 .bcard.wide { grid-template-rows: none; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); align-items: center; gap: 36px; padding-top: 0; }
 .bcard.wide .term { margin-top: 26px; }
 .dock { position: fixed; left: 50%; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); transform: translate(-50%, 140%); z-index: 30; display: flex; align-items: center; gap: 12px; background: #12151B; color: #E6EAF2; border: 1px solid #333B49; border-radius: 14px; padding: 8px 8px 8px 18px; box-shadow: 0 24px 60px -18px rgba(0, 0, 0, 0.6); transition: transform 0.35s cubic-bezier(.2,.8,.2,1); max-width: calc(100vw - 24px); }
@@ -546,15 +551,18 @@ section { scroll-margin-top: 84px; }
   </div>
 
   <section id="features">
-    <h2>What plain Tab completion does not do.</h2>
+    <div class="stage-head">
+      <h2>What plain Tab completion does not do.</h2>
+      <p>The cards take turns, one at a time. Point at one, or tap it, to play it now.</p>
+    </div>
     <div class="bento">
-      <div class="bcard" style="--span:7"><div><h3>A failed command comes back fixed.</h3><p>A typo, a missing upstream, a taken port: the empty line after the error offers the fix, and Tab takes it.</p></div><div class="term play" data-view="fix" aria-label="A failed command comes back fixed." role="img"><div class="bar" aria-hidden="true"><span></span><span></span><span></span><b>zsh</b></div><div class="screen" aria-hidden="true"></div></div></div>
-      <div class="bcard" style="--span:5"><div><h3>Red before you force-push.</h3><p>Entries that delete or overwrite are red and say why. Ctrl+G explains every word of the line.</p></div><div class="term play" data-view="risk" aria-label="Red before you force-push." role="img"><div class="bar" aria-hidden="true"><span></span><span></span><span></span><b>zsh</b></div><div class="screen" aria-hidden="true"></div></div></div>
-      <div class="bcard" style="--span:5"><div><h3>It reads your project.</h3><p>Scripts with what they run, Makefile targets with their descriptions, workspaces and compose services.</p></div><div class="term play" data-view="project" aria-label="It reads your project." role="img"><div class="bar" aria-hidden="true"><span></span><span></span><span></span><b>zsh</b></div><div class="screen" aria-hidden="true"></div></div></div>
-      <div class="bcard" style="--span:7"><div><h3>Enter walks into folders.</h3><p>Enter on a folder opens it and keeps the list open, so a few presses take you deep into a project.</p></div><div class="term play" data-view="cd" aria-label="Enter walks into folders." role="img"><div class="bar" aria-hidden="true"><span></span><span></span><span></span><b>zsh</b></div><div class="screen" aria-hidden="true"></div></div></div>
-      <div class="bcard" style="--span:6"><div><h3>kill knows your ports.</h3><p>Which process listens where, and in which folder.</p></div><div class="term play" data-view="portsShort" aria-label="kill knows your ports." role="img"><div class="bar" aria-hidden="true"><span></span><span></span><span></span><b>zsh</b></div><div class="screen" aria-hidden="true"></div></div></div>
-      <div class="bcard" style="--span:6"><div><h3>Versions of any package.</h3><p>Tags and releases after react@, straight from npm.</p></div><div class="term play" data-view="versions" aria-label="Versions of any package." role="img"><div class="bar" aria-hidden="true"><span></span><span></span><span></span><b>zsh</b></div><div class="screen" aria-hidden="true"></div></div></div>
-      <div class="bcard wide" style="--span:12"><div><h3>Every shell, one setup.</h3><p>thint init finds the shells you have and sets them all up, with a backup of each config. zsh, bash, fish and PowerShell on macOS and Linux; PowerShell 7, Windows PowerShell and Git Bash on Windows.</p></div><div class="term play" data-view="setup" aria-label="thint init setting up every shell" role="img"><div class="bar" aria-hidden="true"><span></span><span></span><span></span><b>zsh</b></div><div class="screen" aria-hidden="true"></div></div></div>
+      <div class="bcard" style="--span:7"><div><h3>A failed command comes back fixed.</h3><p>A typo, a missing upstream, a taken port: the empty line after the error offers the fix, and Tab takes it.</p></div><div class="term play" data-spot="fix" aria-label="A failed command comes back fixed." role="img"><div class="bar" aria-hidden="true"><span></span><span></span><span></span><b>zsh</b></div><div class="screen" aria-hidden="true"></div></div></div>
+      <div class="bcard" style="--span:5"><div><h3>Red before you force-push.</h3><p>Entries that delete or overwrite are red and say why. Ctrl+G explains every word of the line.</p></div><div class="term play" data-spot="risk" aria-label="Red before you force-push." role="img"><div class="bar" aria-hidden="true"><span></span><span></span><span></span><b>zsh</b></div><div class="screen" aria-hidden="true"></div></div></div>
+      <div class="bcard" style="--span:5"><div><h3>It reads your project.</h3><p>Scripts with what they run, Makefile targets with their descriptions, workspaces and compose services.</p></div><div class="term play" data-spot="project" aria-label="It reads your project." role="img"><div class="bar" aria-hidden="true"><span></span><span></span><span></span><b>zsh</b></div><div class="screen" aria-hidden="true"></div></div></div>
+      <div class="bcard" style="--span:7"><div><h3>Enter walks into folders.</h3><p>Enter on a folder opens it and keeps the list open, so a few presses take you deep into a project.</p></div><div class="term play" data-spot="cd" aria-label="Enter walks into folders." role="img"><div class="bar" aria-hidden="true"><span></span><span></span><span></span><b>zsh</b></div><div class="screen" aria-hidden="true"></div></div></div>
+      <div class="bcard" style="--span:6"><div><h3>kill knows your ports.</h3><p>Which process listens where, and in which folder.</p></div><div class="term play" data-spot="portsShort" aria-label="kill knows your ports." role="img"><div class="bar" aria-hidden="true"><span></span><span></span><span></span><b>zsh</b></div><div class="screen" aria-hidden="true"></div></div></div>
+      <div class="bcard" style="--span:6"><div><h3>Versions of any package.</h3><p>Tags and releases after react@, straight from npm.</p></div><div class="term play" data-spot="versions" aria-label="Versions of any package." role="img"><div class="bar" aria-hidden="true"><span></span><span></span><span></span><b>zsh</b></div><div class="screen" aria-hidden="true"></div></div></div>
+      <div class="bcard wide" style="--span:12"><div><h3>Every shell, one setup.</h3><p>thint init finds the shells you have and sets them all up, with a backup of each config. zsh, bash, fish and PowerShell on macOS and Linux; PowerShell 7, Windows PowerShell and Git Bash on Windows.</p></div><div class="term play" data-spot="setup" aria-label="thint init setting up every shell" role="img"><div class="bar" aria-hidden="true"><span></span><span></span><span></span><b>zsh</b></div><div class="screen" aria-hidden="true"></div></div></div>
     </div>
   </section>
 
@@ -1689,6 +1697,51 @@ section { scroll-margin-top: 84px; }
     dock.classList.toggle("on", seen.size === 0 && scrollY > 300);
   });
   [hero.querySelector(".cmd"), document.getElementById("install"), document.querySelector(".cta")].forEach((el) => el && io.observe(el));
+})();
+</script>
+<script>
+(() => {
+  // The feature cards take turns: one plays its scene while the others rest on their most telling frame, then the
+  // next one on screen goes. Pointing at a card (or tapping it) plays that one now.
+  const cards = [...document.querySelectorAll(".bcard")].map((card) => {
+    const term = card.querySelector(".term"), id = term.dataset.spot;
+    const c = { card, term, id, seen: false };
+    c.player = new TH.Player(term, {
+      wait: 1000,
+      onStart: (ms) => { card.style.setProperty("--dur", "0s"); card.style.setProperty("--done", 0); void term.offsetWidth; card.style.setProperty("--dur", ms + "ms"); card.style.setProperty("--done", 1); },
+      onEnd: () => c.player.later(c.player.run, () => (pointed === c ? play(c, true) : next()), 1600),
+    });
+    c.player.poster(id);
+    return c;
+  });
+  let on = null, pointed = null;
+  function rest(c) { c.card.classList.remove("playing"); c.card.style.setProperty("--dur", "0s"); c.card.style.setProperty("--done", 0); c.player.poster(c.id); }
+  function play(c, again) {
+    if (on === c && !again) return;
+    if (on && on !== c) rest(on);
+    on = c; c.card.classList.add("playing"); c.player.play(c.id);
+  }
+  function stop() { if (on) { rest(on); on = null; } }
+  // the next card on screen after the one that just played, going round
+  function next() {
+    const from = on ? cards.indexOf(on) : -1;
+    for (let k = 1; k <= cards.length; k++) { const c = cards[(from + k) % cards.length]; if (c.seen) return play(c, true); }
+    stop();
+  }
+  const io = new IntersectionObserver((es) => {
+    es.forEach((e) => { cards.find((c) => c.term === e.target).seen = e.isIntersecting; });
+    if (TH.reduce) return;
+    if (on && !on.seen && pointed !== on) next();
+    else if (!on) next();
+  }, { threshold: 0.6 });
+  cards.forEach((c) => {
+    io.observe(c.term);
+    c.card.addEventListener("mouseenter", () => { pointed = c; play(c); });
+    c.card.addEventListener("mouseleave", () => { if (pointed === c) pointed = null; });
+    c.card.addEventListener("click", () => play(c, true));
+  });
+  addEventListener("resize", () => cards.forEach((c) => { if (c === on) { c.player.measure(); c.player.draw(); } else c.player.poster(c.id); }));
+  document.fonts && document.fonts.ready.then(() => cards.forEach((c) => { if (c !== on) c.player.poster(c.id); }));
 })();
 </script>
 <script>
