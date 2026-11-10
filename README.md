@@ -19,7 +19,7 @@ npm i -g @erykkozyra/terminalhinter
 thint init
 ```
 
-Then open a new terminal tab and type `git ` or `cd `. `thint init` finds your shells and sets them all up, with a
+Then open a new terminal tab and type `git` or `cd`. `thint init` finds your shells and sets them all up, with a
 backup of each config.
 
 ## Why you will like it
