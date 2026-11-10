@@ -445,6 +445,13 @@ section { scroll-margin-top: 84px; }
 @media (max-width: 520px) { .install .cmd.big code { font-size: 13px; } }
 
 /* the last word before the footer */
+.star { display: inline-flex; align-items: center; gap: 9px; font: 600 15px/1 var(--f-body); color: #F2F4F8; text-decoration: none; background: rgba(255, 255, 255, 0.06); border: 1px solid #39414F; border-radius: 9px; padding: 11px 16px 11px 14px; transition: border-color 0.2s ease, background 0.2s ease; }
+.star svg { width: 17px; height: 17px; fill: #F5C451; flex: none; transition: transform 0.25s ease; }
+.star:hover { border-color: #F5C451; background: rgba(245, 196, 81, 0.1); }
+.star:hover svg { transform: rotate(-14deg) scale(1.12); }
+.star:focus-visible { outline: 2px solid #F5C451; outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) { .star svg { transition: none; } }
+.cta-do { display: grid; gap: 14px; justify-items: start; min-width: 0; }
 .cta { margin-top: 72px; border-radius: 18px; background: var(--t-bg); color: #F2F4F8; padding: 44px 40px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 22px 40px; align-items: center; }
 .cta h2 { margin: 0; color: #fff; max-width: 18ch; }
 .cta p { margin: 8px 0 0; color: #9AA3B2; }
@@ -539,6 +546,7 @@ section { scroll-margin-top: 84px; }
       <code id="install-cmd"><span>npm i -g @erykkozyra/terminalhinter &amp;&amp; thint init</span></code>
       <button class="copy primary" id="copy" type="button" aria-label="Copy the install commands">Copy</button>
     </div>
+    <a class="star" href="https://github.com/ErykKozyra/terminalhinter"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.6l1.95 3.95 4.36.63-3.15 3.08.74 4.34L8 11.55 4.1 13.6l.74-4.34L1.69 6.18l4.36-.63Z"/></svg>Star on GitHub</a>
     <ul class="checks" aria-label="What it does not ask for"><li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m3 8.5 3.2 3L13 4.5"/></svg>macOS, Linux and Windows</li><li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m3 8.5 3.2 3L13 4.5"/></svg>No account</li><li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m3 8.5 3.2 3L13 4.5"/></svg>No telemetry</li><li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m3 8.5 3.2 3L13 4.5"/></svg>No Accessibility permission</li></ul>
     <div class="reel2" role="tablist" aria-label="What the demo shows"><button type="button" role="tab" data-scene="complete" aria-selected="true">Complete</button><button type="button" role="tab" data-scene="fixShort" aria-selected="false">Fix</button><button type="button" role="tab" data-scene="riskShort" aria-selected="false">Warn</button><button type="button" role="tab" data-scene="projectShort" aria-selected="false">Project</button><button type="button" role="tab" data-scene="portsShort" aria-selected="false">Ports</button></div>
     <div class="term play" aria-label="terminalhinter completing commands in a terminal" role="img"><div class="bar" aria-hidden="true"><span></span><span></span><span></span><b>zsh</b></div><div class="screen" aria-hidden="true"></div></div>
@@ -752,9 +760,12 @@ section { scroll-margin-top: 84px; }
 
   <div class="cta">
     <div><h2>Give your terminal the dropdown.</h2><p>Free and open source. Two commands, then open a new tab.</p></div>
+    <div class="cta-do">
     <div class="cmd ">
       <code><span>npm i -g @erykkozyra/terminalhinter</span><span>thint init</span></code>
       <button class="copy primary" data-copy type="button" aria-label="Copy the install commands">Copy</button>
+    </div>
+    <a class="star" href="https://github.com/ErykKozyra/terminalhinter"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.6l1.95 3.95 4.36.63-3.15 3.08.74 4.34L8 11.55 4.1 13.6l.74-4.34L1.69 6.18l4.36-.63Z"/></svg>Star on GitHub</a>
     </div>
   </div>
 
