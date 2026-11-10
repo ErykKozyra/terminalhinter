@@ -1,11 +1,16 @@
 # terminalhinter
 
-**A dropdown for your terminal.** Folders, git branches, npm scripts and 700+ CLIs show up under the cursor as
-you type, each with a short description. Like Fig or Kiro CLI, but open source, and what it learns about you stays on your machine.
+[![npm](https://img.shields.io/npm/v/%40erykkozyra%2Fterminalhinter?color=2F5FD0)](https://www.npmjs.com/package/@erykkozyra/terminalhinter)
+[![license](https://img.shields.io/badge/license-MIT-2F5FD0)](LICENSE)
 
-![The list after typing pnpm d](docs/preview.png)
+**Type three letters. Get the whole command.** Open source autocomplete for zsh, bash, fish and PowerShell on
+macOS, Linux and Windows. It completes 700+ command line tools as you type, hands you the fix when a command fails,
+and marks the risky ones red.
 
-**[Try the live demo](https://erykkozyra.github.io/terminalhinter/)** in your browser, no install needed.
+![terminalhinter completing a branch, fixing a typo and marking --force red](docs/demo.gif)
+
+**[Watch every feature play, and try it in your browser](https://erykkozyra.github.io/terminalhinter/)**. No install
+needed.
 
 ## Install
 
@@ -14,36 +19,50 @@ npm i -g @erykkozyra/terminalhinter
 thint init
 ```
 
-`thint init` asks for your shell, a theme and icons, with a live preview, and offers to set up the other shells it
-finds in the same go. Then open a new terminal tab and type `git ` or `cd `.
+Then open a new terminal tab and type `git ` or `cd `. `thint init` finds your shells and sets them all up, with a
+backup of each config.
 
-### Where it runs
+## Why you will like it
 
-| System | Shells |
-| --- | --- |
-| macOS, Linux | zsh, bash, fish, PowerShell 7 |
-| Windows | PowerShell 7, Windows PowerShell 5.1, Git Bash; cmd started by hand (`thint -s cmd`) |
+- **A failed command comes back fixed.** After a typo or a missing upstream, the empty line offers the fix and Tab
+  takes it.
+- **Red before you force-push.** Entries that delete or overwrite are red and say why. Ctrl+G explains every word
+  of a line.
+- **It reads your project.** Your scripts, Makefile targets, branches with the age of their last commit, the
+  processes on your ports.
+- **Enter walks into folders.** A few presses take you deep into a project, with the list open all the way.
+- **Nothing to allow, nothing to sign up for.** No Accessibility permission, no app in the menu bar, no account, no
+  telemetry.
+
+Coming from Fig or Kiro CLI, which dropped its autocomplete in 3.0? `thint migrate` moves you over in one command.
+
+## Contents
+
+- [Where it runs](#where-it-runs)
+- [Everything it does](#everything-it-does)
+- [Keys](#keys) and [commands](#commands)
+- [Coming from Kiro CLI or Fig](#coming-from-kiro-cli-or-fig)
+- [Your own suggestions](#your-own-suggestions) and [snippets](#snippets)
+- [Windows](#windows) and [VS Code](#vs-code)
+- [Updating and uninstalling](#updating-and-uninstalling)
+- [Troubleshooting](#troubleshooting)
+- [Where things are kept, and what goes online](#where-things-are-kept)
+
+## Where it runs
+
+| System       | Shells                                                                               |
+| ------------ | ------------------------------------------------------------------------------------ |
+| macOS, Linux | zsh, bash, fish, PowerShell 7                                                        |
+| Windows      | PowerShell 7, Windows PowerShell 5.1, Git Bash; cmd started by hand (`thint -s cmd`) |
 
 Any terminal app works: iTerm2, Terminal.app, Ghostty, WezTerm, Kitty, Alacritty, VS Code, Cursor, Windows Terminal,
 and tmux or screen inside them. zsh and bash on macOS and Linux have been around the longest; fish and Windows are
 newer, so if something looks off there, [open an issue](https://github.com/ErykKozyra/terminalhinter/issues).
 nushell and xonsh come from the upstream project and are not tested.
 
-### On Windows
+## Everything it does
 
-Run `npm i -g @erykkozyra/terminalhinter` and `thint init` in PowerShell 7 or Windows PowerShell. The setup puts
-the startup lines into the profile of both PowerShells and into `~/.bashrc` for Git Bash.
-
-Windows PowerShell 5.1 comes with scripts turned off, so it would skip its profile and the list never starts there.
-`thint init` sees that and offers to allow scripts for your user only
-(`Set-ExecutionPolicy -Scope CurrentUser RemoteSigned`, what PowerShell 7 has from the start). If `thint` or `npm`
-themselves will not start in Windows PowerShell for the same reason, use `thint.cmd init` and `npm.cmd`.
-
-cmd has no startup file to put the lines in, so there you start the list with `thint -s cmd`.
-
-## What it does
-
-**When something goes wrong**
+### When something goes wrong
 
 - **It offers the fix for the command that just failed.** A typo (`gti` → `git`), a missing upstream branch, a
   branch or script with a near name, a folder that needs `-p`, a port that is taken. Tab puts it on the line;
@@ -53,7 +72,7 @@ cmd has no startup file to put the lines in, so there you start the list with `t
 - **Risky entries are marked red** and say why: `--force`, `reset --hard`, `rm -r`, a Make target tagged `[prod]`,
   an ssh host called `PROD`.
 
-**It knows your project**
+### Your project
 
 - **Your tasks:** Makefile targets with their `##` descriptions and sections, just recipes, Taskfile tasks, docker
   compose services, mise and deno tasks, package.json scripts, turbo tasks, workspace packages for `--filter`.
@@ -64,51 +83,54 @@ cmd has no startup file to put the lines in, so there you start the list with `t
 - **What you ran here:** typing the first word brings back whole commands you ran in this folder, and the ones
   you ran elsewhere in the same repository. Lines that look like they hold a password or token are never stored.
 
-**And it gets out of the way**
+### Moving around
 
-- **Nothing to allow.** It runs inside your terminal: no Accessibility, Screen Recording or Input Monitoring to switch
-  on, no app in the menu bar, no account, no telemetry. Your commands stay on your machine.
 - **Enter walks into folders.** The list stays open with what is inside; the `↪` entry runs the command where you
   are. `cd` also finds folders from anywhere through your bookmarks and zoxide.
 - **→ looks inside a folder before you commit to it.** It puts the folder on the line and lists what is inside; ←
   goes back up. Enter after a walk goes straight to the highlighted folder.
+
+### The list itself
+
 - **It learns what you use**, and Shift+Up / Shift+Down puts the list in your own order.
 - **Letters in order are enough.** `chkt` finds `checkout`.
 - **Right after a space nothing is selected**, so Enter just runs the command. A word you typed in full that no
   entry starts with runs as typed too.
 - **Enter can run at once:** `thint config set enterRuns true` makes Enter take the entry and run the line.
 
+![The list after typing pnpm d](docs/preview.png)
+
 ## Keys
 
-| Key | What it does |
-| --- | --- |
-| Enter | Accept, walk into a folder, or run the command on `↪` |
-| → ← | On a highlighted folder at the end of the line: look inside it, go back up |
-| Tab | Accept the selected entry |
-| ↑ ↓ | Move the selection; ↑ with nothing selected goes to your shell history |
-| Shift+↑ ↓ | Move the selected entry in the list |
-| Esc | Hide the list until you type again |
-| Ctrl+Space | Show it again |
-| Ctrl+G | What each word of the line does |
-| Tab on an empty line | Take the fix offered after a failed command |
+| Key                  | What it does                                                               |
+| -------------------- | -------------------------------------------------------------------------- |
+| Enter                | Accept, walk into a folder, or run the command on `↪`                     |
+| → ←                  | On a highlighted folder at the end of the line: look inside it, go back up |
+| Tab                  | Accept the selected entry                                                  |
+| ↑ ↓                  | Move the selection; ↑ with nothing selected goes to your shell history     |
+| Shift+↑ ↓            | Move the selected entry in the list                                        |
+| Esc                  | Hide the list until you type again                                         |
+| Ctrl+Space           | Show it again                                                              |
+| Ctrl+G               | What each word of the line does                                            |
+| Tab on an empty line | Take the fix offered after a failed command                                |
 
 On a Mac, Ctrl is the Control key (⌃), not Command.
 
 ## Commands
 
-| Command | What it does |
-| --- | --- |
-| `thint init` | Guided setup |
-| `thint theme` | Pick a theme: thint, light, nord or dracula |
-| `thint config` | Show or change settings ([all of them](docs/configuration.md)) |
-| `thint bookmark add` | Bookmark a folder, so `cd` offers it from anywhere |
-| `thint specs new` | Start your own suggestions for a command |
-| `thint order reset` | Forget an order you set with Shift+↑ ↓ |
-| `thint snippets new` | Start your snippets: commands with fields to fill in |
-| `thint migrate` | Move over from Kiro CLI, Amazon Q or Fig |
-| `thint update` | Install the newest version |
-| `thint doctor` | Check the installation and tell you how to fix it |
-| `thint debug keys` | Record what your terminal sends for the keys thint uses |
+| Command              | What it does                                                   |
+| -------------------- | -------------------------------------------------------------- |
+| `thint init`         | Guided setup                                                   |
+| `thint theme`        | Pick a theme: thint, light, nord or dracula                    |
+| `thint config`       | Show or change settings ([all of them](docs/configuration.md)) |
+| `thint bookmark add` | Bookmark a folder, so `cd` offers it from anywhere             |
+| `thint specs new`    | Start your own suggestions for a command                       |
+| `thint order reset`  | Forget an order you set with Shift+↑ ↓                         |
+| `thint snippets new` | Start your snippets: commands with fields to fill in           |
+| `thint migrate`      | Move over from Kiro CLI, Amazon Q or Fig                       |
+| `thint update`       | Install the newest version                                     |
+| `thint doctor`       | Check the installation and tell you how to fix it              |
+| `thint debug keys`   | Record what your terminal sends for the keys thint uses        |
 
 ## Coming from Kiro CLI or Fig
 
@@ -141,12 +163,26 @@ starts the file):
 
 ```yaml
 - name: release
-  command: 'git tag v{{version}} && git push --tags'
+  command: "git tag v{{version}} && git push --tags"
 ```
 
 Type the name, fill the fields, and the finished command lands on the line.
 
-## Looks best in VS Code with
+## Windows
+
+Run `npm i -g @erykkozyra/terminalhinter` and `thint init` in PowerShell 7 or Windows PowerShell. The setup puts
+the startup lines into the profile of both PowerShells and into `~/.bashrc` for Git Bash.
+
+Windows PowerShell 5.1 comes with scripts turned off, so it would skip its profile and the list never starts there.
+`thint init` sees that and offers to allow scripts for your user only
+(`Set-ExecutionPolicy -Scope CurrentUser RemoteSigned`, what PowerShell 7 has from the start). If `thint` or `npm`
+themselves will not start in Windows PowerShell for the same reason, use `thint.cmd init` and `npm.cmd`.
+
+cmd has no startup file to put the lines in, so there you start the list with `thint -s cmd`.
+
+## VS Code
+
+The list looks its best with these settings:
 
 ```json
 "terminal.integrated.lineHeight": 1.3,
@@ -161,9 +197,9 @@ Type the name, fill the fields, and the finished command lands on the line.
 **Updating.** `thint update`. A new tab tells you once when a new version is out; `thint config set updateCheck false`
 turns that off. An update with `npm i -g @erykkozyra/terminalhinter@latest` works too: the next new tab picks it up.
 
-**nvm.** thint carries its own runtime, so switching Node never breaks the list in open tabs. The `thint` command
-itself belongs to the Node version you installed it with, like any global npm package: after you switch the default
-version, run `npm i -g` again, or install from source.
+**nvm.** The list in your tabs never depends on your Node version, because thint carries its own runtime. Only the
+`thint` command you type is a global npm package: after you switch your default Node, run
+`npm i -g @erykkozyra/terminalhinter` once more so that version has the command too.
 
 **From source** (needs Node 18+ and git, only for the build):
 
@@ -238,12 +274,12 @@ Start a tab by hand with logging on, for example `thint -s zsh -V`, do what goes
 
 ## Where things are kept
 
-| What | Where |
-| --- | --- |
-| Settings | `~/.terminalhinterrc` or `~/.config/terminalhinter/rc.toml` ([all settings](docs/configuration.md)) |
-| Your specs and snippets | `~/.config/terminalhinter/specs/`, `~/.config/terminalhinter/snippets.yaml` |
-| What it learned, logs, its own files | `~/.local/share/terminalhinter` (`~/.terminalhinter` on Windows and older installs) |
-| Startup lines | the top of `~/.zshrc`, `~/.bashrc`, `config.fish` or your PowerShell `$PROFILE`, between `# >>> terminalhinter >>>` and `# <<< terminalhinter <<<` |
+| What                                 | Where                                                                                                                                              |
+| ------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Settings                             | `~/.terminalhinterrc` or `~/.config/terminalhinter/rc.toml` ([all settings](docs/configuration.md))                                                |
+| Your specs and snippets              | `~/.config/terminalhinter/specs/`, `~/.config/terminalhinter/snippets.yaml`                                                                        |
+| What it learned, logs, its own files | `~/.local/share/terminalhinter` (`~/.terminalhinter` on Windows and older installs)                                                                |
+| Startup lines                        | the top of `~/.zshrc`, `~/.bashrc`, `config.fish` or your PowerShell `$PROFILE`, between `# >>> terminalhinter >>>` and `# <<< terminalhinter <<<` |
 
 There is no telemetry. What you type and what thint learns stay in these folders. It goes online only to look up
 packages: once a day it asks npm for its own newest version number (`updateCheck = false` turns that off), and when you
