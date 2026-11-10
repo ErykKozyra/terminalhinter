@@ -27,7 +27,7 @@ const generatePackageJson = (): void => {
   const packageJson = {
     name: `@erykkozyra/terminalhinter`,
     version: getVersion(),
-    description: "Open source terminal autocomplete for zsh, bash, fish and PowerShell: a dropdown of folders, git branches, npm scripts and 600+ CLIs, like Fig and Kiro CLI",
+    description: "Open source terminal autocomplete for zsh, bash, fish and PowerShell: a dropdown of folders, git branches, npm scripts and 700+ CLIs, like Fig and Kiro CLI",
     license: "MIT",
     homepage: "https://erykkozyra.github.io/terminalhinter/",
     repository: {

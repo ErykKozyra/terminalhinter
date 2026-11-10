@@ -1,6 +1,6 @@
 # terminalhinter
 
-**A dropdown for your terminal.** Folders, git branches, npm scripts and 600+ CLIs show up under the cursor as
+**A dropdown for your terminal.** Folders, git branches, npm scripts and 700+ CLIs show up under the cursor as
 you type, each with a short description. Like Fig or Kiro CLI, but open source, and what it learns about you stays on your machine.
 
 ![The list after typing pnpm d](docs/preview.png)

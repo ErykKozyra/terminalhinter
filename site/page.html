@@ -1,11 +1,11 @@
 <title>terminalhinter</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<meta name="description" content="A dropdown for your terminal in zsh, bash, fish and PowerShell: folders, git branches, npm scripts and 600+ CLIs as you type. Enter walks into folders, the list learns what you use.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;700;800&family=JetBrains+Mono:ital,wght@0,400;0,700;1,400&family=Caveat:wght@700&display=swap">
 <style>
-/* Layout: one left-aligned column; the live terminal is the hero object, everything else stays quiet around it. */
+/* Layout: a dark stage at the top with one terminal that plays the features, then a grid of feature cards, each
+   with its own small terminal, then the live demo to type in and the quieter sections. */
 :root {
   /* page */
   --paper: #EBEFF5;
@@ -106,9 +106,7 @@ a:focus-visible, button:focus-visible, .term:focus-visible { outline: 2px solid 
   .top nav a span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 }
 
-/* hero: the headline in the middle, the install commands under it, then where it runs */
-.hero { padding-block: 72px 44px; display: grid; justify-items: center; text-align: center; gap: 22px; }
-.hero h1 { max-width: 12ch; }
+h1 { max-width: 12ch; }
 .hero .lede { margin: 0 auto; max-width: 52ch; }
 .hero .cmd { width: min(100%, 520px); text-align: left; }
 h1 {
@@ -139,19 +137,8 @@ h1 {
   .copy { justify-self: start; }
 }
 
-/* the shells it runs in, by system, one quiet row under the install commands */
-.groups { display: flex; flex-wrap: wrap; justify-content: center; align-items: stretch; gap: 18px 36px; margin-top: 18px; color: var(--muted); }
-.groups > i { width: 1px; background: var(--rule); }
-.grp { display: grid; gap: 12px; justify-items: center; }
-.grp small { font-size: 13px; }
-.grp > div { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px 22px; }
 .lg { display: inline-flex; align-items: center; gap: 8px; font: 500 15px/1 var(--f-body); color: var(--ink); }
 .lg img { width: 22px; height: 22px; transform: scale(var(--s, 1)); } /* a logo drawn with more room around it gets a little more size */
-@media (max-width: 760px) {
-  .hero { padding-block: 32px 28px; }
-  .groups > i { display: none; }
-  .groups { gap: 22px; }
-}
 
 /* the terminal */
 .stage { padding-block: 8px 12px; position: relative; }
@@ -338,27 +325,7 @@ footer p { margin: 0; max-width: 60ch; }
   .term:not(.focused) .caret { animation: none; }
 }
 
-/* under the install commands: what it does not ask for */
-.perm { list-style: none; display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 22px; margin: -6px 0 0; padding: 0; color: var(--muted); font-size: 15px; }
-.perm li { display: inline-flex; align-items: center; gap: 7px; }
-.perm svg { width: 15px; height: 15px; flex: none; fill: none; stroke: var(--p-arrow); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
-
-/* the showcase: a list of features on the left, one terminal that plays the picked one on the right */
-.show-grid { display: grid; grid-template-columns: minmax(0, 300px) minmax(0, 1fr); gap: 28px; align-items: start; }
-.show-tabs { display: grid; gap: 4px; }
-.show-tabs button {
-  display: grid; gap: 3px; text-align: left; cursor: pointer; color: var(--ink);
-  background: transparent; border: 1px solid transparent; border-radius: 10px; padding: 11px 14px;
-  font: 400 15px/1.35 var(--f-body);
-}
-.show-tabs button b { font-weight: 700; font-size: 16px; }
-.show-tabs button span { color: var(--muted); font-size: 14px; }
-.show-tabs button:hover { border-color: var(--rule); }
-.show-tabs button[aria-selected="true"] { background: var(--key-bg); border-color: var(--key-edge); box-shadow: inset 3px 0 0 var(--accent); }
-.show-tabs button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-.show-term .term { height: 22.4em; }
-.show-term .screen { overflow: hidden; }
-.show-term .line { height: auto; min-height: 1.6em; white-space: pre-wrap; overflow-wrap: anywhere; }
+/* colors of what a scene prints, and the red of a risky entry */
 .o-err { color: #F2777A; }
 .o-ok { color: #3BC28A; }
 .o-b { color: #F2F4F8; font-weight: 700; }
@@ -369,68 +336,215 @@ footer p { margin: 0; max-width: 60ch; }
 .foot.red { color: #F2777A; font-style: normal; }
 .foot.warn { color: var(--t-match); font-style: normal; }
 
-/* what to press next, under the terminal; the key is a button too, for touch screens */
-.show-ask { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; min-height: 44px; padding-top: 12px; color: var(--muted); font-size: 15px; }
-.show-ask .press { font: 500 14px/1 var(--f-mono); color: var(--ink); background: var(--key-bg); border: 1px solid var(--key-edge); border-bottom-width: 2px; border-radius: 7px; padding: 7px 11px; cursor: pointer; position: relative; overflow: hidden; }
-.show-ask .press:hover { border-color: var(--accent); }
-.show-ask .press.hit { background: var(--accent); color: #fff; border-color: var(--accent); }
-/* the bar under the key fills while the demo waits, then it presses the key itself */
-.show-ask .press i { position: absolute; left: 0; bottom: 0; height: 2px; width: 100%; background: var(--accent); transform-origin: left; transform: scaleX(0); }
-.show-ask .press i.run { transition: transform var(--wait, 2.6s) linear; transform: scaleX(1); }
-.show-ask .again { font: 500 14px/1 var(--f-body); color: var(--ink); background: transparent; border: 1px solid var(--rule); border-radius: 999px; padding: 8px 13px; cursor: pointer; }
-.show-ask .again:hover { border-color: var(--muted); }
+/* ---- the page around the terminals ---- */
+html { scroll-behavior: smooth; }
+body { margin: 0; }
+.theme { height: 36px; flex: none; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+[hidden] { display: none !important; }
+:root { --wide: 1180px; --card: #F6F8FB; --good: #1F9D6B; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --card: #151A23; --good: #3BC28A; } }
+:root[data-theme="dark"] { --card: #151A23; --good: #3BC28A; }
+.wrap { max-width: var(--wide); }
+section { scroll-margin-top: 84px; }
 
-@media (max-width: 860px) {
-  /* on a phone the features become a row of chips above the terminal */
-  .show-grid { grid-template-columns: minmax(0, 1fr); gap: 14px; }
-  .show-tabs { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; }
-  .show-tabs::-webkit-scrollbar { display: none; }
-  .show-tabs button { flex: none; border: 1px solid var(--rule); border-radius: 999px; padding: 8px 13px; }
-  .show-tabs button b { font-size: 14px; font-weight: 500; }
-  .show-tabs button span { display: none; }
-  .show-tabs button[aria-selected="true"] { box-shadow: none; border-color: var(--accent); color: var(--accent); }
-  .show-term .term { height: 24em; }
+/* header: stays at the top, with the one thing to do on the right */
+.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; padding-block: 14px; background: color-mix(in srgb, var(--paper) 86%, transparent); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); margin-inline: calc(-1 * max(20px, env(safe-area-inset-left, 0px))); padding-inline: max(20px, env(safe-area-inset-left, 0px)); }
+.top nav { align-items: center; }
+.top nav a.text { border: 0; padding: 7px 8px; color: var(--muted); }
+.top nav a.text:hover { color: var(--ink); }
+.btn { display: inline-flex; align-items: center; gap: 8px; font: 700 15px/1 var(--f-body); color: #fff; background: var(--sticker); border: 1px solid var(--sticker); border-radius: 9px; padding: 10px 15px; text-decoration: none; cursor: pointer; }
+.btn:hover { filter: brightness(1.08); }
+.btn.ghost { color: var(--ink); background: transparent; border-color: var(--rule); font-weight: 500; }
+.btn.ghost:hover { border-color: var(--muted); filter: none; }
+.top nav a.btn { color: #fff; border-color: var(--sticker); padding: 9px 14px; }
+@media (max-width: 720px) { .top nav a.text { display: none; } }
+@media (max-width: 420px) { .top nav a.btn span { position: static; width: auto; height: auto; clip-path: none; } .top nav a.btn { padding: 9px 12px; } }
+
+/* the key the demo just pressed */
+.keycap {
+  position: absolute; right: 14px; bottom: 12px; z-index: 3; pointer-events: none; opacity: 0;
+  font: 700 13px/1 var(--f-mono); color: #12151B; background: #F2F4F8; border-radius: 7px; padding: 8px 11px;
+  box-shadow: 0 3px 0 #9AA3B2, 0 10px 24px -8px rgba(0, 0, 0, 0.6);
 }
+.keycap.on { animation: cap 1s ease-out; }
+@keyframes cap { 0% { opacity: 0; transform: translateY(6px) scale(0.92); } 12% { opacity: 1; transform: translateY(2px) scale(1); } 70% { opacity: 1; transform: none; } 100% { opacity: 0; transform: none; } }
 
+/* scene terminals: output wraps, the list is cut to the window */
+.play .screen { overflow: hidden; }
+.play .line { height: auto; min-height: 1.6em; white-space: pre-wrap; overflow-wrap: anywhere; }
+.play { cursor: default; }
+
+/* the install box, wherever it shows up */
+.cmd { box-shadow: 0 1px 0 rgba(20, 30, 60, 0.04); }
+.checks { list-style: none; display: flex; flex-wrap: wrap; gap: 6px 20px; margin: 0; padding: 0; color: var(--muted); font-size: 15px; }
+.checks li { display: inline-flex; align-items: center; gap: 7px; }
+.checks svg { width: 15px; height: 15px; flex: none; fill: none; stroke: var(--good); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+
+/* the pill above the headline: the news that sends people here */
+.news { display: inline-flex; align-items: center; gap: 10px; font-size: 14px; color: var(--ink); text-decoration: none; border: 1px solid var(--rule); border-radius: 999px; padding: 6px 14px 6px 6px; background: var(--key-bg); max-width: 100%; }
+.news b { font: 700 12px/1 var(--f-body); color: #fff; background: var(--sticker); border-radius: 999px; padding: 5px 9px; flex: none; }
+.news span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.news:hover { border-color: var(--muted); }
+.news i { font-style: normal; }
+@media (max-width: 520px) { .news i { display: none; } .lede { font-size: 17px; } }
+
+/* where it runs */
+.runs { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 14px 30px; padding-block: 26px; border-block: 1px solid var(--rule); color: var(--muted); font-size: 14px; }
+.runs .lg { font-size: 15px; }
+.runs > i { width: 1px; align-self: stretch; background: var(--rule); }
+@media (max-width: 760px) { .runs > i { display: none; } .runs { gap: 12px 20px; } }
+
+/* feature text */
+.ft h2 { margin-bottom: 14px; max-width: 16ch; }
+.ft p { margin: 0 0 14px; color: var(--muted); max-width: 46ch; font-size: 18px; }
+.ft ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; color: var(--ink); font-size: 16px; }
+.ft li { display: grid; grid-template-columns: 18px minmax(0, 1fr); gap: 10px; align-items: start; }
+.ft li svg { width: 16px; height: 16px; margin-top: 5px; fill: none; stroke: var(--good); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+
+/* nothing to allow */
+.quiet { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; border: 1px solid var(--rule); border-radius: 14px; overflow: hidden; background: var(--card); }
+.quiet > div { padding: 22px 22px 24px; border-left: 1px solid var(--rule); min-width: 0; }
+.quiet > div:first-child { border-left: 0; }
+.quiet b { display: block; font: 800 22px/1.15 var(--f-display); letter-spacing: -0.02em; margin-bottom: 8px; }
+.quiet p { margin: 0; color: var(--muted); font-size: 15px; }
+@media (max-width: 900px) { .quiet { grid-template-columns: repeat(2, minmax(0, 1fr)); } .quiet > div:nth-child(3) { border-left: 0; } .quiet > div:nth-child(n+3) { border-top: 1px solid var(--rule); } }
+@media (max-width: 520px) { .quiet { grid-template-columns: minmax(0, 1fr); } .quiet > div { border-left: 0; } .quiet > div + div { border-top: 1px solid var(--rule); } }
+
+/* coming from Fig or Kiro */
+.switch { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 28px 56px; align-items: center; }
+.switch .term { height: 17.6em; }
+@media (max-width: 860px) { .switch { grid-template-columns: minmax(0, 1fr); } }
+
+/* the playground */
+.stage-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 10px 24px; margin-bottom: 22px; }
+.stage-head h2 { margin: 0; }
+.stage-head p { margin: 0; color: var(--muted); max-width: 40ch; }
+
+/* install: three steps and the commands, big */
+.install { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 28px 56px; align-items: start; }
+.install .cmd.big { padding: 20px 18px 20px 22px; }
+.install .cmd.big code { font-size: 16px; }
+.install .after-cmd { margin: 14px 0 0; color: var(--muted); font-size: 15px; }
+@media (max-width: 860px) { .install { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 520px) { .install .cmd.big code { font-size: 13px; } }
+
+/* the last word before the footer */
+.cta { margin-top: 72px; border-radius: 18px; background: var(--t-bg); color: #F2F4F8; padding: 44px 40px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 22px 40px; align-items: center; }
+.cta h2 { margin: 0; color: #fff; max-width: 18ch; }
+.cta p { margin: 8px 0 0; color: #9AA3B2; }
+.cta .cmd { background: #1B212C; border-color: #39414F; min-width: min(100%, 440px); }
+.cta .cmd code { color: #E6EAF2; }
+.cta .cmd code span::before { color: #7F8796; }
+.cta .copy { color: #fff; background: var(--sticker); border-color: var(--sticker); font-weight: 700; }
+@media (max-width: 860px) { .cta { grid-template-columns: minmax(0, 1fr); padding: 30px 22px; } }
+
+.copy.primary { color: #fff; background: var(--sticker); border-color: var(--sticker); font-weight: 700; }
+.copy.primary:hover { filter: brightness(1.08); }
+.copy.primary[data-done] { color: #fff; }
+
+#yours h3.sub { margin-top: 0; }
+
+.stage2 { background: radial-gradient(1100px 520px at 50% -8%, rgba(47, 95, 208, 0.42), transparent 70%), #0B0E14; color: #E6EAF2; }
+.stage2 .top { position: static; background: none; backdrop-filter: none; -webkit-backdrop-filter: none; }
+.stage2 .mark { color: #fff; }
+.stage2 .top nav a, .stage2 .theme { color: #E6EAF2; border-color: #2A313D; }
+.stage2 .top nav a.text { color: #A9B2C3; }
+.stage2 .top nav svg, .stage2 .theme svg { color: #A9B2C3; }
+.hero2 { display: grid; grid-template-columns: minmax(0, 1fr); justify-items: center; text-align: center; gap: 18px; padding-block: 34px 0; }
+.hero2 h1 { color: #fff; font-size: clamp(40px, 6vw, 80px); max-width: 15ch; }
+.hero2 .lede { color: #A9B2C3; max-width: 60ch; margin: 0; }
+.hero2 .cmd { background: #161B25; border-color: #333B49; width: min(100%, 600px); text-align: left; align-items: center; padding: 10px 10px 10px 18px; }
+.hero2 .cmd code { color: #E6EAF2; }
+.hero2 .cmd code span::before { color: #7F8796; }
+.hero2 .checks { color: #A9B2C3; justify-content: center; }
+.hero2 .checks svg { stroke: #3BC28A; }
+.reel2 { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 10px; }
+.reel2 button { font: 500 14px/1 var(--f-body); color: #A9B2C3; background: transparent; border: 1px solid #2A313D; border-radius: 999px; padding: 9px 15px; cursor: pointer; position: relative; overflow: hidden; }
+.reel2 button[aria-selected="true"] { color: #0B0E14; background: #F2F4F8; border-color: #F2F4F8; font-weight: 700; }
+.reel2 button::after { content: ""; position: absolute; left: 0; bottom: 0; height: 3px; width: calc(var(--done, 0) * 100%); background: var(--sticker); transition: width 0.3s linear; }
+.hero2 .term { width: min(100%, 1000px); height: 26em; text-align: left; margin-bottom: -150px; z-index: 2; border-color: #333B49; box-shadow: 0 0 0 1px rgba(127, 162, 255, 0.12), 0 50px 120px -30px rgba(47, 95, 208, 0.55); }
+.after-stage { padding-top: 190px; }
+.after-stage .runs { border-top: 0; padding-top: 0; }
+.bento { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 20px; }
+.bcard { grid-column: span var(--span); min-width: 0; background: var(--card); border: 1px solid var(--rule); border-radius: 18px; padding: 26px 26px 0; overflow: hidden; display: grid; grid-template-rows: 1fr auto; gap: 20px; }
+.bcard h3 { font: 800 24px/1.12 var(--f-display); letter-spacing: -0.02em; margin: 0 0 8px; text-wrap: balance; }
+.bcard p { margin: 0; color: var(--muted); font-size: 16px; max-width: 52ch; }
+.bcard .term { height: 17.6em; font-size: 13px; border-radius: 12px 12px 0 0; border-bottom: 0; box-shadow: none; }
+.bcard.wide { grid-template-rows: none; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); align-items: center; gap: 36px; padding-top: 0; }
+.bcard.wide .term { margin-top: 26px; }
+.dock { position: fixed; left: 50%; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); transform: translate(-50%, 140%); z-index: 30; display: flex; align-items: center; gap: 12px; background: #12151B; color: #E6EAF2; border: 1px solid #333B49; border-radius: 14px; padding: 8px 8px 8px 18px; box-shadow: 0 24px 60px -18px rgba(0, 0, 0, 0.6); transition: transform 0.35s cubic-bezier(.2,.8,.2,1); max-width: calc(100vw - 24px); }
+.dock.on { transform: translate(-50%, 0); }
+.dock code { font: 400 14px/1 var(--f-mono); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.dock code::before { content: "$ "; color: #7F8796; }
+@media (prefers-reduced-motion: reduce) { .dock { transition: none; } }
+@media (max-width: 920px) {
+  .bcard { grid-column: span 12; padding: 20px 18px 0; }
+  .bcard.wide { grid-template-columns: minmax(0, 1fr); gap: 20px; padding-top: 20px; }
+  .bcard.wide .term { margin-top: 0; }
+  .hero2 .term { height: 22.4em; margin-bottom: -110px; }
+  .after-stage { padding-top: 140px; }
+  .dock code { font-size: 12px; }
+}
+@media (max-width: 520px) { .hero2 .cmd { grid-template-columns: minmax(0, 1fr) auto; } .hero2 .cmd code span { white-space: pre-wrap; } .dock { padding-left: 14px; } }
 </style>
 
 <script>try { const t = localStorage.getItem("thint-theme"); if (t === "light" || t === "dark") document.documentElement.dataset.theme = t; } catch {}</script>
+<div class="stage2">
 <div class="wrap">
-  <header class="top">
+  <header class="top on-dark">
     <a class="mark" href="#"><i aria-hidden="true"></i>terminalhinter</a>
     <nav aria-label="Links">
+      <a class="text" href="#features">Features</a>
+      <a class="text" href="#faq">Questions</a>
       <a href="https://github.com/ErykKozyra/terminalhinter" title="Source code on GitHub">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6 2 12l6 6M16 6l6 6-6 6M14 4l-4 16"/></svg><span>GitHub</span></a>
-      <a href="https://www.npmjs.com/package/@erykkozyra/terminalhinter" title="Package on npm">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2 3 7v10l9 5 9-5V7l-9-5Z"/><path d="m3 7 9 5 9-5M12 12v10"/></svg><span>npm</span></a>
       <button type="button" class="theme" id="theme" aria-label="Switch between light and dark">
         <svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
         <svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5Z"/></svg>
       </button>
+      <a class="btn" href="#install"><span>Install</span></a>
     </nav>
   </header>
-
-  <div class="hero">
-    <h1>A dropdown for your terminal.</h1>
-    <p class="lede">Open source autocomplete for zsh, bash, fish and PowerShell, on macOS, Linux and Windows. Folders, git branches, npm scripts and 600+ CLIs show up as you type, and the list learns what you use.</p>
+  <div class="hero2">
+    <h1>Type three letters. Get the whole command.</h1>
+    <p class="lede">Open source autocomplete for zsh, bash, fish and PowerShell. 700+ CLIs as you type, the fix when a command fails, a red mark on the risky ones.</p>
     <div class="cmd">
-      <code id="install-cmd"><span>npm i -g @erykkozyra/terminalhinter</span><span>thint init</span></code>
-      <button class="copy" id="copy" type="button" aria-label="Copy the install commands">Copy</button>
+      <code id="install-cmd"><span>npm i -g @erykkozyra/terminalhinter &amp;&amp; thint init</span></code>
+      <button class="copy primary" id="copy" type="button" aria-label="Copy the install commands">Copy</button>
     </div>
-    <ul class="perm" aria-label="What it does not ask for">
-      <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m3 8.5 3.2 3L13 4.5"/></svg>No Accessibility permission</li>
-      <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m3 8.5 3.2 3L13 4.5"/></svg>No app in the menu bar</li>
-      <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m3 8.5 3.2 3L13 4.5"/></svg>No account</li>
-      <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m3 8.5 3.2 3L13 4.5"/></svg>No telemetry</li>
-    </ul>
-    <div class="groups" aria-label="Where it runs">
-      <div class="grp"><small>macOS and Linux</small><div><span class="lg"><img src="shell-zsh.svg" alt="" style="--s:1.3" width="22" height="22">zsh</span><span class="lg"><img src="shell-bash.png" alt="" width="22" height="22">bash</span><span class="lg"><img src="shell-fish.png" alt="" style="--s:1.4" width="22" height="22">fish</span><span class="lg"><img src="shell-powershell.svg" alt="" width="22" height="22">PowerShell</span></div></div>
-      <i aria-hidden="true"></i>
-      <div class="grp"><small>Windows</small><div><span class="lg"><img src="shell-powershell.svg" alt="" width="22" height="22">PowerShell</span><span class="lg"><img src="shell-gitbash.png" alt="" width="22" height="22">Git Bash</span><span class="lg"><img src="shell-windows-terminal.svg" alt="" width="22" height="22">Windows Terminal</span></div></div>
-    </div>
+    <ul class="checks" aria-label="What it does not ask for"><li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m3 8.5 3.2 3L13 4.5"/></svg>macOS, Linux and Windows</li><li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m3 8.5 3.2 3L13 4.5"/></svg>No account</li><li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m3 8.5 3.2 3L13 4.5"/></svg>No telemetry</li><li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m3 8.5 3.2 3L13 4.5"/></svg>No Accessibility permission</li></ul>
+    <div class="reel2" role="tablist" aria-label="What the demo shows"><button type="button" role="tab" data-scene="complete" aria-selected="true">Complete</button><button type="button" role="tab" data-scene="fixShort" aria-selected="false">Fix</button><button type="button" role="tab" data-scene="riskShort" aria-selected="false">Warn</button><button type="button" role="tab" data-scene="projectShort" aria-selected="false">Project</button><button type="button" role="tab" data-scene="portsShort" aria-selected="false">Ports</button></div>
+    <div class="term play" aria-label="terminalhinter completing commands in a terminal" role="img"><div class="bar" aria-hidden="true"><span></span><span></span><span></span><b>zsh</b></div><div class="screen" aria-hidden="true"></div></div>
+  </div>
+</div>
+</div>
+<div class="wrap after-stage">
+  <div class="runs" aria-label="Where it runs">
+    <span>macOS and Linux</span><span class="lg"><img src="shell-zsh.svg" alt="" style="--s:1.3" width="22" height="22">zsh</span><span class="lg"><img src="shell-bash.png" alt="" width="22" height="22">bash</span><span class="lg"><img src="shell-fish.png" alt="" style="--s:1.4" width="22" height="22">fish</span><span class="lg"><img src="shell-powershell.svg" alt="" width="22" height="22">PowerShell</span>
+    <i aria-hidden="true"></i>
+    <span>Windows</span><span class="lg"><img src="shell-powershell.svg" alt="" width="22" height="22">PowerShell</span><span class="lg"><img src="shell-gitbash.png" alt="" width="22" height="22">Git Bash</span><span class="lg"><img src="shell-windows-terminal.svg" alt="" width="22" height="22">Windows Terminal</span>
   </div>
 
-  <div class="stage">
+  <section id="features">
+    <h2>What plain Tab completion does not do.</h2>
+    <div class="bento">
+      <div class="bcard" style="--span:7"><div><h3>A failed command comes back fixed.</h3><p>A typo, a missing upstream, a taken port: the empty line after the error offers the fix, and Tab takes it.</p></div><div class="term play" data-view="fix" aria-label="A failed command comes back fixed." role="img"><div class="bar" aria-hidden="true"><span></span><span></span><span></span><b>zsh</b></div><div class="screen" aria-hidden="true"></div></div></div>
+      <div class="bcard" style="--span:5"><div><h3>Red before you force-push.</h3><p>Entries that delete or overwrite are red and say why. Ctrl+G explains every word of the line.</p></div><div class="term play" data-view="risk" aria-label="Red before you force-push." role="img"><div class="bar" aria-hidden="true"><span></span><span></span><span></span><b>zsh</b></div><div class="screen" aria-hidden="true"></div></div></div>
+      <div class="bcard" style="--span:5"><div><h3>It reads your project.</h3><p>Scripts with what they run, Makefile targets with their descriptions, workspaces and compose services.</p></div><div class="term play" data-view="project" aria-label="It reads your project." role="img"><div class="bar" aria-hidden="true"><span></span><span></span><span></span><b>zsh</b></div><div class="screen" aria-hidden="true"></div></div></div>
+      <div class="bcard" style="--span:7"><div><h3>Enter walks into folders.</h3><p>Enter on a folder opens it and keeps the list open, so a few presses take you deep into a project.</p></div><div class="term play" data-view="cd" aria-label="Enter walks into folders." role="img"><div class="bar" aria-hidden="true"><span></span><span></span><span></span><b>zsh</b></div><div class="screen" aria-hidden="true"></div></div></div>
+      <div class="bcard" style="--span:6"><div><h3>kill knows your ports.</h3><p>Which process listens where, and in which folder.</p></div><div class="term play" data-view="portsShort" aria-label="kill knows your ports." role="img"><div class="bar" aria-hidden="true"><span></span><span></span><span></span><b>zsh</b></div><div class="screen" aria-hidden="true"></div></div></div>
+      <div class="bcard" style="--span:6"><div><h3>Versions of any package.</h3><p>Tags and releases after react@, straight from npm.</p></div><div class="term play" data-view="versions" aria-label="Versions of any package." role="img"><div class="bar" aria-hidden="true"><span></span><span></span><span></span><b>zsh</b></div><div class="screen" aria-hidden="true"></div></div></div>
+      <div class="bcard wide" style="--span:12"><div><h3>Every shell, one setup.</h3><p>thint init finds the shells you have and sets them all up, with a backup of each config. zsh, bash, fish and PowerShell on macOS and Linux; PowerShell 7, Windows PowerShell and Git Bash on Windows.</p></div><div class="term play" data-view="setup" aria-label="thint init setting up every shell" role="img"><div class="bar" aria-hidden="true"><span></span><span></span><span></span><b>zsh</b></div><div class="screen" aria-hidden="true"></div></div></div>
+    </div>
+  </section>
+
+  <section id="try">
+    <div class="stage-head">
+      <h2>Now you type.</h2>
+      <p>This one is live: click into it and type <code class="inline">git</code>, <code class="inline">cd</code> or <code class="inline">pnpm</code>.</p>
+    </div>
+  <div class="stage" style="padding-top:0">
     <button type="button" class="tryme" id="tryme" aria-label="Try the live demo: click and type">
       <svg viewBox="0 0 30 26" aria-hidden="true"><path d="M27 4c-7 0-15 3-19 12"/><path d="M4 11.5 7.6 17l5.6-2.6"/></svg>Try it, type here
     </button>
@@ -456,25 +570,52 @@ footer p { margin: 0; max-width: 60ch; }
       <span><i style="background:var(--k-alias)"></i>your alias</span>
     </div>
   </div>
+  </section>
 
-  <section class="show" id="show">
-    <h2>See the parts that set it apart.</h2>
-    <p class="lede-small">Pick one and it plays. Where you would press a key it waits a moment: press it yourself, or tap the key under the terminal.</p>
-    <div class="show-grid" id="show-tabs-layout">
-      <div class="show-tabs" role="tablist" aria-label="Features">
-        <button type="button" role="tab" data-scene="fix" aria-selected="true"><b>The fix for a failed command</b><span>A typo or a missing upstream, Tab takes the fix</span></button>
-        <button type="button" role="tab" data-scene="risk" aria-selected="false"><b>Red before you force-push</b><span>And Ctrl+G explains the whole line</span></button>
-        <button type="button" role="tab" data-scene="versions" aria-selected="false"><b>Package versions</b><span>Tags and releases after <code class="inline">react@</code></span></button>
-        <button type="button" role="tab" data-scene="ports" aria-selected="false"><b>A port that is taken</b><span>Which process holds it, and in which folder</span></button>
-        <button type="button" role="tab" data-scene="migrate" aria-selected="false"><b>Coming from Kiro CLI or Fig</b><span>One command takes their lines out</span></button>
-        <button type="button" role="tab" data-scene="setup" aria-selected="false"><b>Every shell in one setup</b><span>With a backup of each config</span></button>
+  <section id="switch">
+    <div class="switch">
+      <div class="ft">
+        <h2>Coming from Fig or Kiro CLI?</h2>
+        <p>Fig shut down, and Kiro CLI removed its autocomplete in version 3.0. terminalhinter gives you the same dropdown under the cursor, open source and on your machine only.</p>
+        <ul><li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m3 8.5 3.2 3L13 4.5"/></svg><span><code class="inline">thint migrate</code> takes their startup lines out of your shell files</span></li><li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m3 8.5 3.2 3L13 4.5"/></svg><span>A copy of every file it touches is kept next to it</span></li><li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m3 8.5 3.2 3L13 4.5"/></svg><span>The Enter-into-folders navigation you knew is here</span></li></ul>
       </div>
-      <div class="show-term">
-        <div class="term" id="show-term" tabindex="0" role="application" aria-label="A demo that plays the picked feature. Press the key it asks for.">
-          <div class="bar" aria-hidden="true"><span></span><span></span><span></span><b>zsh</b></div>
-          <div class="screen"></div>
-        </div>
-        <div class="show-ask" id="show-ask" aria-live="polite"></div>
+      <div class="term play" data-view="migrate" aria-label="thint migrate taking the Kiro CLI lines out of a shell config" role="img"><div class="bar" aria-hidden="true"><span></span><span></span><span></span><b>zsh</b></div><div class="screen" aria-hidden="true"></div></div>
+    </div>
+  </section>
+
+  <section id="quiet">
+    <h2>Nothing to allow, nothing to sign up for.</h2>
+    <div class="quiet">
+      <div><b>No permissions</b><p>The list is drawn inside the terminal you already have. macOS asks for no Accessibility, no Screen Recording, no Input Monitoring.</p></div>
+      <div><b>No telemetry</b><p>What you type and what it learns stay in a folder on your machine. It goes online only to look up package names and its own newest version.</p></div>
+      <div><b>No account, no app</b><p>Nothing in the menu bar, nothing running when the terminal is closed, nobody to log in to.</p></div>
+      <div><b>Open source</b><p>MIT licensed. A fork of Microsoft's inshellisense, with the command specs the Fig community wrote.</p></div>
+    </div>
+  </section>
+
+  <section id="install">
+    <h2>Set it up in a minute.</h2>
+    <div class="install">
+      <ol class="steps">
+      <li>
+        <h3>Install it</h3>
+        <p>One binary with its own runtime, so switching Node with nvm never breaks it. macOS, Linux and Windows.</p>
+      </li>
+      <li>
+        <h3>Run the setup</h3>
+        <p>Pick a theme and icons with a live preview. The setup finds your shells, puts its startup lines at the top of each config and keeps a backup.</p>
+      </li>
+      <li>
+        <h3>Open a new terminal tab</h3>
+        <p>Type <code class="inline">git</code> or <code class="inline">cd</code> and the list is there. <code class="inline">thint doctor</code> checks the setup and tells you how to fix anything it finds, and <code class="inline">thint update</code> keeps it current.</p>
+      </li>
+    </ol>
+      <div>
+        <div class="cmd big">
+      <code><span>npm i -g @erykkozyra/terminalhinter</span><span>thint init</span></code>
+      <button class="copy primary" data-copy type="button" aria-label="Copy the install commands">Copy</button>
+    </div>
+        <p class="after-cmd"><code class="inline">thint doctor</code> checks the setup, <code class="inline">thint uninstall</code> takes everything out again.</p>
       </div>
     </div>
   </section>
@@ -512,62 +653,9 @@ footer p { margin: 0; max-width: 60ch; }
     </div>
   </section>
 
-  <section>
-    <h2>It helps when something goes wrong.</h2>
-    <div class="keys">
-      <div>
-        <h3>The fix for the command that just failed</h3>
-        <p>A typo, a missing upstream branch, a script or branch with a near name, a folder that needs <code class="inline">-p</code>, a port that is taken: the empty line after the error offers the fix, and <span data-mac="tab">Tab</span> puts it on the line. Nothing runs by itself.</p>
-<pre class="moment"><span class="p">➜</span> git push
-<span class="err">fatal: The current branch login has no upstream branch.</span>
-<span class="p">➜</span> ▏
-  <span class="sel"> ■ git push --set-upstream origin login </span>
-</pre>
-      </div>
-      <div>
-        <h3>What a line does, before you run it</h3>
-        <p><span data-mac="Control+G">Ctrl+G</span> lists every word of the line with what it means, through pipes, <code class="inline">&amp;&amp;</code>, redirects and <code class="inline">sudo</code>, and warns about the parts that delete or overwrite things.</p>
-<pre class="moment"><span class="p">➜</span> git reset --hard HEAD~1
-  ■ git      Distributed version control system
-  ■ reset    Reset current HEAD to the specified state
-  <span class="red">■</span> --hard   You will lose all uncommitted changes
-  ■ HEAD~1   argument
-  <span class="warn">⚠ --hard: throws away uncommitted changes</span>
-</pre>
-      </div>
-    </div>
-    <p class="after">Entries that delete, force-push or look like production (a target tagged <code class="inline">[prod]</code>, an ssh host called <code class="inline">PROD</code>) get a red mark in the list and say why when you select them.</p>
-  </section>
-
-  <section>
-    <h2>It knows your project.</h2>
-    <p class="lede-small">The list ranks by what you pick, recent things above old ones, and letters in order are enough: <code class="inline">chkt</code> finds <code class="inline">checkout</code>. On top of the 700 command specs it reads your project:</p>
-    <div class="features">
-      <div>
-        <h3>Your tasks</h3>
-        <p>Makefile targets with the <code class="inline">##</code> text next to them, grouped by section; just recipes, Taskfile tasks, docker compose services, mise and deno tasks, package.json scripts and turbo tasks.</p>
-      </div>
-      <div>
-        <h3>git with context</h3>
-        <p>Branches show how old their last commit is and what it says. Stashes show what they hold, <code class="inline">git reset</code> offers the reflog to undo, and your aliases complete like the command behind them.</p>
-      </div>
-      <div>
-        <h3>The process on that port</h3>
-        <p><code class="inline">kill</code> starts with the processes that listen on a port: <code class="inline">:3000 next dev · ~/Dev/shop</code>.</p>
-      </div>
-      <div>
-        <h3>Package versions</h3>
-        <p><code class="inline">npm i react@</code> lists the tags and the newest releases. pnpm, yarn and bun too.</p>
-      </div>
-      <div>
-        <h3>What you ran here</h3>
-        <p>Typing the first word brings back whole commands you ran in this folder. Lines that look like they hold a password or a token are never stored.</p>
-      </div>
-      <div>
-        <h3>Workspaces and folders</h3>
-        <p><code class="inline">pnpm --filter</code> and <code class="inline">yarn workspace</code> list your packages, and <code class="inline">cd</code> finds folders from anywhere through your bookmarks and zoxide.</p>
-      </div>
-    </div>
+  <section id="yours">
+    <h2>Make it yours.</h2>
+    <p class="lede-small">The list keeps the order you give it and ranks what you pick first. Two small files teach it the commands only you have.</p>
     <div class="split">
       <div>
         <h3 class="sub">Snippets with fields</h3>
@@ -587,46 +675,6 @@ footer p { margin: 0; max-width: 60ch; }
   </section>
 
   <section>
-    <h2>Every shell you use, set up at once.</h2>
-    <div class="keys">
-      <div>
-        <h3>One setup for the whole computer</h3>
-        <p><code class="inline">thint init</code> finds the shell you ran it in and offers the others it sees too, so a tab of any of them has the list. On a Mac that can be zsh and fish; on Windows it is PowerShell 7, Windows PowerShell and Git Bash in one go. Each config gets a backup before the startup lines go at its top.</p>
-<pre class="moment"><span class="p">PS&gt;</span> thint init
-  <span class="d">✓</span> Shell pwsh
-  <span class="d">✓</span> Also start terminalhinter in powershell, bash? Yes
-  <span class="d">✓</span> powershell skips scripts. Allow them for you? Yes
-</pre>
-      </div>
-      <div>
-        <h3>Windows without the usual traps</h3>
-        <p>Windows PowerShell comes with scripts turned off, which silently skips the profile. The setup notices and, if you say yes, allows scripts for your user only, the setting PowerShell 7 has from the start. PowerShell from the Microsoft Store works as well as the one from the installer, and if thint ever cannot start, the tab opens a plain shell instead of closing.</p>
-      </div>
-    </div>
-    <p class="after">Any terminal app works: iTerm2, Terminal.app, Ghostty, WezTerm, Kitty, Alacritty, VS Code, Cursor and Windows Terminal, with tmux or screen inside them. cmd has no startup file, so there you start the list with <code class="inline">thint -s cmd</code>.</p>
-  </section>
-
-  <section>
-    <h2>Set it up in a minute.</h2>
-    <ol class="steps">
-      <li>
-        <h3>Install it</h3>
-        <p>One binary with its own runtime, so switching Node with nvm never breaks it. macOS, Linux and Windows.</p>
-        <pre class="snip">npm i -g @erykkozyra/terminalhinter</pre>
-      </li>
-      <li>
-        <h3>Run the setup</h3>
-        <p>Pick a theme and icons with a live preview. The setup finds your shells, puts its startup lines at the top of each config and keeps a backup.</p>
-        <pre class="snip">thint init</pre>
-      </li>
-      <li>
-        <h3>Open a new terminal tab</h3>
-        <p>Type <code class="inline">git</code> or <code class="inline">cd</code> and the list is there. <code class="inline">thint doctor</code> checks the setup and tells you how to fix anything it finds, and <code class="inline">thint update</code> keeps it current.</p>
-      </li>
-    </ol>
-  </section>
-
-  <section>
     <h2>Looks its best in VS Code with a little room.</h2>
     <div class="split">
       <p>A bit more space between lines, and VS Code's own color adjustment turned off, make the list look the way it was designed. No special font is needed; a modern monospace like JetBrains Mono comes closest to this page.</p>
@@ -639,12 +687,12 @@ footer p { margin: 0; max-width: 60ch; }
     </div>
   </section>
 
-  <section>
+  <section id="faq">
     <h2>Questions people ask.</h2>
     <div class="faq">
       <div class="qa">
         <h3>What is terminalhinter?</h3>
-        <p>A free, open source autocomplete dropdown for the terminal. As you type in zsh, bash, fish or PowerShell, it shows folders, git branches, npm scripts and the subcommands and options of more than 600 command line tools, each with a short description.</p>
+        <p>A free, open source autocomplete dropdown for the terminal. As you type in zsh, bash, fish or PowerShell, it shows folders, git branches, npm scripts and the subcommands and options of more than 700 command line tools, each with a short description.</p>
       </div>
       <div class="qa">
         <h3>Is it an alternative to Fig or Kiro CLI?</h3>
@@ -673,11 +721,20 @@ footer p { margin: 0; max-width: 60ch; }
     </div>
   </section>
 
+  <div class="cta">
+    <div><h2>Give your terminal the dropdown.</h2><p>Free and open source. Two commands, then open a new tab.</p></div>
+    <div class="cmd ">
+      <code><span>npm i -g @erykkozyra/terminalhinter</span><span>thint init</span></code>
+      <button class="copy primary" data-copy type="button" aria-label="Copy the install commands">Copy</button>
+    </div>
+  </div>
+
   <footer>
     <p>terminalhinter is open source under the MIT License, a fork of <a href="https://github.com/microsoft/inshellisense">microsoft/inshellisense</a>, with command specs from <a href="https://github.com/withfig/autocomplete">withfig/autocomplete</a>. Not affiliated with Microsoft, Amazon or Fig. The shell and terminal logos belong to their projects.</p>
     <p><a href="https://github.com/ErykKozyra/terminalhinter">GitHub</a> &nbsp; <a href="https://www.npmjs.com/package/@erykkozyra/terminalhinter">npm</a> &nbsp; <a href="https://github.com/ErykKozyra">Eryk Kozyra</a></p>
   </footer>
 </div>
+<div class="dock" id="dock" aria-label="Install"><code>npm i -g @erykkozyra/terminalhinter</code><button class="copy primary" data-copy type="button">Copy</button></div>
 
 <script>
 (() => {
@@ -1145,110 +1202,210 @@ footer p { margin: 0; max-width: 60ch; }
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
   // the first frame already shows the list
   line = "git ch"; refresh(true);
-  if (!reduce) { line = ""; refresh(true); tourTimer = setTimeout(() => next(0), 600); }
+  if (!reduce) { line = ""; refresh(true); const seen = new IntersectionObserver((es) => { if (es.some((e) => e.isIntersecting)) { seen.disconnect(); tourTimer = setTimeout(() => next(0), 600); } }, { threshold: 0.4 }); seen.observe(term); }
   else touring = false;
   document.fonts && document.fonts.ready.then(() => { measure(); draw(); });
 })();
 </script>
 <script>
 (() => {
-  // ---- the features, each a short scene: typing, what the shell prints, the list, and keys to press ------------
-  const section = document.getElementById("show");
-  if (!section) return;
-  const mac = () => (document.querySelector('[data-os][aria-pressed="true"]') || {}).dataset?.os === "mac";
+  // ---- short scenes that play in a terminal: typing, what the shell prints, the list, and the keys pressed -------
+  const mac = () => {
+    const picked = document.querySelector('[data-os][aria-pressed="true"]');
+    if (picked) return picked.dataset.os === "mac";
+    return /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent);
+  };
   const KEY = {
     Enter: () => (mac() ? "return" : "Enter"),
     Tab: () => (mac() ? "tab" : "Tab"),
     Down: () => "↓",
-    CtrlG: () => (mac() ? "Control+G" : "Ctrl+G"),
+    Right: () => "→",
+    CtrlG: () => (mac() ? "control G" : "Ctrl+G"),
   };
   const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
   const fit = (s, w) => (w <= 0 ? "" : s.length <= w ? s : s.slice(0, Math.max(w - 1, 0)) + "…");
-  // output lines: a string, or [class, text]
+  // output lines: a string, [class, text], or a list of [class, text] parts
   const err = (t) => ["o-err", t], ok = (t) => ["o-ok", t], b = (t) => ["o-b", t], dim = (t) => ["o-dim", t], acc = (t) => ["o-acc", t];
 
-  const zsh = { shell: "zsh", prompt: (wide) => [["p-arrow", "➜  "], ["p-dir", "shop"], ["", " "], ...(wide ? [["p-git", "git:("], ["p-branch", "feature/login"], ["p-git", ")"], ["", " "]] : [])] };
+  const zsh = (dir, branch) => ({
+    shell: "zsh", dir, branch,
+    prompt(wide) {
+      return [["p-arrow", "➜  "], ["p-dir", this.dir], ["", " "], ...(wide && this.branch ? [["p-git", "git:("], ["p-branch", this.branch], ["p-git", ")"], ["", " "]] : [])];
+    },
+  });
   const pwsh = { shell: "PowerShell", prompt: () => [["", "PS C:\\Users\\you> "]] };
 
+  const FIX_GTI = [
+    ["type", "gti status"], ["key", "Enter", "to run it"],
+    ["run", err("zsh: command not found: gti")],
+    ["list", { at: 0, sel: 0, items: [{ name: "git status", desc: '"gti" is not a command, git is', kind: "fix" }] }],
+    ["poster"],
+    ["key", "Tab", "to take the fix"], ["line", "git status"],
+    ["key", "Enter", "to run it"], ["run", "On branch feature/login", "nothing to commit, working tree clean"],
+  ];
+  const FIX_PUSH = [
+    ["type", "git push"], ["key", "Enter", "to run it"],
+    ["run", err("fatal: The current branch feature/login has no upstream branch.")],
+    ["list", { at: 0, sel: 0, items: [{ name: "git push --set-upstream origin feature/login", desc: "the command git suggests", kind: "fix" }] }],
+    ["key", "Tab", "to take the fix"], ["line", "git push --set-upstream origin feature/login"],
+  ];
+  const RISK_LIST = [
+    ["type", "git push --f"],
+    ["list", { at: 9, sel: 0, foot: ["red", "overwrites the remote branch, other people's commits can be lost"], items: [
+      { name: "--force", desc: "Force updates", kind: "risk" },
+      { name: "--force-with-lease", desc: "Force updates if nobody pushed", kind: "risk" },
+      { name: "--follow-tags", desc: "Push missing annotated tags", kind: "option" },
+    ] }],
+    ["poster"],
+  ];
+  const EXPLAIN = [
+    ["key", "CtrlG", "to see what each word does"],
+    ["list", { at: 0, sel: -1, explain: true, foot: ["warn", "⚠ --force: overwrites the remote branch, other people's commits can be lost"], items: [
+      { name: "git", desc: "The stupid content tracker", kind: "command" },
+      { name: "push", desc: "Update remote refs along with associated objects", kind: "command" },
+      { name: "--force", desc: "Force updates", kind: "risk" },
+      { name: "origin", desc: "remote", kind: "value" },
+      { name: "main", desc: "branch", kind: "value" },
+    ] }],
+  ];
+  const BRANCHES = { at: 13, sel: 0, items: [
+    { name: "feature/login", desc: "2 hours ago · fix the token refresh", kind: "value" },
+    { name: "fix/cart-total", desc: "yesterday · round totals to cents", kind: "value" },
+    { name: "release/1.4", desc: "6 days ago · bump version", kind: "value" },
+    { name: "-", desc: "the branch you were on before", kind: "value" },
+  ] };
+  const COMPLETE = [
+    ["type", "git ch"],
+    ["list", { at: 4, sel: 0, foot: ["", "Switch branches or restore working tree files"], items: [
+      { name: "checkout", desc: "Switch branches or restore files", kind: "command" },
+      { name: "cherry-pick", desc: "Apply the changes of existing commits", kind: "command" },
+      { name: "cherry", desc: "Find commits yet to be applied upstream", kind: "command" },
+    ] }],
+    ["key", "Tab", "to take it"], ["line", "git checkout "],
+    ["list", BRANCHES],
+    ["poster"],
+  ];
+  const SCRIPTS = { at: 5, sel: -1, count: 9, items: [
+    { name: "dev", desc: "next dev --turbo", kind: "value" },
+    { name: "build", desc: "next build", kind: "value" },
+    { name: "test", desc: "vitest run", kind: "value" },
+    { name: "lint", desc: "eslint . --max-warnings 0", kind: "value" },
+    { name: "db:migrate", desc: "prisma migrate dev", kind: "value" },
+    { name: "add", desc: "Install a package", kind: "command" },
+  ] };
+  const MAKE = { at: 5, sel: -1, items: [
+    { name: "build", desc: "Build the app", kind: "value" },
+    { name: "test", desc: "Run the tests", kind: "value" },
+    { name: "deploy-staging", desc: "Deploy to staging", kind: "value" },
+    { name: "deploy-prod", desc: "[prod] Deploy to production", kind: "risk" },
+  ] };
+  const PORTS = { at: 5, sel: -1, items: [
+    { name: "48213", desc: ":3000 next dev · ~/Dev/shop", kind: "value" },
+    { name: "51877", desc: ":5173 vite · ~/Dev/blog", kind: "value" },
+    { name: "612", desc: ":5432 postgres · /opt/homebrew/var", kind: "value" },
+  ] };
+  const VERSIONS = [
+    ["type", "npm i react@"], ["pause", 250],
+    ["list", { at: 6, sel: 0, count: 43, items: [
+      { name: "latest", desc: "19.2.0", kind: "tag" },
+      { name: "canary", desc: "19.3.0-canary-5ac3c9d7", kind: "tag" },
+      { name: "next", desc: "19.3.0-canary-5ac3c9d7", kind: "tag" },
+      { name: "19.2.0", desc: "latest", kind: "value" },
+      { name: "19.1.1", kind: "value" },
+      { name: "19.1.0", kind: "value" },
+    ] }],
+    ["poster"],
+    ["pause", 900], ["type", "18"],
+    ["list", { at: 6, sel: 0, items: [
+      { name: "18.3.1", kind: "value" }, { name: "18.3.0", kind: "value" }, { name: "18.2.0", kind: "value" },
+      { name: "18.1.0", kind: "value" }, { name: "18.0.0", kind: "value" },
+    ] }],
+    ["key", "Tab", "to put it on the line"], ["line", "npm i react@18.3.1 "],
+  ];
+
   const SCENES = {
+    // ---- the reel: each one a few seconds, for the top of the page ----
+    complete: {
+      title: "Three letters are enough", blurb: "Commands, flags and branches as you type, each with a short description.",
+      ...zsh("shop", "main"),
+      steps: () => [...COMPLETE, ["pause", 700], ["key", "Tab", "to take the branch"], ["line", "git checkout feature/login"], ["pause", 1300]],
+    },
     fix: {
-      title: "The fix for a failed command", blurb: "A typo or a missing upstream: the empty line after the error offers the fix, Tab takes it.",
-      ...zsh,
-      steps: () => [
-        ["type", "gti status"], ["key", "Enter", "to run it"],
-        ["run", err("zsh: command not found: gti")],
-        ["list", { at: 0, sel: 0, items: [{ name: "git status", desc: '"gti" is not a command, git is', kind: "fix" }] }],
-        ["key", "Tab", "to take the fix"], ["line", "git status"],
-        ["key", "Enter", "to run it"], ["run", "On branch feature/login", "nothing to commit, working tree clean"],
-        ["pause", 500], ["type", "git push"], ["key", "Enter", "to run it"],
-        ["run", err("fatal: The current branch feature/login has no upstream branch.")],
-        ["list", { at: 0, sel: 0, items: [{ name: "git push --set-upstream origin feature/login", desc: "the command git suggests", kind: "fix" }] }],
-        ["key", "Tab", "to take the fix"], ["line", "git push --set-upstream origin feature/login"], ["pause", 900],
-      ],
+      title: "The fix after a failed command", blurb: "The empty line after the error offers the fix. Tab takes it, nothing runs by itself.",
+      ...zsh("shop", "feature/login"),
+      steps: () => [...FIX_GTI, ["pause", 600], ...FIX_PUSH, ["pause", 1300]],
+    },
+    fixShort: {
+      title: "The fix after a failed command", blurb: "The empty line after the error offers the fix. Tab takes it.",
+      ...zsh("shop", "feature/login"),
+      steps: () => [...FIX_GTI, ["pause", 1300]],
     },
     risk: {
-      title: "Red before you force-push", blurb: "Entries that delete or overwrite are red and say why. Ctrl+G explains every word of the line.",
-      ...zsh,
+      title: "Red before you force-push", blurb: "Entries that delete or overwrite are red and say why. Ctrl+G explains every word of a line.",
+      ...zsh("shop", "feature/login"),
+      steps: () => [...RISK_LIST, ["key", "Tab", "to take it anyway"], ["line", "git push --force "], ["type", "origin main"], ...EXPLAIN, ["pause", 2600]],
+    },
+    riskShort: {
+      title: "Red before you force-push", blurb: "Entries that delete or overwrite are red and say why.",
+      ...zsh("shop", "feature/login"),
+      steps: () => [...RISK_LIST, ["pause", 2400]],
+    },
+    project: {
+      title: "It reads your project", blurb: "package.json scripts, Makefile targets with their descriptions, workspaces, docker compose services.",
+      ...zsh("shop", "main"),
       steps: () => [
-        ["type", "git push --f"],
-        ["list", { at: 9, sel: 0, foot: ["red", "overwrites the remote branch, other people's commits can be lost"], items: [
-          { name: "--force", desc: "Force updates", kind: "risk" },
-          { name: "--force-with-lease", desc: "Force updates if nobody pushed", kind: "risk" },
-          { name: "--follow-tags", desc: "Push missing annotated tags", kind: "option" },
-        ] }],
-        ["key", "Tab", "to take it anyway"], ["line", "git push --force "], ["type", "origin main"],
-        ["key", "CtrlG", "to see what each word does"],
-        ["list", { at: 0, sel: -1, explain: true, foot: ["warn", "⚠ --force: overwrites the remote branch, other people's commits can be lost"], items: [
-          { name: "git", desc: "The stupid content tracker", kind: "command" },
-          { name: "push", desc: "Update remote refs along with associated objects", kind: "command" },
-          { name: "--force", desc: "Force updates", kind: "risk" },
-          { name: "origin", desc: "remote", kind: "value" },
-          { name: "main", desc: "branch", kind: "value" },
-        ] }],
-        ["pause", 2600],
+        ["type", "pnpm "], ["list", SCRIPTS], ["poster"], ["pause", 900], ["type", "te"],
+        ["list", { at: 5, sel: 0, items: [{ name: "test", desc: "vitest run", kind: "value" }, { name: "test:e2e", desc: "playwright test", kind: "value" }] }],
+        ["key", "Tab", "to take it"], ["line", "pnpm test"], ["key", "Enter", "to run it"], ["run", dim("> vitest run"), ok(" ✓ 128 tests passed")],
+        ["pause", 500], ["type", "make "], ["list", MAKE], ["pause", 2400],
       ],
     },
-    versions: {
-      title: "Package versions", blurb: "After react@ the list has the tags and the newest releases, straight from npm. Typing 18 narrows it to 18.x.",
-      ...zsh,
+    projectShort: {
+      title: "It reads your project", blurb: "Your scripts and Makefile targets, with what they run.",
+      ...zsh("shop", "main"),
+      steps: () => [["type", "pnpm "], ["list", SCRIPTS], ["poster"], ["pause", 2400]],
+    },
+    cd: {
+      title: "Enter walks into folders", blurb: "Enter on a folder opens it and keeps the list open. A few Enters take you deep into a project.",
+      ...zsh("shop", "main"),
       steps: () => [
-        ["type", "npm i react@"], ["pause", 250],
-        ["list", { at: 6, sel: 0, count: 43, items: [
-          { name: "latest", desc: "19.2.0", kind: "tag" },
-          { name: "canary", desc: "19.3.0-canary-5ac3c9d7", kind: "tag" },
-          { name: "next", desc: "19.3.0-canary-5ac3c9d7", kind: "tag" },
-          { name: "19.2.0", desc: "latest", kind: "value" },
-          { name: "19.1.1", kind: "value" },
-          { name: "19.1.0", kind: "value" },
-        ] }],
-        ["pause", 900], ["type", "18"],
-        ["list", { at: 6, sel: 0, items: [
-          { name: "18.3.1", kind: "value" }, { name: "18.3.0", kind: "value" }, { name: "18.2.0", kind: "value" },
-          { name: "18.1.0", kind: "value" }, { name: "18.0.0", kind: "value" },
-        ] }],
-        ["key", "Tab", "to put it on the line"], ["line", "npm i react@18.3.1 "],
-        ["key", "Enter", "to run it"], ["run", "", "changed 1 package in 2s"], ["pause", 900],
+        ["type", "cd "],
+        ["list", { at: 3, sel: -1, items: [{ name: "↪", desc: "stay here", kind: "run" }, { name: "apps/", kind: "folder" }, { name: "packages/", kind: "folder" }, { name: "scripts/", kind: "folder" }] }],
+        ["key", "Down", "to pick apps/"],
+        ["list", { at: 3, sel: 1, items: [{ name: "↪", desc: "stay here", kind: "run" }, { name: "apps/", kind: "folder" }, { name: "packages/", kind: "folder" }, { name: "scripts/", kind: "folder" }] }],
+        ["key", "Enter", "to walk in"], ["line", "cd apps/", true],
+        ["list", { at: 8, sel: 1, items: [{ name: "↪", desc: "cd apps/", kind: "run" }, { name: "web/", kind: "folder" }, { name: "admin/", kind: "folder" }] }],
+        ["poster"],
+        ["key", "Enter", "to walk in"], ["line", "cd apps/web/", true],
+        ["list", { at: 12, sel: 0, items: [{ name: "↪", desc: "cd apps/web/", kind: "run" }, { name: "src/", kind: "folder" }, { name: "public/", kind: "folder" }] }],
+        ["key", "Enter", "to go there"], ["run"], ["dir", "web"], ["pause", 1500],
       ],
     },
     ports: {
-      title: "A port that is taken", blurb: "When a port is busy the fix names the process. kill lists what listens, with its folder.",
-      ...zsh,
+      title: "A port that is taken", blurb: "The fix names the process that holds the port. kill lists what listens, with its folder.",
+      ...zsh("shop", "main"),
       steps: () => [
         ["type", "pnpm dev"], ["key", "Enter", "to run it"],
         ["run", dim("> next dev"), err("Error: listen EADDRINUSE: address already in use :::3000")],
         ["list", { at: 0, sel: 0, items: [{ name: "kill 48213", desc: "port 3000 is held by next dev", kind: "fix" }] }],
+        ["poster"],
         ["key", "Tab", "to take the fix"], ["line", "kill 48213"], ["key", "Enter", "to run it"], ["run"],
-        ["pause", 400], ["type", "kill "],
-        ["list", { at: 5, sel: -1, items: [
-          { name: "51877", desc: ":5173 vite · ~/Dev/blog", kind: "value" },
-          { name: "612", desc: ":5432 postgres · /opt/homebrew/var", kind: "value" },
-        ] }],
-        ["pause", 2600],
+        ["pause", 400], ["type", "kill "], ["list", { ...PORTS, items: PORTS.items.slice(1) }], ["pause", 2600],
       ],
+    },
+    portsShort: {
+      title: "kill knows your ports", blurb: "Which process listens where, and in which folder.",
+      ...zsh("shop", "main"),
+      steps: () => [["type", "kill "], ["list", PORTS], ["poster"], ["pause", 2400]],
+    },
+    versions: {
+      title: "Package versions", blurb: "After react@ the list has the tags and the newest releases. Typing 18 narrows it to 18.x.",
+      ...zsh("shop", "main"),
+      steps: () => [...VERSIONS, ["key", "Enter", "to run it"], ["run", "", "changed 1 package in 2s"], ["pause", 900]],
     },
     migrate: {
       title: "Coming from Kiro CLI or Fig", blurb: "thint migrate finds their startup lines in your shell files and takes them out, with a copy of each file.",
-      ...zsh,
+      ...zsh("~", ""),
       steps: () => [
         ["type", "thint migrate"], ["key", "Enter", "to run it"],
         ["run", b("~/.zshrc: 2 lines to take out"),
@@ -1257,13 +1414,14 @@ footer p { margin: 0; max-width: 60ch; }
           "Take these lines out? A copy of each file is kept next to it. [Y/n]"],
         ["noprompt"], ["key", "Enter", "for yes"],
         ["out", ok("✓ ~/.zshrc (copy in ~/.zshrc.before-thint-migrate)"), "", "Open a new terminal tab to start with terminalhinter only."],
-        ["prompt"], ["pause", 2200],
+        ["prompt"], ["poster"], ["pause", 2200],
       ],
     },
     setup: {
       title: "Every shell in one setup", blurb: "thint init finds the shells you have and sets them all up, with a backup of each config.",
       get shell() { return mac() ? "zsh" : "PowerShell"; },
-      prompt: (wide) => (mac() ? zsh : pwsh).prompt(wide),
+      dir: "~", branch: "",
+      prompt(wide) { return mac() ? zsh("~", "").prompt(wide) : pwsh.prompt(wide); },
       steps: () => {
         const w = !mac();
         const shell = w ? "pwsh" : "zsh";
@@ -1281,20 +1439,23 @@ footer p { margin: 0; max-width: 60ch; }
             ? [ok("✓ pwsh, powershell and bash have the startup lines"), ok("✓ powershell runs scripts now (RemoteSigned, for your user only)")]
             : [ok("✓ zsh: startup lines are at the top of ~/.zshrc"), ok("✓ fish: startup lines are at the top of ~/.config/fish/config.fish"), ok("✓ bash: startup lines are at the top of ~/.bashrc")]),
             "", "Done. Open a new terminal tab."],
-          ["prompt"], ["pause", 2400],
+          ["prompt"], ["poster"], ["pause", 2400],
         ];
       },
     },
   };
-  const ORDER = ["fix", "risk", "versions", "ports", "migrate", "setup"];
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const KIND = { fix: "--k-value", risk: "--k-run", option: "--k-option", command: "--k-command", value: "--k-value", tag: "--k-alias" };
+  const KIND = { fix: "--k-value", risk: "--k-run", option: "--k-option", command: "--k-command", value: "--k-value", tag: "--k-alias", folder: "--k-folder", file: "--k-file", run: "--k-run" };
 
   // ---- one terminal that plays a scene ---------------------------------------------------------------------------
   class Player {
-    constructor(term, opts) {
+    // opts: auto() says whether keys press themselves, wait is how long before they do, onAsk/onPress/onEnd/onProgress
+    constructor(term, opts = {}) {
       this.term = term; this.screen = term.querySelector(".screen"); this.title = term.querySelector(".bar b");
-      this.opts = opts; this.run = 0; this.charW = 9; this.cols = 80;
+      this.opts = { auto: () => true, wait: 1100, ...opts }; this.run = 0; this.charW = 9; this.cols = 80;
+      // the key that was just pressed, shown on the terminal: without it a list that fills in by itself explains nothing
+      this.cap = document.createElement("div"); this.cap.className = "keycap"; this.cap.setAttribute("aria-hidden", "true");
+      term.appendChild(this.cap);
     }
     measure() {
       const probe = document.createElement("span");
@@ -1308,55 +1469,89 @@ footer p { margin: 0; max-width: 60ch; }
     }
     play(id) {
       const run = ++this.run;
-      this.scene = SCENES[id]; this.id = id;
+      const base = SCENES[id];
+      this.scene = Object.create(base); this.scene.dir = base.dir; this.id = id;
       this.history = []; this.line = ""; this.list = null; this.promptOn = true; this.waiting = null;
-      this.steps = this.scene.steps(); this.i = 0;
-      if (this.title) this.title.textContent = this.scene.shell;
+      this.steps = base.steps(); this.i = 0;
+      if (this.title) this.title.textContent = base.shell;
+      this.cap.classList.remove("on");
       this.measure(); this.draw();
       this.opts.onAsk?.(null);
+      this.opts.onProgress?.(0, this);
       this.later(run, () => this.step(run), reduce ? 0 : 450);
     }
-    stop() { this.run++; clearTimeout(this.timer); }
+    stop() { this.run++; clearTimeout(this.timer); this.waiting = null; this.opts.onAsk?.(null); }
+    // The scene at its most telling moment, drawn at once: what a terminal shows before it plays and after it is
+    // stopped, so one that is only half on screen (or in a screenshot) still shows what its text talks about.
+    poster(id) {
+      this.stop();
+      const base = SCENES[id];
+      this.scene = Object.create(base); this.scene.dir = base.dir; this.id = id;
+      this.history = []; this.line = ""; this.list = null; this.promptOn = true;
+      if (this.title) this.title.textContent = base.shell;
+      this.cap.classList.remove("on");
+      this.measure();
+      for (const [t, ...a] of base.steps()) {
+        if (t === "poster") break;
+        this.apply(t, a);
+      }
+      this.draw();
+    }
+    // what a step changes on the screen, without the waiting
+    apply(t, a) {
+      if (t === "type") { this.line += a[0]; this.list = null; }
+      else if (t === "run") { this.history.push({ html: this.promptHtml() + esc(this.line) }); this.line = ""; this.list = null; for (const o of a) this.history.push(this.out(o)); }
+      else if (t === "out") { for (const o of a) this.history.push(this.out(o)); }
+      else if (t === "pop") this.history.splice(-a[0]);
+      else if (t === "list") this.list = a[0];
+      else if (t === "line") { this.line = a[0]; this.list = null; }
+      else if (t === "dir") this.scene.dir = a[0];
+      else if (t === "noprompt") this.promptOn = false;
+      else if (t === "prompt") this.promptOn = true;
+    }
     later(run, fn, ms) { clearTimeout(this.timer); this.timer = setTimeout(() => { if (run === this.run) fn(); }, ms); }
-    promptHtml() { return this.scene.prompt(this.cols >= 64).map(([c, t]) => (c ? `<span class="${c}">${esc(t)}</span>` : esc(t))).join(""); }
-    promptLen() { return this.scene.prompt(this.cols >= 64).map((p) => p[1]).join("").length; }
+    promptParts() { return this.scene.prompt(this.cols >= 60); }
+    promptHtml() { return this.promptParts().map(([c, t]) => (c ? `<span class="${c}">${esc(t)}</span>` : esc(t))).join(""); }
+    promptLen() { return this.promptParts().map((p) => p[1]).join("").length; }
     step(run) {
       if (run !== this.run) return;
       const s = this.steps[this.i++];
+      this.opts.onProgress?.(Math.min(this.i / this.steps.length, 1), this);
       if (!s) { this.opts.onEnd?.(this); return; }
       const [t, ...a] = s;
       const go = (ms = 0) => this.later(run, () => this.step(run), reduce ? 0 : ms);
       if (t === "type") {
         const text = a[0]; let k = 0; this.list = null;
-        const tick = () => { if (run !== this.run) return; this.line += text[k++]; this.draw(); if (k < text.length) this.later(run, tick, 55 + Math.random() * 60); else go(350); };
+        const tick = () => { if (run !== this.run) return; this.line += text[k++]; this.draw(); if (k < text.length) this.later(run, tick, 50 + Math.random() * 55); else go(350); };
         if (reduce) { this.line += text; this.draw(); go(); } else tick();
       } else if (t === "key") {
         this.waiting = { key: a[0], run };
-        this.opts.onAsk?.({ key: a[0], say: a[1], auto: this.opts.auto(), wait: this.opts.wait }, (pressed) => this.press(pressed));
-        if (this.opts.auto()) this.later(run, () => this.press(a[0], true), this.opts.wait);
+        const auto = this.opts.auto();
+        this.opts.onAsk?.({ key: a[0], say: a[1], auto, wait: this.opts.wait }, (pressed) => this.press(pressed));
+        if (auto) this.later(run, () => this.press(a[0], true), reduce ? 0 : this.opts.wait);
         else clearTimeout(this.timer);
-      } else if (t === "run") {
-        this.history.push({ html: this.promptHtml() + esc(this.line) }); this.line = ""; this.list = null;
-        for (const o of a) this.history.push(this.out(o));
-        this.draw(); go(500);
-      } else if (t === "out") { for (const o of a) this.history.push(this.out(o)); this.draw(); go(450); }
-      else if (t === "pop") { this.history.splice(-a[0]); this.draw(); go(); }
-      else if (t === "list") { this.list = a[0]; this.draw(); go(700); }
-      else if (t === "line") { this.line = a[0]; this.list = null; this.draw(); go(500); }
-      else if (t === "noprompt") { this.promptOn = false; this.draw(); go(); }
-      else if (t === "prompt") { this.promptOn = true; this.draw(); go(300); }
-      else if (t === "pause") go(a[0]);
+      } else if (t === "pause") go(a[0]);
+      else if (t === "poster") go();
+      else {
+        this.apply(t, a); this.draw();
+        go(t === "run" ? 500 : t === "out" ? 450 : t === "list" ? 700 : t === "line" ? (a[1] ? 250 : 500) : t === "prompt" ? 300 : 0);
+      }
     }
     press(key, auto) {
       const w = this.waiting;
       if (!w || w.key !== key || w.run !== this.run) return false;
       this.waiting = null;
+      this.flash(key);
       this.opts.onPress?.(key, auto);
-      this.later(this.run, () => this.step(w.run), auto ? 260 : 120);
+      this.later(this.run, () => this.step(w.run), auto ? 300 : 120);
       return true;
     }
+    flash(key) {
+      if (reduce) return;
+      this.cap.textContent = KEY[key]();
+      this.cap.classList.remove("on"); void this.cap.offsetWidth; this.cap.classList.add("on");
+    }
     out(o) {
-      // a line is text, [class, text], or a list of [class, text] parts
       const part = (x) => `<span class="${x[0]}">${esc(x[1])}</span>`;
       if (typeof o === "string") return { html: esc(o), out: true };
       return { html: Array.isArray(o[0]) ? o.map(part).join("") : part(o), out: true };
@@ -1377,7 +1572,7 @@ footer p { margin: 0; max-width: 60ch; }
       const p = this.screen.querySelector("[data-p]");
       const nameCol = Math.max(...rows.map((i) => i.name.length));
       const descCol = Math.max(0, ...rows.map((i) => (i.desc || "").length));
-      let width = Math.min(Math.max(4 + nameCol + (descCol ? 2 + descCol : 0) + 3, 30), this.cols);
+      const width = Math.min(Math.max(4 + nameCol + (descCol ? 2 + descCol : 0) + 3, 30), this.cols);
       const anchor = Math.max(this.promptLen() + L.at - 3, 0);
       const startCol = Math.max(Math.min(anchor, this.cols - width), 0);
       const text = width - 7;
@@ -1403,59 +1598,74 @@ footer p { margin: 0; max-width: 60ch; }
     }
   }
 
-  const keyOf = (e) => (e.key === "Enter" ? "Enter" : e.key === "Tab" ? "Tab" : e.key === "ArrowDown" ? "Down" : (e.key === "g" || e.key === "G") && e.ctrlKey ? "CtrlG" : null);
+  const keyOf = (e) => (e.key === "Enter" ? "Enter" : e.key === "Tab" ? "Tab" : e.key === "ArrowDown" ? "Down" : e.key === "ArrowRight" ? "Right" : (e.key === "g" || e.key === "G") && e.ctrlKey ? "CtrlG" : null);
 
-  // ---- the list of features and one terminal ----------------------------------------------------------------
-  {
-    const term = document.getElementById("show-term");
-    const ask = document.getElementById("show-ask");
-    const tabs = [...section.querySelectorAll("[data-scene]")];
-    let touched = false;      // once you press a key or pick a feature, the demo waits for you and stops moving on
-    let carousel = true;
-    const WAIT = 2600;
+  // A reel: one terminal that plays a row of scenes one after another; the labels show which one is on and can be
+  // clicked. It only runs while it is on screen.
+  function reel(term, labels, { wait = 950, gap = 1100, onScene } = {}) {
+    const ids = labels.map((l) => l.dataset.scene);
+    let at = 0, running = false;
+    const mark = (frac) => labels.forEach((l, k) => {
+      l.setAttribute("aria-selected", String(k === at));
+      l.style.setProperty("--done", k === at ? frac : 0);
+    });
     const player = new Player(term, {
-      auto: () => !touched,
-      wait: WAIT,
-      onAsk: (q, press) => {
-        if (!q) { ask.innerHTML = ""; return; }
-        ask.innerHTML = `<span>Press</span><button type="button" class="press">${esc(KEY[q.key]())}<i></i></button><span>${esc(q.say)}</span>`;
-        const btn = ask.querySelector(".press");
-        btn.addEventListener("click", () => { touched = true; carousel = false; press(q.key); term.focus({ preventScroll: true }); });
-        if (q.auto && !reduce) { const bar = btn.querySelector("i"); ask.style.setProperty("--wait", `${q.wait}ms`); requestAnimationFrame(() => requestAnimationFrame(() => bar.classList.add("run"))); }
-      },
-      onPress: () => { const btn = ask.querySelector(".press"); if (btn) btn.classList.add("hit"); setTimeout(() => { if (ask.contains(btn)) ask.innerHTML = ""; }, 320); },
-      onEnd: () => {
-        const at = ORDER.indexOf(player.id);
-        const next = ORDER[(at + 1) % ORDER.length];
-        ask.innerHTML = `<button type="button" class="again">Play again</button><span>or pick another one</span>`;
-        ask.querySelector(".again").addEventListener("click", () => { touched = true; carousel = false; pick(player.id); });
-        if (carousel && !reduce) player.later(player.run, () => pick(next, true), 1800);
-      },
+      wait,
+      onProgress: (f) => mark(f),
+      onEnd: () => player.later(player.run, () => show((at + 1) % ids.length), reduce ? 6000 : gap),
     });
-    function pick(id, byCarousel) {
-      tabs.forEach((t) => t.setAttribute("aria-selected", String(t.dataset.scene === id)));
-      player.play(id);
-      if (!byCarousel) { carousel = false; }
-    }
-    tabs.forEach((t) => t.addEventListener("click", () => pick(t.dataset.scene)));
-    term.addEventListener("keydown", (e) => {
-      const k = keyOf(e);
-      if (!k) return;
-      e.preventDefault();
-      touched = true; carousel = false;
-      if (!player.press(k)) {
-        const btn = ask.querySelector(".press");
-        if (btn) { btn.animate([{ transform: "translateX(0)" }, { transform: "translateX(-3px)" }, { transform: "translateX(3px)" }, { transform: "translateX(0)" }], { duration: 180 }); }
-      }
-    });
-    term.addEventListener("click", () => term.focus({ preventScroll: true }));
-    // it starts when it comes into view, so the first scene is not over before anyone looks
-    let started = false;
-    const io = new IntersectionObserver((es) => { if (!started && es.some((e) => e.isIntersecting)) { started = true; pick("fix", true); io.disconnect(); } }, { threshold: 0.4 });
+    function show(k) { at = k; mark(0); onScene?.(SCENES[ids[k]], ids[k]); player.play(ids[k]); }
+    labels.forEach((l, k) => l.addEventListener("click", () => { running = true; show(k); }));
+    player.poster(ids[0]); onScene?.(SCENES[ids[0]], ids[0]);
+    const io = new IntersectionObserver((es) => {
+      const seen = es.some((e) => e.isIntersecting);
+      if (seen && !running) { running = true; show(at); }
+      if (!seen && running) { running = false; player.poster(ids[at]); }
+    }, { threshold: 0.25 });
     io.observe(term);
     addEventListener("resize", () => { player.measure(); player.draw(); });
-    document.querySelectorAll("[data-os]").forEach((bt) => bt.addEventListener("click", () => { if (player.id === "setup") pick("setup"); }));
+    return { player, show };
   }
+
+  // A terminal that plays one scene whenever it scrolls into view, and again on a click.
+  function onView(term, id, { wait = 1000, loop = true } = {}) {
+    let on = false;
+    const player = new Player(term, { wait, onEnd: () => { if (loop) player.later(player.run, () => player.play(id), 2600); } });
+    player.poster(id);
+    const io = new IntersectionObserver((es) => es.forEach((e) => {
+      if (e.isIntersecting && !on) { on = true; player.play(id); }
+      if (!e.isIntersecting && on) { on = false; player.poster(id); }
+    }), { threshold: 0.6 });
+    io.observe(term);
+    term.addEventListener("click", () => { on = true; player.play(id); });
+    addEventListener("resize", () => { if (on) { player.measure(); player.draw(); } else player.poster(id); });
+    document.fonts && document.fonts.ready.then(() => { if (!on) player.poster(id); });
+    return player;
+  }
+
+  window.TH = { SCENES, Player, KEY, keyOf, reel, onView, reduce, esc, mac };
 })();
 </script>
-
+<script>
+(() => {
+  const hero = document.querySelector(".hero2");
+  TH.reel(hero.querySelector(".term"), [...hero.querySelectorAll(".reel2 button")]);
+  // the install bar comes up once the install box at the top is out of sight, and steps aside near the other ones
+  const dock = document.getElementById("dock");
+  const seen = new Set();
+  const io = new IntersectionObserver((es) => {
+    es.forEach((e) => { if (e.isIntersecting) seen.add(e.target); else seen.delete(e.target); });
+    dock.classList.toggle("on", seen.size === 0 && scrollY > 300);
+  });
+  [hero.querySelector(".cmd"), document.getElementById("install"), document.querySelector(".cta")].forEach((el) => el && io.observe(el));
+})();
+</script>
+<script>
+(() => {
+  document.querySelectorAll(".copy[data-copy]").forEach((b) => b.addEventListener("click", () => {
+    const done = () => { b.textContent = "Copied"; b.dataset.done = ""; setTimeout(() => { b.textContent = "Copy"; delete b.dataset.done; }, 1600); };
+    if (navigator.clipboard) navigator.clipboard.writeText("npm i -g @erykkozyra/terminalhinter && thint init").then(done, () => {});
+  }));
+  document.querySelectorAll(".term[data-view]").forEach((t) => TH.onView(t, t.dataset.view));
+})();
+</script>

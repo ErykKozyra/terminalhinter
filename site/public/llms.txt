@@ -1,6 +1,6 @@
 # terminalhinter
 
-> terminalhinter is a free, open source autocomplete dropdown for the terminal (zsh, bash, fish and PowerShell on macOS, Linux and Windows). As you type, it shows folders, git branches, npm scripts and the subcommands and options of more than 600 command line tools, each with a short description. It is an alternative to the autocomplete of Fig and Kiro CLI, runs only on your machine, has no telemetry, needs no account and asks for no system permissions (no Accessibility, Screen Recording or Input Monitoring), because it draws inside the terminal itself. MIT License.
+> terminalhinter is a free, open source autocomplete dropdown for the terminal (zsh, bash, fish and PowerShell on macOS, Linux and Windows). As you type, it shows folders, git branches, npm scripts and the subcommands and options of more than 700 command line tools, each with a short description. It is an alternative to the autocomplete of Fig and Kiro CLI, runs only on your machine, has no telemetry, needs no account and asks for no system permissions (no Accessibility, Screen Recording or Input Monitoring), because it draws inside the terminal itself. MIT License.
 
 - Command: `thint` (long form `terminalhinter`)
 - Install: `npm i -g @erykkozyra/terminalhinter`, then `thint init`, then open a new terminal tab
