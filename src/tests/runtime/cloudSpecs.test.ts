@@ -58,6 +58,16 @@ describe("a mistyped command prefers what is installed", () => {
     );
     expect(fixes[0].command).toBe("aws s3 ls");
   });
+  test("with both installed, the letter next to the one typed wins", async () => {
+    const fixes = await findFixes(
+      notFound("awl -F, '{print $1}' x"),
+      () => ["aws", "awk"],
+      async () => [],
+      () => new Set(["aws", "awk"]),
+    );
+    expect(fixes[0].command).toBe("awk -F, '{print $1}' x");
+    expect(closest("gut", ["git", "gzt"])).toBe("git");
+  });
   test("closest keeps its old answer without a preferred set", () => {
     expect(closest("gti", ["git", "gt"])).toBe("git");
     expect(closest("awl", ["aws", "awk"], undefined, new Set(["aws"]))).toBe("aws");

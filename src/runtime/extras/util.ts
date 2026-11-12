@@ -96,6 +96,18 @@ export const editDistance = (a: string, b: string, max = 3): number => {
 // the closest name to `word`, if it is near enough to be a typo
 // `preferred` (the programs on PATH and the aliases) wins a tie over a name that only has a spec: `awl` is awk the
 // user has, not aws they may not have
+// keys next to each other on a QWERTY keyboard: a finger that slips hits one of these
+const keyRows = ["1234567890-", "qwertyuiop[", "asdfghjkl;'", "zxcvbnm,./"];
+const keyAt = new Map<string, [number, number]>();
+keyRows.forEach((row, r) => [...row].forEach((key, c) => keyAt.set(key, [r, c])));
+const nextKeys = (a: string, b: string) => {
+  const [p, q] = [keyAt.get(a.toLowerCase()), keyAt.get(b.toLowerCase())];
+  return p != null && q != null && Math.abs(p[0] - q[0]) <= 1 && Math.abs(p[1] - q[1]) <= 1;
+};
+// every letter that differs was a slip to a neighbouring key: `awl` is awk (l is next to k), not aws
+const slipsOnly = (word: string, name: string) =>
+  word.length === name.length && [...word].every((ch, i) => ch === name[i] || nextKeys(ch, name[i])) && word !== name;
+
 export const closest = (word: string, names: Iterable<string>, max = word.length <= 4 ? 1 : 2, preferred?: Set<string>): string | undefined => {
   let best: string | undefined;
   let bestScore = max + 1;
@@ -109,7 +121,11 @@ export const closest = (word: string, names: Iterable<string>, max = word.length
     // on a tie, a name of the same length wins (a swap or a wrong letter, "gti" → git rather than gt), and one
     // made of the same letters wins over that
     const score =
-      d + (name.length === word.length ? 0 : 0.5) - ([...name].sort().join("") === sorted ? 0.25 : 0) + (preferred && !preferred.has(name) ? 0.1 : 0);
+      d +
+      (name.length === word.length ? 0 : 0.5) -
+      ([...name].sort().join("") === sorted ? 0.25 : 0) -
+      (slipsOnly(word, name) ? 0.05 : 0) +
+      (preferred && !preferred.has(name) ? 0.1 : 0);
     if (score < bestScore) {
       best = name;
       bestScore = score;
