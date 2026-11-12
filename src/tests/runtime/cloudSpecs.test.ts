@@ -58,6 +58,15 @@ describe("a mistyped command prefers what is installed", () => {
     );
     expect(fixes[0].command).toBe("aws s3 ls");
   });
+  test("a program on PATH wins even over a closer name that only has a spec", async () => {
+    const fixes = await findFixes(
+      notFound("cls"),
+      () => ["sls", "ls"],
+      async () => [],
+      () => new Set(["ls"]),
+    );
+    expect(fixes[0].command).toBe("ls");
+  });
   test("with both installed, the letter next to the one typed wins", async () => {
     const fixes = await findFixes(
       notFound("awl -F, '{print $1}' x"),

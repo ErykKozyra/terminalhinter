@@ -94,8 +94,9 @@ export const editDistance = (a: string, b: string, max = 3): number => {
 };
 
 // the closest name to `word`, if it is near enough to be a typo
-// `preferred` (the programs on PATH and the aliases) wins a tie over a name that only has a spec: `awl` is awk the
-// user has, not aws they may not have
+// `preferred` (the programs on PATH and the aliases) comes before a name that only has a spec, even one letter
+// further: `awl` is awk the user has, not aws they may not have, and `cls` is ls, not the serverless `sls`. A
+// spec-only name is still the fix when nothing installed is near (`nvm` is a shell function, not on PATH).
 // keys next to each other on a QWERTY keyboard: a finger that slips hits one of these
 const keyRows = ["1234567890-", "qwertyuiop[", "asdfghjkl;'", "zxcvbnm,./"];
 const keyAt = new Map<string, [number, number]>();
@@ -125,7 +126,7 @@ export const closest = (word: string, names: Iterable<string>, max = word.length
       (name.length === word.length ? 0 : 0.5) -
       ([...name].sort().join("") === sorted ? 0.25 : 0) -
       (slipsOnly(word, name) ? 0.05 : 0) +
-      (preferred && !preferred.has(name) ? 0.1 : 0);
+      (preferred && !preferred.has(name) ? 0.6 : 0);
     if (score < bestScore) {
       best = name;
       bestScore = score;
