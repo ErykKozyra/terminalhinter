@@ -974,13 +974,22 @@ export class SuggestionManager {
     // `pnpm i` typed in full is already a command (i is install's short name), so Enter runs it as typed
     const token = this.#suggestBlob?.activeToken;
     const typedShortName = token != null && !token.complete && !token.isPath && suggestion?.allNames.includes(token.token) === true;
+    // an option that must be given a value (`kubectl get pods -n`, `git commit -m`) does nothing on its own: Enter
+    // puts the space after it and the list moves on to its values, instead of running a line that can only fail
+    const needsValue = (suggestion?.type === "option" || token?.isOption === true) && suggestion?.args?.startsWith("<") === true;
+    if (needsValue && typedShortName) {
+      this.#walk = [];
+      this.#reselect = undefined;
+      this.#term.write(" ");
+      return true;
+    }
     const config = getConfig();
     // enterRuns: Enter takes the entry and runs the line at once, except a folder, which it still walks into
     // after walking in with →, Enter on a folder goes straight there
     const walked = this.#walk.length > 0;
     this.#walk = [];
     this.#reselect = undefined;
-    const runsNow = suggestion != null && !suggestion.execute && (suggestion.type === "folder" ? walked : config.enterRuns);
+    const runsNow = suggestion != null && !suggestion.execute && !needsValue && (suggestion.type === "folder" ? walked : config.enterRuns);
     if (config.enterAcceptsSuggestion && suggestion != null && !suggestion.execute && !typedShortName && this._accept(suggestion)) {
       log.debug({ msg: "accepted suggestion with enter", name: suggestion.name });
       if (!runsNow) return true;

@@ -337,3 +337,40 @@ test("the footer shows in full what the selected row had to cut", async () => {
   expect(text).toContain("Switch branches or restore working tree files, a long");
   expect(text).toContain("cannot fit next to the name");
 });
+
+// the runtime leaves type empty on options, so the typed word starting with "-" is what marks one
+const option = (names: string[], args?: string) => ({ name: names[0], allNames: names, icon: "-", priority: 50, args });
+
+test("enter on an option typed in full that needs a value adds the space instead of running", async () => {
+  const { manager, writes, cleared } = setup({
+    suggestions: [option(["-n", "--namespace"], "<namespace>")],
+    activeToken: { token: "-n", tokenLength: 2, complete: false, isOption: true },
+  });
+  await manager.exec();
+  expect(manager.update(press("return"))).toBe(true);
+  expect(writes).toEqual([" "]);
+  expect(cleared()).toBe(0);
+});
+
+test("the long name typed in full adds the space too", async () => {
+  const { manager, writes } = setup({
+    suggestions: [option(["-n", "--namespace"], "<namespace>")],
+    activeToken: { token: "--namespace", tokenLength: 11, complete: false, isOption: true },
+  });
+  await manager.exec();
+  expect(manager.update(press("return"))).toBe(true);
+  expect(writes).toEqual([" "]);
+});
+
+test("an option typed in full with no value or an optional one still runs the line", async () => {
+  for (const args of [undefined, "[count]"]) {
+    const { manager, writes, cleared } = setup({
+      suggestions: [option(["-l", "--long"], args)],
+      activeToken: { token: "-l", tokenLength: 2, complete: false, isOption: true },
+    });
+    await manager.exec();
+    expect(manager.update(press("return"))).toBe(false);
+    expect(writes).toEqual([]);
+    expect(cleared()).toBe(1);
+  }
+});

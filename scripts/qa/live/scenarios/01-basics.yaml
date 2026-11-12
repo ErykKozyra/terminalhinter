@@ -200,3 +200,16 @@
     - type: "echo after"
     - key: ENTER
       expect_ran: "echo after"
+
+- name: Enter on an option that needs a value adds the space and waits for it
+  skip_shells: [cmd]
+  steps:
+    - type: "git commit -m"
+      wait: 600
+      list_has: "-m"
+    - key: ENTER
+      wait: 400
+    # the line trims trailing spaces when read, so the next letter shows the space is there
+    - type: "x"
+      wait: 300
+      expect_line: "git commit -m x"
