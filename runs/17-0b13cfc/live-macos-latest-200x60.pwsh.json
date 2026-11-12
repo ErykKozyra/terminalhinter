@@ -1,0 +1,1126 @@
+{
+  "platform": "darwin",
+  "shells": [
+    "pwsh"
+  ],
+  "started": [
+    "pwsh"
+  ],
+  "planned": 123,
+  "strayErrors": 0,
+  "health": [],
+  "results": [
+    {
+      "scenario": "the list opens after a command and a space",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5388,
+      "failures": []
+    },
+    {
+      "scenario": "git branch from the list with Tab",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7836,
+      "failures": []
+    },
+    {
+      "scenario": "typing narrows the list",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6858,
+      "failures": []
+    },
+    {
+      "scenario": "Tab puts the selected entry on the line",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7054,
+      "failures": []
+    },
+    {
+      "scenario": "Enter on a typed word takes the entry and does not run",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6699,
+      "failures": []
+    },
+    {
+      "scenario": "Enter right after a space runs the command",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7719,
+      "failures": []
+    },
+    {
+      "scenario": "Enter runs a word typed in full that no entry starts with",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6608,
+      "failures": []
+    },
+    {
+      "scenario": "Esc hides the list until the next letter",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7442,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+Space shows the list again",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7010,
+      "failures": []
+    },
+    {
+      "scenario": "Down and Tab pick the second entry",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6476,
+      "failures": []
+    },
+    {
+      "scenario": "Backspace brings back what was there",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6146,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+U empties the line and hides the list",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5598,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+C gives a fresh prompt with no list",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6914,
+      "failures": []
+    },
+    {
+      "scenario": "Up on a line with no selection walks the shell history",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5978,
+      "failures": []
+    },
+    {
+      "scenario": "a pasted command lands as pasted",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5754,
+      "failures": []
+    },
+    {
+      "scenario": "a fast typist loses no letters",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5687,
+      "failures": []
+    },
+    {
+      "scenario": "a long line that wraps keeps every letter",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7085,
+      "failures": []
+    },
+    {
+      "scenario": "Polish letters and emoji go through untouched",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7274,
+      "failures": []
+    },
+    {
+      "scenario": "options of a command show with their descriptions",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5980,
+      "failures": []
+    },
+    {
+      "scenario": "an option already on the line is not offered again",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6309,
+      "failures": []
+    },
+    {
+      "scenario": "a command the specs do not know does not break anything",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7474,
+      "failures": []
+    },
+    {
+      "scenario": "the list follows the line after a resize",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6763,
+      "failures": []
+    },
+    {
+      "scenario": "Enter runs a word that only appears inside a variable name",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6267,
+      "failures": []
+    },
+    {
+      "scenario": "git switch offers local branches with their last commit",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5980,
+      "failures": []
+    },
+    {
+      "scenario": "git checkout finds a branch by a word inside its name",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6399,
+      "failures": []
+    },
+    {
+      "scenario": "a branch picked with Enter runs only after a second Enter",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7185,
+      "failures": []
+    },
+    {
+      "scenario": "git stash show lists stashes by what they hold",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6065,
+      "failures": []
+    },
+    {
+      "scenario": "git stash pop takes the stash from the list",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6657,
+      "failures": []
+    },
+    {
+      "scenario": "git reset --hard is marked as risky and says why",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5215,
+      "failures": []
+    },
+    {
+      "scenario": "git push --force is marked as risky",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5588,
+      "failures": []
+    },
+    {
+      "scenario": "git branch -D is marked as risky",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5569,
+      "failures": []
+    },
+    {
+      "scenario": "git add offers changed files",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5279,
+      "failures": []
+    },
+    {
+      "scenario": "git log options with descriptions",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4996,
+      "failures": []
+    },
+    {
+      "scenario": "git commit -m keeps the quoted message as typed",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7119,
+      "failures": []
+    },
+    {
+      "scenario": "git merge offers branches",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5155,
+      "failures": []
+    },
+    {
+      "scenario": "a git alias completes like the command behind it",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 15791,
+      "failures": []
+    },
+    {
+      "scenario": "outside a repository git still shows subcommands",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4725,
+      "failures": []
+    },
+    {
+      "scenario": "git worktree add and remove",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 9928,
+      "failures": []
+    },
+    {
+      "scenario": "git reflog after a reset",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 10221,
+      "failures": []
+    },
+    {
+      "scenario": "cd lists only folders",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5240,
+      "failures": []
+    },
+    {
+      "scenario": "Enter on a folder walks into it and keeps the list open",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5713,
+      "failures": []
+    },
+    {
+      "scenario": "the run entry runs cd where you are",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6131,
+      "failures": []
+    },
+    {
+      "scenario": "a folder with a space is escaped on the line",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6029,
+      "failures": []
+    },
+    {
+      "scenario": "a folder with Polish letters",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5776,
+      "failures": []
+    },
+    {
+      "scenario": "a path in a subfolder",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5496,
+      "failures": []
+    },
+    {
+      "scenario": "parent folder",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6012,
+      "failures": []
+    },
+    {
+      "scenario": "hidden files after a dot",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5496,
+      "failures": []
+    },
+    {
+      "scenario": "npm run lists the package.json scripts with their commands",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5575,
+      "failures": []
+    },
+    {
+      "scenario": "a production-looking script is marked",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5988,
+      "failures": []
+    },
+    {
+      "scenario": "pnpm lists the scripts",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5245,
+      "failures": []
+    },
+    {
+      "scenario": "yarn lists the scripts",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4990,
+      "failures": []
+    },
+    {
+      "scenario": "bun lists the scripts",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5500,
+      "failures": []
+    },
+    {
+      "scenario": "make lists targets with their sections and descriptions",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5285,
+      "failures": []
+    },
+    {
+      "scenario": "a make target tagged prod is marked",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5324,
+      "failures": []
+    },
+    {
+      "scenario": "make -C reads the Makefile of that folder",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5722,
+      "failures": []
+    },
+    {
+      "scenario": "docker compose lists services",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5824,
+      "failures": []
+    },
+    {
+      "scenario": "a Taskfile without task installed still lists tasks",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5751,
+      "failures": []
+    },
+    {
+      "scenario": "a Makefile picked up after it changes",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 9496,
+      "failures": []
+    },
+    {
+      "scenario": "just recipes from the justfile",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6527,
+      "failures": []
+    },
+    {
+      "scenario": "mise tasks from mise.toml",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6091,
+      "failures": []
+    },
+    {
+      "scenario": "deno tasks from deno.json",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6757,
+      "failures": []
+    },
+    {
+      "scenario": "a typo in the command gets the fix on the empty line",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 9938,
+      "failures": []
+    },
+    {
+      "scenario": "a git subcommand typo uses what git suggests",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6948,
+      "failures": []
+    },
+    {
+      "scenario": "the fix is never run without Enter",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 9660,
+      "failures": []
+    },
+    {
+      "scenario": "a missing npm script gets the near one",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 11157,
+      "failures": []
+    },
+    {
+      "scenario": "mkdir of a nested folder gets -p",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 8953,
+      "failures": []
+    },
+    {
+      "scenario": "cd to a near folder name",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 8785,
+      "failures": []
+    },
+    {
+      "scenario": "rm of a folder gets -r",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7282,
+      "failures": []
+    },
+    {
+      "scenario": "Esc dismisses the fix and the line stays empty",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6898,
+      "failures": []
+    },
+    {
+      "scenario": "checkout of a near branch name",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 9042,
+      "failures": []
+    },
+    {
+      "scenario": "a command that worked gives no fix",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7097,
+      "failures": []
+    },
+    {
+      "scenario": "typing over the fix list starts a new command",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 10001,
+      "failures": []
+    },
+    {
+      "scenario": "fixes can be turned off",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7560,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+G explains every word of a pipe",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5532,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+G warns about a destructive line",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6108,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+G through sudo and &&",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7233,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+G knows combined short flags",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6701,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+G knows an option that takes a value",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6718,
+      "failures": []
+    },
+    {
+      "scenario": "Esc closes the explanation and keeps the line",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6438,
+      "failures": []
+    },
+    {
+      "scenario": "the line runs as typed after an explanation",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6859,
+      "failures": []
+    },
+    {
+      "scenario": "a snippet with fields fills in and runs",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 8329,
+      "failures": []
+    },
+    {
+      "scenario": "a field value with spaces is quoted",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 8463,
+      "failures": []
+    },
+    {
+      "scenario": "Esc leaves the snippet form without running anything",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7607,
+      "failures": []
+    },
+    {
+      "scenario": "a broken snippets file does not break the list",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5146,
+      "failures": []
+    },
+    {
+      "scenario": "a command run in this folder comes back as a whole",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 8146,
+      "failures": []
+    },
+    {
+      "scenario": "a line with a token is never remembered",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 8895,
+      "failures": []
+    },
+    {
+      "scenario": "a failed command is not offered again as a recent one",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 8427,
+      "failures": []
+    },
+    {
+      "scenario": "tab like a shell completes the shared part",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5359,
+      "failures": []
+    },
+    {
+      "scenario": "the list only on Tab",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5190,
+      "failures": []
+    },
+    {
+      "scenario": "a command run elsewhere in the repository comes back in a subfolder",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 11008,
+      "failures": []
+    },
+    {
+      "scenario": "the light theme draws the same list",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5495,
+      "failures": []
+    },
+    {
+      "scenario": "an invalid setting falls back to the defaults",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5381,
+      "failures": []
+    },
+    {
+      "scenario": "Enter takes the entry and runs the line when enterRuns is on",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5644,
+      "failures": []
+    },
+    {
+      "scenario": "with enterRuns a folder is still walked into",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5529,
+      "failures": []
+    },
+    {
+      "scenario": "a broken spec of your own is skipped",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6457,
+      "failures": []
+    },
+    {
+      "scenario": "a spec with a generator that hangs does not block typing",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6776,
+      "failures": []
+    },
+    {
+      "scenario": "the shell works when the config file is broken",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 8361,
+      "failures": []
+    },
+    {
+      "scenario": "quick resize back and forth with the list open",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 8803,
+      "failures": []
+    },
+    {
+      "scenario": "Shift+Down moves an entry and the order stays",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7918,
+      "failures": []
+    },
+    {
+      "scenario": "a lone dash runs the previous folder",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6511,
+      "failures": []
+    },
+    {
+      "scenario": "git checkout - runs as typed",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6271,
+      "failures": []
+    },
+    {
+      "scenario": "the second command after && gets its own list",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6246,
+      "failures": []
+    },
+    {
+      "scenario": "sudo in front keeps the list of the command",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5426,
+      "failures": []
+    },
+    {
+      "scenario": "an option with an equals sign",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7709,
+      "failures": []
+    },
+    {
+      "scenario": "docker compose logs takes a service",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6012,
+      "failures": []
+    },
+    {
+      "scenario": "editing in the middle of the line",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 11954,
+      "failures": []
+    },
+    {
+      "scenario": "npm install of a version does not block typing without network",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6997,
+      "failures": []
+    },
+    {
+      "scenario": "icons off still shows the entries",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5441,
+      "failures": []
+    },
+    {
+      "scenario": "a long description is cut, not wrapped",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5880,
+      "failures": []
+    },
+    {
+      "scenario": "PowerShell predictions from the history do not confuse the list",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6228,
+      "failures": []
+    },
+    {
+      "scenario": "the first word with recent commands",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7890,
+      "failures": []
+    },
+    {
+      "scenario": "→ on a folder puts it on the line and lists what is inside",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5847,
+      "failures": []
+    },
+    {
+      "scenario": "→ twice walks two levels down",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6294,
+      "failures": []
+    },
+    {
+      "scenario": "Enter on a folder after → goes straight into it",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6493,
+      "failures": []
+    },
+    {
+      "scenario": "Enter right after → runs cd where the walk is",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6281,
+      "failures": []
+    },
+    {
+      "scenario": "← goes back to the line before →",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6964,
+      "failures": []
+    },
+    {
+      "scenario": "← one level up highlights the folder it came from",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 8413,
+      "failures": []
+    },
+    {
+      "scenario": "→ works for other commands too",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6314,
+      "failures": []
+    },
+    {
+      "scenario": "a short tip on a highlighted folder tells that → looks inside",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6515,
+      "failures": []
+    },
+    {
+      "scenario": "aws options complete after a command",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7220,
+      "failures": []
+    },
+    {
+      "scenario": "aws completes services and their commands",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 9139,
+      "failures": []
+    },
+    {
+      "scenario": "gcloud completes groups and commands",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 9486,
+      "failures": []
+    },
+    {
+      "scenario": "a typo of awk gets awk, not aws",
+      "shell": "pwsh",
+      "size": "200x60",
+      "ok": false,
+      "timedOut": false,
+      "ms": 13335,
+      "failures": [
+        "step 1: expected \"awk 'BEGIN{print 1}'\" in the list; screen:\nqa$ true\nqa$ awl 'BEGIN{print 1}'\nawl: The term 'awl' is not recognized as a name of a cmdlet, function, script file, or executable program.\nCheck the spelling of the name, or if a path was included, verify that the path is correct and try again.\n\n[General Feedback]\n  The most similar commands are:\n    ➤ aws, awk\n\nqa$ \n ╭───────────────────────────────────────────────────────────╮\n │  ■  aws 'BEGIN{print 1}'  \"awl\" is not a command, aws is  │\n ├───────────────────────────────────────────────────────────┤\n │ the last command failed · tab puts the fix on the line ·… │\n ╰───────────────────────────────────────────────────────────╯\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+      ],
+      "home": "/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-jWYGjZ/home-xD9QTn",
+      "raw": "[E\u001b[0m\u001b[2K\u001b[0m\u001b[49m\u001b[39m\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[E\u001b[0m\u001b[2K\u001b[0m\u001b[49m\u001b[39m\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[E\u001b[0m\u001b[2K\u001b[0m\u001b[49m\u001b[39m\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[u\u001b[?25h\u001b[?25l\u001b[10;5H\u001b[0m\u001b[93mecho\u001b[0m\u001b[39;49m \u001b[0m\u001b[36m\"alive\u001b[39;49m\u001b[0m\u001b[10;16H\u001b[?12l\u001b[?25h\u001b[?25l\u001b[10;5H\u001b[0m\u001b[93mecho\u001b[0m\u001b[39;49m \u001b[0m\u001b[36m\"alive-\u001b[39;49m\u001b[0m\u001b[10;17H\u001b[?12l\u001b[?25h\u001b[?25l\u001b[10;5H\u001b[0m\u001b[93mecho\u001b[0m\u001b[39;49m \u001b[0m\u001b[36m\"alive-$\u001b[39;49m\u001b[0m\u001b[10;18H\u001b[?12l\u001b[?25h\u001b[?25l\u001b[10;5H\u001b[0m\u001b[93mecho\u001b[0m\u001b[39;49m \u001b[0m\u001b[36m\"alive-\u001b[0m\u001b[37m$(\u001b[39;49m\u001b[0m\u001b[10;19H\u001b[?12l\u001b[?25h\u001b[?25l\u001b[10;5H\u001b[0m\u001b[93mecho\u001b[0m\u001b[39;49m \u001b[0m\u001b[36m\"alive-\u001b[0m\u001b[37m$(\u001b[0m\u001b[97m4\u001b[39;49m\u001b[0m\u001b[10;20H\u001b[?12l\u001b[?25h\u001b[?25l\u001b[10;5H\u001b[0m\u001b[93mecho\u001b[0m\u001b[39;49m \u001b[0m\u001b[36m\"alive-\u001b[0m\u001b[37m$(\u001b[0m\u001b[97m40\u001b[39;49m\u001b[0m\u001b[10;21H\u001b[?12l\u001b[?25h\u001b[?25l\u001b[10;5H\u001b[0m\u001b[93mecho\u001b[0m\u001b[39;49m \u001b[0m\u001b[36m\"alive-\u001b[0m\u001b[37m$(\u001b[0m\u001b[97m40\u001b[0m\u001b[90m+\u001b[39;49m\u001b[0m\u001b[10;22H\u001b[?12l\u001b[?25h\u001b[?25l\u001b[10;5H\u001b[0m\u001b[93mecho\u001b[0m\u001b[39;49m \u001b[0m\u001b[36m\"alive-\u001b[0m\u001b[37m$(\u001b[0m\u001b[97m40\u001b[0m\u001b[90m+\u001b[0m\u001b[97m2\u001b[39;49m\u001b[0m\u001b[10;23H\u001b[?12l\u001b[?25h\u001b[?25l\u001b[10;5H\u001b[0m\u001b[93mecho\u001b[0m\u001b[39;49m \u001b[0m\u001b[36m\"alive-\u001b[0m\u001b[37m$(\u001b[0m\u001b[97m40\u001b[0m\u001b[90m+\u001b[0m\u001b[97m2\u001b[0m\u001b[37m)\u001b[39;49m\u001b[0m\u001b[10;24H\u001b[?12l\u001b[?25h\u001b[?25l\u001b[10;5H\u001b[0m\u001b[93mecho\u001b[0m\u001b[39;49m \u001b[0m\u001b[36m\"alive-\u001b[0m\u001b[37m$(\u001b[0m\u001b[97m40\u001b[0m\u001b[90m+\u001b[0m\u001b[97m2\u001b[0m\u001b[37m)\u001b[0m\u001b[36m\"\u001b[39;49m\u001b[0m\u001b[10;25H\u001b[?12l\u001b[?25h\r\r\n\u001b[?1lalive-42\r\r\n\u001b[6n\u001b]6973;EX;0\u0007\u001b]6973;PS\u0007qa$ \u001b]6973;PE\u0007\u001b]6973;CWD;/private/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-jWYGjZ/home-xD9QTn/Dev/shop\u0007\u001b[?1h\u001b[6n\u001b[?25l\u001b[12;5H\u001b[0m\u001b[93me\u001b[39;49m\u001b[0m\u001b[12;6H\u001b[?12l\u001b[?25h\u001b[?25l\u001b[12;5H\u001b[0m\u001b[93mex\u001b[39;49m\u001b[0m\u001b[12;7H\u001b[?12l\u001b[?25h\u001b[?25l\u001b[12;5H\u001b[0m\u001b[93mexi\u001b[39;49m\u001b[0m\u001b[12;8H\u001b[?12l\u001b[?25h\u001b[?25l\u001b[12;5H\u001b[0m\u001b[92mexit\u001b[39;49m\u001b[0m\u001b[12;9H\u001b[?12l\u001b[?25h\r\r\n\u001b[?1l\u001bc",
+      "log": "{\"msg\":\"no local specs imported from '/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-jWYGjZ/home-xD9QTn/.fig/autocomplete/build', this will not break the current session\",\"e\":\"Cannot find module '/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-jWYGjZ/home-xD9QTn/.fig/autocomplete/build/index.js' imported from /Users/runner/work/terminalhinter/terminalhinter/build/runtime/runtime.js\",\"specPath\":\"/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-jWYGjZ/home-xD9QTn/.fig/autocomplete/build\"}\n{\"msg\":\"reading data\",\"data\":\"\\u001b[1;1R\",\"bytes\":{\"0\":27,\"1\":91,\"2\":49,\"3\":59,\"4\":49,\"5\":82}}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":0,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":0,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"\",\"persistentOutput\":false,\"cursorX\":4,\"cursorY\":0}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":0,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":0,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"\",\"persistentOutput\":false,\"cursorX\":4,\"cursorY\":0}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":0,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":0,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"\",\"persistentOutput\":false,\"cursorX\":4,\"cursorY\":0}\n{\"msg\":\"reading data\",\"data\":\"\\u001b[1;5R\",\"bytes\":{\"0\":27,\"1\":91,\"2\":49,\"3\":59,\"4\":53,\"5\":82}}\n{\"msg\":\"reading data\",\"data\":\"r\",\"bytes\":{\"0\":114}}\n{\"msg\":\"reading data\",\"data\":\"t\",\"bytes\":{\"0\":116}}\n{\"msg\":\"reading data\",\"data\":\"u\",\"bytes\":{\"0\":117}}\n{\"msg\":\"reading data\",\"data\":\"e\",\"bytes\":{\"0\":101}}\n{\"msg\":\"reading data\",\"data\":\"\\r\",\"bytes\":{\"0\":13}}\n{\"msg\":\"reading data\",\"data\":\"\\u001b[2;1R\",\"bytes\":{\"0\":27,\"1\":91,\"2\":50,\"3\":59,\"4\":49,\"5\":82}}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":1,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":1,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"\",\"persistentOutput\":false,\"cursorX\":4,\"cursorY\":1}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":1,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":1,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"\",\"persistentOutput\":false,\"cursorX\":4,\"cursorY\":1}\n{\"msg\":\"reading data\",\"data\":\"\\u001b[2;5R\",\"bytes\":{\"0\":27,\"1\":91,\"2\":50,\"3\":59,\"4\":53,\"5\":82}}\n{\"msg\":\"reading data\",\"data\":\"a\",\"bytes\":{\"0\":97}}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":1,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":1,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"a\",\"persistentOutput\":false,\"cursorX\":5,\"cursorY\":1}\n{\"msg\":\"reading data\",\"data\":\"w\",\"bytes\":{\"0\":119}}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":1,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":1,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"aw\",\"persistentOutput\":false,\"cursorX\":6,\"cursorY\":1}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":1,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":1,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"aw\",\"persistentOutput\":false,\"cursorX\":6,\"cursorY\":1}\n{\"msg\":\"reading data\",\"data\":\"l\",\"bytes\":{\"0\":108}}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":1,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":1,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"awl\",\"persistentOutput\":false,\"cursorX\":7,\"cursorY\":1}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":1,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":1,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"awl\",\"persistentOutput\":false,\"cursorX\":7,\"cursorY\":1}\n{\"msg\":\"reading data\",\"data\":\" \",\"bytes\":{\"0\":32}}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":1,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":1,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"awl \",\"persistentOutput\":false,\"cursorX\":8,\"cursorY\":1}\n{\"msg\":\"reading data\",\"data\":\"'\",\"bytes\":{\"0\":39}}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":1,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":1,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"awl '\",\"persistentOutput\":false,\"cursorX\":9,\"cursorY\":1}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":1,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":1,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"awl '\",\"persistentOutput\":false,\"cursorX\":9,\"cursorY\":1}\n{\"msg\":\"reading data\",\"data\":\"B\",\"bytes\":{\"0\":66}}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":1,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":1,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"awl 'B\",\"persistentOutput\":false,\"cursorX\":10,\"cursorY\":1}\n{\"msg\":\"reading data\",\"data\":\"E\",\"bytes\":{\"0\":69}}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":1,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":1,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"awl 'BE\",\"persistentOutput\":false,\"cursorX\":11,\"cursorY\":1}\n{\"msg\":\"reading data\",\"data\":\"G\",\"bytes\":{\"0\":71}}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":1,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":1,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"awl 'BEG\",\"persistentOutput\":false,\"cursorX\":12,\"cursorY\":1}\n{\"msg\":\"reading data\",\"data\":\"I\",\"bytes\":{\"0\":73}}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":1,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":1,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"awl 'BEGI\",\"persistentOutput\":false,\"cursorX\":13,\"cursorY\":1}\n{\"msg\":\"reading data\",\"data\":\"N\",\"bytes\":{\"0\":78}}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":1,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":1,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"awl 'BEGIN\",\"persistentOutput\":false,\"cursorX\":14,\"cursorY\":1}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":1,\"hasOutput\":false,\"cursorTerminated\":false,\"promptEndMarker\":1,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"awl 'BEGI\",\"persistentOutput\":false,\"cursorX\":4,\"cursorY\":1}\n{\"msg\":\"reading data\",\"data\":\"{\",\"bytes\":{\"0\":123}}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":1,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":1,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"awl 'BEGIN{\",\"persistentOutput\":false,\"cursorX\":15,\"cursorY\":1}\n{\"msg\":\"reading data\",\"data\":\"p\",\"bytes\":{\"0\":112}}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":1,\"hasOutput\":false,\"cursorTerminated\":false,\"promptEndMarker\":1,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"awl 'BEGIN{\",\"persistentOutput\":false,\"cursorX\":4,\"cursorY\":1}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":1,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":1,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"awl 'BEGIN{p\",\"persistentOutput\":false,\"cursorX\":16,\"cursorY\":1}\n{\"msg\":\"reading data\",\"data\":\"r\",\"bytes\":{\"0\":114}}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":1,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":1,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"awl 'BEGIN{pr\",\"persistentOutput\":false,\"cursorX\":17,\"cursorY\":1}\n{\"msg\":\"reading data\",\"data\":\"i\",\"bytes\":{\"0\":105}}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":1,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":1,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"awl 'BEGIN{pri\",\"persistentOutput\":false,\"cursorX\":18,\"cursorY\":1}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":1,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":1,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"awl 'BEGIN{pri\",\"persistentOutput\":false,\"cursorX\":18,\"cursorY\":1}\n{\"msg\":\"reading data\",\"data\":\"n\",\"bytes\":{\"0\":110}}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":1,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":1,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"awl 'BEGIN{prin\",\"persistentOutput\":false,\"cursorX\":19,\"cursorY\":1}\n{\"msg\":\"reading data\",\"data\":\"t\",\"bytes\":{\"0\":116}}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":1,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":1,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"awl 'BEGIN{print\",\"persistentOutput\":false,\"cursorX\":20,\"cursorY\":1}\n{\"msg\":\"reading data\",\"data\":\" \",\"bytes\":{\"0\":32}}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":1,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":1,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"awl 'BEGIN{print \",\"persistentOutput\":false,\"cursorX\":21,\"cursorY\":1}\n{\"msg\":\"reading data\",\"data\":\"1\",\"bytes\":{\"0\":49}}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":1,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":1,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"awl 'BEGIN{print 1\",\"persistentOutput\":false,\"cursorX\":22,\"cursorY\":1}\n{\"msg\":\"reading data\",\"data\":\"}\",\"bytes\":{\"0\":125}}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":1,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":1,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"awl 'BEGIN{print 1}\",\"persistentOutput\":false,\"cursorX\":23,\"cursorY\":1}\n{\"msg\":\"reading data\",\"data\":\"'\",\"bytes\":{\"0\":39}}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":1,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":1,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"awl 'BEGIN{print 1}'\",\"persistentOutput\":false,\"cursorX\":24,\"cursorY\":1}\n{\"msg\":\"reading data\",\"data\":\"\\r\",\"bytes\":{\"0\":13}}\n{\"msg\":\"reading data\",\"data\":\"\\u001b[5;1R\",\"bytes\":{\"0\":27,\"1\":91,\"2\":53,\"3\":59,\"4\":49,\"5\":82}}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":9,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":9,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"\",\"persistentOutput\":false,\"cursorX\":4,\"cursorY\":9}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":9,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":9,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"\",\"persistentOutput\":false,\"cursorX\":4,\"cursorY\":9}\n{\"msg\":\"fixes found\",\"count\":1,\"failure\":{\"id\":1,\"command\":\"awl 'BEGIN{print 1}'\",\"exitCode\":1,\"output\":\"awl: The term 'awl' is not recognized as a name of a cmdlet, function, script file, or executable program.\\nCheck the spelling of the name, or if a path was included, verify that the path is correct and try again.\\n\\n[General Feedback]\\n  The most similar commands are:\\n    ➤ aws, awk\\n\",\"cwd\":\"/private/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-jWYGjZ/home-xD9QTn/Dev/shop\"}}\n{\"msg\":\"reading data\",\"data\":\"\\u001b[10;5R\",\"bytes\":{\"0\":27,\"1\":91,\"2\":49,\"3\":48,\"4\":59,\"5\":53,\"6\":82}}"
+    }
+  ]
+}

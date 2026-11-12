@@ -1,0 +1,1329 @@
+{
+  "platform": "darwin",
+  "shells": [
+    "bash"
+  ],
+  "started": [
+    "bash"
+  ],
+  "planned": 145,
+  "strayErrors": 0,
+  "health": [],
+  "results": [
+    {
+      "scenario": "the list opens after a command and a space",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4008,
+      "failures": []
+    },
+    {
+      "scenario": "typing narrows the list",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3785,
+      "failures": []
+    },
+    {
+      "scenario": "git branch from the list with Tab",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6601,
+      "failures": []
+    },
+    {
+      "scenario": "Tab puts the selected entry on the line",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5153,
+      "failures": []
+    },
+    {
+      "scenario": "Enter on a typed word takes the entry and does not run",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5444,
+      "failures": []
+    },
+    {
+      "scenario": "Enter right after a space runs the command",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6126,
+      "failures": []
+    },
+    {
+      "scenario": "Enter runs a word typed in full that no entry starts with",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5716,
+      "failures": []
+    },
+    {
+      "scenario": "Esc hides the list until the next letter",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6139,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+Space shows the list again",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5367,
+      "failures": []
+    },
+    {
+      "scenario": "Down and Tab pick the second entry",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5181,
+      "failures": []
+    },
+    {
+      "scenario": "Backspace brings back what was there",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4628,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+U empties the line and hides the list",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4651,
+      "failures": []
+    },
+    {
+      "scenario": "Up on a line with no selection walks the shell history",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4827,
+      "failures": []
+    },
+    {
+      "scenario": "a pasted command lands as pasted",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4706,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+C gives a fresh prompt with no list",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7303,
+      "failures": []
+    },
+    {
+      "scenario": "a fast typist loses no letters",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4663,
+      "failures": []
+    },
+    {
+      "scenario": "a long line that wraps keeps every letter",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5881,
+      "failures": []
+    },
+    {
+      "scenario": "Polish letters and emoji go through untouched",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6044,
+      "failures": []
+    },
+    {
+      "scenario": "options of a command show with their descriptions",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6017,
+      "failures": []
+    },
+    {
+      "scenario": "an option already on the line is not offered again",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5789,
+      "failures": []
+    },
+    {
+      "scenario": "a command the specs do not know does not break anything",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6376,
+      "failures": []
+    },
+    {
+      "scenario": "the list follows the line after a resize",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6200,
+      "failures": []
+    },
+    {
+      "scenario": "a full-screen program and back",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7033,
+      "failures": []
+    },
+    {
+      "scenario": "lots of output while typing the next command",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6288,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+L clears the screen and the list comes back on the new line",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5538,
+      "failures": []
+    },
+    {
+      "scenario": "Enter runs a word that only appears inside a variable name",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4584,
+      "failures": []
+    },
+    {
+      "scenario": "git switch offers local branches with their last commit",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4720,
+      "failures": []
+    },
+    {
+      "scenario": "git checkout finds a branch by a word inside its name",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5648,
+      "failures": []
+    },
+    {
+      "scenario": "git stash show lists stashes by what they hold",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4639,
+      "failures": []
+    },
+    {
+      "scenario": "a branch picked with Enter runs only after a second Enter",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6145,
+      "failures": []
+    },
+    {
+      "scenario": "git stash pop takes the stash from the list",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6094,
+      "failures": []
+    },
+    {
+      "scenario": "git reset --hard is marked as risky and says why",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4704,
+      "failures": []
+    },
+    {
+      "scenario": "git push --force is marked as risky",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4811,
+      "failures": []
+    },
+    {
+      "scenario": "git branch -D is marked as risky",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5002,
+      "failures": []
+    },
+    {
+      "scenario": "git add offers changed files",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4494,
+      "failures": []
+    },
+    {
+      "scenario": "git log options with descriptions",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4831,
+      "failures": []
+    },
+    {
+      "scenario": "git commit -m keeps the quoted message as typed",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6931,
+      "failures": []
+    },
+    {
+      "scenario": "git merge offers branches",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4792,
+      "failures": []
+    },
+    {
+      "scenario": "a git alias completes like the command behind it",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 15469,
+      "failures": []
+    },
+    {
+      "scenario": "outside a repository git still shows subcommands",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4017,
+      "failures": []
+    },
+    {
+      "scenario": "git worktree add and remove",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 9517,
+      "failures": []
+    },
+    {
+      "scenario": "cd lists only folders",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4049,
+      "failures": []
+    },
+    {
+      "scenario": "git reflog after a reset",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 10669,
+      "failures": []
+    },
+    {
+      "scenario": "Enter on a folder walks into it and keeps the list open",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5259,
+      "failures": []
+    },
+    {
+      "scenario": "a folder with a space is escaped on the line",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4554,
+      "failures": []
+    },
+    {
+      "scenario": "the run entry runs cd where you are",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6464,
+      "failures": []
+    },
+    {
+      "scenario": "a folder with a space works after Enter",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6804,
+      "failures": []
+    },
+    {
+      "scenario": "a folder with Polish letters",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5084,
+      "failures": []
+    },
+    {
+      "scenario": "files are offered for cat with their names",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5101,
+      "failures": []
+    },
+    {
+      "scenario": "a path in a subfolder",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4390,
+      "failures": []
+    },
+    {
+      "scenario": "parent folder",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5053,
+      "failures": []
+    },
+    {
+      "scenario": "home with a tilde",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4990,
+      "failures": []
+    },
+    {
+      "scenario": "hidden files after a dot",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4270,
+      "failures": []
+    },
+    {
+      "scenario": "an absolute path",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4914,
+      "failures": []
+    },
+    {
+      "scenario": "Enter on an absolute path takes the folder",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5637,
+      "failures": []
+    },
+    {
+      "scenario": "Enter deeper in an absolute path takes the folder",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5466,
+      "failures": []
+    },
+    {
+      "scenario": "npm run lists the package.json scripts with their commands",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4432,
+      "failures": []
+    },
+    {
+      "scenario": "a production-looking script is marked",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4643,
+      "failures": []
+    },
+    {
+      "scenario": "pnpm lists the scripts",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4626,
+      "failures": []
+    },
+    {
+      "scenario": "yarn lists the scripts",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4656,
+      "failures": []
+    },
+    {
+      "scenario": "bun lists the scripts",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5639,
+      "failures": []
+    },
+    {
+      "scenario": "make lists targets with their sections and descriptions",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4707,
+      "failures": []
+    },
+    {
+      "scenario": "a make target tagged prod is marked",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4562,
+      "failures": []
+    },
+    {
+      "scenario": "make -C reads the Makefile of that folder",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4617,
+      "failures": []
+    },
+    {
+      "scenario": "docker compose lists services",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5657,
+      "failures": []
+    },
+    {
+      "scenario": "a Taskfile without task installed still lists tasks",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3783,
+      "failures": []
+    },
+    {
+      "scenario": "a Makefile picked up after it changes",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 8266,
+      "failures": []
+    },
+    {
+      "scenario": "just recipes from the justfile",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4295,
+      "failures": []
+    },
+    {
+      "scenario": "mise tasks from mise.toml",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4163,
+      "failures": []
+    },
+    {
+      "scenario": "deno tasks from deno.json",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4333,
+      "failures": []
+    },
+    {
+      "scenario": "a typo in the command gets the fix on the empty line",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6353,
+      "failures": []
+    },
+    {
+      "scenario": "the fix is never run without Enter",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6645,
+      "failures": []
+    },
+    {
+      "scenario": "a git subcommand typo uses what git suggests",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6423,
+      "failures": []
+    },
+    {
+      "scenario": "a bookmarked folder is offered by cd from anywhere",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": false,
+      "timedOut": false,
+      "ms": 25920,
+      "failures": [
+        "step end: the shell does not answer; screen:\nqa$ true\nqa$ thint bookmark add /var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa\n-0YSoeq/home-nRZjhf/Dev/shop/docs/cd /─────────────╮\nnot a folder: /var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-0YSoeq/h\nome-nRZjhf/Dev/shop/docs/cd\nqa$ cho alive-$((40+2))\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+      ],
+      "home": "/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-0YSoeq/home-nRZjhf",
+      "raw": "[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[E\u001b[0m\u001b[2K\u001b[0m\u001b[49m\u001b[39m\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[E\u001b[0m\u001b[2K\u001b[0m\u001b[49m\u001b[39m\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[E\u001b[0m\u001b[2K\u001b[0m\u001b[49m\u001b[39m\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[E\u001b[0m\u001b[2K\u001b[0m\u001b[49m\u001b[39m\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[E\u001b[0m\u001b[2K\u001b[0m\u001b[49m\u001b[39m\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[E\u001b[0m\u001b[2K\u001b[0m\u001b[49m\u001b[39m\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[E\u001b[0m\u001b[2K\u001b[0m\u001b[49m\u001b[39m\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[E\u001b[0m\u001b[2K\u001b[0m\u001b[49m\u001b[39m\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[E\u001b[0m\u001b[2K\u001b[0m\u001b[49m\u001b[39m\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[E\u001b[0m\u001b[2K\u001b[0m\u001b[49m\u001b[39m\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[E\u001b[0m\u001b[2K\u001b[0m\u001b[49m\u001b[39m\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[u\u001b[?25halive-$((40+2))\u0007\r\u001b[C\u001b[C\u001b[C\u001b[C\u001b[Kexit\r\r\n\u001b[?2004l\rexit\r\r\n\u001bc",
+      "log": "tentOutput\":false,\"cursorX\":70,\"cursorY\":1}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":1,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":1,\"promptEndX\":4,\"promptText\":\"qa$ thint bookmark add /var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa\",\"suggestionsText\":\"\",\"commandText\":\"thint bookmark add /var/folders/h5/t85nd63d71x27_8gl5gw3l_w\",\"persistentOutput\":false,\"cursorX\":63,\"cursorY\":1}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":1,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":1,\"promptEndX\":4,\"promptText\":\"qa$ thint bookmark add /var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa\",\"suggestionsText\":\"\",\"commandText\":\"thint bookmark add /var/folders/h5/t85nd63d71x27_8gl5gw\",\"persistentOutput\":false,\"cursorX\":59,\"cursorY\":1}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":1,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":1,\"promptEndX\":4,\"promptText\":\"qa$ thint bookmark add /var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa\",\"suggestionsText\":\"\",\"commandText\":\"thint bookmark add /var/folders/h5/t85nd63d71x27_8g\",\"persistentOutput\":false,\"cursorX\":55,\"cursorY\":1}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":1,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":1,\"promptEndX\":4,\"promptText\":\"qa$ thint bookmark add /var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa\",\"suggestionsText\":\"\",\"commandText\":\"thint bookmark add /var/folders/h5/t85nd63d71x2\",\"persistentOutput\":false,\"cursorX\":51,\"cursorY\":1}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":1,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":1,\"promptEndX\":4,\"promptText\":\"qa$ thint bookmark add /var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa\",\"suggestionsText\":\"\",\"commandText\":\"thint bookmark add /var/folders/h\",\"persistentOutput\":false,\"cursorX\":37,\"cursorY\":1}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":1,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":1,\"promptEndX\":4,\"promptText\":\"qa$ thint bookmark add /var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa\",\"suggestionsText\":\"\",\"commandText\":\"thint bookmark add /var/folder\",\"persistentOutput\":false,\"cursorX\":34,\"cursorY\":1}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":1,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":1,\"promptEndX\":4,\"promptText\":\"qa$ thint bookmark add /var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa\",\"suggestionsText\":\"\",\"commandText\":\"thint bookmark add /var/f\",\"persistentOutput\":false,\"cursorX\":29,\"cursorY\":1}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":1,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":1,\"promptEndX\":4,\"promptText\":\"qa$ thint bookmark add /var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa\",\"suggestionsText\":\"\",\"commandText\":\"thint bookmark add /\",\"persistentOutput\":false,\"cursorX\":24,\"cursorY\":1}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":1,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":1,\"promptEndX\":4,\"promptText\":\"qa$ thint bookmark add /var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa\",\"suggestionsText\":\"\",\"commandText\":\"thint bookmark add \",\"persistentOutput\":false,\"cursorX\":23,\"cursorY\":1}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":1,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":1,\"promptEndX\":4,\"promptText\":\"qa$ thint bookmark add /var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa\",\"suggestionsText\":\"\",\"commandText\":\"thint bookmark add /var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-0YSoeq/home-nRZjhf/Dev/shop/docs/\",\"persistentOutput\":false,\"cursorX\":34,\"cursorY\":2}\n{\"msg\":\"suggestion generation aborted\",\"commandText\":\"thint bookmark add /var/f\",\"shell\":\"bash\"}\n{\"msg\":\"suggestion point\",\"subcommand\":{\"name\":\"add\",\"description\":\"Bookmark a folder\",\"args\":{\"name\":\"folder\",\"isOptional\":true,\"template\":\"folders\"},\"options\":[{\"name\":[\"-n\",\"--name\"],\"description\":\"Name to type after cd\",\"args\":{\"name\":\"name\"}}]},\"persistentOptions\":[],\"partialToken\":{\"token\":\"/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-0YSoeq/home-nRZjhf/Dev/shop/docs/\",\"tokenLength\":91,\"complete\":false,\"isOption\":false,\"isPath\":true,\"isPathComplete\":true},\"argsDepleted\":false,\"argsFromSubcommand\":false,\"acceptedTokens\":[],\"cwd\":\"/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-0YSoeq/home-nRZjhf/Dev/shop/docs/\"}\n{\"msg\":\"reading data\",\"data\":\"c\",\"bytes\":{\"0\":99}}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":1,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":1,\"promptEndX\":4,\"promptText\":\"qa$ thint bookmark add /var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa\",\"suggestionsText\":\"\",\"commandText\":\"thint bookmark add /var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-0YSoeq/home-nRZjhf/Dev/shop/docs/c\",\"persistentOutput\":false,\"cursorX\":35,\"cursorY\":2}\n{\"msg\":\"suggestion point\",\"subcommand\":{\"name\":\"add\",\"description\":\"Bookmark a folder\",\"args\":{\"name\":\"folder\",\"isOptional\":true,\"template\":\"folders\"},\"options\":[{\"name\":[\"-n\",\"--name\"],\"description\":\"Name to type after cd\",\"args\":{\"name\":\"name\"}}]},\"persistentOptions\":[],\"partialToken\":{\"token\":\"/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-0YSoeq/home-nRZjhf/Dev/shop/docs/c\",\"tokenLength\":92,\"complete\":false,\"isOption\":false,\"isPath\":true,\"isPathComplete\":false},\"argsDepleted\":false,\"argsFromSubcommand\":false,\"acceptedTokens\":[],\"cwd\":\"/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-0YSoeq/home-nRZjhf/Dev/shop/docs\"}\n{\"msg\":\"reading data\",\"data\":\"d\",\"bytes\":{\"0\":100}}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":1,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":1,\"promptEndX\":4,\"promptText\":\"qa$ thint bookmark add /var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa\",\"suggestionsText\":\"\",\"commandText\":\"thint bookmark add /var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-0YSoeq/home-nRZjhf/Dev/shop/docs/cd\",\"persistentOutput\":false,\"cursorX\":36,\"cursorY\":2}\n{\"msg\":\"suggestion point\",\"subcommand\":{\"name\":\"add\",\"description\":\"Bookmark a folder\",\"args\":{\"name\":\"folder\",\"isOptional\":true,\"template\":\"folders\"},\"options\":[{\"name\":[\"-n\",\"--name\"],\"description\":\"Name to type after cd\",\"args\":{\"name\":\"name\"}}]},\"persistentOptions\":[],\"partialToken\":{\"token\":\"/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-0YSoeq/home-nRZjhf/Dev/shop/docs/cd\",\"tokenLength\":93,\"complete\":false,\"isOption\":false,\"isPath\":true,\"isPathComplete\":false},\"argsDepleted\":false,\"argsFromSubcommand\":false,\"acceptedTokens\":[],\"cwd\":\"/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-0YSoeq/home-nRZjhf/Dev/shop/docs\"}\n{\"msg\":\"reading data\",\"data\":\" \",\"bytes\":{\"0\":32}}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":1,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":1,\"promptEndX\":4,\"promptText\":\"qa$ thint bookmark add /var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa\",\"suggestionsText\":\"\",\"commandText\":\"thint bookmark add /var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-0YSoeq/home-nRZjhf/Dev/shop/docs/cd \",\"persistentOutput\":false,\"cursorX\":37,\"cursorY\":2}\n{\"msg\":\"suggestion point\",\"subcommand\":{\"name\":\"add\",\"description\":\"Bookmark a folder\",\"args\":{\"name\":\"folder\",\"isOptional\":true,\"template\":\"folders\"},\"options\":[{\"name\":[\"-n\",\"--name\"],\"description\":\"Name to type after cd\",\"args\":{\"name\":\"name\"}}]},\"persistentOptions\":[{\"name\":[\"-n\",\"--name\"],\"description\":\"Name to type after cd\",\"args\":{\"name\":\"name\"}}],\"argsDepleted\":true,\"argsFromSubcommand\":true,\"acceptedTokens\":[{\"token\":\"/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-0YSoeq/home-nRZjhf/Dev/shop/docs/cd\",\"tokenLength\":93,\"complete\":true,\"isOption\":false}],\"cwd\":\"/private/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-0YSoeq/home-nRZjhf/Dev/shop\"}\n{\"msg\":\"reading data\",\"data\":\"/\",\"bytes\":{\"0\":47}}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":1,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":1,\"promptEndX\":4,\"promptText\":\"qa$ thint bookmark add /var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa\",\"suggestionsText\":\"\",\"commandText\":\"thint bookmark add /var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-0YSoeq/home-nRZjhf/Dev/shop/docs/cd /\",\"persistentOutput\":false,\"cursorX\":38,\"cursorY\":2}\n{\"msg\":\"suggestion point\",\"subcommand\":{\"name\":\"add\",\"description\":\"Bookmark a folder\",\"args\":{\"name\":\"folder\",\"isOptional\":true,\"template\":\"folders\"},\"options\":[{\"name\":[\"-n\",\"--name\"],\"description\":\"Name to type after cd\",\"args\":{\"name\":\"name\"}}]},\"persistentOptions\":[{\"name\":[\"-n\",\"--name\"],\"description\":\"Name to type after cd\",\"args\":{\"name\":\"name\"}}],\"partialToken\":{\"token\":\"/\",\"tokenLength\":1,\"complete\":false,\"isOption\":false,\"isPath\":true,\"isPathComplete\":true},\"argsDepleted\":true,\"argsFromSubcommand\":true,\"acceptedTokens\":[{\"token\":\"/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-0YSoeq/home-nRZjhf/Dev/shop/docs/cd\",\"tokenLength\":93,\"complete\":true,\"isOption\":false}],\"cwd\":\"/\"}\n{\"msg\":\"reading data\",\"data\":\"\\r\",\"bytes\":{\"0\":13}}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":5,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":5,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"\",\"persistentOutput\":false,\"cursorX\":4,\"cursorY\":5}\n{\"msg\":\"fixes found\",\"failure\":{\"id\":1,\"command\":\"thint bookmark add /var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-0YSoeq/home-nRZjhf/Dev/shop/docs/cd /\",\"exitCode\":1,\"output\":\"not a folder: /var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-0YSoeq/home-nRZjhf/Dev/shop/docs/cd\",\"cwd\":\"/private/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-0YSoeq/home-nRZjhf/Dev/shop\"}}\n{\"msg\":\"reading data\",\"data\":\"c\",\"bytes\":{\"0\":99}}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":5,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":5,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"c\",\"persistentOutput\":false,\"cursorX\":5,\"cursorY\":5}\n{\"msg\":\"reading data\",\"data\":\"d\",\"bytes\":{\"0\":100}}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":5,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":5,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"cd\",\"persistentOutput\":false,\"cursorX\":6,\"cursorY\":5}\n{\"msg\":\"reading data\",\"data\":\" \",\"bytes\":{\"0\":32}}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":5,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":5,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"cd \",\"persistentOutput\":false,\"cursorX\":7,\"cursorY\":5}\n{\"msg\":\"suggestion point\",\"subcommand\":{\"name\":\"cd\",\"description\":\"Change the shell working directory\",\"args\":{\"generators\":{},\"filterStrategy\":\"fuzzy\",\"suggestions\":[{\"name\":\"-\",\"description\":\"Switch to the last used folder\",\"hidden\":true},{\"name\":\"~\",\"description\":\"Switch to the home directory\",\"hidden\":true}]}},\"persistentOptions\":[],\"argsDepleted\":false,\"argsFromSubcommand\":false,\"acceptedTokens\":[],\"cwd\":\"/private/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-0YSoeq/home-nRZjhf/Dev/shop\"}\n{\"msg\":\"reading data\",\"data\":\"d\",\"bytes\":{\"0\":100}}\n{\"msg\":\"suggestion point\",\"subcommand\":{\"name\":\"cd\",\"description\":\"Change the shell working directory\",\"args\":{\"generators\":{},\"filterStrategy\":\"fuzzy\",\"suggestions\":[{\"name\":\"-\",\"description\":\"Switch to the last used folder\",\"hidden\":true},{\"name\":\"~\",\"description\":\"Switch to the home directory\",\"hidden\":true}]}},\"persistentOptions\":[],\"partialToken\":{\"token\":\"d\",\"tokenLength\":1,\"complete\":false,\"isOption\":false},\"argsDepleted\":false,\"argsFromSubcommand\":false,\"acceptedTokens\":[],\"cwd\":\"/private/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-0YSoeq/home-nRZjhf/Dev/shop\"}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":5,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":5,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"cd d\",\"persistentOutput\":false,\"cursorX\":8,\"cursorY\":5}\n{\"msg\":\"reading data\",\"data\":\"o\",\"bytes\":{\"0\":111}}\n{\"msg\":\"suggestion point\",\"subcommand\":{\"name\":\"cd\",\"description\":\"Change the shell working directory\",\"args\":{\"generators\":{},\"filterStrategy\":\"fuzzy\",\"suggestions\":[{\"name\":\"-\",\"description\":\"Switch to the last used folder\",\"hidden\":true},{\"name\":\"~\",\"description\":\"Switch to the home directory\",\"hidden\":true}]}},\"persistentOptions\":[],\"partialToken\":{\"token\":\"do\",\"tokenLength\":2,\"complete\":false,\"isOption\":false},\"argsDepleted\":false,\"argsFromSubcommand\":false,\"acceptedTokens\":[],\"cwd\":\"/private/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-0YSoeq/home-nRZjhf/Dev/shop\"}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":5,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":5,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"cd do\",\"persistentOutput\":false,\"cursorX\":9,\"cursorY\":5}\n{\"msg\":\"reading data\",\"data\":\"c\",\"bytes\":{\"0\":99}}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":5,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":5,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"cd doc\",\"persistentOutput\":false,\"cursorX\":10,\"cursorY\":5}\n{\"msg\":\"suggestion point\",\"subcommand\":{\"name\":\"cd\",\"description\":\"Change the shell working directory\",\"args\":{\"generators\":{},\"filterStrategy\":\"fuzzy\",\"suggestions\":[{\"name\":\"-\",\"description\":\"Switch to the last used folder\",\"hidden\":true},{\"name\":\"~\",\"description\":\"Switch to the home directory\",\"hidden\":true}]}},\"persistentOptions\":[],\"partialToken\":{\"token\":\"doc\",\"tokenLength\":3,\"complete\":false,\"isOption\":false},\"argsDepleted\":false,\"argsFromSubcommand\":false,\"acceptedTokens\":[],\"cwd\":\"/private/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-0YSoeq/home-nRZjhf/Dev/shop\"}\n{\"msg\":\"reading data\",\"data\":\"\\u0015\",\"bytes\":{\"0\":21}}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":5,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":5,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"\",\"persistentOutput\":false,\"cursorX\":4,\"cursorY\":5}\n{\"msg\":\"reading data\",\"data\":\"\\u001b\",\"bytes\":{\"0\":27}}\n{\"msg\":\"reading data\",\"data\":\"e\",\"bytes\":{\"0\":101}}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":5,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":5,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"\",\"persistentOutput\":false,\"cursorX\":4,\"cursorY\":5}\n{\"msg\":\"reading data\",\"data\":\"c\",\"bytes\":{\"0\":99}}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":5,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":5,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"c\",\"persistentOutput\":false,\"cursorX\":5,\"cursorY\":5}\n{\"msg\":\"reading data\",\"data\":\"h\",\"bytes\":{\"0\":104}}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":5,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":5,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"ch\",\"persistentOutput\":false,\"cursorX\":6,\"cursorY\":5}\n{\"msg\":\"reading data\",\"data\":\"o\",\"bytes\":{\"0\":111}}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":5,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":5,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"cho\",\"persistentOutput\":false,\"cursorX\":7,\"cursorY\":5}\n{\"msg\":\"reading data\",\"data\":\" \",\"bytes\":{\"0\":32}}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":5,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":5,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"cho \",\"persistentOutput\":false,\"cursorX\":8,\"cursorY\":5}\n{\"msg\":\"reading data\",\"data\":\"a\",\"bytes\":{\"0\":97}}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":5,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":5,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"cho a\",\"persistentOutput\":false,\"cursorX\":9,\"cursorY\":5}\n{\"msg\":\"reading data\",\"data\":\"l\",\"bytes\":{\"0\":108}}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":5,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":5,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"cho al\",\"persistentOutput\":false,\"cursorX\":10,\"cursorY\":5}\n{\"msg\":\"reading data\",\"data\":\"i\",\"bytes\":{\"0\":105}}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":5,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":5,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"cho ali\",\"persistentOutput\":false,\"cursorX\":11,\"cursorY\":5}\n{\"msg\":\"reading data\",\"data\":\"v\",\"bytes\":{\"0\":118}}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":5,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":5,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"cho aliv\",\"persistentOutput\":false,\"cursorX\":12,\"cursorY\":5}\n{\"msg\":\"reading data\",\"data\":\"e\",\"bytes\":{\"0\":101}}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":5,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":5,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"cho alive\",\"persistentOutput\":false,\"cursorX\":13,\"cursorY\":5}\n{\"msg\":\"reading data\",\"data\":\"-\",\"bytes\":{\"0\":45}}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":5,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":5,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"cho alive-\",\"persistentOutput\":false,\"cursorX\":14,\"cursorY\":5}\n{\"msg\":\"reading data\",\"data\":\"$\",\"bytes\":{\"0\":36}}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":5,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":5,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"cho alive-$\",\"persistentOutput\":false,\"cursorX\":15,\"cursorY\":5}\n{\"msg\":\"reading data\",\"data\":\"(\",\"bytes\":{\"0\":40}}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":5,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":5,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"cho alive-$(\",\"persistentOutput\":false,\"cursorX\":16,\"cursorY\":5}\n{\"msg\":\"reading data\",\"data\":\"(\",\"bytes\":{\"0\":40}}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":5,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":5,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"cho alive-$((\",\"persistentOutput\":false,\"cursorX\":17,\"cursorY\":5}\n{\"msg\":\"reading data\",\"data\":\"4\",\"bytes\":{\"0\":52}}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":5,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":5,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"cho alive-$((4\",\"persistentOutput\":false,\"cursorX\":18,\"cursorY\":5}\n{\"msg\":\"reading data\",\"data\":\"0\",\"bytes\":{\"0\":48}}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":5,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":5,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"cho alive-$((40\",\"persistentOutput\":false,\"cursorX\":19,\"cursorY\":5}\n{\"msg\":\"reading data\",\"data\":\"+\",\"bytes\":{\"0\":43}}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":5,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":5,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"cho alive-$((40+\",\"persistentOutput\":false,\"cursorX\":20,\"cursorY\":5}\n{\"msg\":\"reading data\",\"data\":\"2\",\"bytes\":{\"0\":50}}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":5,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":5,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"cho alive-$((40+2\",\"persistentOutput\":false,\"cursorX\":21,\"cursorY\":5}\n{\"msg\":\"reading data\",\"data\":\")\",\"bytes\":{\"0\":41}}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":5,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":5,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"cho alive-$((40+2)\",\"persistentOutput\":false,\"cursorX\":22,\"cursorY\":5}\n{\"msg\":\"reading data\",\"data\":\")\",\"bytes\":{\"0\":41}}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":5,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":5,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"cho alive-$((40+2))\",\"persistentOutput\":false,\"cursorX\":23,\"cursorY\":5}\n{\"msg\":\"reading data\",\"data\":\"\\u001b\",\"bytes\":{\"0\":27}}\n{\"msg\":\"reading data\",\"data\":\"\\r\",\"bytes\":{\"0\":13}}"
+    },
+    {
+      "scenario": "mkdir of a nested folder gets -p",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6599,
+      "failures": []
+    },
+    {
+      "scenario": "a missing npm script gets the near one",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 9405,
+      "failures": []
+    },
+    {
+      "scenario": "cd to a near folder name",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6006,
+      "failures": []
+    },
+    {
+      "scenario": "rm of a folder gets -r",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6340,
+      "failures": []
+    },
+    {
+      "scenario": "checkout of a near branch name",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7246,
+      "failures": []
+    },
+    {
+      "scenario": "Esc dismisses the fix and the line stays empty",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5645,
+      "failures": []
+    },
+    {
+      "scenario": "typing over the fix list starts a new command",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6954,
+      "failures": []
+    },
+    {
+      "scenario": "a port in use offers to stop the process",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 17119,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+C on a long command gives no fix",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6255,
+      "failures": []
+    },
+    {
+      "scenario": "a command that worked gives no fix",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5461,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+G explains every word of a pipe",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5020,
+      "failures": []
+    },
+    {
+      "scenario": "fixes can be turned off",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7099,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+G warns about a destructive line",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5673,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+G through sudo and &&",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5306,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+G knows combined short flags",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5428,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+G knows an option that takes a value",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6023,
+      "failures": []
+    },
+    {
+      "scenario": "Esc closes the explanation and keeps the line",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4849,
+      "failures": []
+    },
+    {
+      "scenario": "the line runs as typed after an explanation",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5905,
+      "failures": []
+    },
+    {
+      "scenario": "a snippet with fields fills in and runs",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 8368,
+      "failures": []
+    },
+    {
+      "scenario": "a field value with spaces is quoted",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7292,
+      "failures": []
+    },
+    {
+      "scenario": "Esc leaves the snippet form without running anything",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6621,
+      "failures": []
+    },
+    {
+      "scenario": "a broken snippets file does not break the list",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4307,
+      "failures": []
+    },
+    {
+      "scenario": "a command run in this folder comes back as a whole",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7514,
+      "failures": []
+    },
+    {
+      "scenario": "a line with a token is never remembered",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 8798,
+      "failures": []
+    },
+    {
+      "scenario": "a failed command is not offered again as a recent one",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 8147,
+      "failures": []
+    },
+    {
+      "scenario": "tab like a shell completes the shared part",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4824,
+      "failures": []
+    },
+    {
+      "scenario": "a command run elsewhere in the repository comes back in a subfolder",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 9043,
+      "failures": []
+    },
+    {
+      "scenario": "the list only on Tab",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5454,
+      "failures": []
+    },
+    {
+      "scenario": "the light theme draws the same list",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4155,
+      "failures": []
+    },
+    {
+      "scenario": "an invalid setting falls back to the defaults",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4791,
+      "failures": []
+    },
+    {
+      "scenario": "Enter takes the entry and runs the line when enterRuns is on",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5277,
+      "failures": []
+    },
+    {
+      "scenario": "with enterRuns a folder is still walked into",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4855,
+      "failures": []
+    },
+    {
+      "scenario": "a broken spec of your own is skipped",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5927,
+      "failures": []
+    },
+    {
+      "scenario": "a spec with a generator that hangs does not block typing",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6000,
+      "failures": []
+    },
+    {
+      "scenario": "the shell works when the config file is broken",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7500,
+      "failures": []
+    },
+    {
+      "scenario": "thint inside thint does not start a second one",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6496,
+      "failures": []
+    },
+    {
+      "scenario": "quick resize back and forth with the list open",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7561,
+      "failures": []
+    },
+    {
+      "scenario": "a command that prints without a newline at the end",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6625,
+      "failures": []
+    },
+    {
+      "scenario": "Shift+Down moves an entry and the order stays",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7637,
+      "failures": []
+    },
+    {
+      "scenario": "a lone dash runs the previous folder",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6509,
+      "failures": []
+    },
+    {
+      "scenario": "git checkout - runs as typed",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6068,
+      "failures": []
+    },
+    {
+      "scenario": "the second command after && gets its own list",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5084,
+      "failures": []
+    },
+    {
+      "scenario": "the command after a pipe gets its own list",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5238,
+      "failures": []
+    },
+    {
+      "scenario": "sudo in front keeps the list of the command",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5073,
+      "failures": []
+    },
+    {
+      "scenario": "a variable in front keeps the list of the command",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6066,
+      "failures": []
+    },
+    {
+      "scenario": "an option with an equals sign",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6741,
+      "failures": []
+    },
+    {
+      "scenario": "ssh hosts from the ssh config, a capital one is marked",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4625,
+      "failures": []
+    },
+    {
+      "scenario": "environment variables after a dollar",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4423,
+      "failures": []
+    },
+    {
+      "scenario": "editing in the middle of the line",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 12051,
+      "failures": []
+    },
+    {
+      "scenario": "docker compose logs takes a service",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5796,
+      "failures": []
+    },
+    {
+      "scenario": "npm install of a version does not block typing without network",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6440,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+R history search still belongs to the shell",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7550,
+      "failures": []
+    },
+    {
+      "scenario": "GNU screen around thint",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6662,
+      "failures": []
+    },
+    {
+      "scenario": "icons off still shows the entries",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5571,
+      "failures": []
+    },
+    {
+      "scenario": "a long description is cut, not wrapped",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5614,
+      "failures": []
+    },
+    {
+      "scenario": "→ on a folder puts it on the line and lists what is inside",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4770,
+      "failures": []
+    },
+    {
+      "scenario": "the first word with recent commands",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7497,
+      "failures": []
+    },
+    {
+      "scenario": "→ twice walks two levels down",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6726,
+      "failures": []
+    },
+    {
+      "scenario": "Enter right after → runs cd where the walk is",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5508,
+      "failures": []
+    },
+    {
+      "scenario": "Enter on a folder after → goes straight into it",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7052,
+      "failures": []
+    },
+    {
+      "scenario": "← goes back to the line before →",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6209,
+      "failures": []
+    },
+    {
+      "scenario": "without a walk ← moves the cursor as always",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5496,
+      "failures": []
+    },
+    {
+      "scenario": "← one level up highlights the folder it came from",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6959,
+      "failures": []
+    },
+    {
+      "scenario": "→ works for other commands too",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4732,
+      "failures": []
+    },
+    {
+      "scenario": "folderArrows off leaves → to the shell",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4501,
+      "failures": []
+    },
+    {
+      "scenario": "typing after → ends the walk, so ← moves the cursor again",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7504,
+      "failures": []
+    },
+    {
+      "scenario": "a short tip on a highlighted folder tells that → looks inside",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5031,
+      "failures": []
+    },
+    {
+      "scenario": "aws options complete after a command",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6396,
+      "failures": []
+    },
+    {
+      "scenario": "aws completes services and their commands",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 8434,
+      "failures": []
+    },
+    {
+      "scenario": "gcloud completes groups and commands",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 8156,
+      "failures": []
+    },
+    {
+      "scenario": "a typo of awk gets awk, not aws",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": false,
+      "timedOut": false,
+      "ms": 12093,
+      "failures": [
+        "step 1: expected \"awk 'BEGIN{print 1}'\" in the list; screen:\nqa$ true\nqa$ awl 'BEGIN{print 1}'\nbash: awl: command not found\nqa$ \n ╭───────────────────────────────────────────────────────────╮\n │  ■  aws 'BEGIN{print 1}'  \"awl\" is not a command, aws is  │\n ├───────────────────────────────────────────────────────────┤\n │ the last command failed · tab puts the fix on the line ·… │\n ╰───────────────────────────────────────────────────────────╯\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+      ],
+      "home": "/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-0YSoeq/home-9BJGJA",
+      "raw": "0m\u001b[49m\u001b[39m\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[E\u001b[0m\u001b[2K\u001b[0m\u001b[49m\u001b[39m\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[E\u001b[0m\u001b[2K\u001b[0m\u001b[49m\u001b[39m\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[E\u001b[0m\u001b[2K\u001b[0m\u001b[49m\u001b[39m\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[E\u001b[0m\u001b[2K\u001b[0m\u001b[49m\u001b[39m\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[E\u001b[0m\u001b[2K\u001b[0m\u001b[49m\u001b[39m\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[E\u001b[0m\u001b[2K\u001b[0m\u001b[49m\u001b[39m\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[E\u001b[0m\u001b[2K\u001b[0m\u001b[49m\u001b[39m\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[E\u001b[0m\u001b[2K\u001b[0m\u001b[49m\u001b[39m\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[E\u001b[0m\u001b[2K\u001b[0m\u001b[49m\u001b[39m\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[E\u001b[0m\u001b[2K\u001b[0m\u001b[49m\u001b[39m\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[1C\u001b[u\u001b[?25he-$((40+2))\r\r\n\u001b[?2004l\ralive-42\r\r\n\u001b]6973;EX;0\u0007\u001b]6973;CWD;/private/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-0YSoeq/home-9BJGJA/Dev/shop\u0007\u001b[?2004h\u001b]6973;PS\u0007qa$ \u001b]6973;PE\u0007\u0007exit\r\r\n\u001b[?2004l\rexit\r\r\n\u001bc",
+      "log": "{\"msg\":\"no local specs imported from '/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-0YSoeq/home-9BJGJA/.fig/autocomplete/build', this will not break the current session\",\"e\":\"Cannot find module '/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-0YSoeq/home-9BJGJA/.fig/autocomplete/build/index.js' imported from /Users/runner/work/terminalhinter/terminalhinter/build/runtime/runtime.js\",\"specPath\":\"/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-0YSoeq/home-9BJGJA/.fig/autocomplete/build\"}\n{\"msg\":\"shell command failed\",\"command\":\"'bash'\",\"args\":[\"-i\",\"-c\",\"alias\"],\"e\":\"spawn 'bash' ENOENT\"}\n{\"msg\":\"failed to load bash aliases\",\"stderr\":\"\",\"status\":-2}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":0,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":0,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"\",\"persistentOutput\":false,\"cursorX\":4,\"cursorY\":0}\n{\"msg\":\"reading data\",\"data\":\"t\",\"bytes\":{\"0\":116}}\n{\"msg\":\"reading data\",\"data\":\"u\",\"bytes\":{\"0\":117}}\n{\"msg\":\"reading data\",\"data\":\"r\",\"bytes\":{\"0\":114}}\n{\"msg\":\"reading data\",\"data\":\"e\",\"bytes\":{\"0\":101}}\n{\"msg\":\"reading data\",\"data\":\"\\r\",\"bytes\":{\"0\":13}}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":1,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":1,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"\",\"persistentOutput\":false,\"cursorX\":4,\"cursorY\":1}\n{\"msg\":\"reading data\",\"data\":\"a\",\"bytes\":{\"0\":97}}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":1,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":1,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"a\",\"persistentOutput\":false,\"cursorX\":5,\"cursorY\":1}\n{\"msg\":\"reading data\",\"data\":\"w\",\"bytes\":{\"0\":119}}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":1,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":1,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"aw\",\"persistentOutput\":false,\"cursorX\":6,\"cursorY\":1}\n{\"msg\":\"reading data\",\"data\":\"l\",\"bytes\":{\"0\":108}}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":1,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":1,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"awl\",\"persistentOutput\":false,\"cursorX\":7,\"cursorY\":1}\n{\"msg\":\"reading data\",\"data\":\" \",\"bytes\":{\"0\":32}}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":1,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":1,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"awl \",\"persistentOutput\":false,\"cursorX\":8,\"cursorY\":1}\n{\"msg\":\"reading data\",\"data\":\"'\",\"bytes\":{\"0\":39}}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":1,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":1,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"awl '\",\"persistentOutput\":false,\"cursorX\":9,\"cursorY\":1}\n{\"msg\":\"reading data\",\"data\":\"B\",\"bytes\":{\"0\":66}}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":1,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":1,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"awl 'B\",\"persistentOutput\":false,\"cursorX\":10,\"cursorY\":1}\n{\"msg\":\"reading data\",\"data\":\"E\",\"bytes\":{\"0\":69}}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":1,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":1,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"awl 'BE\",\"persistentOutput\":false,\"cursorX\":11,\"cursorY\":1}\n{\"msg\":\"reading data\",\"data\":\"G\",\"bytes\":{\"0\":71}}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":1,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":1,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"awl 'BEG\",\"persistentOutput\":false,\"cursorX\":12,\"cursorY\":1}\n{\"msg\":\"reading data\",\"data\":\"I\",\"bytes\":{\"0\":73}}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":1,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":1,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"awl 'BEGI\",\"persistentOutput\":false,\"cursorX\":13,\"cursorY\":1}\n{\"msg\":\"reading data\",\"data\":\"N\",\"bytes\":{\"0\":78}}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":1,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":1,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"awl 'BEGIN\",\"persistentOutput\":false,\"cursorX\":14,\"cursorY\":1}\n{\"msg\":\"reading data\",\"data\":\"{\",\"bytes\":{\"0\":123}}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":1,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":1,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"awl 'BEGIN{\",\"persistentOutput\":false,\"cursorX\":15,\"cursorY\":1}\n{\"msg\":\"reading data\",\"data\":\"p\",\"bytes\":{\"0\":112}}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":1,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":1,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"awl 'BEGIN{p\",\"persistentOutput\":false,\"cursorX\":16,\"cursorY\":1}\n{\"msg\":\"reading data\",\"data\":\"r\",\"bytes\":{\"0\":114}}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":1,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":1,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"awl 'BEGIN{pr\",\"persistentOutput\":false,\"cursorX\":17,\"cursorY\":1}\n{\"msg\":\"reading data\",\"data\":\"i\",\"bytes\":{\"0\":105}}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":1,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":1,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"awl 'BEGIN{pri\",\"persistentOutput\":false,\"cursorX\":18,\"cursorY\":1}\n{\"msg\":\"reading data\",\"data\":\"n\",\"bytes\":{\"0\":110}}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":1,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":1,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"awl 'BEGIN{prin\",\"persistentOutput\":false,\"cursorX\":19,\"cursorY\":1}\n{\"msg\":\"reading data\",\"data\":\"t\",\"bytes\":{\"0\":116}}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":1,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":1,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"awl 'BEGIN{print\",\"persistentOutput\":false,\"cursorX\":20,\"cursorY\":1}\n{\"msg\":\"reading data\",\"data\":\" \",\"bytes\":{\"0\":32}}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":1,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":1,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"awl 'BEGIN{print \",\"persistentOutput\":false,\"cursorX\":21,\"cursorY\":1}\n{\"msg\":\"reading data\",\"data\":\"1\",\"bytes\":{\"0\":49}}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":1,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":1,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"awl 'BEGIN{print 1\",\"persistentOutput\":false,\"cursorX\":22,\"cursorY\":1}\n{\"msg\":\"reading data\",\"data\":\"}\",\"bytes\":{\"0\":125}}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":1,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":1,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"awl 'BEGIN{print 1}\",\"persistentOutput\":false,\"cursorX\":23,\"cursorY\":1}\n{\"msg\":\"reading data\",\"data\":\"'\",\"bytes\":{\"0\":39}}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":1,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":1,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"awl 'BEGIN{print 1}'\",\"persistentOutput\":false,\"cursorX\":24,\"cursorY\":1}\n{\"msg\":\"reading data\",\"data\":\"\\r\",\"bytes\":{\"0\":13}}\n{\"msg\":\"fixes found\",\"count\":1,\"failure\":{\"id\":1,\"command\":\"awl 'BEGIN{print 1}'\",\"exitCode\":127,\"output\":\"bash: awl: command not found\",\"cwd\":\"/private/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-0YSoeq/home-9BJGJA/Dev/shop\"}}\n{\"msg\":\"cmd manager state\",\"promptStartMarker\":3,\"hasOutput\":false,\"cursorTerminated\":true,\"promptEndMarker\":3,\"promptEndX\":4,\"promptText\":\"qa$ \",\"suggestionsText\":\"\",\"commandText\":\"\",\"persistentOutput\":false,\"cursorX\":4,\"cursorY\":3}"
+    }
+  ]
+}
