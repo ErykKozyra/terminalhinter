@@ -1,0 +1,8 @@
+os: macos-latest
+v22.21.1
+zsh: zsh 5.9 (arm64-apple-darwin25.0)
+bash: GNU bash, version 5.3.20(1)-release (aarch64-apple-darwin25.6.0)
+fish: fish, version 4.9.3
+pwsh: 7.6.9
+powershell: 7.6.9
+screen: Screen version 4.00.03 (FAU) 23-Oct-06
