@@ -80,6 +80,8 @@ nushell and xonsh come from the upstream project and are not tested.
   the reflog after `git reset`, and your aliases complete like the command behind them.
 - **Ports:** `kill` starts with the processes listening on a port, with their folder (`:3000 next dev · ~/Dev/shop`).
 - **Package versions:** `npm i react@` lists the tags and the newest releases (pnpm, yarn and bun too).
+- **Cloud CLIs:** every `aws` service with its commands and options, and `gcloud` groups and commands. Your S3
+  buckets, IAM roles and profiles come from the aws CLI you have, with your own login.
 - **What you ran here:** typing the first word brings back whole commands you ran in this folder, and the ones
   you ran elsewhere in the same repository. Lines that look like they hold a password or token are never stored.
 
@@ -284,6 +286,8 @@ Start a tab by hand with logging on, for example `thint -s zsh -V`, do what goes
 There is no telemetry. What you type and what thint learns stay in these folders. It goes online only to look up
 packages: once a day it asks npm for its own newest version number (`updateCheck = false` turns that off), and when you
 type a package name or `react@` it asks the npm registry and the npms.io package search for matches, sending only that word.
+Some lists come from the tools you have installed, run on your machine as you: git branches, `docker ps`, `kubectl get
+pods`, `aws s3 ls` for bucket names. Those reach only what the tool itself reaches, with your own login.
 
 ## Credits
 

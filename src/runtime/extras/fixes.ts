@@ -37,7 +37,7 @@ const replaceWord = (command: string, index: number, word: string): string => {
   return words.map((w) => (/^\s+$/.test(w) || w === "" ? w : ++seen === index ? word : w)).join("");
 };
 
-type Context = { failure: Failure; words: string[]; commands: () => Iterable<string>; branches: () => Promise<string[]> };
+type Context = { failure: Failure; words: string[]; commands: () => Iterable<string>; branches: () => Promise<string[]>; installed?: () => Set<string> };
 type Rule = (c: Context) => Fix[] | Promise<Fix[]>;
 
 // Windows PowerShell breaks its error to the window with an indent, in the middle of a word too ("CommandN" and
@@ -48,11 +48,11 @@ const rules: Rule[] = [
   // zsh: command not found: gti / bash: gti: command not found / sh: 1: gti: not found / fish: Unknown command: gti /
   // PowerShell: The term 'gti' is not recognized / cmd: 'gti' is not recognized as an internal or external command /
   // Ubuntu's command-not-found: Command 'gti' not found, did you mean: command 'git' from deb git
-  ({ failure, words, commands }) => {
+  ({ failure, words, commands, installed }) => {
     const notFound = /command not found|: not found|Unknown command|command '[^']*' not found/i.test(failure.output);
     const notRecognized = unwrapped(failure.output).some((text) => /is not recognized as|CommandNotFoundException/i.test(text));
     if (!((failure.exitCode === 127 && notFound) || ((failure.exitCode === 9009 || failure.exitCode === 1) && notRecognized))) return [];
-    const match = closest(words[0], commands());
+    const match = closest(words[0], commands(), undefined, installed?.());
     return match ? [{ command: replaceWord(failure.command, 0, match), reason: `"${words[0]}" is not a command, ${match} is` }] : [];
   },
   // git: 'stauts' is not a git command ... The most similar command is status
@@ -176,13 +176,18 @@ export const portInUse = (failure: Failure): number => {
 // 130: Ctrl+C, 148: Ctrl+Z; neither is a mistake to fix
 const notFailures = new Set([0, 130, 148]);
 
-export const findFixes = async (failure: Failure, commands: () => Iterable<string>, branches: () => Promise<string[]>): Promise<Fix[]> => {
+export const findFixes = async (
+  failure: Failure,
+  commands: () => Iterable<string>,
+  branches: () => Promise<string[]>,
+  installed?: () => Set<string>,
+): Promise<Fix[]> => {
   const words = failure.command.trim().split(/\s+/);
   if (words.length === 0 || !words[0] || notFailures.has(failure.exitCode)) return [];
   const fixes: Fix[] = [];
   for (const rule of rules) {
     try {
-      fixes.push(...(await rule({ failure, words, commands, branches })));
+      fixes.push(...(await rule({ failure, words, commands, branches, installed })));
     } catch {
       /* one broken rule does not stop the others */
     }

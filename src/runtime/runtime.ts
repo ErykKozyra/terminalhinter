@@ -6,6 +6,7 @@ import figSpecList, {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
 } from "@withfig/autocomplete";
+import fs from "node:fs";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 import { parseCommand, CommandToken } from "./parser.js";
@@ -31,14 +32,16 @@ import { refreshGitAliases } from "./extras/git.js";
 import { describeRecent, recentCommands, rememberCommand } from "./extras/recent.js";
 import { loadSnippets, previewSnippet } from "./extras/snippets.js";
 import { findFixes, Failure } from "./extras/fixes.js";
-import { looksSecret, run as runProgram } from "./extras/util.js";
+import { looksSecret, pathCommands, run as runProgram } from "./extras/util.js";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any -- recursive type, setting as any
 const specSet: any = {};
 let specNames: string[] = [];
 // thint's own spec and the user's YAML specs; kept when a spec set from ~/.fig replaces the list
 let ownSpecNames: string[] = [];
-const ignoredSpecs = ["gcloud", "az", "aws"];
+// az is a versioned spec: its subcommands come from the version `az --version` reports, and without that it gives an
+// empty list, so it stays off. aws and gcloud load their parts on demand and stay fast (upstream skipped them too).
+const ignoredSpecs = ["az"];
 const speclist = figSpecList.filter((spec: string) => !ignoredSpecs.some((name) => spec === name || spec.startsWith(name + "/")));
 const versionedSpeclist = figVersionedSpeclist.filter((spec: string) => !ignoredSpecs.some((name) => spec.startsWith(name)));
 
@@ -107,6 +110,12 @@ const lazyLoadSpec = async (key: string, signal?: AbortSignal): Promise<Fig.Spec
   signal?.throwIfAborted();
   const specPath = path.join(specResourcesPath, `${key}.js`);
   const importPath = path.isAbsolute(specPath) ? pathToFileURL(specPath).href : specPath;
+  // a spec can point at a part withfig does not ship (`gcloud alpha` loads gcloud/alpha, which is not there): the
+  // entry then has nothing under it, instead of the error ending the list
+  if (!fs.existsSync(specPath)) {
+    log.debug({ msg: "spec part not found", key });
+    return undefined;
+  }
   // `docker compose` loads the docker-compose spec this way; it gets the project suggestions too
   return augmentSpec(key, (await import(importPath)).default);
 };
@@ -621,13 +630,16 @@ const runCommand = async (token: CommandToken, cwd: string): Promise<SuggestionB
 
 // Fixes for a command that just failed, as list entries that put the fixed command on the line.
 export const getFixes = async (failure: Failure): Promise<SuggestionBlob | undefined> => {
-  const commands = () => new Set([...specNames, ...getAliasNames()]);
+  // what you have (the programs on PATH and your aliases) comes before a name that only has a spec, and a program
+  // without a spec (awk) can be the fix too
+  const installed = () => new Set([...pathCommands(), ...getAliasNames()]);
+  const commands = () => new Set([...specNames, ...installed()]);
   const branches = async () =>
     (await runProgram("git", ["for-each-ref", "--format=%(refname:short)", "refs/heads", "refs/remotes"], failure.cwd))
       .split("\n")
       .filter(Boolean)
       .map((b) => b.replace(/^origin\//, ""));
-  const fixes = await findFixes(failure, commands, branches);
+  const fixes = await findFixes(failure, commands, branches, installed);
   if (fixes.length === 0) return;
   return {
     mode: "fix",

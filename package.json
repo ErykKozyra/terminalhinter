@@ -1,6 +1,6 @@
 {
   "name": "@erykkozyra/terminalhinter",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Open source terminal autocomplete for zsh and bash: a dropdown of folders, git branches, npm scripts and 600+ CLIs, like Fig and Kiro CLI",
   "type": "module",
   "engines": {

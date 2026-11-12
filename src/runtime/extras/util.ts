@@ -94,7 +94,9 @@ export const editDistance = (a: string, b: string, max = 3): number => {
 };
 
 // the closest name to `word`, if it is near enough to be a typo
-export const closest = (word: string, names: Iterable<string>, max = word.length <= 4 ? 1 : 2): string | undefined => {
+// `preferred` (the programs on PATH and the aliases) wins a tie over a name that only has a spec: `awl` is awk the
+// user has, not aws they may not have
+export const closest = (word: string, names: Iterable<string>, max = word.length <= 4 ? 1 : 2, preferred?: Set<string>): string | undefined => {
   let best: string | undefined;
   let bestScore = max + 1;
   const sorted = [...word].sort().join("");
@@ -106,13 +108,43 @@ export const closest = (word: string, names: Iterable<string>, max = word.length
     if (d > max) continue;
     // on a tie, a name of the same length wins (a swap or a wrong letter, "gti" → git rather than gt), and one
     // made of the same letters wins over that
-    const score = d + (name.length === word.length ? 0 : 0.5) - ([...name].sort().join("") === sorted ? 0.25 : 0);
+    const score =
+      d + (name.length === word.length ? 0 : 0.5) - ([...name].sort().join("") === sorted ? 0.25 : 0) + (preferred && !preferred.has(name) ? 0.1 : 0);
     if (score < bestScore) {
       best = name;
       bestScore = score;
     }
   }
   return best;
+};
+
+// The programs in the folders on PATH, by the name you type (`node`, not `node.exe`). Read when a command was not
+// found, and kept for a minute so a run of typos does not read the folders again.
+let pathCache: { key: string; at: number; names: Set<string> } | undefined;
+export const pathCommands = (env: NodeJS.ProcessEnv = process.env, platform = process.platform): Set<string> => {
+  const key = (env.PATH ?? env.Path ?? "") + "|" + (env.PATHEXT ?? "");
+  if (pathCache && pathCache.key === key && Date.now() - pathCache.at < 60_000) return pathCache.names;
+  const exts = platform === "win32" ? (env.PATHEXT ?? ".COM;.EXE;.BAT;.CMD").toLowerCase().split(";").filter(Boolean) : [];
+  const names = new Set<string>();
+  for (const dir of key.split("|")[0].split(path.delimiter)) {
+    if (!dir) continue;
+    let entries: string[];
+    try {
+      entries = fs.readdirSync(dir);
+    } catch {
+      continue;
+    }
+    for (const entry of entries) {
+      if (platform !== "win32") {
+        names.add(entry);
+        continue;
+      }
+      const ext = path.extname(entry).toLowerCase();
+      if (exts.includes(ext)) names.add(entry.slice(0, -ext.length).toLowerCase());
+    }
+  }
+  pathCache = { key, at: Date.now(), names };
+  return names;
 };
 
 // Words that look like secrets never get stored or shown from history: values after --token or --password,

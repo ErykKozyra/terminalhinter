@@ -217,7 +217,8 @@ const generateSeaConfig = (): void => {
     .map(String)
     .filter((file) => file.endsWith(".js"))
     .filter((file) => fs.statSync(path.join(specsDir, file)).isFile())
-    .filter((file) => !["gcloud", "az", "aws"].some((name) => file.startsWith(name + path.sep)));
+    // az is left out: it is a versioned spec and gives an empty list without `az --version` (see runtime.ts)
+    .filter((file) => !["az"].some((name) => file.startsWith(name + path.sep)));
 
   const assets: Record<string, string> = {};
   shellAssets.forEach((file) => (assets[file] = `shell/${file}`));

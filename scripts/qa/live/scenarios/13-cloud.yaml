@@ -1,0 +1,35 @@
+- name: aws completes services and their commands
+  steps:
+    - type: "aws s3 "
+      wait: 1500
+      timeout: 6000
+      list_has: "cp"
+    - type: "sy"
+      wait: 400
+      list_has: "sync"
+    - key: TAB
+      expect_line_starts: "aws s3 sync"
+
+- name: aws options complete after a command
+  steps:
+    - type: "aws s3 cp --rec"
+      wait: 1500
+      timeout: 6000
+      list_has: "--recursive"
+
+- name: gcloud completes groups and commands
+  steps:
+    - type: "gcloud compute instances "
+      wait: 1500
+      timeout: 6000
+      list_has: "add-labels"
+    - type: "li"
+      wait: 400
+      list_has: "list"
+
+- name: a typo of awk gets awk, not aws
+  skip_shells: [cmd]
+  steps:
+    - type: "awl 'BEGIN{print 1}'<ENTER>"
+      wait: 800
+      list_has: "awk 'BEGIN{print 1}'"
