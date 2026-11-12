@@ -287,8 +287,10 @@ const generatorSuggestions = async (
   signal?: AbortSignal,
 ): Promise<Suggestion[]> => {
   const generators = generator instanceof Array ? generator : generator ? [generator] : [];
-  const tokens = allTokens.map((t) => t.token);
   const activeToken = allTokens.at(-1)?.complete === false ? allTokens.at(-1)?.token ?? "" : "";
+  // the specs are written for Fig, which ends the words with the one being typed, "" right after a space: kubectl's
+  // `get pods ` asks for the names of the word before the last one, and without the "" it asked for `get get`
+  const tokens = [...allTokens.map((t) => t.token), ...(activeToken === "" ? [""] : [])];
   signal?.throwIfAborted();
   return (
     await Promise.all(

@@ -249,6 +249,84 @@ const subOf = (node: SpecNode | undefined, ...path: string[]): SpecNode | undefi
 
 const raisedScripts = new WeakSet<Fig.Generator>();
 
+// --context, --kubeconfig and the namespace typed on the line, for the kubectl calls behind the lists. The word being
+// typed (the last one) is not a value yet.
+export const kubectlLineFlags = (tokens: string[]): { context: string[]; namespace: string[] } => {
+  const context: string[] = [];
+  const namespace: string[] = [];
+  const done = tokens.slice(0, -1);
+  for (let i = 0; i < done.length; i++) {
+    const t = done[i];
+    const next = i + 1 < done.length ? done[i + 1] : undefined;
+    const [flag, inline] = t.startsWith("--") && t.includes("=") ? [t.slice(0, t.indexOf("=")), t.slice(t.indexOf("=") + 1)] : [t, undefined];
+    if (flag === "--context" || flag === "--kubeconfig") {
+      const value = inline ?? next;
+      if (value) context.push(`${flag}=${value}`);
+      if (inline == null) i++;
+    } else if (flag === "-n" || flag === "--namespace") {
+      const value = inline ?? next;
+      if (value) namespace.splice(0, namespace.length, `--namespace=${value}`);
+      if (inline == null) i++;
+    } else if (/^-n[^-]/.test(t)) {
+      namespace.splice(0, namespace.length, `--namespace=${t.slice(2)}`);
+    } else if (t === "-A" || t === "--all-namespaces") {
+      namespace.splice(0, namespace.length, "--all-namespaces");
+    }
+  }
+  return { context, namespace };
+};
+
+const kubectlNamespaces: Fig.Generator = {
+  script: ["kubectl", "get", "namespaces", "-o", "custom-columns=:.metadata.name"],
+  postProcess: (out) =>
+    out
+      .split("\n")
+      .map((line) => line.trim())
+      .filter((line) => line && !line.startsWith("error:") && !line.includes("The connection to the server"))
+      .map((name) => ({ name, description: "namespace" })),
+};
+
+const followedKubectl = new WeakSet<Fig.Generator>();
+
+// The names in kubectl's lists come from the cluster. They follow the context and namespace typed on the line, and
+// they are not kept between commands: withfig kept them for an hour, so after `kubectl config use-context staging`
+// the list still showed the pods of the cluster before. Within one line they are asked for once.
+const kubectlFollowsTheLine = (root: SpecNode) => {
+  const follow = (generator: Fig.Generator) => {
+    if (followedKubectl.has(generator) || generator.script == null || typeof generator.script === "string") return;
+    const script = generator.script;
+    generator.script = ((tokens: string[]) => {
+      const base = typeof script === "function" ? script(tokens) : script;
+      if (!Array.isArray(base) || base[0] !== "kubectl") return base;
+      const { context, namespace } = kubectlLineFlags(tokens);
+      const own = context.filter((flag) => !base.some((part) => part.startsWith(flag.slice(0, flag.indexOf("=") + 1))));
+      return ["kubectl", ...own, ...(base[1] === "config" ? [] : namespace), ...base.slice(1)];
+    }) as Fig.Generator["script"];
+    delete (generator as { cache?: unknown }).cache;
+    followedKubectl.add(generator);
+  };
+  const seen = new Set<object>();
+  const walk = (node: SpecNode) => {
+    if (seen.has(node)) return;
+    seen.add(node);
+    for (const option of node.options ?? []) {
+      const names = namesOf(option);
+      if (names.includes("--namespace") || (names.includes("-n") && names.length === 1)) {
+        const arg = (Array.isArray(option.args) ? option.args.at(0) : option.args) ?? ({ name: "namespace" } as Fig.Arg);
+        if (arg.generators == null) (arg as { generators?: Fig.Generator }).generators = kubectlNamespaces;
+        if (option.args == null) option.args = arg;
+      }
+      walk(option);
+    }
+    for (const sub of node.subcommands ?? []) walk(sub);
+    for (const arg of node.args == null ? [] : Array.isArray(node.args) ? node.args : [node.args]) {
+      const generators = arg.generators == null ? [] : Array.isArray(arg.generators) ? arg.generators : [arg.generators];
+      generators.forEach(follow);
+    }
+  };
+  walk(root);
+};
+
 // puts a generator first on the first argument of a node (creating that argument when the spec has none)
 const prepend = (node: SpecNode | undefined, generator: Fig.Generator, argName = "value", replace = false) => {
   if (node == null) return;
@@ -293,6 +371,7 @@ const augmentMore = (command: string, root: SpecNode) => {
     for (const [names, description, args] of globals)
       if (!names.some((n) => known.has(n))) root.options = [...(root.options ?? []), { name: names, description, args, isPersistent: true } as SpecNode];
     for (const option of root.options ?? []) if (namesOf(option).includes("--namespace")) (option as { isPersistent?: boolean }).isPersistent = true;
+    kubectlFollowsTheLine(root);
   }
   if (command === "lsof") {
     const option = (root.options ?? []).find((o) => namesOf(o).includes("-i"));

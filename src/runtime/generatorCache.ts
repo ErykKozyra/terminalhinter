@@ -43,7 +43,8 @@ const getGeneratorId = (generator: Fig.Generator): number => {
 
 const getStateKey = (generator: Fig.Generator, tokens: string[], activeToken: string, cwd: string): string => {
   const cache = generator.cache;
-  const contextTokens = activeToken.length === 0 ? tokens : tokens.slice(0, -1);
+  // the last word is the one being typed ("" right after a space), so the words before it are what the list is for
+  const contextTokens = tokens.slice(0, -1);
   const generatorKey = cache?.cacheKey ?? getGeneratorId(generator);
   const directoryKey = cache?.cacheByDirectory === true || cache == null ? cwd : "";
   const tokenKey = cache?.cacheKey == null ? contextTokens : [];

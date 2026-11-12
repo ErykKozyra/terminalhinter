@@ -82,6 +82,9 @@ nushell and xonsh come from the upstream project and are not tested.
 - **Package versions:** `npm i react@` lists the tags and the newest releases (pnpm, yarn and bun too).
 - **Cloud CLIs:** every `aws` service with its commands and options, and `gcloud` groups and commands. Your S3
   buckets, IAM roles and profiles come from the aws CLI you have, with your own login.
+- **kubectl:** your contexts, the namespaces after `-n`, and the names of pods, deployments and the rest from the
+  cluster, for the `--context` and `-n` on the line. After `kubectl config use-context` the next list is the new
+  cluster's.
 - **What you ran here:** typing the first word brings back whole commands you ran in this folder, and the ones
   you ran elsewhere in the same repository. Lines that look like they hold a password or token are never stored.
 
