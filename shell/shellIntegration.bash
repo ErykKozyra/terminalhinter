@@ -84,8 +84,29 @@ __is_report_status() {
 	builtin printf '\e]6973;EX;%s\a' "$1"
 }
 
+# the exported variables, so the commands behind the lists (kubectl, aws, git) run with what this shell has, not with
+# what terminalhinter saw when it started at the top of .bashrc; sent only when something changed. The replacements
+# are quoted variables so bash 3.2 (macOS) and 5.2 (where & in a replacement means the match) read them the same.
+__is_report_env() {
+	builtin local name out='' bs='\' rs=$'\x1e'
+	for name in $(builtin compgen -e); do
+		case $name in _|PWD|OLDPWD|SHLVL|BASH_*) continue ;; esac
+		out+="${name}=${!name}${rs}"
+	done
+	[[ "$out" == "$__is_last_env" ]] && return
+	__is_last_env=$out
+	out=${out//"$bs"/"$bs$bs"}
+	out=${out//";"/"${bs}x3b"}
+	out=${out//$'\n'/"${bs}x0a"}
+	out=${out//$'\e'/"${bs}x1b"}
+	out=${out//$'\a'/"${bs}x07"}
+	out=${out//"$rs"/"${bs}x1e"}
+	builtin printf '\e]6973;ENV;%s\a' "$out"
+}
+
 __is_precmd() {
 	__is_report_status "${1:-$?}"
+	__is_report_env
 	__is_update_cwd
 	__is_update_prompt
 }

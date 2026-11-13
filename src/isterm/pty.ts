@@ -12,6 +12,7 @@ import pty from "node-pty";
 import type { IPty, IEvent } from "node-pty";
 import { Shell, startupFailedExitCode, userZdotdir, zdotdir } from "../utils/shell.js";
 import { IsTermOscPs, IstermOscPt, IstermPromptStart, IstermPromptEnd } from "../utils/ansi.js";
+import { parseShellEnv, setShellEnv } from "../utils/shellEnv.js";
 import xterm from "@xterm/headless";
 import type { IBuffer, IBufferCell } from "@xterm/xterm";
 
@@ -209,6 +210,11 @@ export class ISTerm implements IPty {
       case IstermOscPt.ExitStatus:
         this.#commandManager.handleExitStatus(Number(data.split(";").at(1)), this.cwd);
         break;
+      case IstermOscPt.ShellEnvironment: {
+        // the whole report after "ENV;": the values are escaped, so a ";" inside one cannot cut it short
+        if (argsIndex !== -1) setShellEnv(parseShellEnv(this._deserializeIsMessage(data.substring(argsIndex + 1))));
+        break;
+      }
       case IstermOscPt.CurrentWorkingDirectory: {
         const cwd = data.split(";").at(1);
         if (cwd != null) {

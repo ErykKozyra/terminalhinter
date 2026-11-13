@@ -16,6 +16,7 @@ export enum IstermOscPt {
   PromptEnded = "PE",
   CurrentWorkingDirectory = "CWD",
   ExitStatus = "EX",
+  ShellEnvironment = "ENV",
 }
 
 export const IstermPromptStart = IS_OSC + IstermOscPt.PromptStarted + BEL;

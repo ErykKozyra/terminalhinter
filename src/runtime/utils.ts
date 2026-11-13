@@ -9,6 +9,7 @@ import { homedir, tmpdir } from "node:os";
 import { CommandToken } from "./parser.js";
 import { getPathSeparator, gitBashPath, Shell } from "../utils/shell.js";
 import log from "../utils/log.js";
+import { commandEnv } from "../utils/shellEnv.js";
 
 export type ExecuteShellCommandTTYResult = {
   code: number | null;
@@ -104,7 +105,7 @@ export const buildExecuteShellCommand =
     // under a shell the command and its arguments are one line: Node joins them with spaces itself, and since Node 24
     // it warns about getting them apart, a warning that lands on the terminal
     const line = executionShell != null ? [command, ...escapedArgs].join(" ") : command;
-    const options = { cwd, env: { ...process.env, ...env, ISTERM: "1" }, shell: executionShell, signal, detached };
+    const options = { cwd, env: { ...commandEnv(), ...env, ISTERM: "1" }, shell: executionShell, signal, detached };
     const child = executionShell != null ? spawn(line, options) : spawn(command, escapedArgs, options);
     let stdout = "";
     let stderr = "";

@@ -58,7 +58,28 @@ __is_wrap_prompt() {
 	PS1="${__is_ps1_start}${PS1}${__is_ps1_end}"
 }
 
+# the exported variables, so the commands behind the lists (kubectl, aws, git) run with what this shell has, not with
+# what terminalhinter saw when it started at the top of .zshrc; sent only when something changed
+__is_report_env() {
+	builtin emulate -L zsh
+	builtin local name out=''
+	for name in ${(ok)parameters[(R)*export*]}; do
+		case $name in _|PWD|OLDPWD|SHLVL) continue ;; esac
+		out+="${name}=${(P)name}"$'\x1e'
+	done
+	[[ $out == "$__is_last_env" ]] && return
+	typeset -g __is_last_env=$out
+	out=${out//\\/\\\\}
+	out=${out//;/\\x3b}
+	out=${out//$'\n'/\\x0a}
+	out=${out//$'\e'/\\x1b}
+	out=${out//$'\a'/\\x07}
+	out=${out//$'\x1e'/\\x1e}
+	builtin printf '\e]6973;ENV;%s\a' "$out"
+}
+
 __is_precmd() {
+	__is_report_env
 	__is_update_cwd
 	if [[ $ISTERM_TESTING == "1" ]]; then
 		PS1="%{$(__is_prompt_start)%}> %{$(__is_prompt_end)%}"

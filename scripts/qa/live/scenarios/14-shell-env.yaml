@@ -1,0 +1,39 @@
+- name: a PATH change made at the prompt reaches the lists
+  skip_shells: [cmd, win:pwsh, win:bash, win:zsh, win:fish, nu, xonsh]
+  files:
+    qa-bin/kubectl: |
+      #!/bin/sh
+      case "$*" in
+        *"get pods"*) printf '\nshell-env-pod\n' ;;
+        *"api-resources"*) printf 'pods\n' ;;
+      esac
+  steps:
+    - type: "export PATH=\"$PWD/qa-bin:$PATH\"<ENTER>"
+      only_shells: [zsh, bash]
+      wait: 800
+    - type: "set -gx PATH $PWD/qa-bin $PATH<ENTER>"
+      only_shells: [fish]
+      wait: 800
+    - type: "$env:PATH = \"$PWD/qa-bin\" + [IO.Path]::PathSeparator + $env:PATH<ENTER>"
+      only_shells: [pwsh]
+      wait: 800
+    - type: "kubectl get pods "
+      wait: 2000
+      timeout: 8000
+      list_has: "shell-env-pod"
+
+- name: a variable exported at the prompt reaches the lists
+  skip_shells: [cmd, nu, xonsh]
+  steps:
+    - type: "export THINT_QA_PROBE=hello<ENTER>"
+      only_shells: [zsh, bash]
+      wait: 800
+    - type: "set -gx THINT_QA_PROBE hello<ENTER>"
+      only_shells: [fish]
+      wait: 800
+    - type: "$env:THINT_QA_PROBE = 'hello'<ENTER>"
+      only_shells: [pwsh]
+      wait: 800
+    - type: "echo $THINT_QA_PR"
+      wait: 1000
+      list_has: "$THINT_QA_PROBE"

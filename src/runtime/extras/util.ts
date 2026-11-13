@@ -4,12 +4,13 @@
 import { execFile } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
+import { commandEnv } from "../../utils/shellEnv.js";
 
 // Runs a program and gives back its output, or "" when it is missing, fails or takes too long. Never throws.
 export const run = (command: string, args: string[], cwd?: string, timeout = 1500): Promise<string> =>
   new Promise((resolve) => {
     try {
-      execFile(command, args, { cwd, timeout, maxBuffer: 8 * 1024 * 1024, env: { ...process.env, NO_COLOR: "1" } }, (error, stdout) =>
+      execFile(command, args, { cwd, timeout, maxBuffer: 8 * 1024 * 1024, env: { ...commandEnv(), NO_COLOR: "1" } }, (error, stdout) =>
         resolve(error != null && !stdout ? "" : String(stdout)),
       );
     } catch {
@@ -138,7 +139,7 @@ export const closest = (word: string, names: Iterable<string>, max = word.length
 // The programs in the folders on PATH, by the name you type (`node`, not `node.exe`). Read when a command was not
 // found, and kept for a minute so a run of typos does not read the folders again.
 let pathCache: { key: string; at: number; names: Set<string> } | undefined;
-export const pathCommands = (env: NodeJS.ProcessEnv = process.env, platform = process.platform): Set<string> => {
+export const pathCommands = (env: NodeJS.ProcessEnv = commandEnv(), platform = process.platform): Set<string> => {
   const key = (env.PATH ?? env.Path ?? "") + "|" + (env.PATHEXT ?? "");
   if (pathCache && pathCache.key === key && Date.now() - pathCache.at < 60_000) return pathCache.names;
   const exts = platform === "win32" ? (env.PATHEXT ?? ".COM;.EXE;.BAT;.CMD").toLowerCase().split(";").filter(Boolean) : [];

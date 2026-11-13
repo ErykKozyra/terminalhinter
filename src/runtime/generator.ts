@@ -6,13 +6,14 @@ import os from "node:os";
 import { runTemplates } from "./template.js";
 import { buildExecuteShellCommand } from "./utils.js";
 import { endTiming, startTiming } from "../utils/performance.js";
+import { commandEnv } from "../utils/shellEnv.js";
 
 const getGeneratorContext = (cwd: string): Fig.GeneratorContext => {
   return {
     // Windows sets no HOME, and the specs build ~/.ssh/config and the like from it
     environmentVariables: {
       HOME: os.homedir(),
-      ...Object.fromEntries(Object.entries(process.env).filter((entry): entry is [string, string] => entry[1] != null)),
+      ...Object.fromEntries(Object.entries(commandEnv()).filter((entry): entry is [string, string] => entry[1] != null)),
     },
     currentWorkingDirectory: cwd,
     currentProcess: "", // TODO: define current process

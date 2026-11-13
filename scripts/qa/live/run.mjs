@@ -33,7 +33,9 @@ const flag = (name) => args.includes(`--${name}`);
 const defaultShells = isWin ? ["pwsh", "powershell", "cmd", "bash"] : ["zsh", "bash", "fish", "pwsh"];
 const which = (bin) => {
   try {
-    return execFileSync(isWin ? "where" : "which", [bin], { encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }).split(/\r?\n/)[0].trim();
+    return execFileSync(isWin ? "where" : "which", [bin], { encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] })
+      .split(/\r?\n/)[0]
+      .trim();
   } catch {
     return "";
   }
@@ -46,15 +48,20 @@ const out = opt("out");
 const keep = flag("keep");
 // --bin is a path to a thint binary, or a JSON array of a program and its arguments
 const binSpec = opt("bin", process.env.THINT_BIN);
-const [binCmd, ...binArgs] = binSpec == null ? [process.execPath, path.join(repo, "build", "index.js")] : binSpec.startsWith("[") ? JSON.parse(binSpec) : [binSpec];
+const [binCmd, ...binArgs] =
+  binSpec == null ? [process.execPath, path.join(repo, "build", "index.js")] : binSpec.startsWith("[") ? JSON.parse(binSpec) : [binSpec];
 // where PowerShell reads its profile on Windows (on Linux and macOS it is under the HOME we set)
 const windowsProfiles = {};
 const windowsProfile = (shell) => {
   if (!isWin) return null;
   if (!(shell in windowsProfiles))
-    windowsProfiles[shell] = execFileSync(shell === "powershell" ? "powershell.exe" : "pwsh.exe", ["-NoProfile", "-Command", "$PROFILE.CurrentUserCurrentHost"], {
-      encoding: "utf8",
-    }).trim();
+    windowsProfiles[shell] = execFileSync(
+      shell === "powershell" ? "powershell.exe" : "pwsh.exe",
+      ["-NoProfile", "-Command", "$PROFILE.CurrentUserCurrentHost"],
+      {
+        encoding: "utf8",
+      },
+    ).trim();
   return windowsProfiles[shell];
 };
 // PowerShell on Windows reads its profile from the real Documents folder whatever HOME says, so the runs write their
@@ -122,7 +129,9 @@ const rcFor = (shell, home) => {
   const log = path.join(home, "ran.log");
   switch (shell) {
     case "zsh":
-      return [[".zshrc", `PROMPT='${prompt}'\nHISTFILE=~/.zsh_history\nSAVEHIST=1000\nHISTSIZE=1000\npreexec() { print -r -- "$1" >> ${JSON.stringify(log)} }\n`]];
+      return [
+        [".zshrc", `PROMPT='${prompt}'\nHISTFILE=~/.zsh_history\nSAVEHIST=1000\nHISTSIZE=1000\npreexec() { print -r -- "$1" >> ${JSON.stringify(log)} }\n`],
+      ];
     case "bash":
       return [
         [
@@ -134,7 +143,9 @@ const rcFor = (shell, home) => {
       return [
         [
           ".config/fish/config.fish",
-          `set -g fish_autosuggestion_enabled 0\nfunction fish_prompt; printf '${prompt}'; end\nfunction fish_greeting; end\nfunction __qa_log --on-event fish_preexec; printf '%s\\n' "$argv" >> ${JSON.stringify(log)}; end\n`,
+          `set -g fish_autosuggestion_enabled 0\nfunction fish_prompt; printf '${prompt}'; end\nfunction fish_greeting; end\nfunction __qa_log --on-event fish_preexec; printf '%s\\n' "$argv" >> ${JSON.stringify(
+            log,
+          )}; end\n`,
         ],
       ];
     case "pwsh":
@@ -160,7 +171,12 @@ const rcFor = (shell, home) => {
 // everything a run writes lives in one folder of its own
 const base = fs.mkdtempSync(path.join(process.env.QA_TMP ?? os.tmpdir(), "thint-qa-"));
 const fixtureTemplate = path.join(base, "fixture");
-const git = (cwd, ...a) => execFileSync("git", a, { cwd, stdio: "ignore", env: { ...process.env, GIT_AUTHOR_NAME: "qa", GIT_AUTHOR_EMAIL: "qa@example.com", GIT_COMMITTER_NAME: "qa", GIT_COMMITTER_EMAIL: "qa@example.com" } });
+const git = (cwd, ...a) =>
+  execFileSync("git", a, {
+    cwd,
+    stdio: "ignore",
+    env: { ...process.env, GIT_AUTHOR_NAME: "qa", GIT_AUTHOR_EMAIL: "qa@example.com", GIT_COMMITTER_NAME: "qa", GIT_COMMITTER_EMAIL: "qa@example.com" },
+  });
 const makeFixture = () => {
   const proj = path.join(fixtureTemplate, "shop");
   fs.mkdirSync(path.join(proj, "src", "components", "ui"), { recursive: true });
@@ -171,7 +187,11 @@ const makeFixture = () => {
   fs.writeFileSync(path.join(proj, "src", "index.ts"), "export {};\n");
   fs.writeFileSync(
     path.join(proj, "package.json"),
-    JSON.stringify({ name: "shop", version: "1.0.0", scripts: { dev: "echo dev", build: "echo build", test: "echo test", "deploy:prod": "echo deploy" } }, null, 2),
+    JSON.stringify(
+      { name: "shop", version: "1.0.0", scripts: { dev: "echo dev", build: "echo build", test: "echo test", "deploy:prod": "echo deploy" } },
+      null,
+      2,
+    ),
   );
   fs.writeFileSync(
     path.join(proj, "Makefile"),
@@ -241,7 +261,8 @@ const runOne = async (scenario, shell, [cols, rows]) => {
   const proj = path.join(projRoot, "shop");
   for (const [file, text] of Object.entries(scenario.files ?? {})) {
     fs.mkdirSync(path.dirname(path.join(proj, file)), { recursive: true });
-    fs.writeFileSync(path.join(proj, file), text);
+    // a file that starts with #! is a program the scenario puts on PATH
+    fs.writeFileSync(path.join(proj, file), text, { mode: text.startsWith("#!") ? 0o755 : 0o644 });
   }
   const cwd = scenario.cwd ? path.join(proj, scenario.cwd) : proj;
 
@@ -295,8 +316,8 @@ const runOne = async (scenario, shell, [cols, rows]) => {
     scenario.wrapper === "tmux"
       ? ["tmux", ["-L", `qa-${path.basename(home)}`, "-f", tmuxConf, "new-session", quoted]]
       : scenario.wrapper === "screen"
-        ? ["screen", ["-q", "-S", `qa-${path.basename(home)}`, screenStart()]]
-        : [binCmd, inner.slice(1)];
+      ? ["screen", ["-q", "-S", `qa-${path.basename(home)}`, screenStart()]]
+      : [binCmd, inner.slice(1)];
   if (scenario.wrapper === "tmux") env.TERM = "xterm-256color";
   const p = pty.spawn(cmd, cmdArgs, { name: "xterm-256color", cols, rows, cwd, env });
   let exited = null;
@@ -398,7 +419,14 @@ const runOne = async (scenario, shell, [cols, rows]) => {
   };
   // {sep}: the separator thint puts after a folder in this shell (cmd and PowerShell on Windows take a backslash)
   // Git Bash takes C:/Users/... as typed; C:\Users\... would lose its backslashes
-  const vars = { shell, cols, rows, home, proj: isWin && shell === "bash" ? proj.replace(/\\/g, "/") : proj, sep: isWin && ["pwsh", "powershell", "cmd"].includes(shell) ? "\\" : "/" };
+  const vars = {
+    shell,
+    cols,
+    rows,
+    home,
+    proj: isWin && shell === "bash" ? proj.replace(/\\/g, "/") : proj,
+    sep: isWin && ["pwsh", "powershell", "cmd"].includes(shell) ? "\\" : "/",
+  };
   const fill = (s) => String(s).replace(/\{(\w+)\}/g, (_, k) => vars[k] ?? `{${k}}`);
   const started = Date.now();
   try {
@@ -456,15 +484,23 @@ const runOne = async (scenario, shell, [cols, rows]) => {
       // one): it is waited for, up to 4 seconds; what must not be there is checked once the rest has arrived
       const eventually = async (test) => test() || (await waitFor(test, step.timeout ?? 4000));
       if (step.expect != null)
-        for (const want of [].concat(step.expect).map(fill)) if (!(await eventually(() => screenText().includes(want)))) fail(i, `expected "${want}" on screen; screen:\n${screenText()}`);
+        for (const want of [].concat(step.expect).map(fill))
+          if (!(await eventually(() => screenText().includes(want)))) fail(i, `expected "${want}" on screen; screen:\n${screenText()}`);
       if (step.expect_not != null)
-        for (const bad of [].concat(step.expect_not).map(fill)) if (screenText().includes(bad)) fail(i, `did not expect "${bad}" on screen; screen:\n${screenText()}`);
-      const listRows = () => screen().filter((l) => l.includes("│")).join("\n");
+        for (const bad of [].concat(step.expect_not).map(fill))
+          if (screenText().includes(bad)) fail(i, `did not expect "${bad}" on screen; screen:\n${screenText()}`);
+      const listRows = () =>
+        screen()
+          .filter((l) => l.includes("│"))
+          .join("\n");
       if (step.list_has != null)
-        for (const want of [].concat(step.list_has).map(fill)) if (!(await eventually(() => listRows().includes(want)))) fail(i, `expected "${want}" in the list; screen:\n${screenText()}`);
+        for (const want of [].concat(step.list_has).map(fill))
+          if (!(await eventually(() => listRows().includes(want)))) fail(i, `expected "${want}" in the list; screen:\n${screenText()}`);
       if (step.list_not != null)
-        for (const bad of [].concat(step.list_not).map(fill)) if (listRows().includes(bad)) fail(i, `did not expect "${bad}" in the list; screen:\n${screenText()}`);
-      if (step.expect_regex != null && !(await eventually(() => new RegExp(step.expect_regex, "m").test(screenText())))) fail(i, `expected /${step.expect_regex}/; screen:\n${screenText()}`);
+        for (const bad of [].concat(step.list_not).map(fill))
+          if (listRows().includes(bad)) fail(i, `did not expect "${bad}" in the list; screen:\n${screenText()}`);
+      if (step.expect_regex != null && !(await eventually(() => new RegExp(step.expect_regex, "m").test(screenText()))))
+        fail(i, `expected /${step.expect_regex}/; screen:\n${screenText()}`);
       if (step.expect_line != null && currentLine() !== fill(step.expect_line)) fail(i, `line is "${currentLine()}", expected "${fill(step.expect_line)}"`);
       if (step.expect_line_starts != null && !currentLine().startsWith(fill(step.expect_line_starts)))
         fail(i, `line is "${currentLine()}", expected it to start with "${fill(step.expect_line_starts)}"`);
@@ -473,7 +509,8 @@ const runOne = async (scenario, shell, [cols, rows]) => {
       if (shell !== "cmd") {
         if (step.expect_ran != null) {
           const want = fill(step.expect_ran);
-          if (!(await waitFor(() => ran().at(-1) === want, 3000))) fail(i, `last command run was "${ran().at(-1)}", expected "${want}" (all: ${JSON.stringify(ran())})`);
+          if (!(await waitFor(() => ran().at(-1) === want, 3000)))
+            fail(i, `last command run was "${ran().at(-1)}", expected "${want}" (all: ${JSON.stringify(ran())})`);
         }
         if (step.expect_ran_count != null && ran().length !== step.expect_ran_count)
           fail(i, `${ran().length} commands ran, expected ${step.expect_ran_count}: ${JSON.stringify(ran())}`);
@@ -496,7 +533,14 @@ const runOne = async (scenario, shell, [cols, rows]) => {
         p.write("\x1b");
         await stable(scenario.wrapper === "screen" ? 450 : 200);
       }
-      const probe = shell === "fish" ? "echo alive-(math 40+2)" : shell === "cmd" ? "echo alive-42" : shell.includes("sh") && shell !== "pwsh" ? "echo alive-$((40+2))" : 'echo "alive-$(40+2)"';
+      const probe =
+        shell === "fish"
+          ? "echo alive-(math 40+2)"
+          : shell === "cmd"
+          ? "echo alive-42"
+          : shell.includes("sh") && shell !== "pwsh"
+          ? "echo alive-$((40+2))"
+          : 'echo "alive-$(40+2)"';
       for (const ch of probe) {
         p.write(ch);
         await sleep(10);
@@ -592,7 +636,10 @@ const debugLog = (home) => {
   try {
     // without the raw bytes going in and out, which fill the log and say little
     if (!file) return undefined;
-    const lines = fs.readFileSync(file, "utf8").split("\n").filter((l) => l && !/^\{"msg":"(parsing data|writing data|command text)"/.test(l));
+    const lines = fs
+      .readFileSync(file, "utf8")
+      .split("\n")
+      .filter((l) => l && !/^\{"msg":"(parsing data|writing data|command text)"/.test(l));
     return lines.slice(-150).join("\n").slice(-20000);
   } catch {
     return undefined;
@@ -646,7 +693,9 @@ const health = () => {
             return false;
           }
         }).length
-      : run("lsof", ["-p", String(process.pid)]).split("\n").filter((l) => /ptmx|\/dev\/ttys/.test(l)).length;
+      : run("lsof", ["-p", String(process.pid)])
+          .split("\n")
+          .filter((l) => /ptmx|\/dev\/ttys/.test(l)).length;
   const alive = run("ps", ["-axo", "pid,ppid,stat,command"])
     .split("\n")
     .filter((l) => /build\/index\.js|thint-qa-|shellIntegration|zsh -[il]|bash --init-file|fish --init|pwsh -noexit/.test(l) && !/ps -axo/.test(l));
@@ -704,7 +753,9 @@ const main = async () => {
   const planned = runs.length;
   runs.length = 0;
   runs.push(...todo);
-  process.stderr.write(`${scenarios.length} scenarios, ${planned} runs${previous.length ? `, ${runs.length} left after the last attempt` : ""}, ${jobs} at a time\n`);
+  process.stderr.write(
+    `${scenarios.length} scenarios, ${planned} runs${previous.length ? `, ${runs.length} left after the last attempt` : ""}, ${jobs} at a time\n`,
+  );
   const results = [...previous.filter((r) => !r.scenario.startsWith(startup.name)), ...broken];
   // what is running right now, printed if the process ends without getting to the summary (a crash in node-pty)
   const running = new Set();
@@ -713,7 +764,11 @@ const main = async () => {
   });
   // written after every run, so a run that is stopped halfway still leaves what it found
   const save = () =>
-    out && fs.writeFileSync(out, JSON.stringify({ platform: process.platform, shells: installed, started: available, planned, strayErrors, health: healthLog, results }, null, 2));
+    out &&
+    fs.writeFileSync(
+      out,
+      JSON.stringify({ platform: process.platform, shells: installed, started: available, planned, strayErrors, health: healthLog, results }, null, 2),
+    );
   save();
   let next = 0;
   let done = 0;
@@ -750,7 +805,9 @@ const main = async () => {
         const h = health();
         if (h != null) healthLog.push({ done, ...h });
         process.stderr.write(
-          ` ${done}/${runs.length} in ${Math.round((Date.now() - startedAt) / 1000)} s${h ? `, terminals held ${h.terminalsHeldByRunner}, in the system ${h.terminalsInSystem}, processes left ${h.processesLeft}` : ""}\n`,
+          ` ${done}/${runs.length} in ${Math.round((Date.now() - startedAt) / 1000)} s${
+            h ? `, terminals held ${h.terminalsHeldByRunner}, in the system ${h.terminalsInSystem}, processes left ${h.processesLeft}` : ""
+          }\n`,
         );
       }
       if (!r.ok && !r.known) process.stderr.write(`\n✗ ${r.scenario} [${r.shell} ${r.size}]\n  ${r.failures.join("\n  ").slice(0, 3000)}\n`);

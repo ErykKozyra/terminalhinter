@@ -13,6 +13,27 @@ function __is_escape_value
 	| string split \n | string join '\x0a' \
 	;
 end
+# the exported variables, so the commands behind the lists (kubectl, aws, git) run with what this shell has, not with
+# what terminalhinter saw when it started; sent only when something changed
+function __is_report_env --on-event fish_prompt
+	set --local entries
+	for name in (set --names --export)
+		contains -- $name _ PWD OLDPWD SHLVL; and continue
+		if string match -q -- '*PATH' $name
+			set --append entries "$name="(string join : -- $$name)
+		else
+			set --append entries "$name="(string join ' ' -- $$name)
+		end
+	end
+	set --local joined (string join \x1e -- $entries)
+	test "$joined" = "$__is_last_env"; and return
+	set --global __is_last_env $joined
+	set --local escaped
+	for entry in $entries
+		set --append escaped (__is_escape_value "$entry")
+	end
+	printf '\e]6973;ENV;%s\a' (string join '\\x1e' -- $escaped)
+end
 function __is_update_cwd --on-event fish_prompt; set __is_cwd (__is_escape_value "$PWD"); printf "\e]6973;CWD;%s\a" $__is_cwd; end
 
 if [ "$ISTERM_TESTING" = "1" ]
