@@ -1,0 +1,1316 @@
+{
+  "platform": "darwin",
+  "shells": [
+    "fish"
+  ],
+  "started": [
+    "fish"
+  ],
+  "planned": 144,
+  "strayErrors": 0,
+  "health": [],
+  "results": [
+    {
+      "scenario": "the list opens after a command and a space",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4649,
+      "failures": []
+    },
+    {
+      "scenario": "typing narrows the list",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4993,
+      "failures": []
+    },
+    {
+      "scenario": "git branch from the list with Tab",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6889,
+      "failures": []
+    },
+    {
+      "scenario": "Tab puts the selected entry on the line",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5479,
+      "failures": []
+    },
+    {
+      "scenario": "Enter on a typed word takes the entry and does not run",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5285,
+      "failures": []
+    },
+    {
+      "scenario": "Enter right after a space runs the command",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5568,
+      "failures": []
+    },
+    {
+      "scenario": "Enter runs a word typed in full that no entry starts with",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5610,
+      "failures": []
+    },
+    {
+      "scenario": "Esc hides the list until the next letter",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6192,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+Space shows the list again",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5929,
+      "failures": []
+    },
+    {
+      "scenario": "Down and Tab pick the second entry",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5855,
+      "failures": []
+    },
+    {
+      "scenario": "Backspace brings back what was there",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5332,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+U empties the line and hides the list",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5110,
+      "failures": []
+    },
+    {
+      "scenario": "Up on a line with no selection walks the shell history",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5094,
+      "failures": []
+    },
+    {
+      "scenario": "a pasted command lands as pasted",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4814,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+C gives a fresh prompt with no list",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6901,
+      "failures": []
+    },
+    {
+      "scenario": "a fast typist loses no letters",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5480,
+      "failures": []
+    },
+    {
+      "scenario": "a long line that wraps keeps every letter",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6201,
+      "failures": []
+    },
+    {
+      "scenario": "Polish letters and emoji go through untouched",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6343,
+      "failures": []
+    },
+    {
+      "scenario": "options of a command show with their descriptions",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4944,
+      "failures": []
+    },
+    {
+      "scenario": "an option already on the line is not offered again",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5421,
+      "failures": []
+    },
+    {
+      "scenario": "a command the specs do not know does not break anything",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6246,
+      "failures": []
+    },
+    {
+      "scenario": "the list follows the line after a resize",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6513,
+      "failures": []
+    },
+    {
+      "scenario": "a full-screen program and back",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7477,
+      "failures": []
+    },
+    {
+      "scenario": "lots of output while typing the next command",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6372,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+L clears the screen and the list comes back on the new line",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6596,
+      "failures": []
+    },
+    {
+      "scenario": "Enter runs a word that only appears inside a variable name",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5402,
+      "failures": []
+    },
+    {
+      "scenario": "Enter on an option that needs a value adds the space and waits for it",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 8220,
+      "failures": []
+    },
+    {
+      "scenario": "git switch offers local branches with their last commit",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4869,
+      "failures": []
+    },
+    {
+      "scenario": "git checkout finds a branch by a word inside its name",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5350,
+      "failures": []
+    },
+    {
+      "scenario": "git stash show lists stashes by what they hold",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5022,
+      "failures": []
+    },
+    {
+      "scenario": "a branch picked with Enter runs only after a second Enter",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6801,
+      "failures": []
+    },
+    {
+      "scenario": "git stash pop takes the stash from the list",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6586,
+      "failures": []
+    },
+    {
+      "scenario": "git reset --hard is marked as risky and says why",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5457,
+      "failures": []
+    },
+    {
+      "scenario": "git push --force is marked as risky",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5336,
+      "failures": []
+    },
+    {
+      "scenario": "git branch -D is marked as risky",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5214,
+      "failures": []
+    },
+    {
+      "scenario": "git add offers changed files",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4650,
+      "failures": []
+    },
+    {
+      "scenario": "git log options with descriptions",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4638,
+      "failures": []
+    },
+    {
+      "scenario": "git merge offers branches",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4333,
+      "failures": []
+    },
+    {
+      "scenario": "git commit -m keeps the quoted message as typed",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6714,
+      "failures": []
+    },
+    {
+      "scenario": "a git alias completes like the command behind it",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 16085,
+      "failures": []
+    },
+    {
+      "scenario": "outside a repository git still shows subcommands",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4276,
+      "failures": []
+    },
+    {
+      "scenario": "git worktree add and remove",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 8928,
+      "failures": []
+    },
+    {
+      "scenario": "git reflog after a reset",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 10173,
+      "failures": []
+    },
+    {
+      "scenario": "cd lists only folders",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4659,
+      "failures": []
+    },
+    {
+      "scenario": "Enter on a folder walks into it and keeps the list open",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5282,
+      "failures": []
+    },
+    {
+      "scenario": "the run entry runs cd where you are",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6391,
+      "failures": []
+    },
+    {
+      "scenario": "a folder with a space is escaped on the line",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4985,
+      "failures": []
+    },
+    {
+      "scenario": "a folder with a space works after Enter",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7079,
+      "failures": []
+    },
+    {
+      "scenario": "a folder with Polish letters",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5338,
+      "failures": []
+    },
+    {
+      "scenario": "files are offered for cat with their names",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5419,
+      "failures": []
+    },
+    {
+      "scenario": "a path in a subfolder",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4696,
+      "failures": []
+    },
+    {
+      "scenario": "parent folder",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5239,
+      "failures": []
+    },
+    {
+      "scenario": "home with a tilde",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5232,
+      "failures": []
+    },
+    {
+      "scenario": "hidden files after a dot",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5025,
+      "failures": []
+    },
+    {
+      "scenario": "an absolute path",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5095,
+      "failures": []
+    },
+    {
+      "scenario": "Enter on an absolute path takes the folder",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5497,
+      "failures": []
+    },
+    {
+      "scenario": "Enter deeper in an absolute path takes the folder",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5441,
+      "failures": []
+    },
+    {
+      "scenario": "npm run lists the package.json scripts with their commands",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4412,
+      "failures": []
+    },
+    {
+      "scenario": "a production-looking script is marked",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4851,
+      "failures": []
+    },
+    {
+      "scenario": "pnpm lists the scripts",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4727,
+      "failures": []
+    },
+    {
+      "scenario": "yarn lists the scripts",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4598,
+      "failures": []
+    },
+    {
+      "scenario": "a bookmarked folder is offered by cd from anywhere",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 14126,
+      "failures": []
+    },
+    {
+      "scenario": "bun lists the scripts",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5618,
+      "failures": []
+    },
+    {
+      "scenario": "make lists targets with their sections and descriptions",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5033,
+      "failures": []
+    },
+    {
+      "scenario": "a make target tagged prod is marked",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5551,
+      "failures": []
+    },
+    {
+      "scenario": "make -C reads the Makefile of that folder",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5086,
+      "failures": []
+    },
+    {
+      "scenario": "docker compose lists services",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5035,
+      "failures": []
+    },
+    {
+      "scenario": "a Taskfile without task installed still lists tasks",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4626,
+      "failures": []
+    },
+    {
+      "scenario": "a Makefile picked up after it changes",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 8525,
+      "failures": []
+    },
+    {
+      "scenario": "just recipes from the justfile",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4917,
+      "failures": []
+    },
+    {
+      "scenario": "mise tasks from mise.toml",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5581,
+      "failures": []
+    },
+    {
+      "scenario": "deno tasks from deno.json",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5423,
+      "failures": []
+    },
+    {
+      "scenario": "a typo in the command gets the fix on the empty line",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6765,
+      "failures": []
+    },
+    {
+      "scenario": "the fix is never run without Enter",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7620,
+      "failures": []
+    },
+    {
+      "scenario": "a git subcommand typo uses what git suggests",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7735,
+      "failures": []
+    },
+    {
+      "scenario": "a missing npm script gets the near one",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 9180,
+      "failures": []
+    },
+    {
+      "scenario": "cd to a near folder name",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6884,
+      "failures": []
+    },
+    {
+      "scenario": "mkdir of a nested folder gets -p",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 9568,
+      "failures": []
+    },
+    {
+      "scenario": "rm of a folder gets -r",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6433,
+      "failures": []
+    },
+    {
+      "scenario": "checkout of a near branch name",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7867,
+      "failures": []
+    },
+    {
+      "scenario": "Esc dismisses the fix and the line stays empty",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6407,
+      "failures": []
+    },
+    {
+      "scenario": "typing over the fix list starts a new command",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7008,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+C on a long command gives no fix",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6832,
+      "failures": []
+    },
+    {
+      "scenario": "a port in use offers to stop the process",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 18902,
+      "failures": []
+    },
+    {
+      "scenario": "a command that worked gives no fix",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6683,
+      "failures": []
+    },
+    {
+      "scenario": "fixes can be turned off",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7289,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+G explains every word of a pipe",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6652,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+G warns about a destructive line",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6020,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+G through sudo and &&",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6197,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+G knows combined short flags",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6819,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+G knows an option that takes a value",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7032,
+      "failures": []
+    },
+    {
+      "scenario": "Esc closes the explanation and keeps the line",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6143,
+      "failures": []
+    },
+    {
+      "scenario": "the line runs as typed after an explanation",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6647,
+      "failures": []
+    },
+    {
+      "scenario": "a snippet with fields fills in and runs",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 9062,
+      "failures": []
+    },
+    {
+      "scenario": "a field value with spaces is quoted",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 8786,
+      "failures": []
+    },
+    {
+      "scenario": "Esc leaves the snippet form without running anything",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 8152,
+      "failures": []
+    },
+    {
+      "scenario": "a broken snippets file does not break the list",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6789,
+      "failures": []
+    },
+    {
+      "scenario": "a command run in this folder comes back as a whole",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 10451,
+      "failures": []
+    },
+    {
+      "scenario": "a line with a token is never remembered",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 10862,
+      "failures": []
+    },
+    {
+      "scenario": "a failed command is not offered again as a recent one",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 10757,
+      "failures": []
+    },
+    {
+      "scenario": "tab like a shell completes the shared part",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6367,
+      "failures": []
+    },
+    {
+      "scenario": "a command run elsewhere in the repository comes back in a subfolder",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 11301,
+      "failures": []
+    },
+    {
+      "scenario": "the list only on Tab",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6929,
+      "failures": []
+    },
+    {
+      "scenario": "the light theme draws the same list",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6402,
+      "failures": []
+    },
+    {
+      "scenario": "an invalid setting falls back to the defaults",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6722,
+      "failures": []
+    },
+    {
+      "scenario": "Enter takes the entry and runs the line when enterRuns is on",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6929,
+      "failures": []
+    },
+    {
+      "scenario": "with enterRuns a folder is still walked into",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5880,
+      "failures": []
+    },
+    {
+      "scenario": "a broken spec of your own is skipped",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6866,
+      "failures": []
+    },
+    {
+      "scenario": "a spec with a generator that hangs does not block typing",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6614,
+      "failures": []
+    },
+    {
+      "scenario": "the shell works when the config file is broken",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 8474,
+      "failures": []
+    },
+    {
+      "scenario": "a command that prints without a newline at the end",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6416,
+      "failures": []
+    },
+    {
+      "scenario": "quick resize back and forth with the list open",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 9156,
+      "failures": []
+    },
+    {
+      "scenario": "Shift+Down moves an entry and the order stays",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 8082,
+      "failures": []
+    },
+    {
+      "scenario": "a lone dash runs the previous folder",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6615,
+      "failures": []
+    },
+    {
+      "scenario": "git checkout - runs as typed",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6409,
+      "failures": []
+    },
+    {
+      "scenario": "sudo in front keeps the list of the command",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4694,
+      "failures": []
+    },
+    {
+      "scenario": "the second command after && gets its own list",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7539,
+      "failures": []
+    },
+    {
+      "scenario": "the command after a pipe gets its own list",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7282,
+      "failures": []
+    },
+    {
+      "scenario": "ssh hosts from the ssh config, a capital one is marked",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4809,
+      "failures": []
+    },
+    {
+      "scenario": "an option with an equals sign",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 8236,
+      "failures": []
+    },
+    {
+      "scenario": "environment variables after a dollar",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4870,
+      "failures": []
+    },
+    {
+      "scenario": "editing in the middle of the line",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 12754,
+      "failures": []
+    },
+    {
+      "scenario": "docker compose logs takes a service",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6111,
+      "failures": []
+    },
+    {
+      "scenario": "npm install of a version does not block typing without network",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7013,
+      "failures": []
+    },
+    {
+      "scenario": "icons off still shows the entries",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4812,
+      "failures": []
+    },
+    {
+      "scenario": "a long description is cut, not wrapped",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4859,
+      "failures": []
+    },
+    {
+      "scenario": "the first word with recent commands",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6869,
+      "failures": []
+    },
+    {
+      "scenario": "→ on a folder puts it on the line and lists what is inside",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5083,
+      "failures": []
+    },
+    {
+      "scenario": "→ twice walks two levels down",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6493,
+      "failures": []
+    },
+    {
+      "scenario": "Enter on a folder after → goes straight into it",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6699,
+      "failures": []
+    },
+    {
+      "scenario": "Enter right after → runs cd where the walk is",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5783,
+      "failures": []
+    },
+    {
+      "scenario": "← goes back to the line before →",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6240,
+      "failures": []
+    },
+    {
+      "scenario": "GNU screen around thint",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": false,
+      "timedOut": false,
+      "ms": 15864,
+      "failures": [
+        "step 1: expected \"status\" in the list; screen:\ndc=\\\\E[P:DC=\\\\E[%dP:\\\\\\x1eTERMCAP=      :im=\\\\E[4h:ei=\\\\E[4l:mi:IC=\\\\E[%d@:ks=\\\\\nE[?1h\\\\E=:\\\\\\x1eTERMCAP=        :ke=\\\\E[?1l\\\\E>:vi=\\\\E[?25l:ve=\\\\E[34h\\\\E[?25h:v\ns=\\\\E[34l:\\\\\\x1eTERMCAP=        :ti=\\\\E[?1049h:te=\\\\E[?1049l:us=\\\\E[4m:ue=\\\\E[24\nm:so=\\\\E[3m:\\\\\\x1eTERMCAP=      :se=\\\\E[23m:mb=\\\\E[5m:md=\\\\E[1m:mh=\\\\E[2m:mr=\\\\E\n[7m:\\\\\\x1eTERMCAP=      :me=\\\\E[m:ms:\\\\\\x1eTERMCAP=     :Co#8:pa#64:AF=\\\\E[3%dm:\nAB=\\\\E[4%dm:op=\\\\E[39\\x3b49m:AX:\\\\\\x1eTERMCAP=  :vb=\\\\Eg:G0:as=\\\\E(0:ae=\\\\E(B:\\\\\n\\x1eTERMCAP=    :ac=\\\\140\\\\140aaffggjjkkllmmnnooppqqrrssttuuvvwwxxyyzz{{||}}~~..\n--++,,hhII00:\\\\\\x1eTERMCAP=     :po=\\\\E[5i:pf=\\\\E[4i:k0=\\\\E[10~:k1=\\\\EOP:k2=\\\\EO\nQ:k3=\\\\EOR:\\\\\\x1eTERMCAP=       :k4=\\\\EOS:k5=\\\\E[15~:k6=\\\\E[17~:k7=\\\\E[18~:k8=\\\\\nE[19~:\\\\\\x1eTERMCAP=    :k9=\\\\E[20~:k\\x3b=\\\\E[21~:F1=\\\\E[23~:F2=\\\\E[24~:F3=\\\\E[1\n\\x3b2P:\\\\\\x1eTERMCAP=   :F4=\\\\E[1\\x3b2Q:F5=\\\\E[1\\x3b2R:F6=\\\\E[1\\x3b2S:F7=\\\\E[15\\\nx3b2~:\\\\\\x1eTERMCAP=    :F8=\\\\E[17\\x3b2~:F9=\\\\E[18\\x3b2~:FA=\\\\E[19\\x3b2~:kb=^H:K\n2=\\\\EOE:\\\\\\x1eTERMCAP=  :kB=\\\\E[Z:kF=\\\\E[1\\x3b2B:kR=\\\\E[1\\x3b2A:*4=\\\\E[3\\x3b2~:*\n7=\\\\E[1\\x3b2F:\\\\\\x1eTERMCAP=    :#2=\\\\E[1\\x3b2H:#3=\\\\E[2\\x3b2~:#4=\\\\E[1\\x3b2D:%c\n=\\\\E[6\\x3b2~:%e=\\\\E[5\\x3b2~:\\\\\\x1eTERMCAP=      :%i=\\\\E[1\\x3b2C:kh=\\\\E[1~:@1=\\\\E\n[1~:kH=\\\\E[4~:@7=\\\\E[4~:\\\\\\x1eTERMCAP=  :kN=\\\\E[6~:kP=\\\\E[5~:kI=\\\\E[2~:kD=\\\\E[3~\n:ku=\\\\EOA:kd=\\\\EOB:\\\\\\x1eTERMCAP=       :kr=\\\\EOC:kl=\\\\EOD:km:\\x1eTHINT_NO_ATUIN\n=1\\x1eTHINT_NO_UPDATE_CHECK=1\\x1eTHINT_NO_ZOXIDE=1\\x1eTMPDIR=/var/folders/h5/t85\nnd63d71x27_8gl5gw3l_w0000gn/T/\\x1eUSER=runner\\x1eUSERPROFILE=/var/folders/h5/t85\nnd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-gO7wua/home-OW0Jjc\\x1eVCPKG_INSTALLATION_\nROOT=/usr/local/share/vcpkg\\x1eVM_ASSETS=/usr/local/opt/runner/scripts\\x1eWINDOW\n=0\\x1eXCODE_26_DEVELOPER_DIR=/Applications/Xcode_26.6.app/Contents/Developer\\x1e\nXPC_trueS=0x0\\x1eXPC_SERVICE_NAME=0\\x1e__CF_USER_TEXT_ENCODING=0x1F5:0x0:0x0qa$\n                                                                               ",
+        "step 1: expected the list; screen:\ndc=\\\\E[P:DC=\\\\E[%dP:\\\\\\x1eTERMCAP=      :im=\\\\E[4h:ei=\\\\E[4l:mi:IC=\\\\E[%d@:ks=\\\\\nE[?1h\\\\E=:\\\\\\x1eTERMCAP=        :ke=\\\\E[?1l\\\\E>:vi=\\\\E[?25l:ve=\\\\E[34h\\\\E[?25h:v\ns=\\\\E[34l:\\\\\\x1eTERMCAP=        :ti=\\\\E[?1049h:te=\\\\E[?1049l:us=\\\\E[4m:ue=\\\\E[24\nm:so=\\\\E[3m:\\\\\\x1eTERMCAP=      :se=\\\\E[23m:mb=\\\\E[5m:md=\\\\E[1m:mh=\\\\E[2m:mr=\\\\E\n[7m:\\\\\\x1eTERMCAP=      :me=\\\\E[m:ms:\\\\\\x1eTERMCAP=     :Co#8:pa#64:AF=\\\\E[3%dm:\nAB=\\\\E[4%dm:op=\\\\E[39\\x3b49m:AX:\\\\\\x1eTERMCAP=  :vb=\\\\Eg:G0:as=\\\\E(0:ae=\\\\E(B:\\\\\n\\x1eTERMCAP=    :ac=\\\\140\\\\140aaffggjjkkllmmnnooppqqrrssttuuvvwwxxyyzz{{||}}~~..\n--++,,hhII00:\\\\\\x1eTERMCAP=     :po=\\\\E[5i:pf=\\\\E[4i:k0=\\\\E[10~:k1=\\\\EOP:k2=\\\\EO\nQ:k3=\\\\EOR:\\\\\\x1eTERMCAP=       :k4=\\\\EOS:k5=\\\\E[15~:k6=\\\\E[17~:k7=\\\\E[18~:k8=\\\\\nE[19~:\\\\\\x1eTERMCAP=    :k9=\\\\E[20~:k\\x3b=\\\\E[21~:F1=\\\\E[23~:F2=\\\\E[24~:F3=\\\\E[1\n\\x3b2P:\\\\\\x1eTERMCAP=   :F4=\\\\E[1\\x3b2Q:F5=\\\\E[1\\x3b2R:F6=\\\\E[1\\x3b2S:F7=\\\\E[15\\\nx3b2~:\\\\\\x1eTERMCAP=    :F8=\\\\E[17\\x3b2~:F9=\\\\E[18\\x3b2~:FA=\\\\E[19\\x3b2~:kb=^H:K\n2=\\\\EOE:\\\\\\x1eTERMCAP=  :kB=\\\\E[Z:kF=\\\\E[1\\x3b2B:kR=\\\\E[1\\x3b2A:*4=\\\\E[3\\x3b2~:*\n7=\\\\E[1\\x3b2F:\\\\\\x1eTERMCAP=    :#2=\\\\E[1\\x3b2H:#3=\\\\E[2\\x3b2~:#4=\\\\E[1\\x3b2D:%c\n=\\\\E[6\\x3b2~:%e=\\\\E[5\\x3b2~:\\\\\\x1eTERMCAP=      :%i=\\\\E[1\\x3b2C:kh=\\\\E[1~:@1=\\\\E\n[1~:kH=\\\\E[4~:@7=\\\\E[4~:\\\\\\x1eTERMCAP=  :kN=\\\\E[6~:kP=\\\\E[5~:kI=\\\\E[2~:kD=\\\\E[3~\n:ku=\\\\EOA:kd=\\\\EOB:\\\\\\x1eTERMCAP=       :kr=\\\\EOC:kl=\\\\EOD:km:\\x1eTHINT_NO_ATUIN\n=1\\x1eTHINT_NO_UPDATE_CHECK=1\\x1eTHINT_NO_ZOXIDE=1\\x1eTMPDIR=/var/folders/h5/t85\nnd63d71x27_8gl5gw3l_w0000gn/T/\\x1eUSER=runner\\x1eUSERPROFILE=/var/folders/h5/t85\nnd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-gO7wua/home-OW0Jjc\\x1eVCPKG_INSTALLATION_\nROOT=/usr/local/share/vcpkg\\x1eVM_ASSETS=/usr/local/opt/runner/scripts\\x1eWINDOW\n=0\\x1eXCODE_26_DEVELOPER_DIR=/Applications/Xcode_26.6.app/Contents/Developer\\x1e\nXPC_trueS=0x0\\x1eXPC_SERVICE_NAME=0\\x1e__CF_USER_TEXT_ENCODING=0x1F5:0x0:0x0qa$\n                                                                               "
+      ],
+      "home": "/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-gO7wua/home-OW0Jjc",
+      "raw": "           \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \u001b[53D\u001b[?12l\u001b[?25h\b\u001b[36m\u001b[96m)\u001b[39m\r\u001b[26C\u001b[?25l\r\u001b[K                   \u001b[2m╭──────────────────────────────────╮\u001b[0m                        \r\u001b[K                   \u001b[2m│\u001b[35m \u001b[7mstring\u001b[39m\u001b[27m\u001b[0m\u001b[2m                           │\u001b[0m                        \r\u001b[K                   \u001b[2m╰──────────────────────────────────╯\u001b[0m                        \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \u001b[53D\u001b[?12l\u001b[?25h\u001b[?25l\r\u001b[K                  \u001b[2m╭──────────────────────────────────╮\u001b[0m                         \r\u001b[K                  \u001b[2m│\u001b[35m \u001b[7mstring\u001b[39m\u001b[27m\u001b[0m\u001b[2m                           │\u001b[0m                         \r\u001b[K                  \u001b[2m╰──────────────────────────────────╯\u001b[0m                         \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \u001b[53D\u001b[?12l\u001b[?25h\u001b[?25l\r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \u001b[53D\u001b[?12l\u001b[?25h\r\nalive-42\r\n\u001b[2m⏎\u001b[0m                                                                               \r⏎ \r\u001b[Kqa$ \u001b[K\r\u001b[4Cex\r\u001b[6Ci\r\u001b[7Ct\r\u001b[8C\u001b[4Dexit\r\u001b[8C\r\n\u001b[H\u001b[2J\u001b[?1l\u001b>\u001b[24;1H\r\n\u001b[?1049l[screen is terminating]\r\n",
+      "log": "configuration, even if the branch.autoSetupMerge configuration variable is true\",\"args\":[{\"generators\":{\"script\":[\"git\",\"--no-optional-locks\",\"branch\",\"--no-color\",\"--sort=-committerdate\"]},\"filterStrategy\":\"fuzzy\"},{\"isOptional\":true,\"generators\":{\"script\":[\"git\",\"--no-optional-locks\",\"branch\",\"--no-color\",\"--sort=-committerdate\"]},\"filterStrategy\":\"fuzzy\"}]},{\"name\":\"--orphan\",\"description\":\"Create a new orphan branch, named <new-branch>\",\"args\":{\"name\":\"new branch\"}},{\"name\":\"--ignore-other-worktrees\",\"description\":\"Git switch refuses when the wanted ref is already checked out by another worktree\"},{\"name\":\"--recurse-submodules\",\"exclusiveOn\":[\"--no-recurse-submodules\"],\"description\":\"Updates the content of all active submodules according to the commit recorded in the superproject\"},{\"name\":\"--no-recurse-submodules\",\"exclusiveOn\":[\"--recurse-submodules\"],\"description\":\"Submodules working trees will not be updated\"}],\"args\":[{\"name\":\"branch name\",\"description\":\"Branch or commit to switch to\",\"generators\":{\"script\":[\"git\",\"--no-optional-locks\",\"branch\",\"--no-color\",\"--sort=-committerdate\"]},\"filterStrategy\":\"fuzzy\",\"suggestions\":[{\"name\":\"-\",\"description\":\"Switch to the last used branch\",\"icon\":\"fig://icon?type=git\"}]},{\"name\":\"start point\",\"isOptional\":true,\"generators\":{\"script\":[\"git\",\"--no-optional-locks\",\"log\",\"--oneline\"]}}]},{\"name\":\"worktree\",\"description\":\"Manage multiple working trees\",\"subcommands\":[{\"name\":\"add\",\"description\":\"Create <path> and checkout <commit-ish> into it\",\"options\":[{\"name\":[\"-f\",\"--force\"],\"description\":\"By default, add refuses to create a new working tree when <commit-ish> is a branch name and is already checked out by another working tree, or if <path> is already assigned to some working tree but is missing (for instance, if <path> was deleted manually). This option overrides these safeguards. To add a missing but locked working tree path, specify --force twice\"},{\"name\":[\"-d\",\"--detach\"],\"description\":\"With add, detach HEAD in the new working tree. See \\\"DETACHED HEAD\\\" in git-checkout[1]\"},{\"name\":\"--checkout\",\"description\":\"By default, add checks out <commit-ish>, however, --no-checkout can be used to suppress checkout in order to make customizations, such as configuring sparse-checkout. See \\\"Sparse checkout\\\" in git-read-tree[1]\"},{\"name\":\"--lock\",\"description\":\"Keep the working tree locked after creation. This is the equivalent of git worktree lock after git worktree add, but without a race condition\"},{\"name\":[\"-b\",\"-B\"],\"description\":\"With add, create a new branch named <new-branch> starting at <commit-ish>, and check out <new-branch> into the new working tree. If <commit-ish> is omitted, it defaults to HEAD. By default, -b refuses to create a new branch if it already exists. -B overrides this safeguard, resetting <new-branch> to <commit-ish>\",\"args\":{\"name\":\"new-branch\"}}]},{\"name\":\"list\",\"description\":\"List details of each working tree\",\"options\":[{\"name\":\"--porcelain\",\"description\":\"With list, output in an easy-to-parse format for scripts. This format will remain stable across Git versions and regardless of user configuration. See below for details\"},{\"name\":[\"-v\",\"--verbose\"],\"description\":\"With list, output additional information about worktrees (see below)\"},{\"name\":\"--expire\",\"description\":\"With list, annotate missing working trees as prunable if they are older than <time>\",\"args\":{\"name\":\"time\"}}]},{\"name\":\"lock\",\"description\":\"If a working tree is on a portable device or network share which is not always mounted, lock it to prevent its administrative files from being pruned automatically\",\"args\":{\"name\":\"worktree\",\"description\":\"Working trees can be identified by path, either relative or absolute\",\"generators\":[{}]},\"options\":[{\"name\":\"--reason\",\"description\":\"With lock or with add --lock, an explanation <reason> why the working tree is locked\",\"args\":{\"name\":\"reason\"}}]},{\"name\":\"move\",\"description\":\"Move a working tree to a new location\",\"args\":[{\"name\":\"worktree\",\"description\":\"Working trees can be identified by path, either relative or absolute\",\"generators\":[{}]},{\"name\":\"new-path\",\"template\":\"filepaths\"}],\"options\":[{\"name\":[\"-f\",\"--force\"],\"description\":\"Move refuses to move a locked working tree unless --force is specified twice. If the destination is already assigned to some other working tree but is missing (for instance, if <new-path> was deleted manually), then --force allows the move to proceed; use --force twice if the destination is locked\"}]},{\"name\":\"prune\",\"description\":\"Prune working tree information in $GIT_DIR/worktrees\",\"options\":[{\"name\":[\"-n\",\"--dry-run\"],\"description\":\"With prune, do not remove anything; just report what it would remove\"},{\"name\":[\"-v\",\"--verbose\"],\"description\":\"With prune, report all removals\"},{\"name\":\"--expire\",\"description\":\"With prune, only expire unused working trees older than <time>\",\"args\":{\"name\":\"time\"}}]},{\"name\":\"remove\",\"description\":\"Remove a working tree\",\"args\":{\"name\":\"worktree\",\"description\":\"Working trees can be identified by path, either relative or absolute\",\"generators\":[{}]},\"options\":[{\"name\":[\"-f\",\"--force\"],\"description\":\"Remove refuses to remove an unclean working tree unless --force is used. To remove a locked working tree, specify --force twice\"}]},{\"name\":\"repair\",\"description\":\"Repair working tree administrative files, if possible, if they have become corrupted or outdated due to external factors\",\"args\":{\"name\":\"path\",\"template\":\"filepaths\",\"generators\":[{}]}},{\"name\":\"unlock\",\"description\":\"Unlock a working tree, allowing it to be pruned, moved or deleted\",\"args\":{\"name\":\"worktree\",\"description\":\"Working trees can be identified by path, either relative or absolute\",\"generators\":[{}]}}]},{\"name\":\"apply\",\"description\":\"Apply a patch to files and/or to the index\",\"options\":[{\"name\":\"--exclude\",\"description\":\"Don't apply changes matching the given path\",\"args\":{\"name\":\"path\"}},{\"name\":\"--include\",\"description\":\"Apply changes matching the given path\",\"args\":{\"name\":\"path\"}},{\"name\":\"-p\",\"description\":\"Remove <num> leading slashes from traditional diff paths\",\"args\":{\"name\":\"num\"}},{\"name\":\"--no-add\",\"description\":\"Ignore additions made by the patch\"},{\"name\":\"--stat\",\"description\":\"Instead of applying the patch, output diffstat for the input\"},{\"name\":\"--numstat\",\"description\":\"Show number of added and deleted lines in decimal notation\"},{\"name\":\"--summary\",\"description\":\"Instead of applying the patch, output a summary for the input\"},{\"name\":\"--check\",\"description\":\"Instead of applying the patch, see if the patch is applicable\"},{\"name\":\"--index\",\"description\":\"Make sure the patch is applicable to the current index\"},{\"name\":[\"-N\",\"--intent-to-add\"],\"description\":\"Mark new files with `git add --intent-to-add`\"},{\"name\":\"--cached\",\"description\":\"Apply a patch without touching the working tree\"},{\"name\":\"--unsafe-paths\",\"description\":\"Accept a patch that touches outside the working area\"},{\"name\":\"--apply\",\"description\":\"Also apply the patch (use with --stat/--summary/--check)\"},{\"name\":[\"-3\",\"--3way\"],\"description\":\"Attempt three-way merge if a patch does not apply\"},{\"name\":\"--build-fake-ancestor\",\"description\":\"Build a temporary index based on embedded index information\",\"args\":{\"name\":\"file\"}},{\"name\":\"-z\",\"description\":\"Paths are separated with NUL character\"},{\"name\":\"-C\",\"description\":\"Ensure at least <n> lines of context match\",\"args\":{\"name\":\"n\"}},{\"name\":\"--whitespace\",\"description\":\"Detect new or modified lines that have whitespace errors\",\"args\":{\"name\":\"action\",\"suggestions\":[{\"name\":\"nowarn\",\"description\":\"Turns off the trailing whitespace warning\"},{\"name\":\"warn\",\"description\":\"Outputs warnings for a few such errors, but applies the patch as-is (default)\"},{\"name\":\"fix\",\"description\":\"Outputs warnings for a few such errors, and applies the patch after fixing them\"},{\"name\":\"error\",\"description\":\"Outputs warnings for a few such errors, and refuses to apply the patch\"},{\"name\":\"error-all\",\"description\":\"Similar to `error` but shows all errors\"}]}},{\"name\":[\"--ignore-space-change\",\"--ignore-whitespace\"],\"description\":\"Ignore changes in whitespace when finding context\"},{\"name\":[\"-R\",\"--reverse\"],\"description\":\"Apply the patch in reverse\"},{\"name\":\"--unidiff-zero\",\"description\":\"Don't expect at least one line of context\"},{\"name\":\"--reject\",\"description\":\"Leave the rejected hunks in corresponding *.rej files\"},{\"name\":\"--allow-overlap\",\"description\":\"Allow overlapping hunks\"},{\"name\":[\"-v\",\"--verbose\"],\"description\":\"Be verbose\"},{\"name\":\"--inaccurate-eof\",\"description\":\"Tolerate incorrectly detected missing new-line at the end of file\"},{\"name\":\"--recount\",\"description\":\"Do not trust the line counts in the hunk headers\"},{\"name\":\"--directory\",\"description\":\"Prepend <root> to all filenames\",\"args\":{\"name\":\"root\"}}],\"args\":{\"name\":\"patch\",\"isVariadic\":true}},{\"name\":\"daemon\",\"description\":\"A really simple server for Git repositories\",\"args\":{\"name\":\"directory\",\"description\":\"A directory to add to the whitelist of allowed directories. Unless --strict-paths is specified this will also include subdirectories of each named directory\",\"isVariadic\":true},\"options\":[{\"name\":\"--strict-paths\",\"description\":\"Match paths exactly (i.e. don’t allow \\\"/foo/repo\\\" when the real path is \\\"/foo/repo.git\\\" or \\\"/foo/repo/.git\\\") and don’t do user-relative paths.  git daemon will refuse to start when this option is enabled and no whitelist is specified\"},{\"name\":\"--base-path\",\"description\":\"Remap all the path requests as relative to the given path\",\"requiresSeparator\":true,\"args\":{\"name\":\"path\",\"template\":\"folders\"}},{\"name\":\"--base-path-relaxed\",\"description\":\"If --base-path is enabled and repo lookup fails, with this option git daemon will attempt to lookup without prefixing the base path. This is useful for switching to --base-path usage, while still allowing the old paths\"},{\"name\":\"--interpolated-path\",\"requiresSeparator\":true,\"description\":\"To support virtual hosting, an interpolated path template can be used to dynamically construct alternate paths. The template supports %H for the target hostname as supplied by the client but converted to all lowercase, %CH for the canonical hostname, %IP for the server’s IP address, %P for the port number, and %D for the absolute path of the named repository. After interpolation, the path is validated against the directory whitelist\",\"args\":{\"name\":\"path-template\"}},{\"name\":\"--export-all\",\"description\":\"Allow pulling from all directories that look like Git repositories (have the objects and refs subdirectories), even if they do not have the git-daemon-export-ok file\"},{\"name\":\"--inetd\",\"description\":\"Have the server run as an inetd service\",\"exclusiveOn\":[\"--pid-file\",\"--user\",\"--group\"]},{\"name\":\"--listen\",\"description\":\"Listen on a specific IP address or hostname. IP addresses can be either an IPv4 address or an IPv6 address if supported. If IPv6 is not supported, then --listen=hostname is also not supported and --listen must be given an IPv4 address. Can be given more than once. Incompatible with --inetd option\",\"requiresSeparator\":true,\"args\":{\"name\":\"host_or_ipaddr\"}},{\"name\":\"--port\",\"description\":\"Listen on an alternative port. Incompatible with --inetd option\",\"requiresSeparator\":true,\"args\":{\"name\":\"port\"}},{\"name\":\"--init-timeout\",\"description\":\"Timeout (in seconds) between the moment the connection is established and the client request is received (typically a rather low value, since that should be basically immediate)\",\"requiresSeparator\":true,\"args\":{\"name\":\"timeout\"}},{\"name\":\"--max-connections\",\"description\":\"Maximum number of concurrent clients, defaults to 32. Set it to zero for no limit\",\"requiresSeparator\":true,\"args\":{\"name\":\"maximum\"}},{\"name\":\"--syslog\",\"description\":\"Short for --log-destination=syslog\"},{\"name\":\"--log-destination\",\"description\":\"Send log messages to the specified destination. Note that this option does not imply --verbose, thus by default only error conditions will be logged. The default destination is syslog if --inetd or --detach is specified, otherwise stderr\",\"requiresSeparator\":true,\"args\":{\"name\":\"destination\",\"suggestions\":[{\"name\":\"stderr\",\"description\":\"Write to standard error. Note that if --detach is specified, the process disconnects from the real standard error, making this destination effectively equivalent to none\"},{\"name\":\"syslog\",\"description\":\"Write to syslog, using the git-daemon identifier\"},{\"name\":\"none\",\"description\":\"Disable all logging\"}]}},{\"name\":\"--user-path\",\"description\":\"Allow ~user notation to be used in requests. When specified with no parameter, requests to git://host/~alice/foo is taken as a request to access foo repository in the home directory of user alice. If --user-path=some-path is specified, the same request is taken as a request to access the some-path/foo repository in the home directory of user alice\",\"requiresSeparator\":true,\"args\":{\"name\":\"path\",\"template\":\"folders\"}},{\"name\":\"--verbose\",\"description\":\"Log details about the incoming connections and requested files\"},{\"name\":\"--detach\",\"description\":\"Detach from the shell. Implies --syslog\"},{\"name\":\"--pid-file\",\"description\":\"Save the process id in the provided file\",\"requiresSeparator\":true,\"args\":{\"name\":\"file\",\"template\":\"filepaths\"},\"exclusiveOn\":[\"--inetd\"]},{\"name\":\"--user\",\"description\":\"Change daemon’s uid and gid before entering the service loop. When only --user is given without --group, the primary group ID for the user is used. The values of the option are given to getpwnam(3) and getgrnam(3) and numeric IDs are not supported\",\"requiresSeparator\":true,\"exclusiveOn\":[\"--inetd\"],\"args\":{\"name\":\"user\"}},{\"name\":\"--group\",\"description\":\"Change daemon’s gid before entering the service loop. The value of this option is given to getgrnam(3) and numeric IDs are not supported\",\"exclusiveOn\":[\"--inetd\"]},{\"name\":\"--enable\",\"description\":\"Enable the service site-wide per default\",\"requiresSeparator\":true,\"args\":{\"name\":\"service\",\"suggestions\":[{\"name\":\"upload-pack\",\"description\":\"This serves git fetch-pack and git ls-remote clients. It is enabled by default, but a repository can disable it by setting daemon.uploadpack configuration item to false\"},{\"name\":\"upload-archive\",\"description\":\"This serves git archive --remote. It is disabled by default, but a repository can enable it by setting daemon.uploadarch configuration item to true\"},{\"name\":\"receive-pack\",\"description\":\"This serves git send-pack clients, allowing anonymous push. It is disabled by default, as there is no authentication in the protocol (in other words, anybody can push anything into the repository, including removal of refs). This is solely meant for a closed LAN setting where everybody is friendly. This service can be enabled by setting daemon.receivepack configuration item to true\"}]}},{\"name\":\"--disable\",\"description\":\"Disable the service site-wide per default. Note that a service disabled site-wide can still be enabled per repository if it is marked overridable and the repository enables the service with a configuration item\",\"requiresSeparator\":true,\"args\":{\"name\":\"service\",\"suggestions\":[{\"name\":\"upload-pack\",\"description\":\"This serves git fetch-pack and git ls-remote clients. It is enabled by default, but a repository can disable it by setting daemon.uploadpack configuration item to false\"},{\"name\":\"upload-archive\",\"description\":\"This serves git archive --remote. It is disabled by default, but a repository can enable it by setting daemon.uploadarch configuration item to true\"},{\"name\":\"receive-pack\",\"description\":\"This serves git send-pack clients, allowing anonymous push. It is disabled by default, as there is no authentication in the protocol (in other words, anybody can push anything into the repository, including removal of refs). This is solely meant for a closed LAN setting where everybody is friendly. This service can be enabled by setting daemon.receivepack configuration item to true\"}]}},{\"name\":\"--allow-override\",\"description\":\"Allow overriding the site-wide default with per repository configuration. By default, all the services may be overridden\",\"requiresSeparator\":true,\"args\":{\"name\":\"service\",\"suggestions\":[{\"name\":\"upload-pack\",\"description\":\"This serves git fetch-pack and git ls-remote clients. It is enabled by default, but a repository can disable it by setting daemon.uploadpack configuration item to false\"},{\"name\":\"upload-archive\",\"description\":\"This serves git archive --remote. It is disabled by default, but a repository can enable it by setting daemon.uploadarch configuration item to true\"},{\"name\":\"receive-pack\",\"description\":\"This serves git send-pack clients, allowing anonymous push. It is disabled by default, as there is no authentication in the protocol (in other words, anybody can push anything into the repository, including removal of refs). This is solely meant for a closed LAN setting where everybody is friendly. This service can be enabled by setting daemon.receivepack configuration item to true\"}]}},{\"name\":\"--forbid-override\",\"description\":\"Forbid overriding the site-wide default with per repository configuration. By default, all the services may be overridden\",\"requiresSeparator\":true,\"args\":{\"name\":\"service\",\"suggestions\":[{\"name\":\"upload-pack\",\"description\":\"This serves git fetch-pack and git ls-remote clients. It is enabled by default, but a repository can disable it by setting daemon.uploadpack configuration item to false\"},{\"name\":\"upload-archive\",\"description\":\"This serves git archive --remote. It is disabled by default, but a repository can enable it by setting daemon.uploadarch configuration item to true\"},{\"name\":\"receive-pack\",\"description\":\"This serves git send-pack clients, allowing anonymous push. It is disabled by default, as there is no authentication in the protocol (in other words, anybody can push anything into the repository, including removal of refs). This is solely meant for a closed LAN setting where everybody is friendly. This service can be enabled by setting daemon.receivepack configuration item to true\"}]}},{\"name\":\"--informative-errors\",\"description\":\"When informative errors are turned on, git-daemon will report more verbose errors to the client, differentiating conditions like \\\"no such repository\\\" from \\\"repository not exported\\\". This is more convenient for clients, but may leak information about the existence of unexported repositories. When informative errors are not enabled, all errors report \\\"access denied\\\" to the client\",\"exclusiveOn\":[\"--no-informative-errors\"]},{\"name\":\"--no-informative-errors\",\"description\":\"Turn off informative errors. This option is the default. See --informative-errors for more information\",\"exclusiveOn\":[\"--informative-errors\"]},{\"name\":\"--access-hook\",\"description\":\"Every time a client connects, first run an external command specified by the <path> with service name (e.g. \\\"upload-pack\\\"), path to the repository, hostname (%H), canonical hostname (%CH), IP address (%IP), and TCP port (%P) as its command-line arguments. The external command can decide to decline the service by exiting with a non-zero status (or to allow it by exiting with a zero status). It can also look at the $REMOTE_ADDR and $REMOTE_PORT environment variables to learn about the requestor when making this decision.\\n\\nThe external command can optionally write a single line to its standard output to be sent to the requestor as an error message when it declines the service\",\"requiresSeparator\":true,\"args\":{\"name\":\"path\",\"template\":\"filepaths\"}}]}],\"additionalSuggestions\":[{\"name\":\"commit -m 'msg'\",\"description\":\"Git commit shortcut\",\"insertValue\":\"commit -m '{cursor}'\",\"icon\":\"fig://template?color=2ecc71&badge=🔥\"}]},\"persistentOptions\":[],\"partialToken\":{\"token\":\"sta\",\"tokenLength\":3,\"complete\":false,\"isOption\":false},\"argsDepleted\":false,\"argsFromSubcommand\":false,\"acceptedTokens\":[],\"cwd\":\"/private/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-gO7wua/home-OW0Jjc/Dev/shop\"}"
+    },
+    {
+      "scenario": "← one level up highlights the folder it came from",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7980,
+      "failures": []
+    },
+    {
+      "scenario": "without a walk ← moves the cursor as always",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6123,
+      "failures": []
+    },
+    {
+      "scenario": "→ works for other commands too",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5061,
+      "failures": []
+    },
+    {
+      "scenario": "a short tip on a highlighted folder tells that → looks inside",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5317,
+      "failures": []
+    },
+    {
+      "scenario": "typing after → ends the walk, so ← moves the cursor again",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 9222,
+      "failures": []
+    },
+    {
+      "scenario": "aws options complete after a command",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7958,
+      "failures": []
+    },
+    {
+      "scenario": "aws completes services and their commands",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 10502,
+      "failures": []
+    },
+    {
+      "scenario": "gcloud completes groups and commands",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 10639,
+      "failures": []
+    },
+    {
+      "scenario": "a typo of awk gets awk, not aws",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7489,
+      "failures": []
+    },
+    {
+      "scenario": "a PATH change made at the prompt reaches the lists",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 11563,
+      "failures": []
+    },
+    {
+      "scenario": "a variable exported at the prompt reaches the lists",
+      "shell": "fish",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 9315,
+      "failures": []
+    }
+  ]
+}

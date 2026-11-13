@@ -1,0 +1,2766 @@
+{
+  "platform": "linux",
+  "shells": [
+    "zsh",
+    "bash"
+  ],
+  "started": [
+    "zsh",
+    "bash"
+  ],
+  "planned": 298,
+  "strayErrors": 0,
+  "health": [
+    {
+      "done": 50,
+      "at": 1794531522301,
+      "terminalsHeldByRunner": 2,
+      "terminalsInSystem": 4,
+      "processesLeft": 2,
+      "sample": [
+        "   7150    4026 Ssl+ /opt/hostedtoolcache/node/26.13.0/x64/bin/node /home/runner/work/terminalhinter/terminalhinter/build/index.js -s zsh",
+        "   7220    4026 Rsl+ /opt/hostedtoolcache/node/26.13.0/x64/bin/node /home/runner/work/terminalhinter/terminalhinter/build/index.js -s bash"
+      ]
+    },
+    {
+      "done": 100,
+      "at": 1794531589826,
+      "terminalsHeldByRunner": 2,
+      "terminalsInSystem": 4,
+      "processesLeft": 2,
+      "sample": [
+        "  10382    4026 Ssl+ /opt/hostedtoolcache/node/26.13.0/x64/bin/node /home/runner/work/terminalhinter/terminalhinter/build/index.js -s zsh",
+        "  10449    4026 Rsl+ /opt/hostedtoolcache/node/26.13.0/x64/bin/node /home/runner/work/terminalhinter/terminalhinter/build/index.js -s bash"
+      ]
+    },
+    {
+      "done": 150,
+      "at": 1794531650626,
+      "terminalsHeldByRunner": 2,
+      "terminalsInSystem": 5,
+      "processesLeft": 3,
+      "sample": [
+        "  13207    4026 Ssl+ /opt/hostedtoolcache/node/26.13.0/x64/bin/node /home/runner/work/terminalhinter/terminalhinter/build/index.js -s zsh",
+        "  13258    4026 Ssl+ /opt/hostedtoolcache/node/26.13.0/x64/bin/node /home/runner/work/terminalhinter/terminalhinter/build/index.js -s bash",
+        "  13271   13258 Ss+  bash --init-file /tmp/thint-qa-8tMw4k/home-locVlx/.local/share/terminalhinter/shell/shellIntegration.bash"
+      ]
+    },
+    {
+      "done": 200,
+      "at": 1794531727226,
+      "terminalsHeldByRunner": 2,
+      "terminalsInSystem": 7,
+      "processesLeft": 3,
+      "sample": [
+        "  16402    4026 Ssl+ /opt/hostedtoolcache/node/26.13.0/x64/bin/node /home/runner/work/terminalhinter/terminalhinter/build/index.js -s zsh",
+        "  16462    4026 Ssl+ /opt/hostedtoolcache/node/26.13.0/x64/bin/node /home/runner/work/terminalhinter/terminalhinter/build/index.js -s bash",
+        "  16475   16462 Ss+  bash --init-file /tmp/thint-qa-8tMw4k/home-R6eaMY/.local/share/terminalhinter/shell/shellIntegration.bash"
+      ]
+    },
+    {
+      "done": 250,
+      "at": 1794531794398,
+      "terminalsHeldByRunner": 2,
+      "terminalsInSystem": 5,
+      "processesLeft": 2,
+      "sample": [
+        "  19433    4026 Ssl+ /opt/hostedtoolcache/node/26.13.0/x64/bin/node /home/runner/work/terminalhinter/terminalhinter/build/index.js -s zsh",
+        "  19498    4026 Rsl+ /opt/hostedtoolcache/node/26.13.0/x64/bin/node /home/runner/work/terminalhinter/terminalhinter/build/index.js -s bash"
+      ]
+    }
+  ],
+  "results": [
+    {
+      "scenario": "git branch from the list with Tab",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3430,
+      "failures": []
+    },
+    {
+      "scenario": "the list opens after a command and a space",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3507,
+      "failures": []
+    },
+    {
+      "scenario": "git branch from the list with Tab",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4476,
+      "failures": []
+    },
+    {
+      "scenario": "the list opens after a command and a space",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 2478,
+      "failures": []
+    },
+    {
+      "scenario": "typing narrows the list",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 2661,
+      "failures": []
+    },
+    {
+      "scenario": "typing narrows the list",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3553,
+      "failures": []
+    },
+    {
+      "scenario": "Tab puts the selected entry on the line",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3672,
+      "failures": []
+    },
+    {
+      "scenario": "Tab puts the selected entry on the line",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3020,
+      "failures": []
+    },
+    {
+      "scenario": "Enter on a typed word takes the entry and does not run",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3837,
+      "failures": []
+    },
+    {
+      "scenario": "Enter on a typed word takes the entry and does not run",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 2868,
+      "failures": []
+    },
+    {
+      "scenario": "Enter right after a space runs the command",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3822,
+      "failures": []
+    },
+    {
+      "scenario": "Enter right after a space runs the command",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3054,
+      "failures": []
+    },
+    {
+      "scenario": "Enter runs a word typed in full that no entry starts with",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3668,
+      "failures": []
+    },
+    {
+      "scenario": "Enter runs a word typed in full that no entry starts with",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 2982,
+      "failures": []
+    },
+    {
+      "scenario": "Esc hides the list until the next letter",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4106,
+      "failures": []
+    },
+    {
+      "scenario": "Esc hides the list until the next letter",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3274,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+Space shows the list again",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4002,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+Space shows the list again",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3322,
+      "failures": []
+    },
+    {
+      "scenario": "Down and Tab pick the second entry",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4124,
+      "failures": []
+    },
+    {
+      "scenario": "Down and Tab pick the second entry",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3216,
+      "failures": []
+    },
+    {
+      "scenario": "Backspace brings back what was there",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3739,
+      "failures": []
+    },
+    {
+      "scenario": "Backspace brings back what was there",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 2906,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+U empties the line and hides the list",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3585,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+U empties the line and hides the list",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 2980,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+C gives a fresh prompt with no list",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4462,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+C gives a fresh prompt with no list",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3740,
+      "failures": []
+    },
+    {
+      "scenario": "Up on a line with no selection walks the shell history",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4040,
+      "failures": []
+    },
+    {
+      "scenario": "Up on a line with no selection walks the shell history",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3247,
+      "failures": []
+    },
+    {
+      "scenario": "a pasted command lands as pasted",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3608,
+      "failures": []
+    },
+    {
+      "scenario": "a pasted command lands as pasted",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 2968,
+      "failures": []
+    },
+    {
+      "scenario": "a fast typist loses no letters",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3694,
+      "failures": []
+    },
+    {
+      "scenario": "a fast typist loses no letters",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 2903,
+      "failures": []
+    },
+    {
+      "scenario": "a long line that wraps keeps every letter",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4157,
+      "failures": []
+    },
+    {
+      "scenario": "a long line that wraps keeps every letter",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3463,
+      "failures": []
+    },
+    {
+      "scenario": "Polish letters and emoji go through untouched",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4263,
+      "failures": []
+    },
+    {
+      "scenario": "Polish letters and emoji go through untouched",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3405,
+      "failures": []
+    },
+    {
+      "scenario": "options of a command show with their descriptions",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3631,
+      "failures": []
+    },
+    {
+      "scenario": "options of a command show with their descriptions",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 2862,
+      "failures": []
+    },
+    {
+      "scenario": "an option already on the line is not offered again",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4000,
+      "failures": []
+    },
+    {
+      "scenario": "an option already on the line is not offered again",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 2982,
+      "failures": []
+    },
+    {
+      "scenario": "a command the specs do not know does not break anything",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4069,
+      "failures": []
+    },
+    {
+      "scenario": "a command the specs do not know does not break anything",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3502,
+      "failures": []
+    },
+    {
+      "scenario": "the list follows the line after a resize",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4172,
+      "failures": []
+    },
+    {
+      "scenario": "the list follows the line after a resize",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3489,
+      "failures": []
+    },
+    {
+      "scenario": "a full-screen program and back",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4912,
+      "failures": []
+    },
+    {
+      "scenario": "a full-screen program and back",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3959,
+      "failures": []
+    },
+    {
+      "scenario": "lots of output while typing the next command",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4143,
+      "failures": []
+    },
+    {
+      "scenario": "lots of output while typing the next command",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3213,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+L clears the screen and the list comes back on the new line",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3462,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+L clears the screen and the list comes back on the new line",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4345,
+      "failures": []
+    },
+    {
+      "scenario": "Enter runs a word that only appears inside a variable name",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3896,
+      "failures": []
+    },
+    {
+      "scenario": "Enter runs a word that only appears inside a variable name",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 2974,
+      "failures": []
+    },
+    {
+      "scenario": "Enter on an option that needs a value adds the space and waits for it",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5575,
+      "failures": []
+    },
+    {
+      "scenario": "git switch offers local branches with their last commit",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3557,
+      "failures": []
+    },
+    {
+      "scenario": "Enter on an option that needs a value adds the space and waits for it",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4840,
+      "failures": []
+    },
+    {
+      "scenario": "git switch offers local branches with their last commit",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 2771,
+      "failures": []
+    },
+    {
+      "scenario": "git checkout finds a branch by a word inside its name",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3144,
+      "failures": []
+    },
+    {
+      "scenario": "git checkout finds a branch by a word inside its name",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4019,
+      "failures": []
+    },
+    {
+      "scenario": "a branch picked with Enter runs only after a second Enter",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4170,
+      "failures": []
+    },
+    {
+      "scenario": "a branch picked with Enter runs only after a second Enter",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3474,
+      "failures": []
+    },
+    {
+      "scenario": "git stash show lists stashes by what they hold",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3752,
+      "failures": []
+    },
+    {
+      "scenario": "git stash show lists stashes by what they hold",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 2830,
+      "failures": []
+    },
+    {
+      "scenario": "git stash pop takes the stash from the list",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4257,
+      "failures": []
+    },
+    {
+      "scenario": "git stash pop takes the stash from the list",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3577,
+      "failures": []
+    },
+    {
+      "scenario": "git reset --hard is marked as risky and says why",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3585,
+      "failures": []
+    },
+    {
+      "scenario": "git reset --hard is marked as risky and says why",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 2907,
+      "failures": []
+    },
+    {
+      "scenario": "git push --force is marked as risky",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3665,
+      "failures": []
+    },
+    {
+      "scenario": "git push --force is marked as risky",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 2743,
+      "failures": []
+    },
+    {
+      "scenario": "git branch -D is marked as risky",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3458,
+      "failures": []
+    },
+    {
+      "scenario": "git branch -D is marked as risky",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 2796,
+      "failures": []
+    },
+    {
+      "scenario": "git add offers changed files",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3350,
+      "failures": []
+    },
+    {
+      "scenario": "git add offers changed files",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 2590,
+      "failures": []
+    },
+    {
+      "scenario": "a git alias completes like the command behind it",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 10632,
+      "failures": []
+    },
+    {
+      "scenario": "a git alias completes like the command behind it",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 9544,
+      "failures": []
+    },
+    {
+      "scenario": "git log options with descriptions",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3670,
+      "failures": []
+    },
+    {
+      "scenario": "git log options with descriptions",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 2875,
+      "failures": []
+    },
+    {
+      "scenario": "git commit -m keeps the quoted message as typed",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4113,
+      "failures": []
+    },
+    {
+      "scenario": "git commit -m keeps the quoted message as typed",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4832,
+      "failures": []
+    },
+    {
+      "scenario": "git merge offers branches",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3607,
+      "failures": []
+    },
+    {
+      "scenario": "git merge offers branches",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 2766,
+      "failures": []
+    },
+    {
+      "scenario": "git worktree add and remove",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5184,
+      "failures": []
+    },
+    {
+      "scenario": "git worktree add and remove",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5972,
+      "failures": []
+    },
+    {
+      "scenario": "git reflog after a reset",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6388,
+      "failures": []
+    },
+    {
+      "scenario": "outside a repository git still shows subcommands",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3363,
+      "failures": []
+    },
+    {
+      "scenario": "git reflog after a reset",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5717,
+      "failures": []
+    },
+    {
+      "scenario": "outside a repository git still shows subcommands",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 2548,
+      "failures": []
+    },
+    {
+      "scenario": "cd lists only folders",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3219,
+      "failures": []
+    },
+    {
+      "scenario": "cd lists only folders",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 2468,
+      "failures": []
+    },
+    {
+      "scenario": "Enter on a folder walks into it and keeps the list open",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3831,
+      "failures": []
+    },
+    {
+      "scenario": "Enter on a folder walks into it and keeps the list open",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 2922,
+      "failures": []
+    },
+    {
+      "scenario": "the run entry runs cd where you are",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4208,
+      "failures": []
+    },
+    {
+      "scenario": "the run entry runs cd where you are",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3561,
+      "failures": []
+    },
+    {
+      "scenario": "a folder with a space is escaped on the line",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3697,
+      "failures": []
+    },
+    {
+      "scenario": "a folder with a space is escaped on the line",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 2962,
+      "failures": []
+    },
+    {
+      "scenario": "a folder with a space works after Enter",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4239,
+      "failures": []
+    },
+    {
+      "scenario": "a folder with a space works after Enter",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5044,
+      "failures": []
+    },
+    {
+      "scenario": "a folder with Polish letters",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3751,
+      "failures": []
+    },
+    {
+      "scenario": "a folder with Polish letters",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 2886,
+      "failures": []
+    },
+    {
+      "scenario": "files are offered for cat with their names",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3682,
+      "failures": []
+    },
+    {
+      "scenario": "files are offered for cat with their names",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 2988,
+      "failures": []
+    },
+    {
+      "scenario": "a path in a subfolder",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3403,
+      "failures": []
+    },
+    {
+      "scenario": "a path in a subfolder",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 2599,
+      "failures": []
+    },
+    {
+      "scenario": "parent folder",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3446,
+      "failures": []
+    },
+    {
+      "scenario": "parent folder",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 2629,
+      "failures": []
+    },
+    {
+      "scenario": "home with a tilde",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3307,
+      "failures": []
+    },
+    {
+      "scenario": "home with a tilde",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 2646,
+      "failures": []
+    },
+    {
+      "scenario": "hidden files after a dot",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3347,
+      "failures": []
+    },
+    {
+      "scenario": "hidden files after a dot",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 2663,
+      "failures": []
+    },
+    {
+      "scenario": "an absolute path",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3520,
+      "failures": []
+    },
+    {
+      "scenario": "an absolute path",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 2578,
+      "failures": []
+    },
+    {
+      "scenario": "Enter on an absolute path takes the folder",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3601,
+      "failures": []
+    },
+    {
+      "scenario": "Enter on an absolute path takes the folder",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 2957,
+      "failures": []
+    },
+    {
+      "scenario": "Enter deeper in an absolute path takes the folder",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3936,
+      "failures": []
+    },
+    {
+      "scenario": "Enter deeper in an absolute path takes the folder",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 2991,
+      "failures": []
+    },
+    {
+      "scenario": "npm run lists the package.json scripts with their commands",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3392,
+      "failures": []
+    },
+    {
+      "scenario": "a bookmarked folder is offered by cd from anywhere",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7534,
+      "failures": []
+    },
+    {
+      "scenario": "npm run lists the package.json scripts with their commands",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 2700,
+      "failures": []
+    },
+    {
+      "scenario": "a bookmarked folder is offered by cd from anywhere",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6922,
+      "failures": []
+    },
+    {
+      "scenario": "a production-looking script is marked",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3467,
+      "failures": []
+    },
+    {
+      "scenario": "a production-looking script is marked",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 2823,
+      "failures": []
+    },
+    {
+      "scenario": "pnpm lists the scripts",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3543,
+      "failures": []
+    },
+    {
+      "scenario": "pnpm lists the scripts",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 2603,
+      "failures": []
+    },
+    {
+      "scenario": "yarn lists the scripts",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3522,
+      "failures": []
+    },
+    {
+      "scenario": "yarn lists the scripts",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 2848,
+      "failures": []
+    },
+    {
+      "scenario": "bun lists the scripts",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3920,
+      "failures": []
+    },
+    {
+      "scenario": "bun lists the scripts",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3217,
+      "failures": []
+    },
+    {
+      "scenario": "make lists targets with their sections and descriptions",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3578,
+      "failures": []
+    },
+    {
+      "scenario": "make lists targets with their sections and descriptions",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 2728,
+      "failures": []
+    },
+    {
+      "scenario": "a make target tagged prod is marked",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 2610,
+      "failures": []
+    },
+    {
+      "scenario": "a make target tagged prod is marked",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3478,
+      "failures": []
+    },
+    {
+      "scenario": "make -C reads the Makefile of that folder",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3594,
+      "failures": []
+    },
+    {
+      "scenario": "make -C reads the Makefile of that folder",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 2951,
+      "failures": []
+    },
+    {
+      "scenario": "docker compose lists services",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3807,
+      "failures": []
+    },
+    {
+      "scenario": "docker compose lists services",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 2861,
+      "failures": []
+    },
+    {
+      "scenario": "a Makefile picked up after it changes",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5327,
+      "failures": []
+    },
+    {
+      "scenario": "a Taskfile without task installed still lists tasks",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3245,
+      "failures": []
+    },
+    {
+      "scenario": "a Makefile picked up after it changes",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4685,
+      "failures": []
+    },
+    {
+      "scenario": "a Taskfile without task installed still lists tasks",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 2650,
+      "failures": []
+    },
+    {
+      "scenario": "just recipes from the justfile",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 2594,
+      "failures": []
+    },
+    {
+      "scenario": "just recipes from the justfile",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3355,
+      "failures": []
+    },
+    {
+      "scenario": "mise tasks from mise.toml",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 2642,
+      "failures": []
+    },
+    {
+      "scenario": "mise tasks from mise.toml",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3469,
+      "failures": []
+    },
+    {
+      "scenario": "deno tasks from deno.json",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3417,
+      "failures": []
+    },
+    {
+      "scenario": "deno tasks from deno.json",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 2841,
+      "failures": []
+    },
+    {
+      "scenario": "a typo in the command gets the fix on the empty line",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4689,
+      "failures": []
+    },
+    {
+      "scenario": "a typo in the command gets the fix on the empty line",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3949,
+      "failures": []
+    },
+    {
+      "scenario": "the fix is never run without Enter",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4674,
+      "failures": []
+    },
+    {
+      "scenario": "the fix is never run without Enter",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4094,
+      "failures": []
+    },
+    {
+      "scenario": "a git subcommand typo uses what git suggests",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4456,
+      "failures": []
+    },
+    {
+      "scenario": "a git subcommand typo uses what git suggests",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3751,
+      "failures": []
+    },
+    {
+      "scenario": "a missing npm script gets the near one",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5570,
+      "failures": []
+    },
+    {
+      "scenario": "a missing npm script gets the near one",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6410,
+      "failures": []
+    },
+    {
+      "scenario": "mkdir of a nested folder gets -p",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5049,
+      "failures": []
+    },
+    {
+      "scenario": "mkdir of a nested folder gets -p",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4303,
+      "failures": []
+    },
+    {
+      "scenario": "cd to a near folder name",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4251,
+      "failures": []
+    },
+    {
+      "scenario": "cd to a near folder name",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3548,
+      "failures": []
+    },
+    {
+      "scenario": "rm of a folder gets -r",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3472,
+      "failures": []
+    },
+    {
+      "scenario": "rm of a folder gets -r",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4237,
+      "failures": []
+    },
+    {
+      "scenario": "checkout of a near branch name",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4879,
+      "failures": []
+    },
+    {
+      "scenario": "checkout of a near branch name",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4229,
+      "failures": []
+    },
+    {
+      "scenario": "Esc dismisses the fix and the line stays empty",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4324,
+      "failures": []
+    },
+    {
+      "scenario": "a port in use offers to stop the process",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 11490,
+      "failures": []
+    },
+    {
+      "scenario": "a port in use offers to stop the process",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 10721,
+      "failures": []
+    },
+    {
+      "scenario": "Esc dismisses the fix and the line stays empty",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3779,
+      "failures": []
+    },
+    {
+      "scenario": "typing over the fix list starts a new command",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4202,
+      "failures": []
+    },
+    {
+      "scenario": "typing over the fix list starts a new command",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5002,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+C on a long command gives no fix",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5028,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+C on a long command gives no fix",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4065,
+      "failures": []
+    },
+    {
+      "scenario": "a command that worked gives no fix",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3278,
+      "failures": []
+    },
+    {
+      "scenario": "a command that worked gives no fix",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4087,
+      "failures": []
+    },
+    {
+      "scenario": "fixes can be turned off",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3678,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+G explains every word of a pipe",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3617,
+      "failures": []
+    },
+    {
+      "scenario": "fixes can be turned off",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4386,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+G explains every word of a pipe",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 2895,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+G warns about a destructive line",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3024,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+G warns about a destructive line",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3840,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+G through sudo and &&",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3098,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+G through sudo and &&",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3915,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+G knows combined short flags",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3906,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+G knows combined short flags",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3156,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+G knows an option that takes a value",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4147,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+G knows an option that takes a value",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3453,
+      "failures": []
+    },
+    {
+      "scenario": "Esc closes the explanation and keeps the line",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3709,
+      "failures": []
+    },
+    {
+      "scenario": "Esc closes the explanation and keeps the line",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 2971,
+      "failures": []
+    },
+    {
+      "scenario": "the line runs as typed after an explanation",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4233,
+      "failures": []
+    },
+    {
+      "scenario": "the line runs as typed after an explanation",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3431,
+      "failures": []
+    },
+    {
+      "scenario": "a snippet with fields fills in and runs",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5463,
+      "failures": []
+    },
+    {
+      "scenario": "a snippet with fields fills in and runs",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4864,
+      "failures": []
+    },
+    {
+      "scenario": "a field value with spaces is quoted",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5171,
+      "failures": []
+    },
+    {
+      "scenario": "a field value with spaces is quoted",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4525,
+      "failures": []
+    },
+    {
+      "scenario": "Esc leaves the snippet form without running anything",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4556,
+      "failures": []
+    },
+    {
+      "scenario": "Esc leaves the snippet form without running anything",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3835,
+      "failures": []
+    },
+    {
+      "scenario": "a broken snippets file does not break the list",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3450,
+      "failures": []
+    },
+    {
+      "scenario": "a broken snippets file does not break the list",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 2593,
+      "failures": []
+    },
+    {
+      "scenario": "a command run in this folder comes back as a whole",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5191,
+      "failures": []
+    },
+    {
+      "scenario": "a command run in this folder comes back as a whole",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4535,
+      "failures": []
+    },
+    {
+      "scenario": "a line with a token is never remembered",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5868,
+      "failures": []
+    },
+    {
+      "scenario": "a line with a token is never remembered",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5089,
+      "failures": []
+    },
+    {
+      "scenario": "a failed command is not offered again as a recent one",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5840,
+      "failures": []
+    },
+    {
+      "scenario": "a failed command is not offered again as a recent one",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5124,
+      "failures": []
+    },
+    {
+      "scenario": "a command run elsewhere in the repository comes back in a subfolder",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5855,
+      "failures": []
+    },
+    {
+      "scenario": "tab like a shell completes the shared part",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3640,
+      "failures": []
+    },
+    {
+      "scenario": "a command run elsewhere in the repository comes back in a subfolder",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5223,
+      "failures": []
+    },
+    {
+      "scenario": "tab like a shell completes the shared part",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 2962,
+      "failures": []
+    },
+    {
+      "scenario": "the list only on Tab",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 2940,
+      "failures": []
+    },
+    {
+      "scenario": "the list only on Tab",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3753,
+      "failures": []
+    },
+    {
+      "scenario": "the light theme draws the same list",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3457,
+      "failures": []
+    },
+    {
+      "scenario": "the light theme draws the same list",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 2676,
+      "failures": []
+    },
+    {
+      "scenario": "an invalid setting falls back to the defaults",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3453,
+      "failures": []
+    },
+    {
+      "scenario": "an invalid setting falls back to the defaults",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 2669,
+      "failures": []
+    },
+    {
+      "scenario": "Enter takes the entry and runs the line when enterRuns is on",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3630,
+      "failures": []
+    },
+    {
+      "scenario": "Enter takes the entry and runs the line when enterRuns is on",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3012,
+      "failures": []
+    },
+    {
+      "scenario": "with enterRuns a folder is still walked into",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3651,
+      "failures": []
+    },
+    {
+      "scenario": "with enterRuns a folder is still walked into",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3001,
+      "failures": []
+    },
+    {
+      "scenario": "a broken spec of your own is skipped",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4238,
+      "failures": []
+    },
+    {
+      "scenario": "a broken spec of your own is skipped",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3328,
+      "failures": []
+    },
+    {
+      "scenario": "a spec with a generator that hangs does not block typing",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4022,
+      "failures": []
+    },
+    {
+      "scenario": "a spec with a generator that hangs does not block typing",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3605,
+      "failures": []
+    },
+    {
+      "scenario": "the shell works when the config file is broken",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5138,
+      "failures": []
+    },
+    {
+      "scenario": "the shell works when the config file is broken",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4443,
+      "failures": []
+    },
+    {
+      "scenario": "thint inside thint does not start a second one",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4751,
+      "failures": []
+    },
+    {
+      "scenario": "thint inside thint does not start a second one",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3891,
+      "failures": []
+    },
+    {
+      "scenario": "quick resize back and forth with the list open",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5666,
+      "failures": []
+    },
+    {
+      "scenario": "quick resize back and forth with the list open",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4829,
+      "failures": []
+    },
+    {
+      "scenario": "a command that prints without a newline at the end",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4622,
+      "failures": []
+    },
+    {
+      "scenario": "a command that prints without a newline at the end",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3831,
+      "failures": []
+    },
+    {
+      "scenario": "Shift+Down moves an entry and the order stays",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5155,
+      "failures": []
+    },
+    {
+      "scenario": "Shift+Down moves an entry and the order stays",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4277,
+      "failures": []
+    },
+    {
+      "scenario": "a lone dash runs the previous folder",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4373,
+      "failures": []
+    },
+    {
+      "scenario": "a lone dash runs the previous folder",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3618,
+      "failures": []
+    },
+    {
+      "scenario": "git checkout - runs as typed",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3936,
+      "failures": []
+    },
+    {
+      "scenario": "git checkout - runs as typed",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3266,
+      "failures": []
+    },
+    {
+      "scenario": "the second command after && gets its own list",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3848,
+      "failures": []
+    },
+    {
+      "scenario": "the second command after && gets its own list",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 2915,
+      "failures": []
+    },
+    {
+      "scenario": "the command after a pipe gets its own list",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3734,
+      "failures": []
+    },
+    {
+      "scenario": "the command after a pipe gets its own list",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3149,
+      "failures": []
+    },
+    {
+      "scenario": "sudo in front keeps the list of the command",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3564,
+      "failures": []
+    },
+    {
+      "scenario": "sudo in front keeps the list of the command",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 2838,
+      "failures": []
+    },
+    {
+      "scenario": "a variable in front keeps the list of the command",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3087,
+      "failures": []
+    },
+    {
+      "scenario": "a variable in front keeps the list of the command",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4008,
+      "failures": []
+    },
+    {
+      "scenario": "an option with an equals sign",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5133,
+      "failures": []
+    },
+    {
+      "scenario": "an option with an equals sign",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4147,
+      "failures": []
+    },
+    {
+      "scenario": "ssh hosts from the ssh config, a capital one is marked",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3593,
+      "failures": []
+    },
+    {
+      "scenario": "editing in the middle of the line",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7930,
+      "failures": []
+    },
+    {
+      "scenario": "editing in the middle of the line",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7209,
+      "failures": []
+    },
+    {
+      "scenario": "ssh hosts from the ssh config, a capital one is marked",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 2900,
+      "failures": []
+    },
+    {
+      "scenario": "environment variables after a dollar",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3461,
+      "failures": []
+    },
+    {
+      "scenario": "environment variables after a dollar",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 2605,
+      "failures": []
+    },
+    {
+      "scenario": "docker compose logs takes a service",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3858,
+      "failures": []
+    },
+    {
+      "scenario": "docker compose logs takes a service",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3229,
+      "failures": []
+    },
+    {
+      "scenario": "npm install of a version does not block typing without network",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4749,
+      "failures": []
+    },
+    {
+      "scenario": "npm install of a version does not block typing without network",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3855,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+R history search still belongs to the shell",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5544,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+R history search still belongs to the shell",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4781,
+      "failures": []
+    },
+    {
+      "scenario": "tmux around thint",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4742,
+      "failures": []
+    },
+    {
+      "scenario": "tmux around thint",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3814,
+      "failures": []
+    },
+    {
+      "scenario": "icons off still shows the entries",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3343,
+      "failures": []
+    },
+    {
+      "scenario": "icons off still shows the entries",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 2577,
+      "failures": []
+    },
+    {
+      "scenario": "a long description is cut, not wrapped",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3493,
+      "failures": []
+    },
+    {
+      "scenario": "a long description is cut, not wrapped",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 2794,
+      "failures": []
+    },
+    {
+      "scenario": "the first word with recent commands",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4623,
+      "failures": []
+    },
+    {
+      "scenario": "the first word with recent commands",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3868,
+      "failures": []
+    },
+    {
+      "scenario": "GNU screen around thint",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": false,
+      "timedOut": false,
+      "ms": 11024,
+      "failures": [
+        "step 1: expected \"status\" in the list; screen:\nActions 1000000282\\x1eRUNNER_OS=Linux\\x1eRUNNER_TEMP=/home/runner/work/_temp\\x1e\nRUNNER_TOOL_CACHE=/opt/hostedtoolcache\\x1eRUNNER_TRACKING_ID=github_4f651434-88a\n7-4576-87a5-1f0ab86e3a52\\x1eRUNNER_WORKSPACE=/home/runner/work/terminalhinter\\x1\neSELENIUM_JAR_PATH=/usr/share/java/selenium-server.jar\\x1eSGX_AESM_ADDR=1\\x1eSHE\nLL=/bin/bash\\x1eSTY=20220.qa-home-y5EAIc\\x1eSWIFT_PATH=/usr/share/swift/usr/bin\\\nx1eSYSTEMD_EXEC_PID=1870\\x1eTERM=xterm-256color\\x1eTERMCAP=SC|screen.xterm-256co\nlor|VT 100/ANSI X3.64 virtual terminal:DO=\\\\E[%dB:LE=\\\\E[%dD:RI=\\\\E[%dC:UP=\\\\E[%\ndA:bs:bt=\\\\E[Z:cd=\\\\E[J:ce=\\\\E[K:cl=\\\\E[H\\\\E[J:cm=\\\\E[%i%d\\x3b%dH:ct=\\\\E[3g:do=^\nJ:nd=\\\\E[C:pt:rc=\\\\E8:rs=\\\\Ec:sc=\\\\E7:st=\\\\EH:up=\\\\EM:le=^H:bl=^G:cr=^M:it#8:ho=\n\\\\E[H:nw=\\\\EE:ta=^I:is=\\\\E)0:li#24:co#80:am:xn:xv:LP:sr=\\\\EM:al=\\\\E[L:AL=\\\\E[%dL\n:cs=\\\\E[%i%d\\x3b%dr:dl=\\\\E[M:DL=\\\\E[%dM:dc=\\\\E[P:DC=\\\\E[%dP:im=\\\\E[4h:ei=\\\\E[4l:\nmi:IC=\\\\E[%d@:ks=\\\\E[?1h\\\\E=:ke=\\\\E[?1l\\\\E>:vi=\\\\E[?25l:ve=\\\\E[34h\\\\E[?25h:vs=\\\\\nE[34l:ti=\\\\E[?1049h:te=\\\\E[?1049l:us=\\\\E[4m:ue=\\\\E[24m:so=\\\\E[3m:se=\\\\E[23m:mb=\\\n\\E[5m:md=\\\\E[1m:mh=\\\\E[2m:mr=\\\\E[7m:me=\\\\E[m:ms:Co#8:pa#64:AF=\\\\E[3%dm:AB=\\\\E[4%\ndm:op=\\\\E[39\\x3b49m:AX:vb=\\\\Eg:G0:as=\\\\E(0:ae=\\\\E(B:ac=\\\\140\\\\140aaffggjjkkllmmn\nnooppqqrrssttuuvvwwxxyyzz{{||}}~~..--++,,hhII00:po=\\\\E[5i:pf=\\\\E[4i:Km=\\\\E[<:k0=\n\\\\E[10~:k1=\\\\EOP:k2=\\\\EOQ:k3=\\\\EOR:k4=\\\\EOS:k5=\\\\E[15~:k6=\\\\E[17~:k7=\\\\E[18~:k8=\n\\\\E[19~:k9=\\\\E[20~:k\\x3b=\\\\E[21~:F1=\\\\E[23~:F2=\\\\E[24~:kB=\\\\E[Z:kh=\\\\E[1~:@1=\\\\E\n[1~:kH=\\\\E[4~:@7=\\\\E[4~:kN=\\\\E[6~:kP=\\\\E[5~:kI=\\\\E[2~:kD=\\\\E[3~:ku=\\\\EOA:kd=\\\\EO\nB:kr=\\\\EOC:kl=\\\\EOD:km:\\x1eTHINT_NO_ATUIN=1\\x1eTHINT_NO_UPDATE_CHECK=1\\x1eTHINT_\nNO_ZOXIDE=1\\x1eUSER=runner\\x1eUSERPROFILE=/tmp/thint-qa-8tMw4k/home-y5EAIc\\x1eUS\nE_BAZEL_FALLBACK_VERSION=silent:\\x1eVCPKG_INSTALLATION_ROOT=/usr/local/share/vcp\nkg\\x1eWINDOW=0\\x1eXDG_RUNTIME_DIR=/run/user/1001\\x1eqa$ true\n                                                                               ",
+        "step 1: expected the list; screen:\nActions 1000000282\\x1eRUNNER_OS=Linux\\x1eRUNNER_TEMP=/home/runner/work/_temp\\x1e\nRUNNER_TOOL_CACHE=/opt/hostedtoolcache\\x1eRUNNER_TRACKING_ID=github_4f651434-88a\n7-4576-87a5-1f0ab86e3a52\\x1eRUNNER_WORKSPACE=/home/runner/work/terminalhinter\\x1\neSELENIUM_JAR_PATH=/usr/share/java/selenium-server.jar\\x1eSGX_AESM_ADDR=1\\x1eSHE\nLL=/bin/bash\\x1eSTY=20220.qa-home-y5EAIc\\x1eSWIFT_PATH=/usr/share/swift/usr/bin\\\nx1eSYSTEMD_EXEC_PID=1870\\x1eTERM=xterm-256color\\x1eTERMCAP=SC|screen.xterm-256co\nlor|VT 100/ANSI X3.64 virtual terminal:DO=\\\\E[%dB:LE=\\\\E[%dD:RI=\\\\E[%dC:UP=\\\\E[%\ndA:bs:bt=\\\\E[Z:cd=\\\\E[J:ce=\\\\E[K:cl=\\\\E[H\\\\E[J:cm=\\\\E[%i%d\\x3b%dH:ct=\\\\E[3g:do=^\nJ:nd=\\\\E[C:pt:rc=\\\\E8:rs=\\\\Ec:sc=\\\\E7:st=\\\\EH:up=\\\\EM:le=^H:bl=^G:cr=^M:it#8:ho=\n\\\\E[H:nw=\\\\EE:ta=^I:is=\\\\E)0:li#24:co#80:am:xn:xv:LP:sr=\\\\EM:al=\\\\E[L:AL=\\\\E[%dL\n:cs=\\\\E[%i%d\\x3b%dr:dl=\\\\E[M:DL=\\\\E[%dM:dc=\\\\E[P:DC=\\\\E[%dP:im=\\\\E[4h:ei=\\\\E[4l:\nmi:IC=\\\\E[%d@:ks=\\\\E[?1h\\\\E=:ke=\\\\E[?1l\\\\E>:vi=\\\\E[?25l:ve=\\\\E[34h\\\\E[?25h:vs=\\\\\nE[34l:ti=\\\\E[?1049h:te=\\\\E[?1049l:us=\\\\E[4m:ue=\\\\E[24m:so=\\\\E[3m:se=\\\\E[23m:mb=\\\n\\E[5m:md=\\\\E[1m:mh=\\\\E[2m:mr=\\\\E[7m:me=\\\\E[m:ms:Co#8:pa#64:AF=\\\\E[3%dm:AB=\\\\E[4%\ndm:op=\\\\E[39\\x3b49m:AX:vb=\\\\Eg:G0:as=\\\\E(0:ae=\\\\E(B:ac=\\\\140\\\\140aaffggjjkkllmmn\nnooppqqrrssttuuvvwwxxyyzz{{||}}~~..--++,,hhII00:po=\\\\E[5i:pf=\\\\E[4i:Km=\\\\E[<:k0=\n\\\\E[10~:k1=\\\\EOP:k2=\\\\EOQ:k3=\\\\EOR:k4=\\\\EOS:k5=\\\\E[15~:k6=\\\\E[17~:k7=\\\\E[18~:k8=\n\\\\E[19~:k9=\\\\E[20~:k\\x3b=\\\\E[21~:F1=\\\\E[23~:F2=\\\\E[24~:kB=\\\\E[Z:kh=\\\\E[1~:@1=\\\\E\n[1~:kH=\\\\E[4~:@7=\\\\E[4~:kN=\\\\E[6~:kP=\\\\E[5~:kI=\\\\E[2~:kD=\\\\E[3~:ku=\\\\EOA:kd=\\\\EO\nB:kr=\\\\EOC:kl=\\\\EOD:km:\\x1eTHINT_NO_ATUIN=1\\x1eTHINT_NO_UPDATE_CHECK=1\\x1eTHINT_\nNO_ZOXIDE=1\\x1eUSER=runner\\x1eUSERPROFILE=/tmp/thint-qa-8tMw4k/home-y5EAIc\\x1eUS\nE_BAZEL_FALLBACK_VERSION=silent:\\x1eVCPKG_INSTALLATION_ROOT=/usr/local/share/vcp\nkg\\x1eWINDOW=0\\x1eXDG_RUNTIME_DIR=/run/user/1001\\x1eqa$ true\n                                                                               "
+      ],
+      "home": "/tmp/thint-qa-8tMw4k/home-y5EAIc",
+      "raw": "                                   \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \u001b[67D\u001b[?12l\u001b[?25h\u001b[?25l\r\u001b[K      \u001b[2m╭──────────────────────────────────────────────────╮\u001b[0m                     \r\u001b[K      \u001b[2m│\u001b[35m  \u001b[47m■\u001b[39m  $AGENT_TOOLSDIRECTORY  Environment Variable  \u001b[49m│\u001b[0m                     \r\u001b[K      \u001b[2m╰──────────────────────────────────────────────────╯\u001b[0m                     \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \u001b[67D\u001b[?12l\u001b[?25hv\u001b[?25l\r\u001b[K       \u001b[2m╭──────────────────────────────────────────────────╮\u001b[0m                    \r\u001b[K       \u001b[2m│\u001b[35m  \u001b[47m■\u001b[39m  $AGENT_TOOLSDIRECTORY  Environment Variable  \u001b[49m│\u001b[0m                    \r\u001b[K       \u001b[2m╰──────────────────────────────────────────────────╯\u001b[0m                    \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \u001b[66D\u001b[?12l\u001b[?25h\u001b[?25l\r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \u001b[66D\u001b[?12l\u001b[?25he-$((40+2))\r\n\u001b[?2004lalive-42\r\n\u001b[?2004hqa$ \u001b[?5h\u001b[?5lexit\r\n\u001b[?2004lexit\r\n\u001b[H\u001b[2J\u001b[?1l\u001b>\u001b[24;1H\r\n\u001b[?1049l\u001b[23;0;0t[screen is terminating]\r\n"
+    },
+    {
+      "scenario": "GNU screen around thint",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": false,
+      "timedOut": false,
+      "ms": 11528,
+      "failures": [
+        "step 1: expected \"status\" in the list; screen:\nache\\x1eRUNNER_TRACKING_ID=github_4f651434-88a7-4576-87a5-1f0ab86e3a52\\x1eRUNNER\n_WORKSPACE=/home/runner/work/terminalhinter\\x1eSELENIUM_JAR_PATH=/usr/share/java\n/selenium-server.jar\\x1eSGX_AESM_ADDR=1\\x1eSHELL=/bin/bash\\x1eSTY=20184.qa-home-\n6RhN8z\\x1eSWIFT_PATH=/usr/share/swift/usr/bin\\x1eSYSTEMD_EXEC_PID=1870\\x1eTERM=x\nterm-256color\\x1eTERMCAP=SC|screen.xterm-256color|VT 100/ANSI X3.64 virtual term\ninal:DO=\\\\E[%dB:LE=\\\\E[%dD:RI=\\\\E[%dC:UP=\\\\E[%dA:bs:bt=\\\\E[Z:cd=\\\\E[J:ce=\\\\E[K:c\nl=\\\\E[H\\\\E[J:cm=\\\\E[%i%d\\x3b%dH:ct=\\\\E[3g:do=^J:nd=\\\\E[C:pt:rc=\\\\E8:rs=\\\\Ec:sc=\\\n\\E7:st=\\\\EH:up=\\\\EM:le=^H:bl=^G:cr=^M:it#8:ho=\\\\E[H:nw=\\\\EE:ta=^I:is=\\\\E)0:li#24\n:co#80:am:xn:xv:LP:sr=\\\\EM:al=\\\\E[L:AL=\\\\E[%dL:cs=\\\\E[%i%d\\x3b%dr:dl=\\\\E[M:DL=\\\\\nE[%dM:dc=\\\\E[P:DC=\\\\E[%dP:im=\\\\E[4h:ei=\\\\E[4l:mi:IC=\\\\E[%d@:ks=\\\\E[?1h\\\\E=:ke=\\\\\nE[?1l\\\\E>:vi=\\\\E[?25l:ve=\\\\E[34h\\\\E[?25h:vs=\\\\E[34l:ti=\\\\E[?1049h:te=\\\\E[?1049l:\nus=\\\\E[4m:ue=\\\\E[24m:so=\\\\E[3m:se=\\\\E[23m:mb=\\\\E[5m:md=\\\\E[1m:mh=\\\\E[2m:mr=\\\\E[7\nm:me=\\\\E[m:ms:Co#8:pa#64:AF=\\\\E[3%dm:AB=\\\\E[4%dm:op=\\\\E[39\\x3b49m:AX:vb=\\\\Eg:G0:\nas=\\\\E(0:ae=\\\\E(B:ac=\\\\140\\\\140aaffggjjkkllmmnnooppqqrrssttuuvvwwxxyyzz{{||}}~~.\n.--++,,hhII00:po=\\\\E[5i:pf=\\\\E[4i:Km=\\\\E[<:k0=\\\\E[10~:k1=\\\\EOP:k2=\\\\EOQ:k3=\\\\EOR\n:k4=\\\\EOS:k5=\\\\E[15~:k6=\\\\E[17~:k7=\\\\E[18~:k8=\\\\E[19~:k9=\\\\E[20~:k\\x3b=\\\\E[21~:F\n1=\\\\E[23~:F2=\\\\E[24~:kB=\\\\E[Z:kh=\\\\E[1~:@1=\\\\E[1~:kH=\\\\E[4~:@7=\\\\E[4~:kN=\\\\E[6~:\nkP=\\\\E[5~:kI=\\\\E[2~:kD=\\\\E[3~:ku=\\\\EOA:kd=\\\\EOB:kr=\\\\EOC:kl=\\\\EOD:km:\\x1eTHINT_N\nO_ATUIN=1\\x1eTHINT_NO_UPDATE_CHECK=1\\x1eTHINT_NO_ZOXIDE=1\\x1eUSER=runner\\x1eUSER\nPROFILE=/tmp/thint-qa-8tMw4k/home-6RhN8z\\x1eUSER_ZDOTDIR=/tmp/thint-qa-8tMw4k/ho\nme-6RhN8z\\x1eUSE_BAZEL_FALLBACK_VERSION=silent:\\x1eVCPKG_INSTALLATION_ROOT=/usr/\nlocal/share/vcpkg\\x1eWINDOW=0\\x1eXDG_RUNTIME_DIR=/run/user/1001\\x1eZDOTDIR=/tmp/\nqa$ true\n                                                                               ",
+        "step 1: expected the list; screen:\nache\\x1eRUNNER_TRACKING_ID=github_4f651434-88a7-4576-87a5-1f0ab86e3a52\\x1eRUNNER\n_WORKSPACE=/home/runner/work/terminalhinter\\x1eSELENIUM_JAR_PATH=/usr/share/java\n/selenium-server.jar\\x1eSGX_AESM_ADDR=1\\x1eSHELL=/bin/bash\\x1eSTY=20184.qa-home-\n6RhN8z\\x1eSWIFT_PATH=/usr/share/swift/usr/bin\\x1eSYSTEMD_EXEC_PID=1870\\x1eTERM=x\nterm-256color\\x1eTERMCAP=SC|screen.xterm-256color|VT 100/ANSI X3.64 virtual term\ninal:DO=\\\\E[%dB:LE=\\\\E[%dD:RI=\\\\E[%dC:UP=\\\\E[%dA:bs:bt=\\\\E[Z:cd=\\\\E[J:ce=\\\\E[K:c\nl=\\\\E[H\\\\E[J:cm=\\\\E[%i%d\\x3b%dH:ct=\\\\E[3g:do=^J:nd=\\\\E[C:pt:rc=\\\\E8:rs=\\\\Ec:sc=\\\n\\E7:st=\\\\EH:up=\\\\EM:le=^H:bl=^G:cr=^M:it#8:ho=\\\\E[H:nw=\\\\EE:ta=^I:is=\\\\E)0:li#24\n:co#80:am:xn:xv:LP:sr=\\\\EM:al=\\\\E[L:AL=\\\\E[%dL:cs=\\\\E[%i%d\\x3b%dr:dl=\\\\E[M:DL=\\\\\nE[%dM:dc=\\\\E[P:DC=\\\\E[%dP:im=\\\\E[4h:ei=\\\\E[4l:mi:IC=\\\\E[%d@:ks=\\\\E[?1h\\\\E=:ke=\\\\\nE[?1l\\\\E>:vi=\\\\E[?25l:ve=\\\\E[34h\\\\E[?25h:vs=\\\\E[34l:ti=\\\\E[?1049h:te=\\\\E[?1049l:\nus=\\\\E[4m:ue=\\\\E[24m:so=\\\\E[3m:se=\\\\E[23m:mb=\\\\E[5m:md=\\\\E[1m:mh=\\\\E[2m:mr=\\\\E[7\nm:me=\\\\E[m:ms:Co#8:pa#64:AF=\\\\E[3%dm:AB=\\\\E[4%dm:op=\\\\E[39\\x3b49m:AX:vb=\\\\Eg:G0:\nas=\\\\E(0:ae=\\\\E(B:ac=\\\\140\\\\140aaffggjjkkllmmnnooppqqrrssttuuvvwwxxyyzz{{||}}~~.\n.--++,,hhII00:po=\\\\E[5i:pf=\\\\E[4i:Km=\\\\E[<:k0=\\\\E[10~:k1=\\\\EOP:k2=\\\\EOQ:k3=\\\\EOR\n:k4=\\\\EOS:k5=\\\\E[15~:k6=\\\\E[17~:k7=\\\\E[18~:k8=\\\\E[19~:k9=\\\\E[20~:k\\x3b=\\\\E[21~:F\n1=\\\\E[23~:F2=\\\\E[24~:kB=\\\\E[Z:kh=\\\\E[1~:@1=\\\\E[1~:kH=\\\\E[4~:@7=\\\\E[4~:kN=\\\\E[6~:\nkP=\\\\E[5~:kI=\\\\E[2~:kD=\\\\E[3~:ku=\\\\EOA:kd=\\\\EOB:kr=\\\\EOC:kl=\\\\EOD:km:\\x1eTHINT_N\nO_ATUIN=1\\x1eTHINT_NO_UPDATE_CHECK=1\\x1eTHINT_NO_ZOXIDE=1\\x1eUSER=runner\\x1eUSER\nPROFILE=/tmp/thint-qa-8tMw4k/home-6RhN8z\\x1eUSER_ZDOTDIR=/tmp/thint-qa-8tMw4k/ho\nme-6RhN8z\\x1eUSE_BAZEL_FALLBACK_VERSION=silent:\\x1eVCPKG_INSTALLATION_ROOT=/usr/\nlocal/share/vcpkg\\x1eWINDOW=0\\x1eXDG_RUNTIME_DIR=/run/user/1001\\x1eZDOTDIR=/tmp/\nqa$ true\n                                                                               "
+      ],
+      "home": "/tmp/thint-qa-8tMw4k/home-6RhN8z",
+      "raw": "                       \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \u001b[67D\u001b[?12l\u001b[?25h\u001b[?25l\r\u001b[K      \u001b[2m╭──────────────────────────────────────────────────╮\u001b[0m                     \r\u001b[K      \u001b[2m│\u001b[35m  \u001b[47m■\u001b[39m  $AGENT_TOOLSDIRECTORY  Environment Variable  \u001b[49m│\u001b[0m                     \r\u001b[K      \u001b[2m╰──────────────────────────────────────────────────╯\u001b[0m                     \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \u001b[67D\u001b[?12l\u001b[?25hv\u001b[?25l\r\u001b[K       \u001b[2m╭──────────────────────────────────────────────────╮\u001b[0m                    \r\u001b[K       \u001b[2m│\u001b[35m  \u001b[47m■\u001b[39m  $AGENT_TOOLSDIRECTORY  Environment Variable  \u001b[49m│\u001b[0m                    \r\u001b[K       \u001b[2m╰──────────────────────────────────────────────────╯\u001b[0m                    \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \u001b[66D\u001b[?12l\u001b[?25h\u001b[?25l\r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \r\u001b[K                                                                               \u001b[66D\u001b[?12l\u001b[?25he-$((40+2))\u001b[?2004l\r\nalive-42\r\n\u001b[1m\u001b[7m%\u001b[0m\u001b[1m\u001b[0m                                                                               \r \b\u001b[Kqa$ \u001b[K\u001b[?2004he\bexit\u001b[?2004l\r\n\u001b[H\u001b[2J\u001b[?1l\u001b>\u001b[24;1H\r\n\u001b[?1049l\u001b[23;0;0t[screen is terminating]\r\n"
+    },
+    {
+      "scenario": "→ on a folder puts it on the line and lists what is inside",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 2850,
+      "failures": []
+    },
+    {
+      "scenario": "→ on a folder puts it on the line and lists what is inside",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3850,
+      "failures": []
+    },
+    {
+      "scenario": "→ twice walks two levels down",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4448,
+      "failures": []
+    },
+    {
+      "scenario": "→ twice walks two levels down",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3527,
+      "failures": []
+    },
+    {
+      "scenario": "Enter on a folder after → goes straight into it",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4155,
+      "failures": []
+    },
+    {
+      "scenario": "Enter on a folder after → goes straight into it",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3568,
+      "failures": []
+    },
+    {
+      "scenario": "Enter right after → runs cd where the walk is",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3934,
+      "failures": []
+    },
+    {
+      "scenario": "Enter right after → runs cd where the walk is",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3327,
+      "failures": []
+    },
+    {
+      "scenario": "← goes back to the line before →",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3943,
+      "failures": []
+    },
+    {
+      "scenario": "← goes back to the line before →",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3286,
+      "failures": []
+    },
+    {
+      "scenario": "← one level up highlights the folder it came from",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4818,
+      "failures": []
+    },
+    {
+      "scenario": "← one level up highlights the folder it came from",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4169,
+      "failures": []
+    },
+    {
+      "scenario": "without a walk ← moves the cursor as always",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3846,
+      "failures": []
+    },
+    {
+      "scenario": "without a walk ← moves the cursor as always",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3232,
+      "failures": []
+    },
+    {
+      "scenario": "typing after → ends the walk, so ← moves the cursor again",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4505,
+      "failures": []
+    },
+    {
+      "scenario": "typing after → ends the walk, so ← moves the cursor again",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3867,
+      "failures": []
+    },
+    {
+      "scenario": "→ works for other commands too",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3548,
+      "failures": []
+    },
+    {
+      "scenario": "→ works for other commands too",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 2926,
+      "failures": []
+    },
+    {
+      "scenario": "folderArrows off leaves → to the shell",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3690,
+      "failures": []
+    },
+    {
+      "scenario": "folderArrows off leaves → to the shell",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 2949,
+      "failures": []
+    },
+    {
+      "scenario": "a short tip on a highlighted folder tells that → looks inside",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 3535,
+      "failures": []
+    },
+    {
+      "scenario": "a short tip on a highlighted folder tells that → looks inside",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 2993,
+      "failures": []
+    },
+    {
+      "scenario": "aws completes services and their commands",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5975,
+      "failures": []
+    },
+    {
+      "scenario": "aws completes services and their commands",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5331,
+      "failures": []
+    },
+    {
+      "scenario": "aws options complete after a command",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5076,
+      "failures": []
+    },
+    {
+      "scenario": "aws options complete after a command",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4364,
+      "failures": []
+    },
+    {
+      "scenario": "gcloud completes groups and commands",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5265,
+      "failures": []
+    },
+    {
+      "scenario": "gcloud completes groups and commands",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6060,
+      "failures": []
+    },
+    {
+      "scenario": "a typo of awk gets awk, not aws",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4807,
+      "failures": []
+    },
+    {
+      "scenario": "a typo of awk gets awk, not aws",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4071,
+      "failures": []
+    },
+    {
+      "scenario": "a PATH change made at the prompt reaches the lists",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7731,
+      "failures": []
+    },
+    {
+      "scenario": "a PATH change made at the prompt reaches the lists",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6844,
+      "failures": []
+    },
+    {
+      "scenario": "a variable exported at the prompt reaches the lists",
+      "shell": "zsh",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6475,
+      "failures": []
+    },
+    {
+      "scenario": "a variable exported at the prompt reaches the lists",
+      "shell": "bash",
+      "size": "80x24",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5654,
+      "failures": []
+    }
+  ]
+}

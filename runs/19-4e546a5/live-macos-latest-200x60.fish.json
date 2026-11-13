@@ -1,0 +1,1345 @@
+{
+  "platform": "darwin",
+  "shells": [
+    "fish"
+  ],
+  "started": [
+    "fish"
+  ],
+  "planned": 144,
+  "strayErrors": 0,
+  "health": [
+    {
+      "done": 50,
+      "at": 1794534825616,
+      "terminalsHeldByRunner": 57,
+      "terminalsInSystem": 75,
+      "processesLeft": 8,
+      "sample": [
+        "25075 17578 S<s+ /Users/runner/hostedtoolcache/node/22.21.1/arm64/bin/node /Users/runner/work/terminalhinter/terminalhinter/build/index.js -s fish --verbose",
+        "25078 25075 S<s+ fish --init-command . /var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-p6aEG9/home-pwiuaO/.local/share/terminalhinter/shell/shellIntegration.fish",
+        "25094     1 S<+  /bin/sh -c \\012                c=$(cat)\\012                ( printf %s \"$c\" | \"$@\" ) >/dev/null 2>&1 &\\012             -- /opt/homebrew/bin/python3 -B - --manpath --directory=/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-p6aEG9/home-pwiuaO/.cache/fish/generated_completions --cleanup-in /var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-p6aEG9/home-pwiuaO/.local/share/fish/generated_completions",
+        "25096 25094 R<+  /opt/homebrew/Cellar/python@3.15/3.15.2/Frameworks/Python.framework/Versions/3.15/Resources/Python.app/Contents/MacOS/Python -B - --manpath --directory=/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-p6aEG9/home-pwiuaO/.cache/fish/generated_completions --cleanup-in /var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-p6aEG9/home-pwiuaO/.local/share/fish/generated_completions",
+        "25087 17578 S<s+ /Users/runner/hostedtoolcache/node/22.21.1/arm64/bin/node /Users/runner/work/terminalhinter/terminalhinter/build/index.js -s fish --verbose",
+        "25102 25087 S<s+ fish --init-command . /var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-p6aEG9/home-h5Wo5u/.local/share/terminalhinter/shell/shellIntegration.fish",
+        "25109     1 S<+  /bin/sh -c \\012                c=$(cat)\\012                ( printf %s \"$c\" | \"$@\" ) >/dev/null 2>&1 &\\012             -- /opt/homebrew/bin/python3 -B - --manpath --directory=/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-p6aEG9/home-h5Wo5u/.cache/fish/generated_completions --cleanup-in /var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-p6aEG9/home-h5Wo5u/.local/share/fish/generated_completions",
+        "25111 25109 R<+  /opt/homebrew/Cellar/python@3.15/3.15.2/Frameworks/Python.framework/Versions/3.15/Resources/Python.app/Contents/MacOS/Python -B - --manpath --directory=/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-p6aEG9/home-h5Wo5u/.cache/fish/generated_completions --cleanup-in /var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-p6aEG9/home-h5Wo5u/.local/share/fish/generated_completions"
+      ]
+    },
+    {
+      "done": 100,
+      "at": 1794534945941,
+      "terminalsHeldByRunner": 107,
+      "terminalsInSystem": 125,
+      "processesLeft": 8,
+      "sample": [
+        "30763 17578 S<s+ /Users/runner/hostedtoolcache/node/22.21.1/arm64/bin/node /Users/runner/work/terminalhinter/terminalhinter/build/index.js -s fish --verbose",
+        "31107 17578 S<s+ /Users/runner/hostedtoolcache/node/22.21.1/arm64/bin/node /Users/runner/work/terminalhinter/terminalhinter/build/index.js -s fish --verbose",
+        "30766 30763 S<s+ fish --init-command . /var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-p6aEG9/home-9YV1PN/.local/share/terminalhinter/shell/shellIntegration.fish",
+        "30773     1 S<+  /bin/sh -c \\012                c=$(cat)\\012                ( printf %s \"$c\" | \"$@\" ) >/dev/null 2>&1 &\\012             -- /opt/homebrew/bin/python3 -B - --manpath --directory=/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-p6aEG9/home-9YV1PN/.cache/fish/generated_completions --cleanup-in /var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-p6aEG9/home-9YV1PN/.local/share/fish/generated_completions",
+        "30775 30773 R<+  /opt/homebrew/Cellar/python@3.15/3.15.2/Frameworks/Python.framework/Versions/3.15/Resources/Python.app/Contents/MacOS/Python -B - --manpath --directory=/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-p6aEG9/home-9YV1PN/.cache/fish/generated_completions --cleanup-in /var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-p6aEG9/home-9YV1PN/.local/share/fish/generated_completions",
+        "31108 31107 S<s+ fish --init-command . /var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-p6aEG9/home-RWmh2O/.local/share/terminalhinter/shell/shellIntegration.fish",
+        "31115     1 S<+  /bin/sh -c \\012                c=$(cat)\\012                ( printf %s \"$c\" | \"$@\" ) >/dev/null 2>&1 &\\012             -- /opt/homebrew/bin/python3 -B - --manpath --directory=/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-p6aEG9/home-RWmh2O/.cache/fish/generated_completions --cleanup-in /var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-p6aEG9/home-RWmh2O/.local/share/fish/generated_completions",
+        "31117 31115 R<+  /opt/homebrew/Cellar/python@3.15/3.15.2/Frameworks/Python.framework/Versions/3.15/Resources/Python.app/Contents/MacOS/Python -B - --manpath --directory=/var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-p6aEG9/home-RWmh2O/.cache/fish/generated_completions --cleanup-in /var/folders/h5/t85nd63d71x27_8gl5gw3l_w0000gn/T/thint-qa-p6aEG9/home-RWmh2O/.local/share/fish/generated_completions"
+      ]
+    }
+  ],
+  "results": [
+    {
+      "scenario": "the list opens after a command and a space",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4523,
+      "failures": []
+    },
+    {
+      "scenario": "typing narrows the list",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4660,
+      "failures": []
+    },
+    {
+      "scenario": "git branch from the list with Tab",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7148,
+      "failures": []
+    },
+    {
+      "scenario": "Tab puts the selected entry on the line",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6165,
+      "failures": []
+    },
+    {
+      "scenario": "Enter on a typed word takes the entry and does not run",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6141,
+      "failures": []
+    },
+    {
+      "scenario": "Enter right after a space runs the command",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6037,
+      "failures": []
+    },
+    {
+      "scenario": "Enter runs a word typed in full that no entry starts with",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5909,
+      "failures": []
+    },
+    {
+      "scenario": "Esc hides the list until the next letter",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6108,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+Space shows the list again",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6954,
+      "failures": []
+    },
+    {
+      "scenario": "Down and Tab pick the second entry",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6509,
+      "failures": []
+    },
+    {
+      "scenario": "Backspace brings back what was there",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6159,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+U empties the line and hides the list",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5816,
+      "failures": []
+    },
+    {
+      "scenario": "Up on a line with no selection walks the shell history",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5374,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+C gives a fresh prompt with no list",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7415,
+      "failures": []
+    },
+    {
+      "scenario": "a pasted command lands as pasted",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5853,
+      "failures": []
+    },
+    {
+      "scenario": "a fast typist loses no letters",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6737,
+      "failures": []
+    },
+    {
+      "scenario": "a long line that wraps keeps every letter",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6447,
+      "failures": []
+    },
+    {
+      "scenario": "Polish letters and emoji go through untouched",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6384,
+      "failures": []
+    },
+    {
+      "scenario": "options of a command show with their descriptions",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4916,
+      "failures": []
+    },
+    {
+      "scenario": "an option already on the line is not offered again",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5850,
+      "failures": []
+    },
+    {
+      "scenario": "a command the specs do not know does not break anything",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6433,
+      "failures": []
+    },
+    {
+      "scenario": "the list follows the line after a resize",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6411,
+      "failures": []
+    },
+    {
+      "scenario": "a full-screen program and back",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6868,
+      "failures": []
+    },
+    {
+      "scenario": "lots of output while typing the next command",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6392,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+L clears the screen and the list comes back on the new line",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6793,
+      "failures": []
+    },
+    {
+      "scenario": "Enter runs a word that only appears inside a variable name",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5707,
+      "failures": []
+    },
+    {
+      "scenario": "Enter on an option that needs a value adds the space and waits for it",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 8678,
+      "failures": []
+    },
+    {
+      "scenario": "git switch offers local branches with their last commit",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5527,
+      "failures": []
+    },
+    {
+      "scenario": "git checkout finds a branch by a word inside its name",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6475,
+      "failures": []
+    },
+    {
+      "scenario": "git stash show lists stashes by what they hold",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5627,
+      "failures": []
+    },
+    {
+      "scenario": "a branch picked with Enter runs only after a second Enter",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7161,
+      "failures": []
+    },
+    {
+      "scenario": "git stash pop takes the stash from the list",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6380,
+      "failures": []
+    },
+    {
+      "scenario": "git reset --hard is marked as risky and says why",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5263,
+      "failures": []
+    },
+    {
+      "scenario": "git push --force is marked as risky",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5191,
+      "failures": []
+    },
+    {
+      "scenario": "git branch -D is marked as risky",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5224,
+      "failures": []
+    },
+    {
+      "scenario": "git add offers changed files",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4493,
+      "failures": []
+    },
+    {
+      "scenario": "git log options with descriptions",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4916,
+      "failures": []
+    },
+    {
+      "scenario": "git commit -m keeps the quoted message as typed",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6628,
+      "failures": []
+    },
+    {
+      "scenario": "git merge offers branches",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4270,
+      "failures": []
+    },
+    {
+      "scenario": "a git alias completes like the command behind it",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 15835,
+      "failures": []
+    },
+    {
+      "scenario": "outside a repository git still shows subcommands",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4121,
+      "failures": []
+    },
+    {
+      "scenario": "git worktree add and remove",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 8421,
+      "failures": []
+    },
+    {
+      "scenario": "git reflog after a reset",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 9904,
+      "failures": []
+    },
+    {
+      "scenario": "cd lists only folders",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4492,
+      "failures": []
+    },
+    {
+      "scenario": "Enter on a folder walks into it and keeps the list open",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5365,
+      "failures": []
+    },
+    {
+      "scenario": "the run entry runs cd where you are",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6226,
+      "failures": []
+    },
+    {
+      "scenario": "a folder with a space is escaped on the line",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5460,
+      "failures": []
+    },
+    {
+      "scenario": "a folder with a space works after Enter",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6941,
+      "failures": []
+    },
+    {
+      "scenario": "a folder with Polish letters",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4782,
+      "failures": []
+    },
+    {
+      "scenario": "files are offered for cat with their names",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5252,
+      "failures": []
+    },
+    {
+      "scenario": "a path in a subfolder",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5648,
+      "failures": []
+    },
+    {
+      "scenario": "parent folder",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5547,
+      "failures": []
+    },
+    {
+      "scenario": "home with a tilde",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5354,
+      "failures": []
+    },
+    {
+      "scenario": "hidden files after a dot",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4793,
+      "failures": []
+    },
+    {
+      "scenario": "an absolute path",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5448,
+      "failures": []
+    },
+    {
+      "scenario": "Enter on an absolute path takes the folder",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6105,
+      "failures": []
+    },
+    {
+      "scenario": "Enter deeper in an absolute path takes the folder",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5937,
+      "failures": []
+    },
+    {
+      "scenario": "npm run lists the package.json scripts with their commands",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4871,
+      "failures": []
+    },
+    {
+      "scenario": "a production-looking script is marked",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5003,
+      "failures": []
+    },
+    {
+      "scenario": "pnpm lists the scripts",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4915,
+      "failures": []
+    },
+    {
+      "scenario": "a bookmarked folder is offered by cd from anywhere",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 15267,
+      "failures": []
+    },
+    {
+      "scenario": "yarn lists the scripts",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5600,
+      "failures": []
+    },
+    {
+      "scenario": "bun lists the scripts",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6421,
+      "failures": []
+    },
+    {
+      "scenario": "make lists targets with their sections and descriptions",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4896,
+      "failures": []
+    },
+    {
+      "scenario": "a make target tagged prod is marked",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5390,
+      "failures": []
+    },
+    {
+      "scenario": "make -C reads the Makefile of that folder",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5381,
+      "failures": []
+    },
+    {
+      "scenario": "docker compose lists services",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5810,
+      "failures": []
+    },
+    {
+      "scenario": "a Makefile picked up after it changes",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 8977,
+      "failures": []
+    },
+    {
+      "scenario": "just recipes from the justfile",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4636,
+      "failures": []
+    },
+    {
+      "scenario": "a Taskfile without task installed still lists tasks",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6313,
+      "failures": []
+    },
+    {
+      "scenario": "deno tasks from deno.json",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4691,
+      "failures": []
+    },
+    {
+      "scenario": "mise tasks from mise.toml",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6109,
+      "failures": []
+    },
+    {
+      "scenario": "a typo in the command gets the fix on the empty line",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7928,
+      "failures": []
+    },
+    {
+      "scenario": "the fix is never run without Enter",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7016,
+      "failures": []
+    },
+    {
+      "scenario": "a git subcommand typo uses what git suggests",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6938,
+      "failures": []
+    },
+    {
+      "scenario": "a missing npm script gets the near one",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 8908,
+      "failures": []
+    },
+    {
+      "scenario": "cd to a near folder name",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5955,
+      "failures": []
+    },
+    {
+      "scenario": "mkdir of a nested folder gets -p",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 8548,
+      "failures": []
+    },
+    {
+      "scenario": "rm of a folder gets -r",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7142,
+      "failures": []
+    },
+    {
+      "scenario": "checkout of a near branch name",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7729,
+      "failures": []
+    },
+    {
+      "scenario": "Esc dismisses the fix and the line stays empty",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6615,
+      "failures": []
+    },
+    {
+      "scenario": "typing over the fix list starts a new command",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6759,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+C on a long command gives no fix",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6426,
+      "failures": []
+    },
+    {
+      "scenario": "a port in use offers to stop the process",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 18341,
+      "failures": []
+    },
+    {
+      "scenario": "a command that worked gives no fix",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6825,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+G explains every word of a pipe",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5210,
+      "failures": []
+    },
+    {
+      "scenario": "fixes can be turned off",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7295,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+G warns about a destructive line",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5652,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+G through sudo and &&",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5643,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+G knows combined short flags",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5830,
+      "failures": []
+    },
+    {
+      "scenario": "Ctrl+G knows an option that takes a value",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6382,
+      "failures": []
+    },
+    {
+      "scenario": "Esc closes the explanation and keeps the line",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5367,
+      "failures": []
+    },
+    {
+      "scenario": "the line runs as typed after an explanation",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6164,
+      "failures": []
+    },
+    {
+      "scenario": "a snippet with fields fills in and runs",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 8743,
+      "failures": []
+    },
+    {
+      "scenario": "a field value with spaces is quoted",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 8028,
+      "failures": []
+    },
+    {
+      "scenario": "Esc leaves the snippet form without running anything",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7096,
+      "failures": []
+    },
+    {
+      "scenario": "a broken snippets file does not break the list",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4875,
+      "failures": []
+    },
+    {
+      "scenario": "a command run in this folder comes back as a whole",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7390,
+      "failures": []
+    },
+    {
+      "scenario": "a line with a token is never remembered",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 8629,
+      "failures": []
+    },
+    {
+      "scenario": "a failed command is not offered again as a recent one",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 8270,
+      "failures": []
+    },
+    {
+      "scenario": "tab like a shell completes the shared part",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5310,
+      "failures": []
+    },
+    {
+      "scenario": "a command run elsewhere in the repository comes back in a subfolder",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 8946,
+      "failures": []
+    },
+    {
+      "scenario": "the list only on Tab",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5065,
+      "failures": []
+    },
+    {
+      "scenario": "the light theme draws the same list",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 4710,
+      "failures": []
+    },
+    {
+      "scenario": "an invalid setting falls back to the defaults",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5742,
+      "failures": []
+    },
+    {
+      "scenario": "Enter takes the entry and runs the line when enterRuns is on",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 8084,
+      "failures": []
+    },
+    {
+      "scenario": "with enterRuns a folder is still walked into",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 9187,
+      "failures": []
+    },
+    {
+      "scenario": "a spec with a generator that hangs does not block typing",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6033,
+      "failures": []
+    },
+    {
+      "scenario": "a broken spec of your own is skipped",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 9998,
+      "failures": []
+    },
+    {
+      "scenario": "the shell works when the config file is broken",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 8456,
+      "failures": []
+    },
+    {
+      "scenario": "a command that prints without a newline at the end",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6573,
+      "failures": []
+    },
+    {
+      "scenario": "quick resize back and forth with the list open",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 8487,
+      "failures": []
+    },
+    {
+      "scenario": "Shift+Down moves an entry and the order stays",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7652,
+      "failures": []
+    },
+    {
+      "scenario": "git checkout - runs as typed",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5323,
+      "failures": []
+    },
+    {
+      "scenario": "a lone dash runs the previous folder",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6911,
+      "failures": []
+    },
+    {
+      "scenario": "the second command after && gets its own list",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5791,
+      "failures": []
+    },
+    {
+      "scenario": "sudo in front keeps the list of the command",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5237,
+      "failures": []
+    },
+    {
+      "scenario": "the command after a pipe gets its own list",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6566,
+      "failures": []
+    },
+    {
+      "scenario": "ssh hosts from the ssh config, a capital one is marked",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5145,
+      "failures": []
+    },
+    {
+      "scenario": "an option with an equals sign",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 8815,
+      "failures": []
+    },
+    {
+      "scenario": "environment variables after a dollar",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5369,
+      "failures": []
+    },
+    {
+      "scenario": "editing in the middle of the line",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 13527,
+      "failures": []
+    },
+    {
+      "scenario": "docker compose logs takes a service",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7144,
+      "failures": []
+    },
+    {
+      "scenario": "npm install of a version does not block typing without network",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7417,
+      "failures": []
+    },
+    {
+      "scenario": "icons off still shows the entries",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5376,
+      "failures": []
+    },
+    {
+      "scenario": "GNU screen around thint",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 8991,
+      "failures": []
+    },
+    {
+      "scenario": "a long description is cut, not wrapped",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6361,
+      "failures": []
+    },
+    {
+      "scenario": "→ on a folder puts it on the line and lists what is inside",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5629,
+      "failures": []
+    },
+    {
+      "scenario": "the first word with recent commands",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 8716,
+      "failures": []
+    },
+    {
+      "scenario": "→ twice walks two levels down",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7301,
+      "failures": []
+    },
+    {
+      "scenario": "Enter on a folder after → goes straight into it",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6949,
+      "failures": []
+    },
+    {
+      "scenario": "Enter right after → runs cd where the walk is",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6194,
+      "failures": []
+    },
+    {
+      "scenario": "← goes back to the line before →",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7145,
+      "failures": []
+    },
+    {
+      "scenario": "without a walk ← moves the cursor as always",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5611,
+      "failures": []
+    },
+    {
+      "scenario": "← one level up highlights the folder it came from",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 8048,
+      "failures": []
+    },
+    {
+      "scenario": "typing after → ends the walk, so ← moves the cursor again",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6429,
+      "failures": []
+    },
+    {
+      "scenario": "→ works for other commands too",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 5483,
+      "failures": []
+    },
+    {
+      "scenario": "a short tip on a highlighted folder tells that → looks inside",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6112,
+      "failures": []
+    },
+    {
+      "scenario": "aws options complete after a command",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 7265,
+      "failures": []
+    },
+    {
+      "scenario": "aws completes services and their commands",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 9550,
+      "failures": []
+    },
+    {
+      "scenario": "gcloud completes groups and commands",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 9177,
+      "failures": []
+    },
+    {
+      "scenario": "a typo of awk gets awk, not aws",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 6873,
+      "failures": []
+    },
+    {
+      "scenario": "a PATH change made at the prompt reaches the lists",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 11389,
+      "failures": []
+    },
+    {
+      "scenario": "a variable exported at the prompt reaches the lists",
+      "shell": "fish",
+      "size": "200x60",
+      "ok": true,
+      "timedOut": false,
+      "ms": 9011,
+      "failures": []
+    }
+  ]
+}
