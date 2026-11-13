@@ -1,5 +1,6 @@
 - name: a PATH change made at the prompt reaches the lists
-  skip_shells: [cmd, win:pwsh, win:bash, win:zsh, win:fish, nu, xonsh]
+  # the fake kubectl is a sh script, and Windows keeps its own PATH for the commands (Git Bash reports /c/... paths)
+  skip_shells: [cmd, nu, xonsh, win:powershell, win:pwsh, win:bash, win:zsh, win:fish]
   files:
     qa-bin/kubectl: |
       #!/bin/sh
@@ -23,7 +24,8 @@
       list_has: "shell-env-pod"
 
 - name: a variable exported at the prompt reaches the lists
-  skip_shells: [cmd, nu, xonsh]
+  # in PowerShell $NAME is a shell variable, not the environment
+  skip_shells: [cmd, nu, xonsh, powershell, pwsh]
   steps:
     - type: "export THINT_QA_PROBE=hello<ENTER>"
       only_shells: [zsh, bash]
@@ -31,9 +33,13 @@
     - type: "set -gx THINT_QA_PROBE hello<ENTER>"
       only_shells: [fish]
       wait: 800
-    - type: "$env:THINT_QA_PROBE = 'hello'<ENTER>"
-      only_shells: [pwsh]
-      wait: 800
     - type: "echo $THINT_QA_PR"
       wait: 1000
       list_has: "$THINT_QA_PROBE"
+
+- name: the environment report stays out of the screen
+  skip_shells: [cmd, nu, xonsh]
+  steps:
+    - type: "true<ENTER>"
+      wait: 800
+      expect_not: "PATH="

@@ -1,7 +1,9 @@
 // Copyright (c) 2026 Eryk Kozyra.
 // Licensed under the MIT License.
 
-import { commandEnv, parseShellEnv, resetShellEnv, setShellEnv, shellEnvSeparator } from "../../utils/shellEnv.js";
+import fs from "node:fs";
+
+import { commandEnv, createShellEnvFile, parseShellEnv, readShellEnvFile, resetShellEnv, setShellEnv, shellEnvSeparator } from "../../utils/shellEnv.js";
 import { buildExecuteShellCommand } from "../../runtime/utils.js";
 
 afterEach(() => resetShellEnv());
@@ -18,7 +20,12 @@ describe("parseShellEnv", () => {
     expect(parseShellEnv("")).toBeUndefined();
   });
   test("Windows spells it Path", () => {
-    expect(parseShellEnv(report(["Path=C:\\bin"]))?.Path).toBe("C:\\bin");
+    expect(parseShellEnv(report(["Path=C:\\bin"]), "linux")?.Path).toBe("C:\\bin");
+  });
+  test("on Windows a /c/... PATH from Git Bash is dropped and the rest is laid over terminalhinter's own", () => {
+    const env = parseShellEnv(report(["PATH=/usr/bin:/c/Windows", "AWS_PROFILE=prod"]), "win32")!;
+    expect(env.AWS_PROFILE).toBe("prod");
+    expect(env.PATH === "/usr/bin:/c/Windows").toBe(false);
   });
 });
 
@@ -42,4 +49,18 @@ unixTest("the commands behind the lists run with the shell's environment", async
   const run = buildExecuteShellCommand(5000);
   const out = await run({ command: "printenv", args: ["THINT_FROM_SHELL"] });
   expect(out.stdout.trim()).toBe("yes");
+});
+
+describe("the env file", () => {
+  test("is private, and a report written to it becomes the environment", () => {
+    const file = createShellEnvFile()!;
+    if (process.platform !== "win32") expect(fs.statSync(file).mode & 0o077).toBe(0);
+    fs.writeFileSync(file, report(["PATH=/from/file", "KUBECONFIG=/k"]));
+    readShellEnvFile(file);
+    expect(commandEnv().KUBECONFIG).toBe("/k");
+  });
+  test("a missing file leaves the environment alone", () => {
+    readShellEnvFile("/nonexistent/thint-env");
+    expect(commandEnv()).toBe(process.env);
+  });
 });

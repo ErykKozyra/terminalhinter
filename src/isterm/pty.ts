@@ -12,7 +12,7 @@ import pty from "node-pty";
 import type { IPty, IEvent } from "node-pty";
 import { Shell, startupFailedExitCode, userZdotdir, zdotdir } from "../utils/shell.js";
 import { IsTermOscPs, IstermOscPt, IstermPromptStart, IstermPromptEnd } from "../utils/ansi.js";
-import { parseShellEnv, setShellEnv } from "../utils/shellEnv.js";
+import { createShellEnvFile, readShellEnvFile } from "../utils/shellEnv.js";
 import xterm from "@xterm/headless";
 import type { IBuffer, IBufferCell } from "@xterm/xterm";
 
@@ -90,14 +90,18 @@ export class ISTerm implements IPty {
   readonly #shell: Shell;
   #pendingData: string[] = [];
   #pendingCursorPositionReports = 0;
+  readonly #envFile: string | undefined;
 
   constructor({ shell, cols, rows, env, shellTarget, shellArgs, underTest, login, notice }: ISTermOptions & { shellTarget: string }) {
+    this.#envFile = createShellEnvFile();
+    // forward slashes, so Git Bash on Windows can write to it too
+    const envFileForShell = this.#envFile == null ? {} : { ISTERM_ENV_FILE: this.#envFile.replaceAll("\\", "/") };
     this.#pty = pty.spawn(shellTarget, shellArgs ?? [], {
       name: "xterm-256color",
       cols,
       rows,
       cwd: process.cwd(),
-      env: { ...convertToPtyEnv(shell, underTest, login), ...env },
+      env: { ...convertToPtyEnv(shell, underTest, login), ...envFileForShell, ...env },
       useConpty: true,
       useConptyDll: true,
     });
@@ -211,8 +215,8 @@ export class ISTerm implements IPty {
         this.#commandManager.handleExitStatus(Number(data.split(";").at(1)), this.cwd);
         break;
       case IstermOscPt.ShellEnvironment: {
-        // the whole report after "ENV;": the values are escaped, so a ";" inside one cannot cut it short
-        if (argsIndex !== -1) setShellEnv(parseShellEnv(this._deserializeIsMessage(data.substring(argsIndex + 1))));
+        // the shell has just written its variables to the file
+        readShellEnvFile(this.#envFile);
         break;
       }
       case IstermOscPt.CurrentWorkingDirectory: {

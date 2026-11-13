@@ -14,8 +14,10 @@ function __is_escape_value
 	;
 end
 # the exported variables, so the commands behind the lists (kubectl, aws, git) run with what this shell has, not with
-# what terminalhinter saw when it started; sent only when something changed
+# what terminalhinter saw when it started. Written to terminalhinter's private file when something changed, and only
+# a short ENV goes through the terminal.
 function __is_report_env --on-event fish_prompt
+	set -q ISTERM_ENV_FILE; or return
 	set --local entries
 	for name in (set --names --export)
 		contains -- $name _ PWD OLDPWD SHLVL; and continue
@@ -27,12 +29,9 @@ function __is_report_env --on-event fish_prompt
 	end
 	set --local joined (string join \x1e -- $entries)
 	test "$joined" = "$__is_last_env"; and return
+	printf '%s\x1e' $entries >$ISTERM_ENV_FILE 2>/dev/null; or return
 	set --global __is_last_env $joined
-	set --local escaped
-	for entry in $entries
-		set --append escaped (__is_escape_value "$entry")
-	end
-	printf '\e]6973;ENV;%s\a' (string join '\\x1e' -- $escaped)
+	printf '\e]6973;ENV\a'
 end
 function __is_update_cwd --on-event fish_prompt; set __is_cwd (__is_escape_value "$PWD"); printf "\e]6973;CWD;%s\a" $__is_cwd; end
 
